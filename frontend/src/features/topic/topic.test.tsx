@@ -69,6 +69,35 @@ describe('página de tópico — conteúdo', () => {
   })
 })
 
+describe('página de tópico — vídeos', () => {
+  const video = {
+    ...topicPage.startResource!, id: 'cs61c-call', title: 'Lecture 12: Compilation, Assembly, Linking',
+    author: 'UC Berkeley CS61C', url: 'https://www.youtube.com/watch?v=abc123XYZ_0', format: 'video' as const,
+  }
+  const playlist = { ...video, id: 'cs162-playlist', title: 'CS162 Lectures', url: 'https://www.youtube.com/playlist?list=PLxyz' }
+
+  it('lista os vídeos com título e autor e só carrega o player ao clicar', async () => {
+    setup({}, { ...topicPage, videos: [video, playlist] })
+    const { user } = renderApp('/topicos/compilation-pipeline')
+    const section = await screen.findByRole('region', { name: 'Assista' })
+    expect(within(section).getByText('Lecture 12: Compilation, Assembly, Linking')).toBeInTheDocument()
+    expect(within(section).getAllByText('UC Berkeley CS61C').length).toBeGreaterThan(0)
+    expect(section.querySelector('iframe')).toBeNull()
+    await user.click(within(section).getByRole('button', { name: 'Assistir: Lecture 12: Compilation, Assembly, Linking' }))
+    const frame = section.querySelector('iframe')!
+    expect(frame.getAttribute('src')).toBe('https://www.youtube-nocookie.com/embed/abc123XYZ_0?autoplay=1')
+    expect(frame).toHaveAttribute('title', 'Lecture 12: Compilation, Assembly, Linking')
+    expect(within(section).getByRole('link', { name: /CS162 Lectures/ })).toHaveAttribute('href', 'https://www.youtube.com/playlist?list=PLxyz')
+  })
+
+  it('não mostra a seção quando o tópico não tem vídeos', async () => {
+    setup({}, { ...topicPage, videos: [] })
+    renderApp('/topicos/compilation-pipeline')
+    await screen.findByRole('heading', { level: 1 })
+    expect(screen.queryByRole('region', { name: 'Assista' })).not.toBeInTheDocument()
+  })
+})
+
 describe('página de tópico — registros', () => {
   it('registra que abriu o recurso, deixando claro que isso não é domínio', async () => {
     let body: unknown

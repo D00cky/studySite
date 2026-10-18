@@ -16,6 +16,8 @@ export function RegisterPage() {
 
   return (
     <main id="conteudo" className="auth-page">
+      <div className="auth-card">
+        <p className="eyebrow">StudySite · estudo em equipe</p>
       <h1>Criar conta</h1>
       <form onSubmit={submit} className="stack">
         <TextField
@@ -45,13 +47,14 @@ export function RegisterPage() {
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
         <ErrorMessage error={register.error} />
-        <button type="submit" disabled={register.isPending}>
+        <button type="submit" className="button-block" disabled={register.isPending}>
           Criar conta
         </button>
       </form>
       <p>
         Já tem conta? <Link to="/entrar">Entrar</Link>
       </p>
+      </div>
     </main>
   )
 }

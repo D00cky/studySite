@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { useContinue } from '../../api/queries'
+import { useContinue, useMe, useMyProgress } from '../../api/queries'
 import { InlineMarkdown } from '../../components/Markdown'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { formatDate, formatDateTime } from '../../lib/format'
@@ -10,11 +10,25 @@ const VERDICT_LABEL = { comment: 'Comentário', changes_requested: 'Pediu mudan�
 
 export function HomePage() {
   const { data, error, isPending } = useContinue()
+  const { data: me } = useMe()
+  const { data: progress = {} } = useMyProgress()
   const topicTitle = useTopicTitles()
+  const counts = Object.values(progress).reduce(
+    (acc, p) => {
+      if (p.status === 'demonstrated') acc.demonstrated++
+      else if (p.status === 'evidence') acc.evidence++
+      else if (p.status !== 'not_started') acc.active++
+      return acc
+    },
+    { demonstrated: 0, evidence: 0, active: 0 },
+  )
 
   return (
     <>
-      <h1>Continue de onde parou</h1>
+      <header className="page-hero">
+        {me && <p className="eyebrow">Olá, {me.displayName}</p>}
+        <h1>Continue de onde parou</h1>
+      </header>
       {isPending && <Loading />}
       <ErrorMessage error={error} />
       {data && (
@@ -70,6 +84,29 @@ export function HomePage() {
                 </ul>
               </section>
             )}
+
+            <section aria-labelledby="progress-title">
+              <h2 id="progress-title" className="visually-hidden">
+                Seu progresso
+              </h2>
+              <div className="stat-row">
+                <div className="stat">
+                  <strong>{counts.active}</strong>
+                  <span>em exploração ou prática</span>
+                </div>
+                <div className="stat">
+                  <strong>{counts.evidence}</strong>
+                  <span>com evidência registrada</span>
+                </div>
+                <div className="stat">
+                  <strong>{counts.demonstrated}</strong>
+                  <span>demonstrados em revisão</span>
+                </div>
+              </div>
+              <p className="small" style={{ marginTop: '0.5rem' }}>
+                <Link to="/roadmap">Ver a trilha completa</Link>
+              </p>
+            </section>
 
             {data.suggestedTopic && data.nextAction.topicId !== data.suggestedTopic.topicId && (
               <p className="muted">

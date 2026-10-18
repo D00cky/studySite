@@ -24,6 +24,9 @@ export function AppShell() {
       <header className="site-header">
         <div className="header-inner">
           <NavLink to="/" className="brand" end>
+            <span className="brand-mark" aria-hidden="true">
+              S
+            </span>
             StudySite
           </NavLink>
           <nav aria-label="Principal">

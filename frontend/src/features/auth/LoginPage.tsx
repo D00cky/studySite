@@ -19,8 +19,10 @@ export function LoginPage() {
 
   return (
     <main id="conteudo" className="auth-page">
+      <div className="auth-card">
+        <p className="eyebrow">StudySite · estudo em equipe</p>
       <h1>Entrar</h1>
-      <p className="muted">Estudo de fundamentos em equipe.</p>
+      <p className="muted">Fundamentos de computação, com prática, evidência e revisão.</p>
       <form onSubmit={submit} className="stack">
         <TextField label="E-mail" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField
@@ -32,13 +34,14 @@ export function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <ErrorMessage error={login.error} />
-        <button type="submit" disabled={login.isPending}>
+        <button type="submit" className="button-block" disabled={login.isPending}>
           Entrar
         </button>
       </form>
       <p>
         Primeira vez? <Link to="/cadastro">Criar conta</Link>
       </p>
+      </div>
     </main>
   )
 }

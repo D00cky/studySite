@@ -77,7 +77,7 @@ export const topicPage: TopicPage = {
     mathThreads: [],
     explanation: 'Compilar não é executar.',
     misconceptions: [{ claim: 'Compilar também executa.', correction: 'Compilar produz um arquivo.' }],
-    resources: { start: 'gcc-overall-options', deeper: [] },
+    resources: { start: 'gcc-overall-options', deeper: [], videos: [] },
     exercise: {
       id: 'ex-pipeline-stages',
       title: 'Parar em cada etapa',
@@ -94,6 +94,7 @@ export const topicPage: TopicPage = {
   stage: roadmap.stages[1]!,
   startResource: resource,
   deeperResources: [],
+  videos: [],
   prerequisites: [roadmap.topics[0]!],
   unlocks: [roadmap.topics[2]!],
   related: [],

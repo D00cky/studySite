@@ -77,7 +77,7 @@ export interface Topic extends TopicSummary {
   mathThreads: string[]
   explanation?: string
   misconceptions: Misconception[]
-  resources?: { start?: string; deeper: string[] }
+  resources?: { start?: string; deeper: string[]; videos: string[] }
   exercise?: Exercise
   experiment?: Experiment
   reflectionQuestions: string[]
@@ -144,6 +144,7 @@ export interface TopicPage {
   stage: Stage
   startResource?: Resource
   deeperResources: Resource[]
+  videos: Resource[]
   prerequisites: TopicSummary[]
   unlocks: TopicSummary[]
   related: TopicSummary[]

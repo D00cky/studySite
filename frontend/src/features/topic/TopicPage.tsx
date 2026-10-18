@@ -4,6 +4,7 @@ import type { Resource } from '../../api/types'
 import { InlineMarkdown, Markdown } from '../../components/Markdown'
 import { ProgressTag } from '../../components/ProgressTag'
 import { ResourceDetails } from '../../components/ResourceCard'
+import { VideoList } from '../../components/VideoList'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { EvidencePanel } from './EvidencePanel'
 import { ExercisePanel } from './ExercisePanel'
@@ -17,15 +18,15 @@ export function TopicPage() {
 
   if (page.isPending) return <Loading />
   if (page.error) return <ErrorMessage error={page.error} />
-  const { topic, stage, startResource, deeperResources, prerequisites, unlocks, related, projects } = page.data
+  const { topic, stage, startResource, deeperResources, videos, prerequisites, unlocks, related, projects } = page.data
   const ws = workspace.data
 
   const openResource = (r: Resource) => () => record.mutate({ resourceId: r.id, topicId: topic.id, kind: 'opened' })
 
   return (
     <>
-      <p className="muted small">
-        <Link to="/roadmap">Roadmap</Link> / {stage.kind === 'core' ? `Etapa ${stage.order}: ` : ''}
+      <p className="eyebrow">
+        <Link to="/roadmap">Roadmap</Link> · {stage.kind === 'core' ? `Etapa ${stage.order}: ` : ''}
         {stage.title}
       </p>
       <div className="row">
@@ -102,6 +103,14 @@ export function TopicPage() {
               <p className="hint" style={{ marginTop: '0.5rem' }}>
                 Abrir ou ler um recurso não conta como domínio — registre evidência quando praticar.
               </p>
+            </section>
+          )}
+
+          {videos.length > 0 && (
+            <section aria-labelledby="videos-title" style={{ marginTop: '1.25rem' }}>
+              <h2 id="videos-title">Assista</h2>
+              <p className="muted small">Para contextualizar antes ou depois da leitura — assistir não conta como domínio.</p>
+              <VideoList videos={videos} />
             </section>
           )}
 
