@@ -352,7 +352,7 @@ export function TopicPage() {
           {workspace.error && <ErrorMessage error={workspace.error} />}
           {ws && (
             <>
-              <ExercisePanel topic={topic} attempts={ws.attempts} />
+              <ExercisePanel topic={topic} stage={stage} attempts={ws.attempts} />
               <EvidencePanel topic={topic} workspace={ws} />
               <SelfAssessmentPanel topicId={topic.id} history={ws.selfAssessments} />
             </>
