@@ -30,8 +30,8 @@
       correction: Hash não mantém ordem. Consultas de intervalo, mínimo/máximo, sucessor e iteração ordenada precisam de uma estrutura ordenada.
   resources:
     start: ods-binary-trees
-    deeper: [akita-trees, open-data-structures, linux-kernel-rbtree, mit-6042j-spring-2015]
-    videos: [akitando-95-arvores-video, mit-6006-lecture-6-binary-trees-1, cs61b-2019-lecture-16-bsts, mit-6006-lecture-7-binary-trees-2-avl, cs61b-2019-lecture-17-b-trees]
+    deeper: [akita-trees, ods-random-binary-search-trees, linux-kernel-rbtree, mcs-cap7-recursive-data-types]
+    videos: [akitando-95-arvores-video-arvore-de-procura-binaria, mit-6006-lecture-6-binary-trees-1, cs61b-2019-lecture-16-bsts, mit-6006-lecture-7-binary-trees-2-avl, cs61b-2019-lecture-17-b-trees]
   exercise:
     id: ex-bst-validate-height
     title: BST com validador e medição de altura
@@ -128,7 +128,7 @@
       correction: Pelo paradoxo do aniversário, colisões aparecem com cerca de √m chaves — muito antes de encher. O projeto precisa tratá-las desde o início.
   resources:
     start: ods-hash-tables
-    deeper: [algs4-hash-tables, java-hashmap-21, ods-introduction, mit-6042j-spring-2015]
+    deeper: [algs4-hash-tables, java-hashmap-21, ods-introduction, mcs-17-4-birthday-principle]
     videos: [mit-6006-lecture-4-hashing, cs61b-2019-lecture-19-hash-tables]
   exercise:
     id: ex-hash-collisions
@@ -187,7 +187,7 @@
       resource: abseil-swiss-tables
     - title: Hash criptográfico vs não criptográfico
       why: Quando escolher entre hash para tabelas (rápido), para integridade (SHA-256) e para senhas (lento de propósito).
-      resource: akita-crypto-1
+      resource: akitando-67-criptografia-parte-1-hashes
     - title: Consistent hashing e particionamento
       why: Quando distribuir chaves entre vários servidores ou caches sem remapear quase tudo ao adicionar um nó.
       resource: ddia
@@ -226,8 +226,8 @@
       correction: Heaps não são estáveis. Para FIFO entre empates, inclua um número de sequência na chave de comparação.
   resources:
     start: ods-heaps
-    deeper: [algs4-priority-queues, java-priorityqueue-21, open-data-structures]
-    videos: [mit-6006-lecture-8-binary-heaps, cs61b-2019-lecture-20-heaps-pqs, akitando-95-arvores-video]
+    deeper: [algs4-priority-queues, java-priorityqueue-21, ods-10-2-meldableheap]
+    videos: [mit-6006-lecture-8-binary-heaps, cs61b-2019-lecture-20-heaps-pqs, akitando-95-arvores-video-heap-memoria]
   exercise:
     id: ex-binary-heap
     title: Heap binário em array com verificação do invariante
@@ -284,7 +284,7 @@
       why: Quando um servidor precisar gerenciar milhões de timeouts e o O(log n) do heap por timer pesar.
     - title: Starvation e aging em escalonadores
       why: Quando jobs de baixa prioridade nunca rodarem e for preciso envelhecer prioridades ou usar filas multinível.
-      resource: ostep
+      resource: ostep-mlfq
     - title: Heaps d-ários e heaps mescláveis
       why: Quando o heap for gargalo (menos níveis, melhor cache) ou for preciso unir filas inteiras com frequência.
 
@@ -320,8 +320,8 @@
       correction: Basta um ciclo para entrar em laço infinito, e mesmo sem ciclos vértices são revisitados exponencialmente em grafos com muitos caminhos.
   resources:
     start: ods-graphs
-    deeper: [akita-graphs, algs4-undirected-graphs, mit-6042j-spring-2015, open-data-structures]
-    videos: [akitando-140-grafos-video, mit-6006-lecture-9-bfs, mit-6006-lecture-10-dfs, cs61b-2019-lecture-24-graph-implementations]
+    deeper: [akita-graphs, algs4-undirected-graphs, mcs-cap12-simple-graphs, ods-12-3-graph-traversal]
+    videos: [akitando-140-grafos-video-cap-5-entendendo-grafos, mit-6006-lecture-9-bfs, mit-6006-lecture-10-dfs, cs61b-2019-lecture-24-graph-implementations]
   exercise:
     id: ex-bfs-dfs-trace
     title: Rastrear BFS e DFS à mão e em código
@@ -414,8 +414,8 @@
       correction: É a ordem inversa de término (pós-ordem invertida) que funciona. A pré-ordem pode colocar um vértice antes de uma de suas dependências.
   resources:
     start: algs4-directed-graphs
-    deeper: [man-tsort, akita-graphs, mit-6042j-spring-2015, ods-graphs]
-    videos: [mit-6006-lecture-10-dfs, cs61b-2019-lecture-27-reductions-decomposition, akitando-140-grafos-video]
+    deeper: [man-tsort, akita-graphs, mcs-cap10-directed-graphs-partial-orders, ods-graphs]
+    videos: [mit-6006-lecture-10-dfs-dags-and-topological-sort, cs61b-2019-lecture-27-reductions-decomposition-topological-sort, akitando-140-grafos-video-cap-5-entendendo-grafos]
   exercise:
     id: ex-toposort-roadmap
     title: Ordenar o próprio roadmap e encontrar ciclos
