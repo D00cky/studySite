@@ -1,0 +1,55 @@
+# Produção do StudySite atrás de um Traefik que já existe na máquina.
+# Uso: cd deploy && cp .env.example .env (preencha) && docker compose up -d --build
+name: studysite
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: studysite
+      POSTGRES_USER: studysite
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no deploy/.env}
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U studysite -d studysite"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: ..
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/studysite
+      DB_USER: studysite
+      DB_PASSWORD: ${DB_PASSWORD}
+      COOKIE_SECURE: "true"
+      REGISTRATION_ENABLED: ${REGISTRATION_ENABLED:-true}
+    networks: [internal, proxy]
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${TRAEFIK_NETWORK:?defina TRAEFIK_NETWORK no deploy/.env}
+      traefik.http.routers.studysite.rule: Host(`${DOMAIN:?defina DOMAIN no deploy/.env}`)
+      traefik.http.routers.studysite.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
+      traefik.http.routers.studysite.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-le}
+      traefik.http.services.studysite.loadbalancer.server.port: "8080"
+      traefik.http.services.studysite.loadbalancer.healthcheck.path: /actuator/health
+      traefik.http.services.studysite.loadbalancer.healthcheck.interval: 10s
+
+volumes:
+  db:
+
+networks:
+  # Banco e app conversam numa rede só deles; o banco nunca fica exposto.
+  internal:
+  # Rede do Traefik existente (só o app entra nela).
+  proxy:
+    name: ${TRAEFIK_NETWORK}
+    external: true

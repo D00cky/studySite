@@ -29,6 +29,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/csrf", "/actuator/health").permitAll()
                         .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/actuator/**").denyAll()
+                        // A SPA compilada (index.html, /assets/*) não tem dados: leitura livre.
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .anyRequest().denyAll())
                 // Token CSRF em cookie XSRF-TOKEN; a SPA devolve no cabeçalho X-XSRF-TOKEN.
                 .csrf(csrf -> csrf.spa())

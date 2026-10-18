@@ -1,0 +1,7 @@
+.git
+.claude
+.env
+**/node_modules
+**/dist
+backend/target
+deploy/.env

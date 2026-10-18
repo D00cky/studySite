@@ -5,3 +5,4 @@ dist/
 
 # worktrees temporários de agentes
 .claude/worktrees/
+deploy/.env

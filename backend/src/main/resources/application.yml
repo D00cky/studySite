@@ -20,6 +20,8 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+  # Atrás do Caddy (HTTPS): confia em X-Forwarded-* vindos de IPs internos.
+  forward-headers-strategy: native
   compression:
     # A biblioteca tem milhares de recursos; JSON comprime muito bem.
     enabled: true
