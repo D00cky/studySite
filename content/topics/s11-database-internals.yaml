@@ -67,12 +67,19 @@
     - Script SQL do laboratório e saídas de EXPLAIN anotadas com sua previsão.
     - Desenho da B-tree com o caminho da busca e a tabela de tempos de inserção.
   firstAction: "Rode `SELECT count(*) FROM generate_series(1, 1000000);` no psql com `\\timing` ligado e anote o tempo."
-  essentials:
-    - "Crie índices a partir de consultas reais medidas com `EXPLAIN`, não em toda coluna."
-    - "Num índice composto a ordem importa: `(owner_id, status)` serve para owner_id e owner_id + status, não só para status."
-    - "Filtro com função (`lower(title)`) só usa um índice de expressão sobre a mesma função."
-    - Seq Scan em filtro pouco seletivo ou tabela pequena é escolha correta do planner, não falha.
-    - "Cada índice encarece escritas e ocupa espaço; remova os nunca usados (`idx_scan = 0` em `pg_stat_user_indexes`)."
+  kit:
+    - term: "EXPLAIN SELECT ..."
+      use: "Ver se a consulta usa Index Scan ou Seq Scan antes e depois de criar o índice."
+    - term: "CREATE INDEX nome ON tabela (coluna)"
+      use: "Acelerar filtros e ordenações frequentes numa coluna."
+    - term: "CREATE INDEX ... ON tasks (owner_id, status)"
+      use: "Servir filtros por owner_id e por owner_id + status; a coluna da esquerda manda."
+    - term: "CREATE INDEX ... ON tasks (lower(title))"
+      use: "Indexar a mesma expressão usada no WHERE para o planner poder usá-la."
+    - term: "\\di+ / pg_relation_size('indice')"
+      use: "Medir quanto espaço cada índice ocupa."
+    - term: "pg_stat_user_indexes (idx_scan = 0)"
+      use: "Achar índices nunca usados que só encarecem as escritas."
   deepDive:
     - title: Índices parciais e de cobertura (INCLUDE, index-only scan)
       why: Quando uma consulta quente filtra sempre o mesmo subconjunto ou pode ser respondida só pelo índice.
@@ -156,12 +163,19 @@
     - Saídas de EXPLAIN (ANALYZE, BUFFERS) anotadas e o desenho da árvore.
     - Consulta e resultado do pg_stat_statements com a decisão de qual consulta otimizar.
   firstAction: "Rode `EXPLAIN SELECT * FROM generate_series(1, 10);` e `EXPLAIN ANALYZE` da mesma consulta; anote o que muda na saída."
-  essentials:
-    - "Use `EXPLAIN (ANALYZE, BUFFERS)`; com UPDATE/DELETE, envolva em `BEGIN; ... ROLLBACK;` porque ele executa de verdade."
-    - Comece pelo nó com maior tempo exclusivo e multiplique o tempo por loops.
-    - Compare rows estimado com real; diferença de 10× ou mais aponta estatística ruim. Rode ANALYZE e repita.
-    - "`Rows Removed by Filter` alto sugere índice faltando ou filtro mal posicionado."
-    - "Escolha o que otimizar pelo tempo total em `pg_stat_statements`, não pela consulta mais lenta isolada."
+  kit:
+    - term: "EXPLAIN (ANALYZE, BUFFERS) SELECT ..."
+      use: "Executar a consulta e ver tempo real, linhas e páginas lidas em cada nó."
+    - term: "BEGIN; EXPLAIN ANALYZE UPDATE ...; ROLLBACK;"
+      use: "Medir escritas sem gravar de verdade, já que ANALYZE executa o comando."
+    - term: "rows estimado vs actual rows × loops"
+      use: "Achar o nó mais caro e estimativas erradas em 10× ou mais."
+    - term: "ANALYZE tabela"
+      use: "Atualizar as estatísticas quando o planner estima errado."
+    - term: "Rows Removed by Filter"
+      use: "Notar que falta um índice ou que o filtro está mal posicionado."
+    - term: "pg_stat_statements (total_exec_time)"
+      use: "Escolher o que otimizar pelo custo total, não pela consulta mais lenta isolada."
   deepDive:
     - title: Estatísticas estendidas para colunas correlacionadas
       why: Quando o planner errar estimativas em filtros com colunas dependentes (cidade e estado, dono e status).
@@ -246,12 +260,19 @@
     - Linha do tempo das duas sessões com os comandos e as saídas de cada passo.
     - Saída de pg_locks/pg_stat_activity e a mensagem de deadlock anotadas.
   firstAction: "Abra dois psql no mesmo banco e rode `SELECT txid_current();` em cada um dentro de um `BEGIN;`. Os números são diferentes?"
-  essentials:
-    - "No padrão Read Committed, cada instrução vê um snapshot novo; não presuma leituras congeladas durante a transação."
-    - "Corrija lost update com UPDATE atômico condicional (`SET seats = seats - 1 WHERE seats > 0`) ou `SELECT ... FOR UPDATE`."
-    - "Em Repeatable Read e Serializable, trate o erro `40001` repetindo a transação inteira, com limite de tentativas."
-    - Evite deadlock travando linhas sempre na mesma ordem (por exemplo, por id).
-    - "Investigue esperas com `pg_locks` junto com `pg_stat_activity`."
+  kit:
+    - term: "Read Committed: snapshot novo por instrução"
+      use: "Lembrar que cada SELECT pode ver dados recém-confirmados dentro da mesma transação."
+    - term: "UPDATE ... SET seats = seats - 1 WHERE seats > 0"
+      use: "Decrementar com a condição no próprio UPDATE e evitar lost update."
+    - term: "SELECT ... FOR UPDATE"
+      use: "Travar a linha antes de decidir com base no valor lido."
+    - term: "BEGIN ISOLATION LEVEL SERIALIZABLE + retry em 40001"
+      use: "Proteger regras entre várias linhas (write skew), repetindo a transação inteira ao falhar."
+    - term: "Travar linhas sempre na mesma ordem (por id)"
+      use: "Evitar deadlock entre transações que mexem nas mesmas linhas."
+    - term: "pg_locks + pg_stat_activity"
+      use: "Ver quem espera por qual lock e qual consulta o está segurando."
   deepDive:
     - title: Anomalias e níveis de isolamento em detalhe
       why: Ao escolher o nível certo para um fluxo crítico (pagamentos, estoque, reservas).
@@ -339,12 +360,19 @@
     - Consultas, planos e a tabela comparativa com sua previsão inicial ao lado.
     - Saída do teste de percurso completo falhando e depois passando.
   firstAction: "Rode `EXPLAIN ANALYZE SELECT * FROM generate_series(1, 1000000) g ORDER BY g LIMIT 10 OFFSET 900000;` e veja quantas linhas o nó Limit recebeu."
-  essentials:
-    - "Em listagens grandes ou rolagem infinita, use keyset: `WHERE (created_at, id) < ($1, $2) ORDER BY created_at DESC, id DESC LIMIT n`."
-    - Garanta ordem total com uma coluna única de desempate (id) na ordenação e no cursor.
-    - Crie o índice composto na mesma ordem da paginação para o banco descer direto até a posição.
-    - "Exponha a última chave como cursor opaco (ex.: base64) e valide-o como qualquer entrada do cliente."
-    - "Reserve OFFSET para tabelas pequenas ou quando pular para a página N for requisito; meça com `EXPLAIN (ANALYZE, BUFFERS)`."
+  kit:
+    - term: "ORDER BY created_at DESC, id DESC LIMIT 20"
+      use: "Garantir ordem total e estável, com id desempatando linhas de mesmo created_at."
+    - term: "WHERE (created_at, id) < ($1, $2)"
+      use: "Buscar a próxima página a partir da última linha vista (keyset)."
+    - term: "CREATE INDEX ... ON tasks (created_at DESC, id DESC)"
+      use: "Deixar o banco descer direto até a posição do cursor."
+    - term: "LIMIT 20 OFFSET n"
+      use: "Paginar tabelas pequenas ou pular para a página N, sabendo que o custo cresce com n."
+    - term: "Cursor opaco (base64 de created_at e id)"
+      use: "Devolver ao cliente onde ele parou, validando o cursor como qualquer entrada."
+    - term: "EXPLAIN (ANALYZE, BUFFERS)"
+      use: "Comparar tempo e páginas lidas entre OFFSET e keyset."
   deepDive:
     - title: Página anterior e ordenações dinâmicas com keyset
       why: Ao implementar "voltar" ou ordenação escolhida pelo usuário numa API paginada por cursor.

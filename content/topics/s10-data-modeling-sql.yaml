@@ -75,12 +75,19 @@
     - Lista "estado inválido → constraint → mensagem de erro" com os comandos usados.
     - Transcrição dos dois terminais no experimento de unicidade.
   firstAction: "Abra o psql numa base de laboratório e rode `SELECT NULL = NULL, NULL IS NULL;` — anote e explique o resultado."
-  essentials:
-    - Guarde cada fato num lugar só; FK no lado N de um 1:N e tabela de associação com PK composta para N:N.
-    - "Proteja invariantes no banco com `NOT NULL`, `UNIQUE`, `CHECK` e `FOREIGN KEY`, mesmo que a aplicação já valide."
-    - "Lembre a lógica de três valores: `CHECK` aceita NULL e `UNIQUE` aceita vários NULL; some `NOT NULL` quando o valor for obrigatório."
-    - Proteja a chave natural do fato com UNIQUE; um id gerado não impede duplicatas.
-    - "Dê nomes às constraints e escolha `ON DELETE` (RESTRICT ou CASCADE) de propósito, pensando no que deve sobrar."
+  kit:
+    - term: "id bigserial PRIMARY KEY"
+      use: "Dar a cada linha uma identidade estável para as foreign keys apontarem."
+    - term: "NOT NULL / UNIQUE / CHECK (...)"
+      use: "Fazer o banco recusar valor ausente, duplicado ou fora da regra, mesmo com bug na aplicação."
+    - term: "user_id bigint NOT NULL REFERENCES users(id) ON DELETE RESTRICT"
+      use: "Ligar o lado N ao pai num 1:N e decidir o que acontece ao apagar o pai."
+    - term: "PRIMARY KEY (task_id, tag_id)"
+      use: "Modelar N:N numa tabela de associação sem pares duplicados."
+    - term: "\\d tabela (no psql)"
+      use: "Ver colunas, constraints e foreign keys de uma tabela."
+    - term: "psql -f schema.sql"
+      use: "Rodar o esquema e os testes de violação a partir de arquivos versionados no Git."
   deepDive:
     - title: Formas normais e desnormalização consciente
       why: Ao revisar um esquema com dados repetidos ou decidir duplicar dados para acelerar leituras.
@@ -166,12 +173,19 @@
     - Arquivo .sql com as consultas, previsões em comentários e resultados.
     - Explicação curta do bug de fan-out com um exemplo numérico.
   firstAction: "Com 3 usuários e 5 tarefas, escreva num papel quantas linhas `users CROSS JOIN tasks` devolve, depois confirme no psql."
-  essentials:
-    - "Preveja a cardinalidade pelas chaves antes de rodar: join para o pai mantém as linhas; para filhos, repete; dois joins para filhos multiplicam."
-    - Agregue cada lado em subconsulta ou CTE antes de juntar quando houver dois relacionamentos 1:N (evita fan-out).
-    - "Num LEFT JOIN, filtros da tabela da direita vão no `ON`; no `WHERE` eles o transformam em INNER JOIN."
-    - "Use `count(coluna_da_direita)` para contar zero filhos; `count(*)` conta a linha preenchida com NULL como 1."
-    - WHERE filtra linhas antes do GROUP BY; HAVING filtra grupos depois.
+  kit:
+    - term: "JOIN tasks t ON t.user_id = u.id"
+      use: "Juntar tabelas pela chave, prevendo que cada filho gera uma linha no resultado."
+    - term: "LEFT JOIN (filtro da direita no ON)"
+      use: "Manter linhas sem correspondência, como usuários sem tarefas."
+    - term: "GROUP BY + count / sum / avg"
+      use: "Resumir linhas em totais por grupo."
+    - term: "count(t.id) vs count(*)"
+      use: "Contar zero filhos corretamente num LEFT JOIN; count(*) conta a linha de NULL como 1."
+    - term: "WHERE (linhas) vs HAVING (grupos)"
+      use: "Filtrar antes ou depois da agregação."
+    - term: "WITH x AS (SELECT ... GROUP BY ...)"
+      use: "Agregar cada relacionamento 1:N separado antes de juntar e evitar totais inflados (fan-out)."
   deepDive:
     - title: Funções de janela
       why: Para ranking, totais acumulados e "último evento por usuário" sem perder as linhas individuais.
@@ -257,12 +271,19 @@
     - Transcrição dos dois terminais lado a lado, com horários ou numeração dos passos.
     - Consulta a pg_stat_activity mostrando a sessão em espera.
   firstAction: "Abra dois terminais psql na base de laboratório e rode `SELECT pg_backend_pid();` em cada um para identificar as sessões."
-  essentials:
-    - "Envolva operações de várias etapas em `BEGIN; ... COMMIT;`; sem BEGIN, cada comando é uma transação separada."
-    - "Depois de um erro, a transação fica abortada: dê `ROLLBACK` (ou `ROLLBACK TO SAVEPOINT`) antes de continuar."
-    - "Evite lost update com `UPDATE ... SET x = x + 1` atômico ou `SELECT ... FOR UPDATE`, nunca ler-calcular-gravar."
-    - Mantenha transações curtas e nunca espere chamada HTTP ou entrada do usuário com a transação aberta.
-    - "Investigue bloqueios com `pg_stat_activity` (`state`, `wait_event_type`, `query`)."
+  kit:
+    - term: "BEGIN; ... COMMIT;"
+      use: "Fazer várias mudanças valerem juntas ou nenhuma delas."
+    - term: "ROLLBACK"
+      use: "Desfazer tudo desde o BEGIN, inclusive depois de um erro que abortou a transação."
+    - term: "SAVEPOINT s; ROLLBACK TO SAVEPOINT s"
+      use: "Recuperar de um erro sem perder o resto da transação."
+    - term: "UPDATE tasks SET priority = priority + 1"
+      use: "Incrementar de forma atômica e evitar o lost update de ler-calcular-gravar."
+    - term: "SELECT ... FOR UPDATE"
+      use: "Travar a linha lida até o COMMIT quando a decisão depende do valor dela."
+    - term: "pg_stat_activity (state, wait_event_type, query)"
+      use: "Descobrir quem está esperando e quem segura uma transação aberta."
   deepDive:
     - title: WAL e durabilidade
       why: Ao estudar recuperação após crash, replicação ou o custo de cada COMMIT.

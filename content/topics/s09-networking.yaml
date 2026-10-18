@@ -69,12 +69,19 @@
     - Saídas de `dig +trace` e `traceroute` anotadas, com a previsão inicial ao lado.
     - Captura do tcpdump da consulta DNS e explicação do experimento com /etc/hosts.
   firstAction: Rode `dig example.com` e circule na saída o endereço IP, o TTL e a linha SERVER.
-  essentials:
-    - "Diagnostique em camadas: nome (`dig`), rota (`ip route get <ip>`), host (`ping`/`traceroute`), porta (`nc -zv`/`curl -v`)."
-    - "Leia no `dig` a seção ANSWER, o TTL e a linha SERVER; `dig @1.1.1.1` testa outro resolvedor e isola o cache local."
-    - "Lembre que `/etc/hosts` responde antes do DNS e que `dig` o ignora; compare com `getent hosts nome` quando algo só falha na sua máquina."
-    - Baixe o TTL do registro dias antes de uma migração; depois de mudar, resolvedores ainda servem o valor antigo até o TTL vencer.
-    - "Ping sem resposta não prova queda: muitas redes bloqueiam ICMP. Teste a porta do serviço."
+  kit:
+    - term: "dig nome"
+      use: "Ver o IP resolvido, o TTL e qual servidor respondeu (seções ANSWER e SERVER)."
+    - term: "dig @1.1.1.1 nome"
+      use: "Perguntar a outro resolvedor para separar problema de cache local de problema no domínio."
+    - term: "getent hosts nome"
+      use: "Resolver como os programas resolvem (inclui /etc/hosts) quando algo só falha na sua máquina."
+    - term: "ip addr / ip route get <ip>"
+      use: "Descobrir seu IP, o prefixo CIDR e por qual interface e gateway o pacote sai."
+    - term: "traceroute -n host"
+      use: "Ver por quais roteadores o pacote passa e em que ponto ele para."
+    - term: "nc -zv host porta"
+      use: "Testar se a porta do serviço responde, já que ping sem resposta não prova queda."
   deepDive:
     - title: Roteamento entre redes e BGP
       why: Quando precisar entender quedas regionais da Internet ou trabalhar com infraestrutura de rede e cloud.
@@ -161,12 +168,21 @@
     - Código do loop de leitura com buffer e de send_all, com o teste de leitura parcial.
     - Captura do tcpdump e saída do ss anotadas.
   firstAction: Rode `ss -tlnp` e identifique quais processos estão escutando em quais portas na sua máquina.
-  essentials:
-    - "TCP é fluxo de bytes: defina framing (delimitador ou prefixo de tamanho) e leia em loop acumulando num buffer."
-    - "Trate os três retornos de `recv`: `>0` dados, `0` o outro lado fechou (EOF), `-1` erro em `errno`."
-    - "Escreva sempre um `send_all` em loop e evite morrer por `SIGPIPE` (`MSG_NOSIGNAL` ou ignorar o sinal)."
-    - "Use `ss -tanp`: muitos `CLOSE-WAIT` significam que o seu código esqueceu `close`; `TIME-WAIT` é normal em quem fecha primeiro."
-    - "Ative `SO_REUSEADDR` no servidor para reiniciar sem `Address already in use`."
+  kit:
+    - term: "socket / bind / listen / accept"
+      use: "Montar o servidor TCP: criar o socket, prender à porta e aceitar cada cliente."
+    - term: "recv em loop: >0 dados, 0 EOF, -1 errno"
+      use: "Ler acumulando num buffer até ter a mensagem completa, tratando fechamento e erro."
+    - term: "send_all (send em loop)"
+      use: "Garantir que todos os bytes saiam, já que send pode enviar só uma parte."
+    - term: "setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, ...)"
+      use: "Reiniciar o servidor sem o erro Address already in use."
+    - term: "nc localhost 5000"
+      use: "Conversar com o seu servidor à mão, sem precisar escrever um cliente."
+    - term: "ss -tanp"
+      use: "Ver conexões, estados (ESTAB, TIME-WAIT, CLOSE-WAIT) e o processo dono de cada uma."
+    - term: "sudo tcpdump -n -i lo port 5000"
+      use: "Ver o handshake, os dados e o FIN ou RST que realmente passam no fio."
   deepDive:
     - title: Controle de congestionamento e de fluxo
       why: Ao investigar throughput baixo, latência alta sob carga ou tuning de rede em servidores.
@@ -256,12 +272,19 @@
     - Transcrição do nc e do curl -v anotadas.
     - Lista de entradas malformadas testadas com a resposta do servidor para cada uma.
   firstAction: Rode `curl -v http://example.com/ -o /dev/null` e conte quantos cabeçalhos a resposta trouxe.
-  essentials:
-    - "Use `curl -v` para ver o que trafega: linhas `>` foram enviadas, `<` recebidas; os cabeçalhos terminam numa linha em branco (`\\r\\n\\r\\n`)."
-    - "O corpo é delimitado por `Content-Length` ou `Transfer-Encoding: chunked`; leia exatamente esse tamanho, nunca confie num único `recv`."
-    - "Respeite a semântica: GET seguro, PUT/DELETE idempotentes, POST não. Clientes e proxies fazem retry contando com isso."
-    - "Responda com o status certo (`400`, `404`, `409`, `5xx`) em vez de `200` com erro no corpo."
-    - Num parser, limite o tamanho da linha e dos cabeçalhos e rejeite Content-Length inválido com 400.
+  kit:
+    - term: "curl -v URL"
+      use: "Ver a requisição enviada (>) e a resposta recebida (<) com status e cabeçalhos."
+    - term: "curl -v -d 'title=estudar' URL"
+      use: "Enviar um POST com corpo e ver o Content-Type e o Content-Length que o curl monta."
+    - term: "printf 'GET / HTTP/1.1\\r\\nHost: h\\r\\n\\r\\n' | nc h 80"
+      use: "Escrever uma requisição à mão e ver o protocolo em texto puro."
+    - term: "GET / POST / PUT / DELETE"
+      use: "Escolher o método pela semântica: GET lê, POST cria, PUT substitui, DELETE remove."
+    - term: "200, 201, 400, 404, 409, 500"
+      use: "Responder o status que descreve o resultado, em vez de 200 com erro no corpo."
+    - term: "\\r\\n\\r\\n + Content-Length"
+      use: "Saber onde terminam os cabeçalhos e exatamente quantos bytes de corpo ler."
   deepDive:
     - title: HTTP/2 e HTTP/3 no fio
       why: Ao otimizar latência de páginas com muitos recursos ou depurar proxies e load balancers modernos.
@@ -339,12 +362,17 @@
     - Desenho da cadeia de certificados com os campos extraídos.
     - Tabela "erro → garantia protegida" com os comandos do experimento.
   firstAction: Abra um site com HTTPS no navegador, clique no cadeado e anote quem emitiu o certificado e até quando ele vale.
-  essentials:
-    - "Nunca desligue a verificação (`curl -k`, `verify=False`) fora de laboratório: sem ela você perde a autenticidade."
-    - "Inspecione com `openssl s_client -connect host:443 -servername host` e `openssl x509 -noout -subject -issuer -dates -ext subjectAltName`."
-    - "Num erro de certificado, confira três coisas: cadeia até uma CA confiável, nome no SAN e datas de validade."
-    - Use TLS 1.2 ou superior (prefira 1.3) e deixe a escolha de ciphers aos padrões atuais da biblioteca.
-    - Automatize a renovação de certificados e monitore a data de expiração.
+  kit:
+    - term: "curl -v https://host/"
+      use: "Ver o handshake, a versão de TLS e se a verificação do certificado passou."
+    - term: "openssl s_client -connect host:443 -servername host"
+      use: "Inspecionar a cadeia de certificados, a versão do protocolo e o cipher negociados."
+    - term: "openssl x509 -noout -dates -ext subjectAltName"
+      use: "Conferir a validade e os nomes que o certificado cobre."
+    - term: "Cadeia, nome (SAN) e datas"
+      use: "Checar essas três coisas diante de qualquer erro de certificado."
+    - term: "curl --cacert ca.pem URL (nunca -k)"
+      use: "Confiar numa CA de laboratório explicitamente em vez de desligar a verificação."
   deepDive:
     - title: ACME e automação de certificados
       why: Ao colocar um serviço em produção com HTTPS sem renovar certificados à mão.
@@ -431,12 +459,19 @@
     - Saídas de `time curl` nos cenários de timeout, com a explicação de qual fase travou.
     - Transcrição da revalidação 200 → 304 → 200 com os cabeçalhos relevantes.
   firstAction: Rode `curl -sI https://developer.mozilla.org/ | grep -iE 'cache-control|etag|age'` e anote o que cada cabeçalho promete.
-  essentials:
-    - "Configure sempre timeout de conexão, de leitura e um deadline total; no curl, `--connect-timeout` e `--max-time`."
-    - Escolha o timeout pela latência medida (p99 mais folga), não por chute.
-    - Faça poucos retries, com backoff exponencial e jitter, e só em operações idempotentes.
-    - "`no-cache` = guarde mas revalide; `no-store` = não guarde; `private` = nada de cache compartilhado para dados do usuário."
-    - "Use `ETag` com `If-None-Match` para revalidar e responda `304` sem corpo quando nada mudou."
+  kit:
+    - term: "curl --connect-timeout 2 --max-time 5 URL"
+      use: "Limitar o tempo para conectar e o tempo total da requisição."
+    - term: "Timeout de conexão, de leitura e deadline total"
+      use: "Configurar os três em todo cliente HTTP, socket ou driver de banco, com base no p99 medido."
+    - term: "setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, ...)"
+      use: "Fazer o recv desistir com EAGAIN em vez de esperar para sempre."
+    - term: "Retry com backoff exponencial + jitter"
+      use: "Repetir poucas vezes, só operações idempotentes, espaçando as tentativas."
+    - term: "Cache-Control: max-age / no-cache / no-store / private"
+      use: "Dizer quem pode guardar a resposta e por quanto tempo."
+    - term: "ETag + If-None-Match → 304"
+      use: "Revalidar sem baixar o corpo de novo quando nada mudou."
   deepDive:
     - title: Circuit breakers, bulkheads e propagação de deadline
       why: Quando um serviço depender de vários outros e uma dependência lenta não puder derrubar o sistema todo.
