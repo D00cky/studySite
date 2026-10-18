@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
-import { useContinue, useMe, useMetrics, useMyProgress, useRoadmap } from '../../api/queries'
+import { useContinue, useMe, useMyProgress } from '../../api/queries'
 import { InlineMarkdown } from '../../components/Markdown'
-import { EmptyState, ErrorMessage, Loading } from '../../components/Status'
-import { formatDate, formatDateTime, formatMinutes, plural } from '../../lib/format'
+import { ErrorMessage, Loading } from '../../components/Status'
+import { formatDate, formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
+import { Built, Journey, Pattern, StudyTime } from '../progress/sections'
+import { useProgressData } from '../progress/useProgressData'
 import { StageProgress } from './StageProgress'
 import { StudySessionPanel } from './StudySessionPanel'
 
@@ -12,20 +14,10 @@ const VERDICT_LABEL = { comment: 'Comentário', changes_requested: 'Pediu mudan�
 export function HomePage() {
   const { data, error, isPending } = useContinue()
   const { data: me } = useMe()
-  const { data: progress = {}, isSuccess: progressLoaded } = useMyProgress()
-  const { data: roadmap } = useRoadmap()
-  const { data: metrics } = useMetrics()
+  const { data: progress = {} } = useMyProgress()
+  const { metrics: metricsQuery, roadmap, evidence, demonstrated, started, firstDate } = useProgressData()
+  const metrics = metricsQuery.data
   const topicTitle = useTopicTitles()
-  const counts = Object.values(progress).reduce(
-    (acc, p) => {
-      if (p.status === 'demonstrated') acc.demonstrated++
-      else if (p.status === 'evidence') acc.evidence++
-      else if (p.status !== 'not_started') acc.active++
-      return acc
-    },
-    { demonstrated: 0, evidence: 0, active: 0 },
-  )
-  const notStarted = progressLoaded && counts.active + counts.evidence + counts.demonstrated === 0
 
   return (
     <>
@@ -89,36 +81,21 @@ export function HomePage() {
               </section>
             )}
 
-            <section aria-labelledby="progress-title">
-              <h2 id="progress-title" className="visually-hidden">
-                Seu progresso
-              </h2>
-              {notStarted ? (
-                <EmptyState title="Você ainda não começou nenhum tópico">
-                  Abra a próxima ação acima ou escolha um tópico na trilha. Abrir um recurso já conta como exploração.
-                </EmptyState>
-              ) : (
-                <div className="stat-row">
-                  <div className="stat">
-                    <strong>{counts.active}</strong>
-                    <span>em exploração ou prática</span>
-                  </div>
-                  <div className="stat">
-                    <strong>{counts.evidence}</strong>
-                    <span>com evidência registrada</span>
-                  </div>
-                  <div className="stat">
-                    <strong>{counts.demonstrated}</strong>
-                    <span>demonstrados em revisão</span>
-                  </div>
-                </div>
-              )}
-              <p className="small" style={{ marginTop: '0.5rem' }}>
-                <Link to="/roadmap">Ver a trilha completa</Link>
-              </p>
-            </section>
+            <Journey
+              roadmap={roadmap}
+              nextTopic={data.nextAction.topicId ?? data.suggestedTopic?.topicId}
+              firstDate={firstDate}
+              demonstrated={demonstrated.length}
+              started={started}
+              topicTitle={topicTitle}
+            />
+
+            {metrics && <StudyTime metrics={metrics} />}
 
             {roadmap && <StageProgress roadmap={roadmap} progress={progress} />}
+            <p className="small" style={{ margin: 0 }}>
+              <Link to="/roadmap">Ver a trilha completa</Link>
+            </p>
 
             {data.suggestedTopic && data.nextAction.topicId !== data.suggestedTopic.topicId && (
               <p className="muted">
@@ -130,24 +107,11 @@ export function HomePage() {
           </div>
 
           <aside className="stack" aria-label="Sessão e pendências">
-            <section className="panel study-time" aria-labelledby="study-time-title">
-              <h2 id="study-time-title">Seu tempo de estudo</h2>
-              {metrics && (
-                <div className="stat-row">
-                  <div className="stat">
-                    <strong>{formatMinutes(metrics.thisWeekMinutes)}</strong>
-                    <span>nesta semana</span>
-                  </div>
-                  <div className="stat">
-                    <strong>{formatMinutes(metrics.totalMinutes)}</strong>
-                    <span>no total · {plural(metrics.focusBlocks, 'bloco', 'blocos')}</span>
-                  </div>
-                </div>
-              )}
-              <p className="small" style={{ margin: '0.6rem 0 0' }}>
-                <Link to="/progresso">Ver meu progresso</Link>
-              </p>
-            </section>
+            {metrics && metrics.focusBlocks > 0 && <Pattern metrics={metrics} />}
+            <Built evidence={evidence} demonstrated={demonstrated} topicTitle={topicTitle} limit={4} />
+            <p className="small" style={{ margin: 0 }}>
+              <Link to="/progresso">Ver progresso detalhado</Link>
+            </p>
             <StudySessionPanel topicId={data.nextAction.topicId} />
             {data.reviewsToGive > 0 && (
               <p>

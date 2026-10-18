@@ -134,15 +134,3 @@ describe('painel de progresso da home', () => {
     expect(within(panel).queryByText(/Ramo: fundamentos de frontend/)).not.toBeInTheDocument()
   })
 })
-
-describe('home para quem está começando', () => {
-  it('troca os contadores zerados por um convite para o primeiro tópico', async () => {
-    server.use(...signedIn())
-    server.use(withSessions([]))
-    renderApp('/')
-    const start = await screen.findByRole('region', { name: 'Seu progresso' })
-    expect(within(start).getByText('Você ainda não começou nenhum tópico')).toBeInTheDocument()
-    expect(within(start).getByRole('link', { name: 'Ver a trilha completa' })).toHaveAttribute('href', '/roadmap')
-    expect(within(start).queryByText('em exploração ou prática')).not.toBeInTheDocument()
-  })
-})

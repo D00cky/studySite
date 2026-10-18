@@ -106,13 +106,30 @@ describe('meu progresso', () => {
   })
 })
 
-describe('resumo de progresso na home', () => {
-  it('mostra o tempo da semana e leva ao progresso completo', async () => {
+describe('progresso na página inicial', () => {
+  it('mostra a jornada, o tempo estudado, o padrão e o que já construiu sem sair da home', async () => {
     setup()
     renderApp('/')
-    const card = await screen.findByRole('region', { name: 'Seu tempo de estudo' })
-    expect(await within(card).findByText('1h35')).toBeInTheDocument()
-    expect(within(card).getByRole('link', { name: 'Ver meu progresso' })).toHaveAttribute('href', '/progresso')
+    const journey = await screen.findByRole('region', { name: 'Do ponto A ao ponto B' })
+    expect(within(journey).getByRole('link', { name: /Terminal e shell/ })).toHaveAttribute('href', '/topicos/terminal-shell')
+
+    const time = await screen.findByRole('region', { name: 'Tempo estudado' })
+    expect(await within(time).findByText('1h35')).toBeInTheDocument()
+    expect(within(within(time).getByRole('list', { name: 'Minutos por semana' })).getAllByRole('listitem')).toHaveLength(8)
+
+    expect(await screen.findByRole('region', { name: 'Seu padrão' })).toBeInTheDocument()
+    const built = screen.getByRole('region', { name: 'O que você já construiu' })
+    expect(await within(built).findByRole('link', { name: 'CLI de tarefas em C' })).toBeInTheDocument()
+
+    expect(screen.getByRole('link', { name: 'Ver progresso detalhado' })).toHaveAttribute('href', '/progresso')
     expect(screen.getByRole('link', { name: 'Lia' })).toHaveAttribute('href', '/progresso')
+  })
+
+  it('sem blocos ainda, a home convida a usar o pomodoro', async () => {
+    setup(emptyMetrics, [])
+    renderApp('/')
+    const time = await screen.findByRole('region', { name: 'Tempo estudado' })
+    expect(await within(time).findByText('Nenhum bloco de foco ainda')).toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Seu padrão' })).not.toBeInTheDocument()
   })
 })
