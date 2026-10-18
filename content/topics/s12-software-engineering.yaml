@@ -3,33 +3,260 @@
 - id: requirements-modularity
   stage: s12-software-engineering
   title: Requisitos e modularidade
-  status: planned
+  status: authored
   objective: Transformar uma necessidade em requisitos verificáveis e dividir o sistema em módulos com responsabilidades claras.
-  whyItMatters: A maior parte do custo de software está em mudar código mal dividido.
+  whyItMatters: A maior parte do custo de software está em mudar código mal dividido. Um requisito que não pode ser verificado vira discussão eterna; um módulo que conhece detalhes demais dos outros faz cada mudança pequena tocar o sistema inteiro.
   prerequisites: [linking-object-files, complexity-analysis]
+  related: [interfaces-testing, architecture-ci]
+  mathThreads: [logic, graphs]
+  explanation: |
+    Uma necessidade ("quero ver tarefas atrasadas") vira **requisito verificável** quando alguém consegue escrever um teste que passa ou falha: "Dada uma tarefa com prazo ontem e não concluída, quando listo atrasadas, então ela aparece; uma tarefa concluída nunca aparece." O formato *Given / When / Then* força a dizer o estado inicial, a ação e o resultado observável. Requisitos não funcionais também precisam de número: "rápido" não é verificável; "listar 20 tarefas em menos de 100 ms com 1 milhão de linhas" é.
+
+    **Modularidade** é dividir o sistema para que cada decisão que pode mudar fique escondida dentro de um módulo (*information hiding*). No projeto de tarefas, exemplos de decisões: formato de armazenamento (arquivo, PostgreSQL), regra de "atrasada", formato de saída (CLI, JSON HTTP). Se a regra de atraso está espalhada em SQL, no controller e no frontend, mudá-la exige caçar todos os lugares.
+
+    Dois termos ajudam a avaliar a divisão:
+    - **Coesão**: o que está junto muda junto pelo mesmo motivo.
+    - **Acoplamento**: quanto um módulo precisa saber do outro para funcionar. Dependa de interfaces pequenas, não de detalhes internos.
+
+    As dependências formam um **grafo dirigido**; ciclos ("domínio depende de persistência que depende de domínio") são sinal de divisão errada. Uma regra comum: o núcleo de domínio (`Task`, regras de prazo) não depende de nada de infraestrutura; persistência e HTTP dependem do núcleo. Em Java isso aparece como pacotes (ou módulos Maven) e pode ser verificado com ferramentas como `jdeps`, assim como em C você via dependências entre `.o` no linker.
+  misconceptions:
+    - claim: Requisito bem escrito é um texto longo e detalhado.
+      correction: Requisito bom é verificável. Um exemplo concreto com entrada e saída esperada vale mais que parágrafos de descrição.
+    - claim: Mais classes e camadas significam código mais modular.
+      correction: Modularidade é sobre esconder decisões e reduzir o que precisa mudar junto. Camadas que só repassam chamadas aumentam acoplamento sem esconder nada.
+    - claim: Requisitos não funcionais são opcionais até o sistema estar pronto.
+      correction: Desempenho, segurança e disponibilidade moldam a arquitetura; descobri-los tarde costuma exigir reescrever módulos.
+  resources:
+    start: engsoftmoderna-cap3-requisitos
+    deeper: [engsoftmoderna-cap5-principios-de-projeto, mit-6031-reading-specifications, fowler-given-when-then, engsoftmoderna-cap7-arquitetura, dev-java]
+    videos: [akitando-144-modelagem-de-software, akitando-106-design-emergente]
+  exercise:
+    id: ex-verifiable-requirements
+    title: Requisitos verificáveis e mapa de módulos do sistema de tarefas
+    prediction: Antes de começar, escreva quantos dos requisitos abaixo você acha que já são verificáveis do jeito que estão. "O sistema deve ser rápido." "Tarefas atrasadas devem ficar em destaque." "Um usuário não pode ver tarefas de outro." "O sistema deve ser fácil de usar."
+    steps:
+      - Reescreva cada requisito da previsão no formato Given/When/Then ou com um número mensurável; descarte os que não conseguir tornar verificáveis e diga por quê.
+      - Escreva mais 6 requisitos do sistema de tarefas (criar, concluir, prazo, listar atrasadas, permissão, paginação), cada um com um exemplo concreto.
+      - "Desenhe os módulos (por exemplo `domain`, `persistence`, `http`, `cli`) e as setas de dependência; marque em qual módulo vive cada decisão que pode mudar."
+      - Crie a estrutura de pacotes Java correspondente com classes vazias e compile com Maven.
+    checks:
+      - Cada requisito tem um exemplo que poderia virar teste automatizado.
+      - O grafo de dependências não tem ciclos e o domínio não aponta para infraestrutura.
+  experiment:
+    title: Medir o custo de uma mudança de requisito
+    steps:
+      - "Numa versão do projeto de tarefas (Java ou a CLI em C), crie uma branch e implemente um requisito novo: tarefas passam a ter prioridade e a listagem ordena por prioridade."
+      - "Ao terminar, rode `git diff --stat main` e conte arquivos e módulos tocados."
+      - "No projeto Java, rode `jdeps -verbose:package target/classes` (ou sobre o jar) e desenhe o grafo de pacotes real."
+      - Introduza de propósito uma dependência do domínio para a persistência e veja como ela aparece no jdeps.
+    observe:
+      - Quantos módulos uma mudança "pequena" atravessou.
+      - Diferenças entre o grafo planejado no exercício e o grafo real do jdeps.
+  reflectionQuestions:
+    - Que decisão do seu projeto de tarefas tem mais chance de mudar, e ela está escondida num único módulo?
+    - Como você testaria o requisito "um usuário não pode ver tarefas de outro"?
+    - Que ciclo de dependência você já criou sem perceber, e como quebrá-lo?
+  completionCriteria:
+    - Apresenta 10 requisitos do sistema de tarefas, cada um com exemplo Given/When/Then ou número mensurável.
+    - Mostra o diagrama de módulos planejado ao lado da saída do jdeps do código real.
+    - Mostra o git diff --stat de uma mudança de requisito e explica quais arquivos poderiam ter ficado de fora com outra divisão.
+  evidencePrompts:
+    - Documento de requisitos reescritos com os originais ao lado.
+    - Diagrama de módulos, saída do jdeps e o diff da mudança de requisito.
+  firstAction: "Escreva em uma linha, no formato Given/When/Then, o requisito \"listar tarefas atrasadas\"."
 
 - id: interfaces-testing
   stage: s12-software-engineering
   title: Interfaces e testes
-  status: planned
+  status: authored
   objective: Projetar interfaces testáveis e escrever testes unitários e de integração que verificam comportamento.
-  whyItMatters: Testes permitem mudar código com confiança e documentam o comportamento esperado.
+  whyItMatters: Testes permitem mudar código com confiança e documentam o comportamento esperado. Uma interface mal projetada torna o teste difícil, e essa dificuldade é um sinal precoce de acoplamento.
   prerequisites: [requirements-modularity]
+  related: [refactoring, architecture-ci]
+  mathThreads: [sets, logic]
+  explanation: |
+    Um teste automatizado é um programa que coloca o sistema num estado, executa uma ação e verifica um resultado observável — o mesmo Given/When/Then dos requisitos. Ele só é útil se **puder falhar**: um teste que você nunca viu vermelho pode não estar testando nada.
+
+    Código é testável quando suas dependências são **explícitas e substituíveis**. Um `TaskService` que chama `LocalDate.now()` e abre uma conexão JDBC por conta própria é difícil de testar; um que recebe um `Clock` e uma interface `TaskRepository` no construtor pode ser testado com um relógio fixo e um repositório em memória (um **fake**). Isso é injeção de dependência — não precisa de framework, um construtor basta.
+
+    Tipos de teste, pelo que verificam:
+    - **Unitário**: uma unidade de comportamento, sem I/O, rápido (milissegundos). Ex.: "tarefa com prazo ontem e não concluída está atrasada".
+    - **Integração**: a unidade conversando com algo real — SQL contra um PostgreSQL de verdade (por exemplo com Testcontainers), serialização JSON, migrações. Pega erros que fakes escondem.
+    - Poucos testes ponta a ponta, que exercitam o sistema pela interface externa.
+
+    Para escolher casos, **particione** o espaço de entrada (prazo no passado, hoje, futuro, ausente; tarefa concluída ou não) e teste as **fronteiras** (exatamente meia-noite). Teste pela interface pública e verifique comportamento, não detalhes internos: testes acoplados à implementação quebram em toda refatoração e deixam de dar confiança. No Java, JUnit (`@Test`, `assertEquals`, `assertThrows`, `@ParameterizedTest`) roda com `./mvnw test`.
+  misconceptions:
+    - claim: Cobertura de 100% significa que o código está correto.
+      correction: Cobertura mede linhas executadas, não comportamentos verificados. Um teste sem asserção cobre linhas e não detecta nada.
+    - claim: Testes de integração são só testes unitários mais lentos.
+      correction: Eles verificam contratos com o mundo real (SQL, rede, formato de dados) que fakes não reproduzem; um banco em memória diferente do PostgreSQL pode passar onde o real falha.
+    - claim: Mockar tudo deixa os testes mais isolados e, portanto, melhores.
+      correction: Mocks em excesso fixam a sequência de chamadas internas. Prefira fakes simples e verifique o resultado observável.
   resources:
-    start: akita-why-test
+    start: engsoftmoderna-cap8-testes
+    deeper: [akita-why-test, mit-6031-reading-testing, fowler-practical-test-pyramid, junit-user-guide, fowler-test-double, testcontainers-postgres]
+    videos: [ian-cooper-tdd-where-did-it-go-wrong, akitando-130-projetos-testes-estimativa]
+  exercise:
+    id: ex-testable-task-service
+    title: TaskService testável com relógio injetado
+    prediction: "Liste as partições de entrada para `isOverdue(task, now)` e quantos testes você acha que precisa para cobri-las, incluindo fronteiras."
+    steps:
+      - "Escreva `record Task(long id, String title, LocalDate dueDate, boolean done)` e `class TaskService` que recebe `Clock` e `TaskRepository` no construtor."
+      - "Escreva primeiro os testes JUnit de `listOverdue()` com `Clock.fixed(...)` e um `InMemoryTaskRepository`; rode e veja falhar."
+      - Implemente até passar; use `@ParameterizedTest` para as partições (prazo ontem, hoje, amanhã, nulo, concluída).
+      - "Introduza um bug de propósito (troque `isBefore` por `isAfter`) e confirme que algum teste fica vermelho; desfaça."
+    checks:
+      - Cada partição e fronteira listada na previsão tem um caso de teste.
+      - Nenhum teste depende da data real do computador.
+  experiment:
+    title: Teste de integração contra PostgreSQL real e um teste instável
+    steps:
+      - "Implemente `JdbcTaskRepository` e um teste de integração com Testcontainers que sobe PostgreSQL, aplica o schema e verifica `findOverdue` (com uma constraint NOT NULL ou CHECK no schema)."
+      - Rode o mesmo teste contra o fake em memória e encontre um comportamento que o fake não reproduz (por exemplo, violação de constraint).
+      - "Escreva de propósito um teste que usa `LocalDate.now()` e um que depende da ordem de execução (estado estático compartilhado); rode `./mvnw test` várias vezes e com `-Dsurefire.runOrder=random`."
+      - "Leia os relatórios em `target/surefire-reports/` para os testes que falharam."
+    observe:
+      - A diferença entre o comportamento do fake e do PostgreSQL real.
+      - Tempo de execução de testes unitários versus de integração.
+      - O teste instável passando e falhando sem mudança de código.
+  reflectionQuestions:
+    - O que tornou o TaskService fácil ou difícil de testar, e o que isso diz sobre o acoplamento dele?
+    - Quando um fake é suficiente e quando você precisa do banco real?
+    - Por que é importante ver um teste falhar antes de confiar nele?
+  completionCriteria:
+    - Mostra uma suíte JUnit que cobre todas as partições de isOverdue e falha quando um bug é introduzido.
+    - Mostra um teste de integração com PostgreSQL real passando e um caso em que o fake divergia.
+    - Reproduz um teste instável e mostra a correção (relógio injetado ou estado isolado).
+  evidencePrompts:
+    - Saída do ./mvnw test com o teste vermelho pelo bug introduzido e depois verde.
+    - Código do teste de integração e explicação da divergência encontrada no fake.
+  firstAction: "Escreva um teste JUnit `assertEquals(2, 1 + 1)`, rode `./mvnw test` e depois mude para 3 para vê-lo falhar."
 
 - id: refactoring
   stage: s12-software-engineering
   title: Refatoração
-  status: planned
+  status: authored
   objective: Melhorar a estrutura do código em passos pequenos, sem mudar o comportamento, protegido por testes.
-  whyItMatters: Mantém o código mutável à medida que os requisitos mudam.
+  whyItMatters: Mantém o código mutável à medida que os requisitos mudam. Sem refatoração contínua, cada funcionalidade nova fica mais cara; com refatoração sem testes, cada melhoria arrisca quebrar algo.
   prerequisites: [interfaces-testing, git-fundamentals]
+  related: [requirements-modularity, architecture-ci]
+  mathThreads: [logic]
+  explanation: |
+    **Refatorar** é mudar a estrutura interna sem mudar o comportamento observável. A definição é estrita: se o comportamento muda, não é refatoração — é outra mudança, que deve ser feita separadamente. Misturar as duas no mesmo commit torna impossível saber qual causou uma regressão.
+
+    O mecanismo é uma sequência de **passos pequenos e seguros**, cada um deixando o código compilando e os testes verdes: renomear uma variável, extrair um método (*Extract Function*), mover um método para a classe que tem os dados, substituir um condicional por polimorfismo. Cada passo tem nome e receita conhecida (o catálogo de Fowler), e IDEs como IntelliJ automatizam muitos deles. Se um passo deixa testes vermelhos, você desfaz e tenta um passo menor, em vez de depurar.
+
+    Os testes são a rede de segurança. Quando o código não tem testes, o primeiro passo é escrever **testes de caracterização**: registrar o que o código faz hoje (mesmo que pareça estranho), para detectar qualquer mudança acidental. Testes que verificam comportamento pela interface pública sobrevivem à refatoração; testes acoplados a detalhes internos quebram junto e atrapalham.
+
+    O Git completa o ciclo: um commit por passo (`git commit -m "Extrai validação de título"`) cria pontos de retorno. Se algo quebrou e você não sabe onde, `git bisect` faz uma busca binária nos commits — e com `git bisect run ./mvnw -q test` ela é automática. Bons momentos para refatorar: antes de uma mudança ("deixe a mudança fácil, depois faça a mudança fácil") e logo depois de fazer passar um teste.
+  misconceptions:
+    - claim: Refatorar é reescrever do zero de um jeito melhor.
+      correction: Reescrita troca comportamento conhecido por desconhecido de uma vez. Refatoração é incremental e cada passo preserva o comportamento verificado por testes.
+    - claim: Refatoração precisa de uma tarefa separada no planejamento.
+      correction: A maior parte acontece em pequenos passos durante o trabalho normal, antes ou depois de cada mudança de funcionalidade.
+    - claim: Se os testes quebraram durante a refatoração, basta ajustar os testes.
+      correction: Testes que verificam comportamento não deveriam quebrar. Se quebraram, ou o comportamento mudou (bug) ou os testes estavam acoplados à implementação — as duas coisas merecem atenção.
+  resources:
+    start: engsoftmoderna-cap9-refactoring
+    deeper: [refactoring-com, refactoring-com-catalog, pro-git-ptbr, fowler-test-double]
+    videos: [fowler-workflows-of-refactoring-oop2014, ian-cooper-tdd-where-did-it-go-wrong, akitando-106-design-emergente]
+  exercise:
+    id: ex-refactor-task-import
+    title: Refatorar um importador de tarefas em passos pequenos
+    prediction: "Antes de começar, estime quantos commits pequenos serão necessários para transformar um método `importCsv` de 80 linhas (parse, validação, persistência e relatório misturados) em métodos com uma responsabilidade cada."
+    steps:
+      - "Escreva (ou receba do time) um `TaskImporter.importCsv(String csv)` longo que lê linhas, valida título e prazo, grava no repositório e devolve um resumo."
+      - Escreva testes de caracterização com CSVs válidos, inválidos e vazios registrando a saída atual, inclusive comportamentos estranhos.
+      - "Aplique refatorações nomeadas, uma por commit: Extract Function (parseLine, validate), Rename Variable, Introduce Parameter Object, Replace Loop with Pipeline."
+      - "Rode `./mvnw test` depois de cada passo; se ficar vermelho, use `git restore` e tente um passo menor."
+      - Só depois de terminar, adicione um comportamento novo (rejeitar prazo no passado) num commit separado com seu próprio teste.
+    checks:
+      - "`git log --oneline` mostra uma refatoração nomeada por commit e a mudança de comportamento separada."
+      - Os testes de caracterização não precisaram ser alterados durante a refatoração.
+  experiment:
+    title: Quebrar o comportamento sem perceber e encontrar o commit com git bisect
+    steps:
+      - "Numa cópia da branch, faça uma série de 8 a 10 commits de refatoração e, num deles do meio, introduza uma mudança sutil de comportamento (por exemplo, trim no título)."
+      - "Escreva um teste que detecta a mudança, mas guarde-o fora do repositório (por exemplo, num script que copia o teste antes de rodar)."
+      - "Rode `git bisect start`, `git bisect bad HEAD`, `git bisect good <commit-inicial>` e `git bisect run <script>`."
+      - Repita a refatoração com um teste que verifica um detalhe interno (chamadas a um mock) e observe quantos passos de refatoração legítima o quebram.
+    observe:
+      - O número de passos que o bisect precisou e o commit que ele apontou.
+      - A diferença entre um teste de comportamento e um teste acoplado à implementação durante a refatoração.
+  reflectionQuestions:
+    - Que mudança você fez e chamou de refatoração, mas que alterava comportamento?
+    - Por que commits pequenos tornam o git bisect mais útil?
+    - O que fazer quando o código que precisa mudar não tem nenhum teste?
+  completionCriteria:
+    - Mostra o histórico de commits de uma refatoração com um passo nomeado por commit e testes verdes em todos.
+    - Mostra testes de caracterização escritos antes de refatorar código sem testes.
+    - Usa git bisect run para localizar automaticamente o commit que mudou o comportamento.
+  evidencePrompts:
+    - Saída de git log --oneline e um diff de um passo de refatoração representativo.
+    - Saída completa do git bisect run com o commit identificado.
+  firstAction: "Escolha um método longo do seu projeto, rode os testes e aplique só um Rename Variable seguido de commit."
 
 - id: architecture-ci
   stage: s12-software-engineering
   title: Arquitetura e integração contínua
-  status: planned
+  status: authored
   objective: Documentar decisões de arquitetura e configurar um pipeline de CI que compila, testa e falha cedo.
-  whyItMatters: Decisões registradas e CI confiável reduzem regressões e discussões repetidas.
+  whyItMatters: Decisões registradas e CI confiável reduzem regressões e discussões repetidas. Um time pequeno, com pessoas entrando e saindo, perde o porquê das escolhas se elas não estiverem escritas, e perde confiança no main se nada impede código quebrado de entrar.
   prerequisites: [interfaces-testing, processes-streams-exit-codes]
+  related: [refactoring, requirements-modularity]
+  mathThreads: [graphs]
+  explanation: |
+    **Arquitetura** são as decisões caras de mudar: banco de dados, divisão em módulos ou serviços, formato da API, como autenticar. Um **ADR** (*Architecture Decision Record*) é um arquivo curto e numerado no próprio repositório (`docs/adr/0001-postgresql-como-armazenamento.md`) com **contexto**, **decisão**, **status** e **consequências** — inclusive as ruins. ADRs não são editados quando a decisão muda: um novo ADR substitui o anterior, preservando a história.
+
+    **Integração contínua** é integrar o trabalho de todos com frequência no ramo principal, com cada integração verificada por um build automatizado. O servidor de CI faz o que deveria ser feito na máquina de cada um, mas num ambiente limpo e reprodutível: baixa o código, instala a versão fixa do JDK, compila e roda os testes. Se funciona só na sua máquina, a CI mostra.
+
+    O mecanismo que liga tudo é o **exit code**: cada passo do pipeline é um processo; código diferente de zero marca o passo como falho e interrompe o job. `./mvnw -B verify` sai com erro se a compilação ou um teste falham — por isso um script de CI precisa propagar erros (`set -euo pipefail` em bash) em vez de engoli-los.
+
+    **Falhar cedo** significa ordenar os passos do mais barato e mais provável de falhar para o mais caro: formatação e compilação, testes unitários, testes de integração, empacotamento. Os jobs e suas dependências formam um grafo; passos independentes podem rodar em paralelo. No GitHub Actions isso fica num arquivo `.github/workflows/ci.yml` disparado em `push` e `pull_request`. Junte isso a proteção do ramo principal (merge só com CI verde) e a cuidados de segurança: `permissions: contents: read`, actions com versão fixa e segredos nunca impressos nos logs.
+  misconceptions:
+    - claim: CI é ter um servidor que roda o build.
+      correction: CI é a prática de integrar com frequência e consertar o build quebrado imediatamente. Um servidor que fica vermelho por dias sem ninguém agir não é integração contínua.
+    - claim: Documentar arquitetura exige diagramas enormes e documentos longos.
+      correction: Um ADR de uma página por decisão, guardado junto do código, preserva o porquê com custo baixo.
+    - claim: Se o pipeline é lento, basta rodá-lo menos vezes.
+      correction: Feedback lento faz as pessoas ignorarem a CI. Ordene os passos para falhar cedo, use cache de dependências e separe testes lentos, em vez de rodar menos.
+  resources:
+    start: fowler-continuous-integration
+    deeper: [engsoftmoderna-cap10-devops, nygard-documenting-architecture-decisions, engsoftmoderna-cap7-arquitetura, adr-github-io, github-actions-java-maven, github-actions-docs, fowler-practical-test-pyramid]
+    videos: [github-for-beginners-actions-video, techworld-nana-github-actions]
+  exercise:
+    id: ex-adr-and-pipeline-design
+    title: Dois ADRs e o desenho do pipeline
+    prediction: Liste os passos que você colocaria no pipeline do projeto de tarefas em Java e estime quanto tempo cada um leva. Qual deles falha com mais frequência?
+    steps:
+      - "Escreva `docs/adr/0001-postgresql-como-armazenamento.md` com contexto, decisão, status e consequências (positivas e negativas)."
+      - "Escreva `0002-divisao-em-modulos.md` registrando a divisão de pacotes do tópico de requisitos e uma alternativa rejeitada."
+      - Desenhe o pipeline como grafo de jobs e passos, do mais barato ao mais caro, marcando o que pode rodar em paralelo.
+      - "Rode localmente os mesmos comandos do pipeline em sequência e anote o exit code de cada um com `echo $?`."
+    checks:
+      - Cada ADR cita pelo menos uma consequência negativa aceita.
+      - A ordem dos passos é justificada por custo e probabilidade de falha medidos localmente.
+  experiment:
+    title: Pipeline no GitHub Actions que fica vermelho de propósito
+    steps:
+      - "Num repositório de laboratório, crie `.github/workflows/ci.yml` com `actions/checkout`, `actions/setup-java` (JDK fixo, cache maven) e `./mvnw -B verify`, disparado em push e pull_request, com `permissions: contents: read`."
+      - "Abra um pull request com um teste falhando e observe o check vermelho; corrija e veja ficar verde."
+      - "Adicione um passo de script que faz `grep` de algo e falha sem `set -e`, observe que o erro é engolido; corrija com `set -euo pipefail`."
+      - Separe testes unitários e de integração em jobs diferentes com dependência entre eles e compare o tempo até a primeira falha.
+      - Compare o tempo do job com e sem cache de dependências.
+    observe:
+      - O passo exato que falhou no log e o exit code que o runner reportou.
+      - Um erro escondido por um script sem set -e.
+      - Tempo até o primeiro sinal de falha com o pipeline ordenado versus desordenado.
+  reflectionQuestions:
+    - Que decisão do projeto de tarefas você já discutiu duas vezes e deveria virar ADR?
+    - Por que o exit code é a interface entre seus comandos e o sistema de CI?
+    - O que o time deve fazer quando o main fica vermelho, e quem é responsável?
+  completionCriteria:
+    - Mostra dois ADRs no repositório com contexto, decisão, status e consequências.
+    - Mostra um pull request com check vermelho causado por teste falhando e o mesmo PR verde após a correção.
+    - Demonstra um erro engolido por script sem set -e e o pipeline falhando corretamente após a correção.
+  evidencePrompts:
+    - Link para os ADRs e para o arquivo de workflow no repositório.
+    - Capturas ou trechos do log da CI vermelha e verde com o passo que falhou destacado.
+  firstAction: "Crie a pasta `docs/adr/` no projeto e escreva só o título e o contexto do ADR 0001."

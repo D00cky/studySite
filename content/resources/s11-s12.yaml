@@ -1,0 +1,660 @@
+# Recursos das etapas s11 (internals de banco) e s12 (engenharia de software).
+# Todos abertos e conferidos em 2026-10-18 (YouTube via oEmbed).
+
+# --- s11: PostgreSQL / CMU 15-445 ---------------------------------------------
+
+- id: cmu-15445-fall2024
+  title: "CMU 15-445/645 :: Intro to Database Systems (Fall 2024)"
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [indexes, query-plans, isolation-locks]
+  why: Curso de sistemas de banco recomendado pelo Teach Yourself CS, com slides, notas e vídeos de cada aula; mostra como o banco funciona por dentro.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-08-btree
+  title: "#08 - Tree Indexes: B+Trees (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=scUtG_6M_lU
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [indexes, pagination]
+  why: Aula sobre a estrutura da B+Tree, nós folha encadeados, chaves compostas e por que a ordem das colunas importa.
+  section: "#08 - Tree Indexes: B+Trees"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-13-query-execution-1
+  title: "#13 - Query Execution Part 1 (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=HNtlew7mCc4
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [query-plans]
+  why: Como a árvore de operadores de um plano é executada (modelo iterator, scans e acesso por índice).
+  section: "#13 - Query Execution Part 1"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-15-query-planning
+  title: "#15 - Query Planning & Optimization (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=X8EHO8VLeG0
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [query-plans]
+  why: Como o otimizador estima custo e cardinalidade e escolhe entre planos alternativos.
+  section: "#15 - Query Planning & Optimization"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-16-concurrency-control
+  title: "#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=4y656idl8ZU
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [isolation-locks]
+  why: ACID, schedules, conflitos e serializabilidade — a teoria por trás das anomalias que você vai reproduzir.
+  section: "#16 - Concurrency Control Theory"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-17-two-phase-locking
+  title: "#17 - Two-Phase Locking Concurrency Control (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=bXpkEt5P_Js
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [isolation-locks]
+  why: Locks, two-phase locking, detecção e prevenção de deadlock dentro do banco.
+  section: "#17 - Two-Phase Locking Concurrency Control"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-19-mvcc
+  title: "#19 - Multi-Version Concurrency Control (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=niLwbfE3V9Q
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [isolation-locks]
+  why: Versões de linhas, snapshots e garbage collection — o modelo que o PostgreSQL usa.
+  section: "#19 - Multi-Version Concurrency Control"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-118-servidor-sql-banco-de-dados
+  title: "Fiz um servidor de \"SQL\"?? | Entendendo Banco de Dados"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=_7nISfpofec
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [indexes]
+  why: Em português, constrói um banco de brinquedo e explica o que é um índice, transaction log e B-Trees em disco.
+  section: "[Akitando] #118"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-149-docker-compose-postgres-rinha
+  title: "Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=-yGHG3pnHLg
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [query-plans]
+  why: Em português, mostra o PostgreSQL como gargalo sob carga e usa EXPLAIN ANALYZE para entender a estratégia de uma consulta.
+  section: "[Akitando] #149 · CAP 11 - Estratégia de SQL com EXPLAIN ANALYZE"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-transactions-strange-loop
+  title: "\"Transactions: myths, surprises and opportunities\" by Martin Kleppmann"
+  author: Martin Kleppmann (Strange Loop Conference)
+  url: https://www.youtube.com/watch?v=5ZjhNTM8XU8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [isolation-locks]
+  why: Palestra sobre o que os níveis de isolamento realmente garantem e quais anomalias (lost update, write skew) cada um permite.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: scaling-postgres-325-faster-paging
+  title: "Faster Paging? | Scaling Postgres 325"
+  author: Creston Jamison (Scaling Postgres)
+  url: https://www.youtube.com/watch?v=B0oNW3XRUtk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [pagination]
+  why: Episódio que discute como manter o desempenho da paginação keyset, inclusive com ordem descendente.
+  section: "Scaling Postgres 325"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-sql-explain
+  title: "PostgreSQL — EXPLAIN"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-explain.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [query-plans]
+  why: Referência do comando EXPLAIN e das opções ANALYZE, BUFFERS e FORMAT.
+  section: EXPLAIN (versão 18)
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-planner-stats
+  title: "PostgreSQL — 14.2. Statistics Used by the Planner"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/planner-stats.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [query-plans]
+  why: Como pg_class, pg_stats e ANALYZE alimentam as estimativas de linhas do planner.
+  section: "14.2. Statistics Used by the Planner (versão 18)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-pg-stat-statements
+  title: "PostgreSQL — F.32. pg_stat_statements"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/pgstatstatements.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [query-plans]
+  why: Extensão que agrega tempo e chamadas por consulta normalizada; mostra quais consultas merecem um EXPLAIN.
+  section: "F.32. pg_stat_statements (versão 18)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-indexes-multicolumn
+  title: "PostgreSQL — 11.3. Multicolumn Indexes"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/indexes-multicolumn.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [indexes]
+  why: Quando um índice composto é usado e por que as colunas iniciais importam.
+  section: "11.3. Multicolumn Indexes (versão 18)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-index-only-scans
+  title: "PostgreSQL — 11.9. Index-Only Scans and Covering Indexes"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/indexes-index-only-scans.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [indexes, query-plans]
+  why: Explica index-only scan, visibility map e INCLUDE; base para entender "Heap Fetches" no plano.
+  section: "11.9. Index-Only Scans and Covering Indexes (versão 18)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-functions-srf
+  title: "PostgreSQL — 9.26. Set Returning Functions"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/functions-srf.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [indexes, query-plans, pagination]
+  why: generate_series, usado para gerar milhões de linhas sintéticas no laboratório.
+  section: "9.26. Set Returning Functions (versão 18)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-explicit-locking
+  title: "PostgreSQL — 13.3. Explicit Locking"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/explicit-locking.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [isolation-locks]
+  why: Modos de lock de tabela e de linha (SELECT ... FOR UPDATE), deadlocks e advisory locks.
+  section: "13.3. Explicit Locking (versão 18)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: use-the-index-luke-fetch-next-page
+  title: "Use The Index, Luke — Paging Through Results (OFFSET is bad for skipping previous rows)"
+  author: Markus Winand
+  url: https://use-the-index-luke.com/sql/partial-results/fetch-next-page
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [pagination]
+  why: Compara OFFSET com o seek method (keyset), com gráficos de custo por página.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: use-the-index-luke-no-offset
+  title: "Use The Index, Luke — No Offset"
+  author: Markus Winand
+  url: https://use-the-index-luke.com/no-offset
+  language: en
+  format: article
+  difficulty: intro
+  topics: [pagination]
+  why: Resumo curto do argumento contra OFFSET e das limitações do keyset (não pular para página arbitrária).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: citus-five-ways-to-paginate
+  title: "Five ways to paginate in Postgres, from the basic to the exotic"
+  author: Joe Nelson (Citus Data)
+  url: https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [pagination]
+  why: Compara OFFSET, cursores, keyset e outras técnicas no PostgreSQL com prós e contras.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- s12: engenharia de software ------------------------------------------------
+
+- id: mit-6031-reading-specifications
+  title: "6.031 Software Construction — Reading 6: Specifications"
+  author: MIT EECS
+  url: https://web.mit.edu/6.031/www/sp22/classes/06-specifications/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [requirements-modularity, interfaces-testing]
+  why: Pré-condições, pós-condições e contratos como forma de tornar o comportamento verificável (exemplos em TypeScript, ideias valem para Java).
+  section: "Reading 6: Specifications (Spring 2022)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6031-reading-testing
+  title: "6.031 Software Construction — Reading 3: Testing"
+  author: MIT EECS
+  url: https://web.mit.edu/6.031/www/sp22/classes/03-testing/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [interfaces-testing]
+  why: Escolha de casos por partição do espaço de entrada e fronteiras, test-first e cobertura.
+  section: "Reading 3: Testing (Spring 2022)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-given-when-then
+  title: Given When Then
+  author: Martin Fowler
+  url: https://martinfowler.com/bliki/GivenWhenThen.html
+  language: en
+  format: article
+  difficulty: intro
+  topics: [requirements-modularity]
+  why: Formato curto para escrever requisitos como exemplos verificáveis.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-144-modelagem-de-software
+  title: "Modelagem de Software é Difícil? | \"Ver\" vs \"Enxergar\""
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=SmYQcaP1Jgw
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [requirements-modularity, refactoring]
+  why: Em português, discute como enxergar o domínio e separar regras (por exemplo, uma política) em módulos próprios.
+  section: "[Akitando] #144"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-practical-test-pyramid
+  title: The Practical Test Pyramid
+  author: Ham Vocke (martinfowler.com)
+  url: https://martinfowler.com/articles/practical-test-pyramid.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [interfaces-testing, architecture-ci]
+  why: Testes unitários, de integração e de contrato com exemplos em Java/Spring, e como encaixá-los num pipeline.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-test-double
+  title: Test Double
+  author: Martin Fowler
+  url: https://martinfowler.com/bliki/TestDouble.html
+  language: en
+  format: article
+  difficulty: intro
+  topics: [interfaces-testing]
+  why: Vocabulário de dummy, fake, stub, spy e mock.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: junit-user-guide
+  title: JUnit User Guide
+  author: The JUnit Team
+  url: https://docs.junit.org/current/user-guide/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [interfaces-testing]
+  why: Documentação oficial do JUnit (a versão atual é a 6, que mantém a API Jupiter do JUnit 5) — @Test, asserções, testes parametrizados.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testcontainers-postgres
+  title: Postgres Module - Testcontainers for Java
+  author: Testcontainers
+  url: https://java.testcontainers.org/modules/databases/postgres/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [interfaces-testing]
+  why: Sobe um PostgreSQL real e descartável em testes de integração Java.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ian-cooper-tdd-where-did-it-go-wrong
+  title: "TDD, Where Did It All Go Wrong (Ian Cooper)"
+  author: Ian Cooper (DevTernity Conference)
+  url: https://www.youtube.com/watch?v=EZ05e7EMOLM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [interfaces-testing, refactoring]
+  why: Defende testar comportamento pela interface pública em vez de detalhes de implementação, para que refatorar não quebre testes.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-130-projetos-testes-estimativa
+  title: "Rant: Projetos, TESTES e Estimativa??? | Rated-R"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=H_-7o_pLn1s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [interfaces-testing]
+  why: Em português, argumenta por que compilar não basta e testes automatizados fazem parte do trabalho.
+  section: "[Akitando] #130"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: refactoring-com
+  title: Refactoring
+  author: Martin Fowler
+  url: https://refactoring.com/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [refactoring]
+  why: Definição de refatoração e porta de entrada para o livro e o catálogo.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: refactoring-com-catalog
+  title: Catalog of Refactorings
+  author: Martin Fowler
+  url: https://refactoring.com/catalog/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [refactoring]
+  why: Lista nomeada de refatorações (Extract Function, Rename Variable, ...) com o passo a passo resumido.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-workflows-of-refactoring-oop2014
+  title: "Martin Fowler @ OOP2014 \"Workflows of Refactoring\""
+  author: Martin Fowler (heise conferences)
+  url: https://www.youtube.com/watch?v=vqEg37e4Mkw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [refactoring]
+  why: Quando refatorar (TDD, litter-pickup, preparatória, planejada) e por que em passos pequenos.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-106-design-emergente
+  title: "Recomendação de Livros - Introdução a Design Emergente"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=uDqgcsK8Kbc
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [refactoring, requirements-modularity]
+  why: Em português, recomenda livros sobre código limpo, fronteiras entre módulos, testes e design que emerge com refatoração.
+  section: "[Akitando] #106"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-continuous-integration
+  title: Continuous Integration
+  author: Martin Fowler
+  url: https://martinfowler.com/articles/continuousIntegration.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [architecture-ci]
+  why: As práticas de CI (build automatizado, autoteste, integrar diariamente, consertar o build quebrado já) e por quê.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nygard-documenting-architecture-decisions
+  title: Documenting Architecture Decisions
+  author: Michael Nygard (Cognitect)
+  url: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
+  language: en
+  format: article
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Texto original que propôs os ADRs (contexto, decisão, status, consequências).
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: adr-github-io
+  title: Architectural Decision Records (ADRs)
+  author: ADR GitHub organization
+  url: https://adr.github.io/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Modelos de ADR e ferramentas para mantê-los no repositório.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: github-actions-docs
+  title: GitHub Actions documentation
+  author: GitHub
+  url: https://docs.github.com/en/actions
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Workflows, jobs, steps, eventos e runners.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: github-actions-java-maven
+  title: Building and testing Java with Maven
+  author: GitHub
+  url: https://docs.github.com/en/actions/tutorials/build-and-test-code/java-with-maven
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Workflow mínimo de CI para um projeto Java com Maven, incluindo cache de dependências.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: github-for-beginners-actions-video
+  title: "How to use GitHub Actions | GitHub for Beginners"
+  author: GitHub
+  url: https://www.youtube.com/watch?v=BQrohJ3PT7I
+  language: en
+  format: video
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Vídeo oficial do GitHub que cria um primeiro workflow de Actions.
+  section: GitHub for Beginners
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: techworld-nana-github-actions
+  title: "GitHub Actions Tutorial - Basic Concepts and CI/CD Pipeline with Docker"
+  author: TechWorld with Nana
+  url: https://www.youtube.com/watch?v=R8_veQiYBjI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Conceitos básicos de workflow e montagem de um pipeline de CI/CD com Docker, passo a passo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Engenharia de Software Moderna (Marco Tulio Valente, UFMG) — pt-BR, livre ---
+
+- id: engsoftmoderna-cap3-requisitos
+  title: "Engenharia de Software Moderna — Cap. 3: Requisitos"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap3.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [requirements-modularity]
+  why: "Em português: histórias de usuário, critérios de aceitação, casos de uso e MVP — como sair de uma necessidade para requisitos verificáveis."
+  section: "Cap. 3 — Requisitos"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: engsoftmoderna-cap5-principios-de-projeto
+  title: "Engenharia de Software Moderna — Cap. 5: Princípios de Projeto"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap5.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [requirements-modularity]
+  why: "Em português: coesão, acoplamento, ocultamento de informação e princípios SOLID com exemplos em Java."
+  section: "Cap. 5 — Princípios de Projeto"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: engsoftmoderna-cap7-arquitetura
+  title: "Engenharia de Software Moderna — Cap. 7: Arquitetura"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap7.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [architecture-ci, requirements-modularity]
+  why: "Em português: arquitetura em camadas, MVC, microsserviços e outros padrões, com as decisões e trocas de cada um."
+  section: "Cap. 7 — Arquitetura"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: engsoftmoderna-cap8-testes
+  title: "Engenharia de Software Moderna — Cap. 8: Testes"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap8.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [interfaces-testing]
+  why: "Em português: testes de unidade com JUnit, testes de integração e de sistema, test doubles, cobertura e TDD."
+  section: "Cap. 8 — Testes"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: engsoftmoderna-cap9-refactoring
+  title: "Engenharia de Software Moderna — Cap. 9: Refactoring"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap9.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [refactoring]
+  why: "Em português: refatorações como extração de método, movimentação e renomeação, code smells e o papel dos testes."
+  section: "Cap. 9 — Refactoring"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: engsoftmoderna-cap10-devops
+  title: "Engenharia de Software Moderna — Cap. 10: DevOps"
+  author: Marco Tulio Valente
+  url: https://engsoftmoderna.info/cap10.html
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [architecture-ci]
+  why: "Em português: controle de versões, integração contínua e entrega contínua no contexto de DevOps."
+  section: "Cap. 10 — DevOps"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }

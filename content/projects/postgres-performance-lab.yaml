@@ -1,17 +1,78 @@
 - id: postgres-performance-lab
   title: Laboratório de desempenho no PostgreSQL
-  status: planned
+  status: authored
   cumulative: false
   topics: [indexes, query-plans, isolation-locks, pagination]
   question: Por que uma consulta fica lenta, e que evidência mostra que um índice ou uma mudança de consulta resolveu?
   prerequisites: [joins-aggregation, transactions-basics]
-  minimalVersion: Gerar milhões de tarefas sintéticas, medir uma consulta lenta e explicar o plano com EXPLAIN ANALYZE.
+  minimalVersion: |
+    Um repositório com scripts SQL versionados que criam `users` e `tasks` e geram pelo menos 1 milhão de
+    tarefas sintéticas com `generate_series` (donos, status e datas com distribuição conhecida). Para três
+    consultas reais do domínio — tarefas abertas de um dono, tarefas atrasadas e a listagem paginada mais
+    recente —, um relatório com `EXPLAIN (ANALYZE, BUFFERS)` antes e depois de cada índice, com tempo, buffers
+    e rows estimado versus real. O banco roda num container de laboratório descartável, nunca num banco compartilhado.
+  extensions:
+    - Habilitar pg_stat_statements, gerar carga com pgbench usando um script customizado e escolher as consultas a otimizar pelo tempo total.
+    - Comparar índice composto, índice parcial (WHERE status = 'open') e índice de expressão para a mesma consulta, medindo tempo, tamanho e custo de escrita.
+    - Paginação keyset exposta por um endpoint Java com cursor opaco e teste de integração com Testcontainers que percorre todas as páginas.
+    - Simular estatísticas desatualizadas e colunas correlacionadas e testar CREATE STATISTICS para corrigir estimativas.
+    - Script em Java (JDBC) que reproduz lost update com duas threads e uma versão corrigida com retry em erro 40001.
+  constraints:
+    - Todo o ambiente sobe com um comando (por exemplo docker compose up) e os dados são gerados por script, nunca copiados à mão.
+    - Toda afirmação de melhoria vem acompanhada de EXPLAIN (ANALYZE, BUFFERS) antes e depois, com pelo menos 3 execuções e cache explicado (frio ou quente).
+    - Versão do PostgreSQL fixada e anotada no README; parâmetros alterados do padrão ficam documentados.
+    - EXPLAIN ANALYZE de UPDATE ou DELETE só dentro de BEGIN ... ROLLBACK.
+    - Scripts e relatórios versionados em Git, um commit por experimento.
   milestones:
     - id: m1-data
       title: Dados sintéticos
+      description: Escrever o schema e o script com generate_series que gera 1 milhão de tarefas com distribuição conhecida; conferir contagens por status e por dono com consultas de agregação.
+      minutes: 50
     - id: m2-plans
       title: Ler query plans
+      description: Rodar EXPLAIN (ANALYZE, BUFFERS) nas três consultas sem índices secundários, desenhar as árvores de plano e anotar estimado versus real e o nó mais caro.
+      minutes: 50
     - id: m3-indexes
       title: Comparar índices
+      description: Criar índices simples, compostos (testando a ordem das colunas) e parciais; medir tempo de consulta, buffers, tamanho com pg_relation_size e custo de inserção em lote.
+      minutes: 75
     - id: m4-transactions
       title: Explicar comportamento de transações concorrentes
+      description: Com dois psql, reproduzir lost update, deadlock e write skew; registrar linha do tempo, mensagens de erro e estado de pg_locks; mostrar uma correção para cada caso.
+      minutes: 75
+    - id: m5-pagination
+      title: OFFSET versus keyset
+      description: Medir as páginas 1, 1000 e 40000 com OFFSET e com keyset em (created_at, id) e verificar com EXCEPT que os resultados são iguais.
+      minutes: 50
+    - id: m6-report
+      title: Relatório final
+      description: Consolidar tabelas comparativas e conclusões no README, com previsão inicial ao lado do resultado medido.
+      minutes: 25
+  edgeCases:
+    - Consulta com filtro pouco seletivo (status com 90% das linhas iguais), em que o planner prefere Seq Scan mesmo com índice.
+    - Tabela recém-carregada sem ANALYZE, com estimativas de linhas muito erradas.
+    - Linhas com created_at idêntico na paginação keyset.
+    - Medição com cache frio versus cache quente dando resultados diferentes.
+    - Transação que fica aberta (idle in transaction) segurando locks e impedindo o VACUUM de limpar versões antigas.
+  failureExperiments:
+    - Remover o desempate por id da paginação keyset e mostrar linhas perdidas com um teste de percurso completo.
+    - Criar quatro índices extras e medir o aumento do tempo de inserção de 200 mil linhas.
+    - Desabilitar o autovacuum numa tabela, carregar dados sem ANALYZE e mostrar um plano ruim causado por estimativas erradas.
+    - Provocar um deadlock atualizando duas tarefas em ordens opostas e ler a mensagem e o log do servidor.
+    - Rodar EXPLAIN ANALYZE de um DELETE fora de transação numa cópia da tabela e verificar que as linhas sumiram de verdade.
+  tools: [psql, "EXPLAIN (ANALYZE, BUFFERS)", pg_stat_statements, pgbench, pg_locks, pg_stat_activity, docker, git]
+  acceptanceCriteria:
+    - O ambiente e os dados são recriados do zero por script e o README explica como.
+    - Cada uma das três consultas tem planos antes e depois, com tempo, buffers e rows estimado versus real em tabela comparativa.
+    - A comparação de índices inclui tamanho em disco e custo de escrita, não só tempo de leitura.
+    - A comparação OFFSET versus keyset mostra o crescimento do custo por página e a equivalência dos resultados.
+    - Lost update, deadlock e write skew são reproduzidos com linha do tempo das duas sessões e uma correção demonstrada para cada um.
+  evidence:
+    - Link do repositório com scripts SQL, docker compose e README com o relatório.
+    - Saídas de EXPLAIN (ANALYZE, BUFFERS) anotadas para cada experimento, com previsão e resultado.
+    - Linhas do tempo das transações concorrentes com as mensagens de erro e a saída de pg_locks.
+  reviewQuestions:
+    - Qual índice você não criaria em produção, mesmo tendo acelerado uma consulta, e por quê?
+    - Que número no plano mostrou que o planner estava enganado, e o que causou o engano?
+    - Como a aplicação Java deveria reagir a deadlock detected e a erros de serialização?
+    - Se a tabela crescer 100 vezes, quais das suas conclusões continuam valendo?

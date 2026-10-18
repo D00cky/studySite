@@ -3,38 +3,282 @@
 - id: indexes
   stage: s11-database-internals
   title: Índices
-  status: planned
+  status: authored
   objective: Criar índices B-tree e compostos e explicar quando eles ajudam e quando atrapalham.
-  whyItMatters: A diferença entre uma consulta de milissegundos e uma de minutos costuma ser um índice.
+  whyItMatters: A diferença entre uma consulta de milissegundos e uma de minutos costuma ser um índice. Índices também custam espaço e deixam toda escrita mais lenta, então criar um é uma troca que precisa de medição, não de palpite.
   prerequisites: [joins-aggregation, binary-search-trees]
+  related: [query-plans, pagination]
+  mathThreads: [sets]
+  explanation: |
+    No PostgreSQL, uma tabela é um **heap**: as linhas ficam em páginas de 8 kB, sem ordem. Sem índice, achar `WHERE owner_id = 42` exige um **Seq Scan**: ler todas as páginas e testar cada linha. O custo cresce com o tamanho da tabela, não com o tamanho da resposta.
+
+    Um índice **B-tree** é uma estrutura separada, ordenada pela chave, com poucos níveis (uma árvore muito larga: cada página guarda centenas de chaves). As folhas guardam a chave e o endereço físico da linha no heap (`ctid`). Buscar uma chave é descer de 3 a 4 páginas e depois buscar a linha no heap. Como as folhas estão encadeadas em ordem, o mesmo índice serve para intervalos (`created_at > ...`) e para `ORDER BY ... LIMIT` sem ordenar tudo.
+
+    Um índice **composto** `(owner_id, status)` é ordenado primeiro por `owner_id` e, dentro dele, por `status` — como uma lista telefônica por sobrenome e nome. Ele ajuda filtros em `owner_id` ou em `owner_id` + `status`, mas pouco ajuda um filtro só em `status`. A ordem das colunas é uma decisão de projeto.
+
+    Índice não é sempre vitória:
+    - Se o filtro devolve uma fração grande da tabela (baixa **seletividade**), ler o heap em sequência é mais barato que milhares de saltos aleatórios; o planner escolhe Seq Scan.
+    - Funções na coluna (`lower(title) = ...`) impedem o uso de um índice em `title`; seria preciso um índice de expressão.
+    - Cada `INSERT`/`UPDATE` precisa atualizar todos os índices da tabela, e cada índice ocupa disco e cache.
+  misconceptions:
+    - claim: Criar um índice em cada coluna deixa o banco mais rápido.
+      correction: Cada índice encarece escritas e ocupa memória. Índices devem nascer de consultas reais medidas, e índices nunca usados devem ser removidos.
+    - claim: Se existe um índice na coluna, o banco sempre vai usá-lo.
+      correction: O planner compara custos estimados. Para filtros pouco seletivos ou tabelas pequenas, um Seq Scan é mais barato e é escolhido de propósito.
+    - claim: Um índice em (a, b) serve igualmente para filtrar só por b.
+      correction: O índice é ordenado primeiro por a. Filtrar só por b não aproveita essa ordem; em geral é preciso outro índice ou outra ordem de colunas.
   resources:
     start: postgres-indexes
-    deeper: [use-the-index-luke]
+    deeper: [use-the-index-luke, postgres-indexes-multicolumn, postgres-index-only-scans, cmu-15445-fall2024]
+    videos: [akitando-118-servidor-sql-banco-de-dados, cmu-15445-f24-lecture-08-btree]
+  exercise:
+    id: ex-index-predictions
+    title: Prever quando o índice entra em jogo
+    prediction: "Numa tabela de 1 milhão de tarefas com índice em (owner_id, status), escreva para cada consulta se o plano usará o índice: (a) owner_id = 42; (b) status = 'done'; (c) owner_id = 42 AND status = 'open'; (d) owner_id > 10."
+    steps:
+      - "Num banco de laboratório, crie `tasks(id bigserial primary key, owner_id int, status text, title text, created_at timestamptz)` e insira 1 milhão de linhas com `generate_series` (1000 donos, 3 status, datas espalhadas em um ano)."
+      - Rode `ANALYZE tasks;` e execute `EXPLAIN` das quatro consultas sem índice; anote o tipo de nó de cada plano.
+      - "Crie `CREATE INDEX tasks_owner_status ON tasks (owner_id, status);` e repita; compare com sua previsão."
+      - Desenhe a B-tree resumida (raiz, folhas encadeadas, ponteiros para o heap) e marque o caminho percorrido pela consulta (c).
+      - Meça o tamanho da tabela e do índice com `\dt+` e `\di+` (ou `pg_relation_size`).
+    checks:
+      - Cada previsão errada tem uma explicação baseada em seletividade ou na ordem das colunas.
+      - O desenho mostra por que a consulta (b) não aproveita a ordem do índice.
+  experiment:
+    title: O custo do índice na escrita e o índice que não é usado
+    project: postgres-performance-lab
+    steps:
+      - "Meça com `\\timing` a inserção de 200 mil linhas numa cópia da tabela sem índices secundários, depois com 1 e com 4 índices."
+      - "Rode `EXPLAIN ANALYZE SELECT * FROM tasks WHERE lower(title) = 'tarefa 123';` com um índice em `title`; depois crie um índice em `lower(title)` e compare."
+      - "Consulte `pg_stat_user_indexes` (coluna `idx_scan`) depois de algumas consultas e identifique um índice nunca usado."
+    observe:
+      - Tempo de inserção em função do número de índices.
+      - A troca de Seq Scan para Index Scan ao criar o índice de expressão.
+      - Contadores de uso por índice.
+  reflectionQuestions:
+    - Por que uma árvore larga e baixa é melhor que uma árvore binária para dados em disco?
+    - Em que ordem você colocaria as colunas de um índice para "tarefas abertas de um dono, mais recentes primeiro"? Por quê?
+    - Como você decidiria remover um índice em produção sem quebrar uma consulta rara?
+  completionCriteria:
+    - Mostra os planos das quatro consultas antes e depois do índice composto e explica cada diferença.
+    - Apresenta uma tabela com tempo de inserção para 0, 1 e 4 índices medidos no próprio laboratório.
+    - Demonstra com EXPLAIN um índice de expressão sendo usado onde o índice simples não era.
+  evidencePrompts:
+    - Script SQL do laboratório e saídas de EXPLAIN anotadas com sua previsão.
+    - Desenho da B-tree com o caminho da busca e a tabela de tempos de inserção.
+  firstAction: "Rode `SELECT count(*) FROM generate_series(1, 1000000);` no psql com `\\timing` ligado e anote o tempo."
 
 - id: query-plans
   stage: s11-database-internals
   title: Query plans
-  status: planned
+  status: authored
   objective: Ler a saída de EXPLAIN ANALYZE e relacionar escolhas do planner com estatísticas e índices.
-  whyItMatters: É a ferramenta principal para diagnosticar consultas lentas.
+  whyItMatters: É a ferramenta principal para diagnosticar consultas lentas. Sem ler o plano, otimizar vira tentativa e erro; com ele, você sabe onde o tempo foi gasto e por que o banco escolheu aquele caminho.
   prerequisites: [indexes]
+  related: [pagination, joins-aggregation]
+  mathThreads: [probability]
+  explanation: |
+    SQL diz **o que** você quer, não **como** buscar. O **planner** gera planos alternativos (Seq Scan ou Index Scan? Nested Loop, Hash Join ou Merge Join?) e escolhe o de menor **custo estimado**. O plano é uma árvore: as folhas leem tabelas e índices, os nós internos juntam, filtram, ordenam e agregam; as linhas sobem das folhas para a raiz.
+
+    `EXPLAIN` mostra o plano escolhido e as estimativas: `cost=0.42..8.44` (custo até a primeira linha .. custo total, em unidades arbitrárias) e `rows=12` (linhas estimadas). `EXPLAIN (ANALYZE, BUFFERS)` **executa** a consulta e acrescenta o real: `actual time`, `rows` reais, `loops` (quantas vezes o nó rodou) e `Buffers: shared hit=... read=...` (páginas achadas no cache ou lidas do disco/SO). Cuidado: com `ANALYZE`, um `UPDATE` ou `DELETE` é realmente executado — envolva em `BEGIN; ... ROLLBACK;`.
+
+    As estimativas vêm de **estatísticas** coletadas por `ANALYZE` (e pelo autovacuum): número de linhas, valores mais comuns e histogramas por coluna, guardados em `pg_stats`. Para combinar condições, o planner assume por padrão que colunas são independentes e multiplica seletividades. Quando a realidade é diferente — estatísticas velhas, colunas correlacionadas — `rows` estimado e real divergem muito, e é aí que nascem planos ruins (um Nested Loop que roda 100 mil vezes em vez de 10).
+
+    Roteiro de leitura:
+    - Comece pelo nó com maior `actual time` exclusivo, não pela raiz.
+    - Compare `rows` estimado com real; diferença de 10× ou mais é suspeita.
+    - Veja `Rows Removed by Filter`: muitas linhas lidas e descartadas sugerem índice faltando.
+    - Para achar **quais** consultas investigar, use `pg_stat_statements`, que agrega tempo total e número de chamadas por consulta normalizada.
+  misconceptions:
+    - claim: O valor de cost é um tempo em milissegundos.
+      correction: É uma unidade arbitrária baseada em parâmetros como seq_page_cost e random_page_cost. Tempo real só aparece com EXPLAIN ANALYZE.
+    - claim: EXPLAIN ANALYZE só mostra o plano, sem efeitos colaterais.
+      correction: Ele executa a instrução. Um UPDATE ou DELETE com EXPLAIN ANALYZE altera os dados, a menos que esteja numa transação desfeita com ROLLBACK.
+    - claim: A consulta mais lenta isolada é sempre a que mais pesa no sistema.
+      correction: Uma consulta de 2 ms chamada um milhão de vezes pesa mais que uma de 2 s chamada uma vez; pg_stat_statements mostra o tempo total por consulta.
   resources:
     start: postgres-explain
+    deeper: [postgres-sql-explain, postgres-planner-stats, postgres-pg-stat-statements, use-the-index-luke, cmu-15445-fall2024]
+    videos: [cmu-15445-f24-lecture-15-query-planning, cmu-15445-f24-lecture-13-query-execution-1, akitando-149-docker-compose-postgres-rinha]
+  exercise:
+    id: ex-annotate-plan
+    title: Anotar um plano à mão
+    prediction: "Para `SELECT u.name, count(*) FROM tasks t JOIN users u ON u.id = t.owner_id WHERE t.status = 'open' GROUP BY u.name;`, escreva qual tipo de join o planner escolherá e quantas linhas você espera em cada nó."
+    steps:
+      - Crie `users` (1000 linhas) e use a tabela `tasks` do tópico de índices.
+      - "Rode `EXPLAIN (ANALYZE, BUFFERS)` da consulta e copie a saída para um arquivo."
+      - Desenhe a árvore do plano e anote em cada nó o tipo, rows estimado, rows real, loops e tempo.
+      - Identifique o nó mais caro e o nó com a maior diferença entre estimado e real.
+      - Crie um índice que você acha que ajuda, repita e compare tempo e buffers.
+    checks:
+      - A árvore desenhada corresponde à indentação da saída do EXPLAIN.
+      - A conclusão sobre o índice se apoia em números (tempo e buffers) antes e depois.
+  experiment:
+    title: Estatísticas velhas, plano ruim; pg_stat_statements para achar o culpado
+    project: postgres-performance-lab
+    steps:
+      - "Crie uma tabela nova com `autovacuum_enabled = false`, insira 10 linhas, rode `ANALYZE`, depois insira 1 milhão sem rodar ANALYZE de novo."
+      - Rode `EXPLAIN ANALYZE` de uma consulta com filtro e join e compare rows estimado com real; depois rode `ANALYZE` e repita.
+      - "Num container de laboratório, suba o PostgreSQL com `-c shared_preload_libraries=pg_stat_statements`, rode `CREATE EXTENSION pg_stat_statements;` e execute uma mistura de consultas várias vezes."
+      - "Liste as 5 consultas de maior `total_exec_time` em `pg_stat_statements` e escolha uma para investigar com EXPLAIN."
+    observe:
+      - A diferença entre rows estimado e real antes e depois do ANALYZE, e se o tipo de join muda.
+      - "O conteúdo de `pg_stats` para uma coluna (most_common_vals, histogram_bounds)."
+      - Consultas normalizadas com $1, $2 e seus tempos agregados.
+  reflectionQuestions:
+    - Por que o planner multiplica seletividades e quando essa suposição falha no domínio de tarefas?
+    - O que significa um nó com loops=5000 e qual é o tempo total gasto nele?
+    - Como você provaria para o time que uma otimização funcionou, e não foi só o cache aquecido?
+  completionCriteria:
+    - Apresenta um plano anotado à mão com estimado versus real em cada nó e o gargalo identificado.
+    - Mostra o mesmo plano antes e depois de ANALYZE com a mudança de estimativas explicada.
+    - Mostra a saída de pg_stat_statements com as consultas mais caras e o EXPLAIN de uma delas.
+  evidencePrompts:
+    - Saídas de EXPLAIN (ANALYZE, BUFFERS) anotadas e o desenho da árvore.
+    - Consulta e resultado do pg_stat_statements com a decisão de qual consulta otimizar.
+  firstAction: "Rode `EXPLAIN SELECT * FROM generate_series(1, 10);` e `EXPLAIN ANALYZE` da mesma consulta; anote o que muda na saída."
 
 - id: isolation-locks
   stage: s11-database-internals
   title: Isolamento e locks
-  status: planned
+  status: authored
   objective: Reproduzir anomalias de concorrência em transações e explicar os níveis de isolamento do PostgreSQL.
-  whyItMatters: Evita vender o mesmo assento duas vezes ou perder atualizações.
+  whyItMatters: Evita vender o mesmo assento duas vezes ou perder atualizações. Esses bugs não aparecem em testes de um usuário só; só são encontrados por quem sabe provocá-los com transações concorrentes.
   prerequisites: [transactions-basics, deadlocks]
+  related: [query-plans]
+  mathThreads: [logic, graphs]
+  explanation: |
+    O PostgreSQL usa **MVCC**: um `UPDATE` não sobrescreve a linha, cria uma nova versão. Cada versão tem `xmin` (transação que a criou) e `xmax` (transação que a apagou ou substituiu). Cada consulta enxerga um **snapshot**: só as versões confirmadas antes dele. Por isso leitores não bloqueiam escritores e vice-versa. Versões antigas viram lixo que o `VACUUM` recolhe.
+
+    O nível de isolamento decide **quando o snapshot é tirado**:
+    - **Read Committed** (padrão): cada instrução tira um snapshot novo. Duas leituras na mesma transação podem ver valores diferentes.
+    - **Repeatable Read**: um snapshot para a transação inteira. Se você tentar atualizar uma linha que outra transação alterou e confirmou depois do seu snapshot, recebe `could not serialize access due to concurrent update` (SQLSTATE `40001`) e precisa repetir a transação.
+    - **Serializable**: além do snapshot, detecta padrões de leitura e escrita que não equivalem a nenhuma ordem serial (como **write skew**) e aborta uma das transações com `40001`.
+    - Read Uncommitted existe na sintaxe, mas no PostgreSQL se comporta como Read Committed.
+
+    Escritas na mesma linha ainda usam **locks de linha**: a segunda transação que tenta atualizar uma linha espera a primeira terminar. O clássico **lost update** acontece quando a aplicação lê um valor, calcula em memória e grava (`SELECT` e depois `UPDATE ... SET x = 5`): em Read Committed a segunda gravação apaga a primeira. Correções: atualização atômica (`SET x = x - 1`), `SELECT ... FOR UPDATE`, ou um nível mais forte com retry.
+
+    Se T1 espera um lock de T2 e T2 espera um de T1, há um ciclo no grafo de espera: **deadlock**. O PostgreSQL verifica isso depois de `deadlock_timeout` (1 s por padrão) e aborta uma das transações com `deadlock detected`. Prevenção na aplicação: sempre travar linhas na mesma ordem (por exemplo, por `id`).
+  misconceptions:
+    - claim: Dentro de uma transação, tudo que eu leio fica congelado até o COMMIT.
+      correction: Só em Repeatable Read ou Serializable. No padrão Read Committed, cada instrução vê os commits feitos até ela começar.
+    - claim: Serializable faz as transações rodarem uma de cada vez.
+      correction: Elas rodam em paralelo; o banco detecta conflitos e aborta uma delas com erro 40001. A aplicação precisa repetir a transação.
+    - claim: Deadlock é bug do banco de dados.
+      correction: É consequência da ordem em que a aplicação pega locks. O banco apenas detecta o ciclo e escolhe uma vítima.
   resources:
     start: postgres-mvcc
+    deeper: [postgres-explicit-locking, ddia, cmu-15445-fall2024]
+    videos: [kleppmann-transactions-strange-loop, cmu-15445-f24-lecture-16-concurrency-control, cmu-15445-f24-lecture-19-mvcc, cmu-15445-f24-lecture-17-two-phase-locking]
+  exercise:
+    id: ex-lost-update-two-psql
+    title: Lost update com dois psql
+    prediction: Duas pessoas reservam vagas numa sessão de estudo com 1 vaga restante, cada uma lendo o valor e gravando `vagas - 1` calculado na aplicação. Quantas vagas restam no fim em Read Committed? E em Repeatable Read?
+    steps:
+      - "Crie `study_sessions(id int primary key, seats int)` com uma linha `seats = 1`."
+      - "Abra dois terminais com psql (A e B). Em ambos: `BEGIN;` e `SELECT seats FROM study_sessions WHERE id = 1;`."
+      - "Em A: `UPDATE study_sessions SET seats = 0 WHERE id = 1;` e `COMMIT;`. Em B: o mesmo UPDATE com o valor lido, e `COMMIT;`."
+      - "Repita com `BEGIN ISOLATION LEVEL REPEATABLE READ;` e anote o erro em B."
+      - "Repita em Read Committed usando `SELECT ... FOR UPDATE` e depois usando `SET seats = seats - 1 WHERE seats > 0`."
+    checks:
+      - Uma linha do tempo (A à esquerda, B à direita) mostra em que passo cada transação bloqueou ou falhou.
+      - Você explica por que cada correção funciona em termos de snapshot ou lock.
+  experiment:
+    title: Deadlock e write skew provocados de propósito
+    project: postgres-performance-lab
+    steps:
+      - "Deadlock: com duas tarefas (ids 1 e 2), em A atualize a 1, em B atualize a 2, em A atualize a 2, em B atualize a 1. Leia a mensagem e o log do servidor."
+      - "Enquanto A espera, num terceiro psql consulte `pg_locks` junto com `pg_stat_activity` (colunas pid, state, wait_event_type, query)."
+      - "Write skew: regra 'no máximo 3 tarefas em andamento por dono'. Comece com 2. Em A e B (Repeatable Read), conte as em andamento, veja 2 e coloque uma tarefa diferente em andamento cada um; faça COMMIT nos dois."
+      - "Repita com `ISOLATION LEVEL SERIALIZABLE` e observe qual transação recebe 40001."
+      - "Observe `SELECT xmin, xmax, ctid, * FROM tasks WHERE id = 1;` antes e depois de um UPDATE."
+    observe:
+      - A mensagem de deadlock detected com os pids envolvidos e o tempo até a detecção.
+      - Quatro tarefas em andamento no Repeatable Read e o erro de serialização no Serializable.
+      - Mudança de ctid e xmin a cada UPDATE (nova versão da linha).
+  reflectionQuestions:
+    - Por que leitores não bloqueiam escritores no PostgreSQL, e qual é o custo disso (pense em VACUUM)?
+    - Como um serviço Java deveria tratar o erro 40001? Que cuidado é preciso para repetir com segurança?
+    - Que regra de ordenação de locks evitaria o deadlock que você provocou?
+  completionCriteria:
+    - Reproduz o lost update com dois psql e mostra duas correções diferentes funcionando.
+    - Provoca um deadlock e mostra a mensagem do servidor e o estado de pg_locks durante a espera.
+    - Demonstra write skew em Repeatable Read e o erro 40001 em Serializable na mesma sequência de comandos.
+  evidencePrompts:
+    - Linha do tempo das duas sessões com os comandos e as saídas de cada passo.
+    - Saída de pg_locks/pg_stat_activity e a mensagem de deadlock anotadas.
+  firstAction: "Abra dois psql no mesmo banco e rode `SELECT txid_current();` em cada um dentro de um `BEGIN;`. Os números são diferentes?"
 
 - id: pagination
   stage: s11-database-internals
   title: Paginação
-  status: planned
+  status: authored
   objective: Comparar paginação por OFFSET e por keyset, medindo o custo em tabelas grandes.
-  whyItMatters: Listagens infinitas e APIs públicas sofrem com OFFSET em tabelas grandes.
+  whyItMatters: Listagens infinitas e APIs públicas sofrem com OFFSET em tabelas grandes. As páginas finais ficam lentas e itens aparecem duplicados ou somem quando a tabela muda durante a navegação.
   prerequisites: [indexes, query-plans]
+  related: [isolation-locks]
+  mathThreads: [sets, logic]
+  explanation: |
+    `ORDER BY created_at DESC LIMIT 20 OFFSET 100000` parece pedir "a página 5001", mas o banco não tem como saltar direto para a linha 100 000: ele **produz e descarta** as 100 000 primeiras linhas e só então devolve 20. O custo cresce linearmente com o número da página, mesmo com índice.
+
+    OFFSET também é instável: se uma tarefa nova é inserida no topo enquanto o usuário navega, tudo desliza uma posição e o último item da página anterior reaparece na próxima. Se uma linha é apagada, um item é pulado.
+
+    **Keyset** (ou *seek method*) troca "pule N linhas" por "continue depois da última que eu vi":
+
+    ```
+    SELECT id, title, created_at FROM tasks
+    WHERE (created_at, id) < ($1, $2)
+    ORDER BY created_at DESC, id DESC
+    LIMIT 20;
+    ```
+
+    Com um índice em `(created_at, id)`, o banco desce a B-tree até a posição `($1, $2)` e lê só 20 entradas das folhas, não importa quão funda seja a página. O `id` desempata linhas com o mesmo `created_at`: a ordem precisa ser **total**, senão linhas empatadas podem ser puladas. A comparação de linhas `(a, b) < (x, y)` é lexicográfica e o PostgreSQL usa o índice composto para ela.
+
+    O preço: não dá para pular direto para a página 437, e contar o total exato continua caro. Numa API, a última chave vira um **cursor opaco** (por exemplo, base64 de `created_at,id`); o servidor precisa validar esse cursor como qualquer entrada do cliente.
+  misconceptions:
+    - claim: Com índice na coluna de ordenação, OFFSET grande é barato.
+      correction: O índice evita a ordenação, mas as linhas puladas ainda são lidas e descartadas; o custo cresce com o OFFSET.
+    - claim: Ordenar só por created_at basta para keyset.
+      correction: Se duas linhas têm o mesmo created_at, a ordem não é total e linhas podem ser puladas ou repetidas. Inclua uma coluna única como desempate.
+    - claim: Keyset resolve todos os casos de paginação.
+      correction: Não permite pular para uma página arbitrária nem dá o total de páginas de graça; é ideal para rolagem contínua e "próxima página".
+  resources:
+    start: use-the-index-luke-fetch-next-page
+    deeper: [use-the-index-luke-no-offset, citus-five-ways-to-paginate, use-the-index-luke]
+    videos: [scaling-postgres-325-faster-paging, cmu-15445-f24-lecture-08-btree]
+  exercise:
+    id: ex-offset-vs-keyset
+    title: OFFSET versus keyset medido
+    prediction: Numa tabela de 1 milhão de tarefas, estime quantas linhas o banco lê para buscar a página 1, a 1000 e a 40000 (20 por página) com OFFSET e com keyset.
+    steps:
+      - "Crie o índice `CREATE INDEX tasks_created_id ON tasks (created_at DESC, id DESC);`."
+      - "Para as páginas 1, 1000 e 40000, rode `EXPLAIN (ANALYZE, BUFFERS)` com `LIMIT 20 OFFSET n` e anote tempo, buffers e as rows do nó Index Scan."
+      - Descubra o (created_at, id) da última linha da página anterior e escreva a consulta keyset equivalente para as mesmas páginas.
+      - Monte uma tabela página × método com tempo e buffers e compare com sua previsão.
+    checks:
+      - O nó Index Scan com OFFSET mostra rows reais próximas de offset + 20; o keyset mostra cerca de 20.
+      - Os resultados do keyset são idênticos aos do OFFSET para as mesmas páginas (verifique com EXCEPT).
+  experiment:
+    title: Páginas que escorregam e empates que somem
+    project: postgres-performance-lab
+    steps:
+      - Busque a página 1 com OFFSET, insira 5 tarefas novas mais recentes em outro psql e busque a página 2. Procure itens repetidos.
+      - Repita a navegação com keyset e confirme que não há repetição.
+      - "Crie 50 tarefas com exatamente o mesmo created_at, pagine com keyset só por created_at (sem id) em páginas de 20 e conte quantas linhas aparecem no total."
+      - "Escreva um teste automatizado (JUnit ou script) que percorre todas as páginas e verifica que cada id aparece exatamente uma vez."
+    observe:
+      - Os ids duplicados entre páginas com OFFSET após inserções concorrentes.
+      - Linhas perdidas quando a ordem não tem desempate.
+      - O teste falhando na versão sem desempate e passando na versão com (created_at, id).
+  reflectionQuestions:
+    - Por que a ordem precisa ser total para a paginação keyset ser correta?
+    - Como você codificaria e validaria o cursor numa API HTTP pública?
+    - Em que tela de um produto OFFSET ainda é aceitável, e por quê?
+  completionCriteria:
+    - Apresenta a tabela de tempos e buffers para OFFSET e keyset nas páginas 1, 1000 e 40000 medidas com EXPLAIN (ANALYZE, BUFFERS).
+    - Mostra itens duplicados com OFFSET após inserções concorrentes e a ausência deles com keyset.
+    - Apresenta um teste que percorre todas as páginas e detecta a perda de linhas sem desempate.
+  evidencePrompts:
+    - Consultas, planos e a tabela comparativa com sua previsão inicial ao lado.
+    - Saída do teste de percurso completo falhando e depois passando.
+  firstAction: "Rode `EXPLAIN ANALYZE SELECT * FROM generate_series(1, 1000000) g ORDER BY g LIMIT 10 OFFSET 900000;` e veja quantas linhas o nó Limit recebeu."
