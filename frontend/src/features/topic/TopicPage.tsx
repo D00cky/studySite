@@ -6,6 +6,7 @@ import { InlineMarkdown, Markdown } from '../../components/Markdown'
 import { ProgressTag } from '../../components/ProgressTag'
 import { ResourceDetails } from '../../components/ResourceCard'
 import { VideoList } from '../../components/VideoList'
+import { ACCESS_LABEL } from '../../lib/labels'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { EvidencePanel } from './EvidencePanel'
 import { ExercisePanel } from './ExercisePanel'
@@ -19,8 +20,19 @@ export function TopicPage() {
 
   if (page.isPending) return <Loading />
   if (page.error) return <ErrorMessage error={page.error} />
-  const { topic, stage, startResource, deeperResources, videos, deepDiveResources, prerequisites, unlocks, related, projects } =
-    page.data
+  const {
+    topic,
+    stage,
+    startResource,
+    deeperResources,
+    videos,
+    deepDiveResources,
+    books,
+    prerequisites,
+    unlocks,
+    related,
+    projects,
+  } = page.data
   const ws = workspace.data
 
   const openResource = (r: Resource) => () => record.mutate({ resourceId: r.id, topicId: topic.id, kind: 'opened' })
@@ -240,6 +252,34 @@ export function TopicPage() {
           )}
 
           <DeepDive points={topic.deepDive} resources={deepDiveResources} />
+
+          {books.length > 0 && (
+            <section aria-labelledby="books-title">
+              <h2 id="books-title">Livros de referência</h2>
+              <p className="muted small">
+                Para consolidar depois da lição. Livros pagos costumam estar nas bibliotecas virtuais das universidades
+                (Minha Biblioteca, Biblioteca Virtual Pearson) — verifique o acesso pela sua instituição.
+              </p>
+              <ul className="book-list">
+                {books.map((b) => (
+                  <li key={b.id}>
+                    <a href={b.url} target="_blank" rel="noopener noreferrer" className="book-title">
+                      {b.title}
+                      <span className="visually-hidden"> (abre em nova aba)</span>
+                    </a>
+                    <div className="muted small">
+                      {b.author} · {b.language === 'pt-BR' ? 'Português' : 'Inglês'}
+                    </div>
+                    {b.section && <div className="small">Capítulo: {b.section}</div>}
+                    <div className="row" style={{ marginTop: '0.3rem' }}>
+                      <span className={`tag ${b.access === 'free' ? 'tag-success' : ''}`}>{ACCESS_LABEL[b.access]}</span>
+                      {b.priority === 'core' && <span className="tag tag-accent">Recomendado</span>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {deeperResources.length > 0 && (
             <section aria-labelledby="deeper-title">

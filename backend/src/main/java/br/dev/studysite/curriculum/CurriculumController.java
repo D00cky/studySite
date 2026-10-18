@@ -34,7 +34,7 @@ class CurriculumController {
     }
 
     record TopicPage(Topic topic, Stage stage, Resource startResource, List<Resource> deeperResources, List<Resource> videos,
-            List<Resource> deepDiveResources,
+            List<Resource> deepDiveResources, List<Resource> books,
             List<TopicSummary> prerequisites, List<TopicSummary> unlocks, List<TopicSummary> related,
             List<ProjectSummary> projects) {
     }
@@ -78,7 +78,13 @@ class CurriculumController {
                 : t.resources().videos().stream().map(r -> curriculum.resource(r).orElseThrow()).toList();
         List<Resource> deepDive = t.deepDive().stream().map(Model.DeepDivePoint::resource).filter(java.util.Objects::nonNull)
                 .distinct().map(r -> curriculum.resource(r).orElseThrow()).toList();
-        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos, deepDive,
+        // Livros de referência: qualquer recurso de formato book ligado ao tópico na biblioteca
+        // (essenciais primeiro), mesmo que a lição não o cite diretamente.
+        List<Resource> books = curriculum.resources().stream()
+                .filter(r -> "book".equals(r.format()) && r.topics().contains(id))
+                .sorted(java.util.Comparator.comparing((Resource r) -> !"core".equals(r.priority())))
+                .toList();
+        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos, deepDive, books,
                 summaries(t.prerequisites()),
                 curriculum.topics().stream().filter(o -> o.prerequisites().contains(id)).map(TopicSummary::of).toList(),
                 summaries(t.related()),

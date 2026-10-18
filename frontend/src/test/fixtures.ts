@@ -105,6 +105,7 @@ export const topicPage: TopicPage = {
   deeperResources: [],
   videos: [],
   deepDiveResources: [resource],
+  books: [],
   prerequisites: [roadmap.topics[0]!],
   unlocks: [roadmap.topics[2]!],
   related: [],

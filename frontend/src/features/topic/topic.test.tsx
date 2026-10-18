@@ -94,6 +94,32 @@ describe('página de tópico — drill-down 80/20', () => {
   })
 })
 
+describe('página de tópico — livros de referência', () => {
+  const book = {
+    ...topicPage.startResource!, id: 'csapp-cap7-linking', title: 'Computer Systems: A Programmer\'s Perspective — Chapter 7: Linking',
+    author: 'Randal E. Bryant e David R. O\'Hallaron', format: 'book' as const, access: 'paid' as const, section: '7 Linking',
+  }
+  const free = { ...book, id: 'free-book', title: 'Livro aberto', access: 'free' as const, section: undefined }
+
+  it('lista os livros com capítulo e tipo de acesso', async () => {
+    setup({}, { ...topicPage, books: [book, free] })
+    renderApp('/topicos/compilation-pipeline')
+    const section = await screen.findByRole('region', { name: 'Livros de referência' })
+    const item = within(section).getByText(/Chapter 7: Linking/).closest('li')!
+    expect(within(item).getByText(/7 Linking/)).toBeInTheDocument()
+    expect(within(item).getByText('Pago')).toBeInTheDocument()
+    expect(within(section).getByText('Livro aberto').closest('li')!).toHaveTextContent('Gratuito')
+    expect(within(section).getByText(/biblioteca/i)).toBeInTheDocument()
+  })
+
+  it('não mostra a seção quando não há livros', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    await screen.findByRole('heading', { level: 1 })
+    expect(screen.queryByRole('region', { name: 'Livros de referência' })).not.toBeInTheDocument()
+  })
+})
+
 describe('página de tópico — vídeos', () => {
   const video = {
     ...topicPage.startResource!, id: 'cs61c-call', title: 'Lecture 12: Compilation, Assembly, Linking',
