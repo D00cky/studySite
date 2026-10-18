@@ -139,6 +139,16 @@ export function useResources(filters: Record<string, string>) {
   })
 }
 
+/** Busca rápida na biblioteca (paleta de comandos): só consulta com 2+ caracteres. */
+export function useResourceSearch(q: string) {
+  return useQuery({
+    queryKey: keys.resources({ q }),
+    queryFn: () => api.get<Resource[]>(`/api/curriculum/resources?${new URLSearchParams({ q })}`),
+    enabled: q.length >= 2,
+    ...STATIC,
+  })
+}
+
 export function useProjects() {
   return useQuery({ queryKey: keys.projects, queryFn: () => api.get<ProjectSummary[]>('/api/curriculum/projects'), ...STATIC })
 }

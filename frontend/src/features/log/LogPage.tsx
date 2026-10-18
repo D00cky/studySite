@@ -18,7 +18,7 @@ import type { Note } from '../../api/types'
 import { Select, TextField } from '../../components/Field'
 import { Markdown } from '../../components/Markdown'
 import { MarkdownEditor } from '../../components/MarkdownEditor'
-import { ErrorMessage } from '../../components/Status'
+import { EmptyState, ErrorMessage } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
 
@@ -65,12 +65,8 @@ function Section({ title, id, children }: { title: string; id: string; children:
   )
 }
 
-function Empty({ children }: { children: ReactNode }) {
-  return (
-    <p className="muted small" style={{ margin: 0 }}>
-      {children}
-    </p>
-  )
+function Empty({ children }: { children: string }) {
+  return <EmptyState title={children} action={{ to: '/roadmap', label: 'Escolher um tópico' }} />
 }
 
 function Sessions() {

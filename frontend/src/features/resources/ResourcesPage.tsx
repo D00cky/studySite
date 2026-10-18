@@ -63,7 +63,7 @@ export function ResourcesPage() {
               ))}
             </Select>
           </div>
-          {isPending && <Loading />}
+          {isPending && <Loading variant="cards" count={6} />}
           <ErrorMessage error={error} />
           {data && (
             <>

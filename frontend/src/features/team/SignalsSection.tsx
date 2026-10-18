@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useAddSignal, useGroupSignals, useMe, useResolveSignal } from '../../api/queries'
 import type { GroupDetail, HelpSignal } from '../../api/types'
 import { Select, TextArea } from '../../components/Field'
-import { ErrorMessage } from '../../components/Status'
+import { EmptyState, ErrorMessage } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
 
@@ -49,9 +49,7 @@ export function SignalsSection({ group }: { group: GroupDetail }) {
           ))}
         </ul>
       ) : (
-        <p className="muted" style={{ margin: 0 }}>
-          Nenhum sinal aberto.
-        </p>
+        <EmptyState title="Nenhum sinal aberto">Travou em algo ou pode ajudar alguém? Avise o time abaixo.</EmptyState>
       )}
       <details>
         <summary>Abrir um sinal</summary>

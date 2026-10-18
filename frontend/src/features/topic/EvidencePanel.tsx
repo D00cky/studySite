@@ -4,7 +4,7 @@ import { useCreateEvidence, useMe, useRequestReview } from '../../api/queries'
 import type { Evidence, Topic, TopicWorkspace } from '../../api/types'
 import { Select, TextArea, TextField } from '../../components/Field'
 import { MarkdownEditor } from '../../components/MarkdownEditor'
-import { ErrorMessage } from '../../components/Status'
+import { EmptyState, ErrorMessage } from '../../components/Status'
 
 const KIND_LABEL: Record<Evidence['kind'], string> = { text: 'Texto', repository: 'Repositório', artifact: 'Artefato (link)' }
 
@@ -20,9 +20,9 @@ export function EvidencePanel({ topic, workspace }: { topic: Topic; workspace: T
           ))}
         </ul>
       ) : (
-        <p className="muted small" style={{ margin: 0 }}>
-          Nenhuma evidência ainda. Evidência é o que mostra o que você fez: saídas, comandos, commits.
-        </p>
+        <EmptyState title="Nenhuma evidência ainda">
+          Evidência é o que mostra o que você fez: saídas, comandos, commits. Registre a primeira no formulário abaixo.
+        </EmptyState>
       )}
       <EvidenceForm topic={topic} attemptId={activeAttempt?.id} />
     </section>

@@ -4,7 +4,7 @@ import { useCreateEvidence, useGroupProject, useSetMilestone } from '../../api/q
 import type { Evidence, GroupProjectDetail, MilestoneStatus } from '../../api/types'
 import { Select, TextArea, TextField } from '../../components/Field'
 import { MarkdownEditor } from '../../components/MarkdownEditor'
-import { ErrorMessage, Loading } from '../../components/Status'
+import { EmptyState, ErrorMessage, Loading } from '../../components/Status'
 
 const STATUS_LABEL: Record<MilestoneStatus['status'], string> = { todo: 'A fazer', in_progress: 'Em andamento', done: 'Concluído' }
 
@@ -59,7 +59,7 @@ export function GroupProjectPage() {
       <section aria-labelledby="gp-contributions">
         <h2 id="gp-contributions">Contribuições</h2>
         {contributions.length === 0 ? (
-          <p className="muted">Ninguém registrou contribuição ainda.</p>
+          <EmptyState title="Ninguém registrou contribuição ainda">Registre o que você fez num marco no formulário abaixo.</EmptyState>
         ) : (
           <ul className="list-plain">
             {contributions.map((c) => (

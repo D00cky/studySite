@@ -44,7 +44,7 @@ export function ProjectsPage() {
           explicar as decisões. Todos começam redigitando uma referência e usam o mesmo domínio — tarefas.
         </p>
       </header>
-      {isPending && <Loading />}
+      {isPending && <Loading variant="cards" count={6} />}
       <ErrorMessage error={error} />
       {data &&
         GROUPS.map((group) => {

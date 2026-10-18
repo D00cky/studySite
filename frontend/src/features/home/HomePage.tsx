@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { useContinue, useMe, useMyProgress, useRoadmap } from '../../api/queries'
 import { InlineMarkdown } from '../../components/Markdown'
-import { ErrorMessage, Loading } from '../../components/Status'
+import { EmptyState, ErrorMessage, Loading } from '../../components/Status'
 import { formatDate, formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
 import { StageProgress } from './StageProgress'
@@ -12,7 +12,7 @@ const VERDICT_LABEL = { comment: 'Comentário', changes_requested: 'Pediu mudan�
 export function HomePage() {
   const { data, error, isPending } = useContinue()
   const { data: me } = useMe()
-  const { data: progress = {} } = useMyProgress()
+  const { data: progress = {}, isSuccess: progressLoaded } = useMyProgress()
   const { data: roadmap } = useRoadmap()
   const topicTitle = useTopicTitles()
   const counts = Object.values(progress).reduce(
@@ -24,6 +24,7 @@ export function HomePage() {
     },
     { demonstrated: 0, evidence: 0, active: 0 },
   )
+  const notStarted = progressLoaded && counts.active + counts.evidence + counts.demonstrated === 0
 
   return (
     <>
@@ -31,7 +32,7 @@ export function HomePage() {
         {me && <p className="eyebrow">Olá, {me.displayName}</p>}
         <h1>Continue de onde parou</h1>
       </header>
-      {isPending && <Loading />}
+      {isPending && <Loading count={4} />}
       <ErrorMessage error={error} />
       {data && (
         <div className="two-col">
@@ -91,20 +92,26 @@ export function HomePage() {
               <h2 id="progress-title" className="visually-hidden">
                 Seu progresso
               </h2>
-              <div className="stat-row">
-                <div className="stat">
-                  <strong>{counts.active}</strong>
-                  <span>em exploração ou prática</span>
+              {notStarted ? (
+                <EmptyState title="Você ainda não começou nenhum tópico">
+                  Abra a próxima ação acima ou escolha um tópico na trilha. Abrir um recurso já conta como exploração.
+                </EmptyState>
+              ) : (
+                <div className="stat-row">
+                  <div className="stat">
+                    <strong>{counts.active}</strong>
+                    <span>em exploração ou prática</span>
+                  </div>
+                  <div className="stat">
+                    <strong>{counts.evidence}</strong>
+                    <span>com evidência registrada</span>
+                  </div>
+                  <div className="stat">
+                    <strong>{counts.demonstrated}</strong>
+                    <span>demonstrados em revisão</span>
+                  </div>
                 </div>
-                <div className="stat">
-                  <strong>{counts.evidence}</strong>
-                  <span>com evidência registrada</span>
-                </div>
-                <div className="stat">
-                  <strong>{counts.demonstrated}</strong>
-                  <span>demonstrados em revisão</span>
-                </div>
-              </div>
+              )}
               <p className="small" style={{ marginTop: '0.5rem' }}>
                 <Link to="/roadmap">Ver a trilha completa</Link>
               </p>

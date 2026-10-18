@@ -1,4 +1,5 @@
 import type { DeepDivePoint, KitItem, Resource } from '../api/types'
+import { CopyButton } from './CopyButton'
 import { InlineMarkdown } from './Markdown'
 
 /**
@@ -30,7 +31,10 @@ export function Kit({ items, compact = false }: { items: KitItem[]; compact?: bo
         <ul className="kit-list">
           {items.map((k) => (
             <li key={k.term}>
-              <code className="kit-term">{k.term}</code>
+              <span className="kit-term-row">
+                <code className="kit-term">{k.term}</code>
+                <CopyButton text={k.term} label={`Copiar ${k.term}`} className="copy-inline" />
+              </span>
               <span className="kit-use">
                 # <InlineMarkdown text={k.use} />
               </span>

@@ -18,7 +18,7 @@ import {
 import type { GroupDetail } from '../../api/types'
 import { Select, TextArea, TextField } from '../../components/Field'
 import { ProgressTag } from '../../components/ProgressTag'
-import { ErrorMessage, Loading } from '../../components/Status'
+import { EmptyState, ErrorMessage, Loading } from '../../components/Status'
 import { formatDateTime, plural } from '../../lib/format'
 import { ROLE_LABEL } from '../../lib/labels'
 import { useTopicTitles } from '../../lib/useTopicTitles'
@@ -133,9 +133,9 @@ function TeamSessions({ groupId }: { groupId: string }) {
     <section className="panel stack" aria-labelledby="sessions-title">
       <h2 id="sessions-title">Sessões do time</h2>
       {sessions.length === 0 && (
-        <p className="muted" style={{ margin: 0 }}>
-          Nenhuma sessão ainda. Rotação de papéis: autor(a), desafiante, revisor(a), sintetizador(a).
-        </p>
+        <EmptyState title="Nenhuma sessão ainda">
+          Rotação de papéis: autor(a), desafiante, revisor(a), sintetizador(a). Marque a primeira abaixo.
+        </EmptyState>
       )}
       {sessions.length > 0 && (
         <ul className="list-plain">

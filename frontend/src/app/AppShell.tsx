@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useLogout, useMe } from '../api/queries'
 import { useTheme } from '../lib/theme'
+import { CommandPalette } from './CommandPalette'
 
 const NAV = [
   { to: '/', label: 'Início', end: true },
@@ -20,6 +21,30 @@ export function AppShell() {
   const { theme, toggle } = useTheme()
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [paletteOpen, setPaletteOpen] = useState(false)
+  const returnFocus = useRef<HTMLElement | null>(null)
+
+  function openPalette() {
+    returnFocus.current = document.activeElement as HTMLElement | null
+    setPaletteOpen(true)
+  }
+
+  function closePalette() {
+    setPaletteOpen(false)
+    returnFocus.current?.focus()
+  }
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        returnFocus.current = document.activeElement as HTMLElement | null
+        setPaletteOpen(true)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
     <>
@@ -34,6 +59,10 @@ export function AppShell() {
             </span>
             StudySite
           </NavLink>
+          <button type="button" className="button-quiet search-trigger" onClick={openPalette}>
+            <span>Buscar</span>
+            <kbd aria-hidden="true">Ctrl K</kbd>
+          </button>
           <button
             type="button"
             className="button-quiet menu-toggle"
@@ -55,8 +84,14 @@ export function AppShell() {
             </ul>
           </nav>
           <div className="account">
-            <button type="button" className="button-quiet theme-toggle" onClick={toggle}>
-              {theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}
+            <button
+              type="button"
+              className="button-quiet theme-toggle"
+              onClick={toggle}
+              aria-label={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}
+              title={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}
+            >
+              <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
             </button>
             {me && <span className="muted">{me.displayName}</span>}
             <button
@@ -72,6 +107,7 @@ export function AppShell() {
       <main id="conteudo" tabIndex={-1} className="page">
         <Outlet />
       </main>
+      {paletteOpen && <CommandPalette onClose={closePalette} />}
       <footer className="status-bar">
         <div className="status-bar-inner">
           <span className="status-branch">main</span>

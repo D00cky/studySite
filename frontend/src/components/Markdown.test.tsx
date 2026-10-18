@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { Markdown } from './Markdown'
 
@@ -33,5 +34,27 @@ describe('Markdown leve do conteúdo', () => {
     const { container } = render(<Markdown text={'<img src=x onerror=alert(1)>'} />)
     expect(container.querySelector('img')).toBeNull()
     expect(screen.getByText('<img src=x onerror=alert(1)>')).toBeInTheDocument()
+  })
+})
+
+describe('blocos de código', () => {
+  it('colore a sintaxe conforme a linguagem do bloco', () => {
+    const { container } = render(<Markdown text={'```c\nint main(void) { return 0; }\n```'} />)
+    const code = container.querySelector('pre > code')!
+    expect(code).toHaveClass('hljs')
+    expect(code.querySelector('.hljs-keyword, .hljs-type')).not.toBeNull()
+  })
+
+  it('tem um botão para copiar o código', async () => {
+    const user = userEvent.setup()
+    render(<Markdown text={'```bash\ngcc -c hello.c\n```'} />)
+    await user.click(screen.getByRole('button', { name: 'Copiar código' }))
+    expect(await navigator.clipboard.readText()).toBe('gcc -c hello.c')
+    expect(screen.getByRole('button', { name: 'Copiado' })).toBeInTheDocument()
+  })
+
+  it('mostra a linguagem do bloco na barra acima do código', () => {
+    render(<Markdown text={'```bash\nls -l\n```'} />)
+    expect(screen.getByText('bash', { selector: '.code-lang' })).toBeInTheDocument()
   })
 })
