@@ -1,0 +1,183 @@
+- id: build-a-compiler
+  title: Construa um compilador
+  status: authored
+  cumulative: false
+  topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments, compilation-pipeline, stacks-queues, hash-tables, binary-hexadecimal, linking-object-files]
+  question: O que muda quando, em vez de percorrer a árvore e executar, você traduz o programa inteiro antes — e o que a tradução precisa saber que o interpretador nunca precisou?
+  prerequisites: [tokenizing-parsing, tree-walk-evaluation, stacks-queues, compilation-pipeline]
+  minimalVersion: |
+    Um compilador, em C, da mini-linguagem `tl` ("task language") para **bytecode** de uma VM de pilha
+    escrita por você. Diferente do projeto `small-interpreter` (tree-walk, que executa a AST nó a nó),
+    aqui a AST nunca é executada: ela vira uma sequência de instruções (`OP_CONST`, `OP_ADD`,
+    `OP_GET_LOCAL`, `OP_JUMP_IF_FALSE`, `OP_CALL`, `OP_RETURN`...) gravada num `chunk` com tabela de
+    constantes e tabela de linhas, e uma VM separada executa esse `chunk`.
+
+    A versão mínima aceita números, booleanos, strings, expressões com precedência, `let` com escopo de
+    bloco, `if/else`, `while`, `print` e funções simples sem closures, aplicadas a tarefas:
+    `fn urgencia(prioridade, dias) { if (dias < 2) { return prioridade * 2; } return prioridade; }`.
+    O pipeline tem fases explícitas e inspecionáveis: `tlc --tokens`, `--ast`, `--check` (checagem
+    semântica: variável indefinida, redeclaração no mesmo escopo, aridade errada, `return` fora de
+    função), `--disasm` (desmontador do bytecode com offset, opcode, operandos e linha) e `run`.
+    Toda mensagem de erro traz arquivo, linha, coluna, o trecho e um `^`.
+  extensions:
+    - "Constant folding na AST (`2 * 3 + x` vira `6 + x`) com `--disasm` mostrando o antes e o depois, e testes provando que a semântica não mudou (divisão por zero não pode ser dobrada em tempo de compilação)."
+    - "Backend alternativo que gera C (`tlc --emit-c`) ou assembly x86-64 (`--emit-asm`, só inteiros e funções) montado e ligado com `gcc`; comparar a saída com a da VM para a mesma suíte."
+    - "Serializar o bytecode num arquivo `.tlb` com cabeçalho mágico, versão e checksum; a VM recusa arquivos corrompidos ou de versão errada."
+    - "Resolver chamadas antes do uso (funções declaradas depois de quem chama) montando o grafo de chamadas e detectando recursão."
+    - "Peephole optimizer sobre o bytecode (`OP_CONST 0; OP_ADD` some; `OP_NOT; OP_JUMP_IF_FALSE` vira `OP_JUMP_IF_TRUE`)."
+    - "Benchmark: o mesmo programa no `small-interpreter` (tree-walk) e na sua VM, medindo tempo e instruções com `perf stat`."
+  constraints:
+    - Scanner, parser e gerador de código escritos à mão; sem yacc/bison, LLVM, ANTLR ou bibliotecas de parsing.
+    - A AST é uma estrutura de dados real (não compilar direto enquanto faz parsing, como o clox faz) para que checagem semântica e constant folding sejam passadas separadas.
+    - A VM só conhece o `chunk`; ela não pode incluir nem chamar nada do parser ou da AST.
+    - "C17 com `-Wall -Wextra -Werror`; testes rodando sob `-fsanitize=address,undefined`."
+    - Nenhum programa-fonte, por pior que seja, derruba o compilador; nenhum bytecode inválido derruba a VM (verificador antes de executar).
+    - Suíte de testes de ponta a ponta `.tl` → saída esperada, rodada por um script único (`make test`).
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o clox dos capítulos 14 Chunks of Bytecode, 15 A Virtual Machine, 16 Scanning on Demand e 17 Compiling Expressions do Crafting Interpreters (chunk.c, memory.c, debug.c, value.c, vm.c, scanner.c, compiler.c). Evidência: commits incrementais por capítulo, anotações em compiler.c dizendo qual linha da tabela de regras do Pratt parser trata cada token, e um erro provocado (ex.: trocar a ordem de pop dos operandos em OP_SUBTRACT, ou a precedência de PREC_TERM/PREC_FACTOR) registrado com a saída do disassembler."
+      minutes: 75
+    - id: m1-scanner
+      title: Scanner com posição
+      description: "Scanner sob demanda que entrega tokens com tipo, lexema, linha e coluna; `tlc --tokens` imprime a lista; testes para palavras-chave, números, strings não terminadas e caracteres inválidos."
+      minutes: 50
+    - id: m2-ast
+      title: Parser e AST
+      description: "Parser recursivo descendente (ou Pratt) que constrói uma AST explícita com posição em cada nó; `tlc --ast` imprime a árvore com parênteses; erros de sintaxe com sincronização reportam vários erros numa passada."
+      minutes: 75
+    - id: m3-semantica
+      title: Checagem semântica e escopo
+      description: "Passada sobre a AST com uma pilha de escopos (tabela de símbolos por bloco) que resolve cada variável para global ou slot local, detecta indefinida, redeclaração, aridade errada e `return` fora de função — sem executar nada."
+      minutes: 75
+    - id: m4-chunk-vm
+      title: Chunk, disassembler e VM
+      description: "Formato do bytecode (opcodes, constantes, tabela de linhas), desmontador `--disasm` e VM de pilha com laço fetch-decode-dispatch, `--trace` mostrando a pilha a cada instrução e erros de runtime apontando a linha do fonte."
+      minutes: 75
+    - id: m5-codegen-expr
+      title: Geração de código para expressões e variáveis
+      description: "Gerar bytecode a partir da AST para expressões, `let`, atribuição, globais (tabela hash de nomes) e locais (slots na pilha); conferir com `--disasm` que `a + b * c` gera a ordem certa."
+      minutes: 75
+    - id: m6-controle
+      title: Desvios e laços
+      description: "`if/else`, `while`, `and`/`or` com curto-circuito usando `OP_JUMP`, `OP_JUMP_IF_FALSE` e `OP_LOOP` com backpatching; testes de offsets de salto longos (mais de 255 bytes) e de laços aninhados."
+      minutes: 60
+    - id: m7-funcoes
+      title: Funções e call frames
+      description: "Funções como objetos com seu próprio chunk, `OP_CALL` empilhando um call frame (ip, base de slots), `OP_RETURN` restaurando, limite de profundidade e stack trace no erro de runtime."
+      minutes: 75
+    - id: m8-folding
+      title: Constant folding
+      description: "Passada de otimização na AST que dobra subexpressões constantes e elimina `if (false)`; contar instruções antes/depois com `--disasm | wc -l` e manter os testes verdes."
+      minutes: 50
+    - id: m9-memoria
+      title: Reescrever de memória
+      description: "Sem olhar a referência, reescrever o laço da VM e a geração de código de expressões binárias e de `if`; comparar com o clox e anotar no README o que esqueceu."
+      minutes: 50
+  edgeCases:
+    - Arquivo vazio, só comentários, ou sem newline final.
+    - "Mais de 256 constantes num chunk (operando de 1 byte estoura) e salto maior que 65.535 bytes."
+    - Mais locais num escopo do que slots disponíveis e recursão sem caso base.
+    - "Variável usada no próprio inicializador (`let x = x + 1;`) e sombreamento em bloco interno."
+    - "Constant folding com overflow, divisão por zero e `\"a\" + 1` — o compilador não pode quebrar nem mudar o erro."
+    - Chamada com número errado de argumentos e chamada de algo que não é função.
+    - Arquivo `.tlb` truncado, com opcode desconhecido ou offset de salto fora do chunk.
+  failureExperiments:
+    - "Esquecer o backpatch de um `OP_JUMP_IF_FALSE` e observar com `--disasm` e `--trace` a VM pulando para o lugar errado."
+    - "Gerar o código do operando direito antes do esquerdo e mostrar `10 - 3` dando `-7`."
+    - "Remover o `OP_POP` de uma expression statement e ver a pilha crescer a cada volta de um `while` com `--trace`; depois estourar a pilha da VM."
+    - "Corromper bytes de um `.tlb` com `printf`/`dd` e mostrar o verificador recusando antes da execução; depois desligar o verificador e capturar o crash com ASan ou gdb."
+    - "Fazer o constant folding dobrar `1 / 0` e mostrar o erro saindo em tempo de compilação na linha errada; corrigir."
+    - "Compilar o mesmo programa com `--emit-asm`, ligar com `gcc`, e quebrar o alinhamento de pilha de 16 bytes antes de um `call` para ver o segfault em `gdb`."
+  tools: [gcc, make, gdb, valgrind, "-fsanitize=address,undefined", objdump, perf, xxd, hexdump, git]
+  acceptanceCriteria:
+    - "`tlc --tokens`, `--ast`, `--check`, `--disasm` e `run` funcionam e a suíte de ponta a ponta passa sob ASan/UBSan."
+    - "Todo erro léxico, sintático, semântico e de runtime mostra arquivo, linha, coluna e o trecho com `^`."
+    - "A VM não inclui nenhum cabeçalho do front-end; a separação aparece no Makefile."
+    - "Constant folding reduz a contagem de instruções de um programa de exemplo e a suíte continua idêntica."
+    - "O README explica, com um exemplo desmontado, a diferença entre este compilador e o tree-walk do `small-interpreter`."
+  evidence:
+    - Repositório com README, gramática em BNF, lista de opcodes e instruções para rodar `make test`.
+    - "Saída de `--disasm` e `--trace` para um programa com `while` e uma função, comentada linha a linha."
+    - "Comparação antes/depois do constant folding (`diff` dos disassemblies)."
+    - Registro dos experimentos de falha com o comando, a saída e a correção.
+    - "Diff comentado entre a VM e o compilador de expressões reescritos de memória e o clox."
+  reviewQuestions:
+    - Que informação a passada semântica descobre que a VM nunca precisa recalcular em runtime?
+    - Por que um salto para frente precisa de backpatching e um salto para trás (laço) não?
+    - Onde ficam as variáveis locais na sua VM, e por que acessá-las é mais barato que acessar globais?
+    - Quando o constant folding pode mudar o comportamento observável de um programa?
+    - O que muda no projeto se o alvo for x86-64 em vez da sua VM — quem passa a cuidar da pilha?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, o clox dos capítulos 14 a 17 do
+      Crafting Interpreters: chunk e disassembler, VM de pilha, scanner sob demanda e o compilador de
+      expressões com Pratt parsing. Anote em compiler.c qual regra da tabela trata cada token e quebre de
+      propósito: inverter a ordem dos operandos de OP_SUBTRACT, esquecer um emitByte, trocar uma
+      precedência — sempre olhando o `--disasm`/DEBUG_TRACE_EXECUTION. Modifique para aceitar `%` e um
+      opcode novo. Repare que o clox compila em uma passada, sem AST; no seu projeto você separa AST,
+      checagem e geração. Para o backend x86-64/C, use como mapa os posts da Nora Sandler (que usam
+      32 bits; adapte para 64) e o chibicc, lendo os commits pequenos em ordem. Dias depois, reescreva
+      de memória a VM e o compilador de expressões.
+    references:
+      - title: "Crafting Interpreters — 14 Chunks of Bytecode"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/chunks-of-bytecode.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 15 A Virtual Machine"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/a-virtual-machine.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 16 Scanning on Demand"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/scanning-on-demand.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 17 Compiling Expressions"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/compiling-expressions.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 23 Jumping Back and Forth"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/jumping-back-and-forth.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 24 Calls and Functions"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/calls-and-functions.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "craftinginterpreters: c (clox)"
+        author: "Robert Nystrom"
+        url: https://github.com/munificent/craftinginterpreters/tree/master/c
+        language: C
+        license: "MIT (código)"
+      - title: "Writing a C Compiler, Part 1"
+        author: "Nora Sandler"
+        url: https://norasandler.com/2017/11/29/Write-a-Compiler.html
+        language: "Qualquer linguagem (autora usou OCaml) → assembly x86 32 bits"
+      - title: "Writing a C Compiler (livro, No Starch Press — pago)"
+        author: "Nora Sandler"
+        url: https://nostarch.com/writing-c-compiler
+        language: "Pseudocódigo → assembly x86-64"
+      - title: "writing-a-c-compiler-tests"
+        author: "Nora Sandler"
+        url: https://github.com/nlsandler/writing-a-c-compiler-tests
+        language: C
+        license: MIT
+      - title: "chibicc: A small C compiler"
+        author: "Rui Ueyama"
+        url: https://github.com/rui314/chibicc
+        language: C
+        license: MIT
+      - title: "Let's Build a Compiler"
+        author: "Jack Crenshaw"
+        url: https://compilers.iecc.com/crenshaw/
+        language: "Pascal → assembly 68000"
+      - title: "CS143: Compilers"
+        author: "Stanford University"
+        url: https://web.stanford.edu/class/cs143/
+        language: "Cool (C++/Java, Flex/Bison) → MIPS/SPIM"
