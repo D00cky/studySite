@@ -7,7 +7,7 @@
   objective: Rastrear como um nome vira um endereço IP e como pacotes chegam ao destino, usando dig, ip e traceroute.
   whyItMatters: Boa parte dos incidentes de "o site caiu" começa em DNS ou roteamento. Saber separar "o nome não resolve" de "o endereço não responde" corta horas de depuração, e o mesmo raciocínio vale para containers, Kubernetes e bancos de dados remotos.
   prerequisites: [processes-streams-exit-codes, binary-hexadecimal]
-  related: [tcp-udp-sockets, timeouts-caching]
+  related: [tcp-udp-sockets, timeouts-caching, error-detection]
   mathThreads: [graphs]
   explanation: |
     **IP** entrega pacotes entre máquinas; não garante ordem nem entrega. Um endereço IPv4 tem 32 bits, escrito como quatro bytes em decimal (`192.168.0.10`). A notação **CIDR** (`192.168.0.0/24`) diz quantos bits iniciais formam o prefixo da rede — os bits restantes identificam a máquina dentro dela.
@@ -93,6 +93,96 @@
       why: Ao administrar domínios, configurar e-mail ou service discovery, ou investigar envenenamento de cache.
       resource: rfc-1035-dns
 
+- id: error-detection
+  stage: s09-networking
+  title: Detecção e correção de erros (paridade, checksum, CRC)
+  status: authored
+  objective: Explicar e implementar paridade, o checksum da internet e CRC, prevendo que tipos de erro cada um detecta, e distinguir detecção de correção (Hamming/ECC).
+  whyItMatters: Bits mudam sozinhos — ruído no cabo, interferência no Wi-Fi, células de memória e setores de disco falhando. Ethernet, IP, TCP, ZIP, PNG, Git e sistemas de arquivos modernos dependem dessas técnicas para não aceitar dados corrompidos em silêncio. Saber o que cada uma garante (e o que não garante) evita confiar demais num checksum fraco.
+  prerequisites: [binary-hexadecimal, integer-representation-overflow]
+  related: [tcp-udp-sockets, dns-ip, filesystems, hash-tables]
+  mathThreads: [logic, combinatorics, probability]
+  explanation: |
+    Detectar erro é acrescentar **redundância**: além dos dados, enviamos alguns bits calculados a partir deles. Quem recebe recalcula e compara; se não bate, os dados foram alterados no caminho.
+
+    - **Paridade**: um bit extra que deixa a quantidade de 1s par (ou ímpar). É um XOR de todos os bits. Detecta qualquer número **ímpar** de bits trocados, mas não percebe dois bits trocados.
+    - **Checksum da internet** (RFC 1071, usado em IPv4, TCP e UDP): soma os dados em palavras de 16 bits com **soma em complemento de um** (o "vai-um" que sai do bit 16 volta para o bit 0) e envia o complemento do resultado. É barato de calcular, mas fraco: não percebe palavras trocadas de lugar, por exemplo.
+    - **CRC** (Ethernet, ZIP, PNG): trata a mensagem como um polinômio sobre bits e envia o **resto da divisão** por um polinômio gerador (divisão com XOR, sem vai-um). Um bom CRC detecta todos os erros em rajada menores que seu tamanho — exatamente o tipo de erro que ruído físico costuma causar.
+
+    A ideia por trás de tudo é a **distância de Hamming**: quantos bits precisam mudar para transformar uma palavra válida em outra válida. Com distância mínima *d*, dá para **detectar** até *d − 1* erros e **corrigir** até ⌊(*d* − 1)/2⌋. Códigos de Hamming e a memória **ECC** usam isso para corrigir um bit e detectar dois.
+
+    Detecção de erro **não é segurança**: CRC e checksum protegem contra acidentes, não contra alguém que altera os dados de propósito e recalcula o código. Para isso existem hashes criptográficos e MACs.
+  misconceptions:
+    - claim: Se o checksum bateu, os dados com certeza estão corretos.
+      correction: Só significa que os erros que aconteceram não foram do tipo que aquele código detecta. Checksums fracos deixam passar vários padrões de erro; CRCs e hashes reduzem muito a chance, mas nunca a zeram.
+    - claim: CRC protege contra adulteração.
+      correction: Qualquer um pode alterar os dados e recalcular o CRC. Contra adulteração use HMAC ou assinatura; CRC é para erros acidentais.
+    - claim: TCP garante que nenhum byte corrompido chega à aplicação.
+      correction: O checksum de 16 bits do TCP é fraco; corrupções raras passam. Por isso protocolos e formatos de arquivo acrescentam suas próprias verificações (TLS, CRC no ZIP, checksums no Git e no Btrfs/ZFS).
+  resources:
+    start: rfc1071-internet-checksum
+    deeper: [akitando-146-backup-btrfs-video-checksums]
+    videos: [ben-eater-checksums-hamming-distance, ben-eater-how-do-crcs-work, computerphile-crc, 3b1b-hamming-codes-part-1]
+  exercise:
+    id: ex-parity-checksum-crc
+    title: Três detectores em C, um contra o outro
+    prediction: Antes de rodar, escreva para cada técnica (paridade, checksum da internet, CRC-32) se ela detecta (a) 1 bit trocado, (b) 2 bits trocados no mesmo byte e (c) duas palavras de 16 bits trocadas de lugar.
+    steps:
+      - Escreva `parity(buf, n)` usando XOR de todos os bytes e depois dos bits do resultado.
+      - "Escreva `inet_checksum(buf, n)` seguindo o RFC 1071: some palavras de 16 bits em `uint32_t`, dobre o vai-um de volta (`sum = (sum & 0xffff) + (sum >> 16)`) e devolva `~sum`."
+      - Escreva `crc32(buf, n)` bit a bit com o polinômio refletido `0xEDB88320` (sem tabela, para ver a divisão acontecer).
+      - "Confira o seu CRC-32 contra uma referência: `python3 -c \"import zlib; print(hex(zlib.crc32(b'123456789')))\"` deve dar `0xcbf43926`."
+      - Monte uma tabela com as três técnicas e os três tipos de erro, preenchendo com o resultado real.
+    checks:
+      - O CRC-32 de "123456789" bate com o valor de referência.
+      - A tabela mostra pelo menos um caso que o checksum não detecta e o CRC detecta.
+  experiment:
+    title: Inverter bits de propósito e ver quem percebe
+    steps:
+      - Escreva um programa que lê um arquivo, calcula os três códigos e depois inverte bits aleatórios (1, 2, uma rajada de 8 bits seguidos) numa cópia.
+      - Rode 10.000 vezes para cada tipo de erro e conte quantas corrupções cada técnica deixou passar.
+      - Grave um pacote UDP com `sudo tcpdump -vv -i lo udp port 9999` enquanto envia com `nc -u`, e encontre o campo de checksum na saída.
+      - "Bônus: com `cksum` e `sha256sum`, compare um arquivo antes e depois de trocar um byte com `printf '\\x00' | dd of=copia bs=1 seek=100 conv=notrunc`."
+    observe:
+      - A taxa de erros não detectados por técnica e por tipo de erro.
+      - O checksum do UDP no tcpdump (e se ele está marcado como correto).
+  reflectionQuestions:
+    - Por que o CRC é melhor que a soma simples para erros em rajada?
+    - Se o TCP já tem checksum, por que o Git e o Btrfs fazem sua própria verificação?
+    - Qual a diferença entre detectar e corrigir, em termos de distância de Hamming?
+  completionCriteria:
+    - Implementa paridade, checksum da internet e CRC-32, com o CRC-32 conferido contra o valor de referência.
+    - Mostra, com contagens do experimento, que tipos de erro cada técnica deixa passar.
+    - Explica com um exemplo por que CRC não protege contra adulteração.
+  evidencePrompts:
+    - Código das três funções e a tabela previsão × resultado.
+    - Saída do experimento de inversão de bits com as contagens por técnica.
+  firstAction: "Rode `python3 -c \"import zlib; print(hex(zlib.crc32(b'123456789')))\"` e anote o resultado."
+  kit:
+    - term: "XOR de todos os bits (paridade)"
+      use: Detectar qualquer número ímpar de bits trocados com um único bit extra.
+    - term: "soma em complemento de um de 16 bits + ~sum"
+      use: Calcular e conferir o checksum de IPv4, TCP e UDP (RFC 1071).
+    - term: "CRC-32: resto da divisão (XOR) por 0x04C11DB7"
+      use: Detectar erros em rajada em quadros Ethernet, ZIP e PNG.
+    - term: "zlib.crc32(dados) / cksum arquivo"
+      use: Calcular CRCs prontos para conferir sua implementação ou um arquivo baixado.
+    - term: "sudo tcpdump -vv -i lo udp"
+      use: Ver o campo de checksum de pacotes reais e se ele confere.
+    - term: "distância de Hamming d: detecta d−1, corrige ⌊(d−1)/2⌋"
+      use: Saber quantos erros um código consegue detectar ou corrigir.
+  deepDive:
+    - title: Códigos de Hamming e memória ECC
+      why: Quando precisar corrigir (e não só detectar) erros, como em RAM de servidores e armazenamento.
+      resource: 3b1b-hamming-codes-part-2
+    - title: CRC com tabela e instruções de hardware (slicing-by-8, CRC32C/SSE4.2)
+      why: Quando o CRC virar gargalo em código de alto desempenho, como bancos de dados e sistemas de arquivos.
+    - title: Reed-Solomon e códigos de apagamento (erasure coding)
+      why: Ao estudar QR codes, CDs, RAID 6 e armazenamento distribuído que reconstrói dados perdidos.
+    - title: Checksums em sistemas de arquivos (Btrfs, ZFS) e scrubbing
+      why: Ao lidar com bit rot e corrupção silenciosa de disco em servidores e backups.
+      resource: akitando-146-backup-btrfs-video-checksums
+
 - id: tcp-udp-sockets
   stage: s09-networking
   title: TCP, UDP e sockets
@@ -100,7 +190,7 @@
   objective: Escrever um cliente e um servidor TCP com sockets, tratando leituras parciais e conexões encerradas.
   whyItMatters: Todo protocolo de aplicação — HTTP, PostgreSQL, Redis — roda sobre isso. Bugs de leitura parcial, de conexão fechada e de porta presa em TIME-WAIT aparecem em qualquer linguagem; em Java e JavaScript eles só ficam escondidos atrás de bibliotecas.
   prerequisites: [dns-ip, file-descriptors]
-  related: [http-protocol, timeouts-caching, c-strings]
+  related: [http-protocol, timeouts-caching, c-strings, error-detection]
   mathThreads: [probability]
   explanation: |
     **UDP** entrega datagramas independentes: cada `sendto` vira um pacote, que pode chegar fora de ordem, duplicado ou não chegar. **TCP** constrói por cima de IP um **fluxo de bytes** confiável e ordenado: numera cada byte (número de sequência), espera confirmações (ACK) e retransmite o que não foi confirmado depois de um timeout.

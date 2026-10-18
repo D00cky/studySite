@@ -664,7 +664,7 @@
   language: en
   format: video
   difficulty: intermediate
-  topics: [tcp-udp-sockets]
+  topics: [tcp-udp-sockets, error-detection]
   why: "Trecho que implementa o Internet checksum usado nos cabeçalhos IP, TCP e UDP e mostra suas limitações (até o próximo capítulo)."
   section: "08:52 Internet checksum implementation (capítulo automático do YouTube)"
   access: free
@@ -678,7 +678,7 @@
   language: en
   format: video
   difficulty: advanced
-  topics: [dns-ip]
+  topics: [dns-ip, error-detection]
   why: "A matemática do CRC (divisão de polinômios) que protege cada quadro Ethernet na camada de enlace."
   access: free
   priority: optional
@@ -1068,7 +1068,7 @@
   language: en
   format: video
   difficulty: intermediate
-  topics: [dns-ip]
+  topics: [dns-ip, error-detection]
   why: "Matt Godbolt explica o CRC, o checksum robusto e barato que protege quadros Ethernet."
   access: free
   priority: optional

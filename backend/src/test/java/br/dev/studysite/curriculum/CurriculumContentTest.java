@@ -85,6 +85,16 @@ class CurriculumContentTest {
     }
 
     @Test
+    void errorDetectionLessonExistsAndIsLinked() {
+        Topic t = curriculum.topic("error-detection").orElseThrow();
+        assertThat(t.status()).isEqualTo("authored");
+        assertThat(t.prerequisites()).contains("binary-hexadecimal");
+        assertThat(t.resources().videos()).contains("ben-eater-how-do-crcs-work");
+        assertThat(curriculum.topic("tcp-udp-sockets").orElseThrow().related()).contains("error-detection");
+        assertThat(curriculum.resource("computerphile-crc").orElseThrow().topics()).contains("error-detection");
+    }
+
+    @Test
     void cTaskCliProjectIsFullyAuthored() {
         assertThat(curriculum.project("c-task-cli")).get().satisfies(p -> {
             assertThat(p.status()).isEqualTo("authored");

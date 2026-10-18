@@ -2034,7 +2034,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [filesystems]
+  topics: [filesystems, error-detection]
   why: Trecho sobre checksums em sistemas de arquivos modernos.
   section: 00:29:36 CAP 8 - Checksums - Sistemas de Arquivos Modernos
   access: free

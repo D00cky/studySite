@@ -1,0 +1,67 @@
+# Recursos da lição de detecção e correção de erros (verificados em 2026-10-18).
+
+- id: rfc1071-internet-checksum
+  title: "RFC 1071 — Computing the Internet Checksum"
+  author: R. Braden, D. Borman, C. Partridge (IETF)
+  url: https://www.rfc-editor.org/rfc/rfc1071
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [error-detection, tcp-udp-sockets]
+  why: A especificação curta do checksum usado por IPv4, TCP e UDP, com propriedades matemáticas e exemplos de implementação.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-checksums-hamming-distance
+  title: "Checksums and Hamming distance"
+  author: Ben Eater
+  url: https://www.youtube.com/watch?v=ppU41c15Xho
+  language: en
+  format: video
+  difficulty: intro
+  topics: [error-detection, tcp-udp-sockets]
+  why: Mostra paridade, checksums e distância de Hamming com exemplos visuais, até o checksum da internet.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: 3b1b-hamming-codes-part-1
+  title: "But what are Hamming codes? The origin of error correction"
+  author: 3Blue1Brown
+  url: https://www.youtube.com/watch?v=X8jsijhllIA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [error-detection]
+  why: Explica de forma visual como bits de paridade bem posicionados permitem localizar e corrigir um erro.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: 3b1b-hamming-codes-part-2
+  title: "Hamming codes part 2: The one-line implementation"
+  author: 3Blue1Brown
+  url: https://www.youtube.com/watch?v=b3NxrZOu_CE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [error-detection]
+  why: Mostra a implementação do código de Hamming com XOR e por que ela é tão compacta.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: python-zlib-crc32
+  title: "zlib — Compression compatible with gzip (zlib.crc32)"
+  author: Python Software Foundation
+  url: https://docs.python.org/3/library/zlib.html#zlib.crc32
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [error-detection]
+  why: Referência de uma implementação de CRC-32 pronta para conferir a sua.
+  section: zlib.crc32
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
