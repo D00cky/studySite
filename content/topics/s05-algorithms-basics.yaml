@@ -30,8 +30,8 @@
       correction: Um ponto não mostra crescimento. É preciso medir vários tamanhos, repetir e olhar a razão entre tamanhos consecutivos.
   resources:
     start: algs4-analysis-of-algorithms
-    deeper: [mit-6006, ods-introduction, mit-6042j-spring-2015, drepper-memory]
-    videos: [mit-6006-lecture-1-algorithms-computation, cs61b-2019-lecture-13-asymptotics-1, scott-meyers-cpu-caches-why-you-care]
+    deeper: [mit-6006-lecture-notes-1-introduction, ods-introduction, mcs-cap14-sums-asymptotics, drepper-memory-3-cpu-caches]
+    videos: [mit-6006-lecture-1-algorithms-computation-efficiency, mit-6006-lecture-1-algorithms-computation, cs61b-2019-lecture-13-asymptotics-1, scott-meyers-cpu-caches-why-you-care-cache-lines-and-prefetching]
   exercise:
     id: ex-count-operations
     title: Contar operações à mão e provar a soma
@@ -84,16 +84,16 @@
   deepDive:
     - title: Recorrências e Master Theorem
       why: Quando precisar estimar algoritmos de divisão e conquista (merge sort, busca binária, árvores) sem depender só de medição.
-      resource: mit-6042j-spring-2015
+      resource: mcs-cap22-recurrences
     - title: Análise amortizada formal (método do potencial)
       why: Quando provar o custo de estruturas com operações caras ocasionais, como resize de tabelas e union-find.
-      resource: mit-6006
+      resource: mit-6006-lecture-notes-2-data-structures
     - title: Modelo de memória externa e algoritmos cache-aware
       why: Quando os dados não cabem no cache ou na RAM e o custo real passa a ser contar linhas de cache ou páginas lidas.
-      resource: drepper-memory
+      resource: drepper-memory-6-what-programmers-can-do
     - title: Limites inferiores e NP-completude
       why: Quando suspeitar que um problema (escalonamento, roteamento) não tem solução exata eficiente e for hora de aceitar heurísticas.
-      resource: mit-6006
+      resource: mit-6006-lecture-notes-19-complexity
 
 - id: searching-sorting
   stage: s05-algorithms-basics
@@ -124,8 +124,8 @@
     - claim: Nenhum algoritmo de ordenação pode ser melhor que O(n log n).
       correction: O limite vale para ordenação baseada em comparações. Counting e radix sort são lineares quando as chaves têm faixa ou tamanho limitado.
   resources:
-    start: mit-6006
-    deeper: [ods-sorting-algorithms, man-bsearch, man-qsort, mit-6042j-spring-2015]
+    start: mit-6006-lecture-notes-3-sorting
+    deeper: [ods-sorting-algorithms, man-bsearch, man-qsort, mcs-cap6-state-machines]
     videos: [mit-6006-lecture-3-sets-sorting, cs61b-2019-lecture-29-basic-sorts]
   exercise:
     id: ex-binary-search-invariant
@@ -186,7 +186,7 @@
       why: Quando quiser entender por que dados quase ordenados ordenam tão rápido em Java e Python, e o que isso implica para benchmarks.
     - title: Ordenação externa (external merge sort)
       why: Quando os dados não cabem na memória, como num `ORDER BY` grande no banco ou ao ordenar arquivos de log gigantes.
-      resource: cmu-15445-fall2024
+      resource: cmu-15445-f24-lecture-11-sorting-notes
     - title: Busca binária sobre a resposta
       why: Quando otimizar um parâmetro monotônico (capacidade mínima, primeiro commit ruim com `git bisect`) em vez de um array.
 
@@ -219,7 +219,7 @@
       correction: Crescimento aditivo torna o total de cópias quadrático em n; só o crescimento geométrico dá custo amortizado constante.
   resources:
     start: ods-array-based-lists
-    deeper: [open-data-structures, java-arraylist-21, man-malloc, beej-c-malloc]
+    deeper: [ods-2-6-rootisharraystack, java-arraylist-21, man-malloc, beej-c-malloc]
     videos: [mit-6006-lecture-2-data-structures-dynamic-arrays, cs61b-2019-lecture-6-alists]
   exercise:
     id: ex-vec-amortized
@@ -275,13 +275,13 @@
   deepDive:
     - title: Método do potencial
       why: Quando precisar provar custos amortizados de estruturas mais complexas que o vetor (tabelas que crescem e encolhem, filas com duas pilhas).
-      resource: mit-6006
+      resource: mit-6006-lecture-notes-2-data-structures
     - title: Interação com o alocador (fator 1,5 vs 2, reuso de blocos)
       why: Quando vetores enormes dominarem o uso de memória e a fragmentação do heap começar a aparecer.
       resource: ostep-free-space
     - title: Array of structs vs struct of arrays
       why: Quando cada linha de cache contar (simulações, engines, processamento em lote) e o layout dos dados decidir o desempenho.
-      resource: mike-acton-data-oriented-design-cppcon-2014
+      resource: mike-acton-data-oriented-design-cppcon-2014-cache-optimization-examples
     - title: Gap buffers e ropes
       why: Quando construir um editor de texto ou estrutura com muitas inserções perto de um cursor.
 
@@ -315,8 +315,8 @@
       correction: Lê `p->next` depois de `free(p)` — use-after-free. Guarde o próximo antes de liberar.
   resources:
     start: ods-linked-lists
-    deeper: [open-data-structures, beej-c-structs, drepper-memory, valgrind-quickstart]
-    videos: [cs61b-2019-lecture-4-sllists, cs61b-2019-lecture-5-dllists-arrays, mit-6006-lecture-2-data-structures-dynamic-arrays, scott-meyers-cpu-caches-why-you-care, mike-acton-data-oriented-design-cppcon-2014]
+    deeper: [ods-3-3-selist, beej-c-structs, drepper-memory-3-3-2-measurements-of-cache-effects, valgrind-quickstart]
+    videos: [cs61b-2019-lecture-4-sllists, cs61b-2019-lecture-5-dllists-arrays, mit-6006-lecture-2-data-structures-dynamic-arrays-linked-lists, scott-meyers-cpu-caches-why-you-care-data-structures-and-locality, mike-acton-data-oriented-design-cppcon-2014-memory-access-and-performance]
   exercise:
     id: ex-dlist-invariants
     title: Lista duplamente ligada com verificador de invariantes
@@ -373,7 +373,7 @@
       why: Quando implementar um cache com despejo do item menos usado recentemente em O(1).
     - title: Skip lists
       why: Quando precisar de uma estrutura ordenada simples de implementar e de tornar concorrente (como os sorted sets do Redis).
-      resource: open-data-structures
+      resource: ods-skiplists
     - title: Listas lock-free e o problema ABA
       why: Quando chegar a estruturas concorrentes sem locks e precisar entender por que reusar nós quebra o compare-and-swap.
       resource: preshing-lock-free-intro
@@ -409,7 +409,7 @@
   resources:
     start: ods-array-based-lists
     deeper: [ods-linked-lists, linux-kernel-circular-buffers, java-arraydeque-21]
-    videos: [mit-6006-lecture-2-data-structures-dynamic-arrays, cs61b-2019-lecture-5-dllists-arrays]
+    videos: [mit-6006-lecture-2-data-structures-dynamic-arrays-dynamic-sequence-operations, cs61b-2019-lecture-5-dllists-arrays]
   exercise:
     id: ex-ring-buffer
     title: Buffer circular com testes de fronteira

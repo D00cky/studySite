@@ -1,0 +1,580 @@
+# Recursos-trecho (capítulos/seções e trechos de vídeo com minuto) para os tópicos de s05 e s06.
+# Conferidos em 2026-10-18: minutos tirados dos capítulos do YouTube (oficiais ou automáticos, conforme a nota); seções conferidas nos sumários.
+
+- id: akitando-95-arvores-video-arvore-de-procura-binaria
+  title: 'Árvores: O Começo de TUDO | Estruturas de Dados e Algoritmos — 20:18 Árvore de Procura Binária'
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=9GdesxWtOgs&t=1218s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - binary-search-trees
+  why: 'Trecho do Akitando #95 sobre árvore binária de busca: inserção visualizada, travessia ordenada, busca, pior caso e, em seguida, Red-Black e AVL (de 20:18 até 47:06, onde começa B-Tree).'
+  section: 20:18 Árvore de Procura Binária
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo.
+
+- id: akitando-95-arvores-video-heap-memoria
+  title: 'Árvores: O Começo de TUDO | Estruturas de Dados e Algoritmos — 16:34 Heap/Memória'
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=9GdesxWtOgs&t=994s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - heaps-priority-queues
+  why: 'Trecho curto (16:34 até 18:21) em que o Akita apresenta o heap como estrutura em árvore que implementa fila de prioridade. Atenção: ele mistura o heap estrutura de dados com o segmento heap da memória, que é gerenciado pelo alocador e não é um heap binário.'
+  section: 16:34 Heap/Memória
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo.
+
+- id: akitando-140-grafos-video-cap-5-entendendo-grafos
+  title: Desbloqueando o "Algoritmo" do Twitter - Introdução a Grafos — 00:16:37 CAP 5 - Entendendo Grafos. Introdução a Relevância
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=uIflMYQnp8A&t=997s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - graphs-traversal
+  - dependency-graphs
+  why: 'Capítulo do Akitando #140 que introduz grafos antes de entrar em relevância (de 16:37 até 21:47).'
+  section: 00:16:37 CAP 5 - Entendendo Grafos. Introdução a Relevância
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo.
+
+- id: akitando-67-criptografia-parte-1-hashes
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2 — 22:48 Hashes
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4&t=1368s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - hash-tables
+  why: 'Trecho do Akitando #67 sobre funções de hash criptográficas, seguido de colisões, extensão de comprimento, dicionários e aniversários (a partir de 22:48).'
+  section: 22:48 Hashes
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo.
+
+- id: mit-6006-lecture-1-algorithms-computation-efficiency
+  title: 1. Algorithms and Computation — 25:27 Efficiency
+  author: Jason Ku (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=ZA-tUyM_y7s&t=1527s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - complexity-analysis
+  why: Parte da aula 1 sobre eficiência e notação assintótica, antes do modelo de memória (de 25:27 até 38:57).
+  section: 25:27 Efficiency (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: scott-meyers-cpu-caches-why-you-care-cache-lines-and-prefetching
+  title: 'code::dive conference 2014 - Scott Meyers: Cpu Caches and Why You Care — 21:25 Cache lines and prefetching'
+  author: Scott Meyers (code::dive 2014)
+  url: https://www.youtube.com/watch?v=WDIkqP4JbkE&t=1285s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  why: Trecho sobre linhas de cache e prefetching, que explica por que acesso sequencial vence acesso espalhado com a mesma complexidade (de 21:25 até 24:03; o capítulo seguinte, sobre localidade, continua o assunto).
+  section: 21:25 Cache lines and prefetching (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: scott-meyers-cpu-caches-why-you-care-data-structures-and-locality
+  title: 'code::dive conference 2014 - Scott Meyers: Cpu Caches and Why You Care — 24:03 Data structures and locality'
+  author: Scott Meyers (code::dive 2014)
+  url: https://www.youtube.com/watch?v=WDIkqP4JbkE&t=1443s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - linked-lists
+  why: 'Trecho sobre localidade das estruturas de dados: por que percorrer nós espalhados custa mais que percorrer memória contígua (de 24:03 até 27:07).'
+  section: 24:03 Data structures and locality (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mike-acton-data-oriented-design-cppcon-2014-memory-access-and-performance
+  title: 'CppCon 2014: Mike Acton "Data-Oriented Design and C++" — 25:18 Memory access and performance'
+  author: Mike Acton (CppCon)
+  url: https://www.youtube.com/watch?v=rX0ItVEVjHc&t=1518s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - linked-lists
+  why: Trecho sobre o custo do acesso à memória frente ao custo das instruções (de 25:18 até 32:00).
+  section: 25:18 Memory access and performance (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mike-acton-data-oriented-design-cppcon-2014-cache-optimization-examples
+  title: 'CppCon 2014: Mike Acton "Data-Oriented Design and C++" — 35:30 Cache optimization examples'
+  author: Mike Acton (CppCon)
+  url: https://www.youtube.com/watch?v=rX0ItVEVjHc&t=2130s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - dynamic-arrays
+  why: Trecho com exemplos de reorganizar dados em memória para aproveitar o cache (de 35:30 até 48:37).
+  section: 35:30 Cache optimization examples (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mit-6006-lecture-2-data-structures-dynamic-arrays-linked-lists
+  title: 2. Data Structures and Dynamic Arrays — 21:30 Linked Lists
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=CHhwJjR0mZA&t=1290s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - linked-lists
+  why: Parte da aula 2 sobre listas ligadas e o custo das operações de sequência nelas (de 21:30 até 25:05).
+  section: 21:30 Linked Lists (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mit-6006-lecture-2-data-structures-dynamic-arrays-dynamic-sequence-operations
+  title: 2. Data Structures and Dynamic Arrays — 25:05 Dynamic Sequence Operations
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=CHhwJjR0mZA&t=1505s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - stacks-queues
+  why: Parte da aula 2 sobre as operações de sequência dinâmica, como inserir e remover nas pontas, base de pilhas, filas e deques (de 25:05 até 39:20).
+  section: 25:05 Dynamic Sequence Operations (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cs61b-2019-lecture-27-reductions-decomposition-topological-sort
+  title: Lecture 27 - Reductions and Decomposition — 09:18 Topological sort
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/watch?v=VDXFc0sar80&t=558s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: Trecho sobre ordenação topológica e DFS pós-ordem, seguido de caminhos em DAGs (de 09:18 até 37:57, onde começam as reduções).
+  section: 09:18 Topological sort (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mit-6006-lecture-10-dfs-dags-and-topological-sort
+  title: 10. Depth-First Search — 32:10 DAGs and topological sort
+  author: Justin Solomon (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=IBfWDYSffUU&t=1930s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: Parte da aula 10 sobre DAGs e ordenação topológica, seguida da prova da ordem de término e de detecção de ciclos (a partir de 32:10).
+  section: 32:10 DAGs and topological sort (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: mit-6006-lecture-notes-1-introduction
+  title: 'MIT 6.006 (Spring 2020) — Lecture 1: Introduction (notas de aula)'
+  author: Erik Demaine, Jason Ku e Justin Solomon (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec1/
+  language: en
+  format: course
+  difficulty: intro
+  topics:
+  - complexity-analysis
+  why: 'Notas da aula 1: problema, algoritmo, correção, eficiência, notação assintótica e modelo de computação.'
+  section: 'Lecture 1: Introduction'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Página da nota de aula aberta no OCW (lista Lecture Notes do curso).
+
+- id: mit-6006-lecture-notes-2-data-structures
+  title: 'MIT 6.006 (Spring 2020) — Lecture 2: Data Structures (notas de aula)'
+  author: Erik Demaine, Jason Ku e Justin Solomon (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec2/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  - dynamic-arrays
+  why: 'Notas da aula 2: interfaces de sequência, arrays dinâmicos e a seção Amortized Analysis (append amortizado em O(1)).'
+  section: 'Lecture 2: Data Structures'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Página da nota de aula aberta no OCW (lista Lecture Notes do curso).
+
+- id: mit-6006-lecture-notes-3-sorting
+  title: 'MIT 6.006 (Spring 2020) — Lecture 3: Sorting (notas de aula)'
+  author: Erik Demaine, Jason Ku e Justin Solomon (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec3/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - searching-sorting
+  why: 'Notas da aula 3: interface de conjunto, array ordenado com busca binária, selection, insertion e merge sort com suas análises.'
+  section: 'Lecture 3: Sorting'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Página da nota de aula aberta no OCW (lista Lecture Notes do curso).
+
+- id: mit-6006-lecture-notes-19-complexity
+  title: 'MIT 6.006 (Spring 2020) — Lecture 19: Complexity (notas de aula)'
+  author: Erik Demaine, Jason Ku e Justin Solomon (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec19/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  why: 'Notas da aula 19: P, NP, reduções, NP-difícil e NP-completo.'
+  section: 'Lecture 19: Complexity'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Página da nota de aula aberta no OCW (lista Lecture Notes do curso).
+
+- id: mcs-cap6-state-machines
+  title: 'Mathematics for Computer Science — Chapter 6: State Machines'
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - searching-sorting
+  why: Princípio do invariante e correção parcial/terminação, a ferramenta para provar laços de busca binária e de ordenação.
+  section: 6 State Machines (p. 173), com 6.2 The Invariant Principle
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Sumário do PDF (revisão de 2018).
+
+- id: mcs-cap7-recursive-data-types
+  title: 'Mathematics for Computer Science — Chapter 7: Recursive Data Types'
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - binary-search-trees
+  why: Definições recursivas e indução estrutural, com uma seção sobre árvores de busca, para provar propriedades de BSTs.
+  section: 7 Recursive Data Types (p. 217), com 7.6 Search Trees (p. 238)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Sumário do PDF (revisão de 2018).
+
+- id: mcs-17-4-birthday-principle
+  title: Mathematics for Computer Science — 17.4 The Birthday Principle
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: O princípio do aniversário explica por que colisões aparecem muito antes de a tabela encher.
+  section: 17.4 The Birthday Principle (p. 790)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Sumário do PDF (revisão de 2018).
+
+- id: mcs-cap22-recurrences
+  title: 'Mathematics for Computer Science — Chapter 22: Recurrences'
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  why: Recorrências (Torres de Hanói, merge sort, lineares e de divisão e conquista), base para estimar algoritmos recursivos.
+  section: 22 Recurrences (p. 995)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Sumário do PDF (revisão de 2018).
+
+- id: drepper-memory-3-cpu-caches
+  title: What Every Programmer Should Know About Memory — 3 CPU Caches
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf#page=13
+  language: en
+  format: article
+  difficulty: advanced
+  topics:
+  - complexity-analysis
+  why: 'Seção sobre caches da CPU: hierarquia, linhas, associatividade e medições, ou por que dois algoritmos O(n) podem diferir muito.'
+  section: 3 CPU Caches (p. 13)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título e página conferidos no PDF.
+
+- id: drepper-memory-3-3-2-measurements-of-cache-effects
+  title: What Every Programmer Should Know About Memory — 3.3.2 Measurements of Cache Effects
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf#page=20
+  language: en
+  format: article
+  difficulty: advanced
+  topics:
+  - linked-lists
+  why: 'Medições feitas percorrendo listas ligadas circulares em ordem sequencial e aleatória: mostra o custo de seguir ponteiros fora do cache.'
+  section: 3.3.2 Measurements of Cache Effects (p. 20)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título e página conferidos no PDF.
+
+- id: drepper-memory-6-what-programmers-can-do
+  title: What Every Programmer Should Know About Memory — 6 What Programmers Can Do
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf#page=47
+  language: en
+  format: article
+  difficulty: advanced
+  topics:
+  - complexity-analysis
+  why: 'Seção central do artigo: como escrever código cache-aware (acesso ao cache, prefetching, TLB).'
+  section: 6 What Programmers Can Do (p. 47)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título e página conferidos no PDF.
+
+- id: ods-2-6-rootisharraystack
+  title: 'Open Data Structures (Java) — 2.6 RootishArrayStack: A Space-Efficient Array Stack'
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/2_6_RootishArrayStack_Space.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - dynamic-arrays
+  why: Variante de array dinâmico que reduz o espaço desperdiçado pelo crescimento.
+  section: '2.6 RootishArrayStack: A Space-Efficient Array Stack'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: ods-3-3-selist
+  title: 'Open Data Structures (Java) — 3.3 SEList: A Space-Efficient Linked List'
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/3_3_SEList_Space_Efficient_.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - linked-lists
+  why: 'Lista ligada de blocos: menos ponteiros e mais localidade que a lista de nós simples.'
+  section: '3.3 SEList: A Space-Efficient Linked List'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: ods-skiplists
+  title: Open Data Structures (Java) — 4. Skiplists
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/4_Skiplists.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - linked-lists
+  why: 'Capítulo sobre skip lists: listas ligadas em vários níveis com busca em tempo logarítmico esperado.'
+  section: 4. Skiplists
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: ods-random-binary-search-trees
+  title: Open Data Structures (Java) — 7. Random Binary Search Trees
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - binary-search-trees
+  why: 'BSTs aleatórias e treaps: como a ordem de inserção afeta a altura e como a aleatoriedade a mantém logarítmica em média.'
+  section: 7. Random Binary Search Trees
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: ods-10-2-meldableheap
+  title: 'Open Data Structures (Java) — 10.2 MeldableHeap: A Randomized Meldable Heap'
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/10_2_MeldableHeap_Randomize.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - heaps-priority-queues
+  why: Heap mesclável aleatorizado, que une duas filas de prioridade de forma eficiente.
+  section: '10.2 MeldableHeap: A Randomized Meldable Heap'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: ods-12-3-graph-traversal
+  title: Open Data Structures (Java) — 12.3 Graph Traversal
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/12_3_Graph_Traversal.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - graphs-traversal
+  why: Seção sobre BFS e DFS sobre as representações de grafo do capítulo.
+  section: 12.3 Graph Traversal
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título da página conferido no sumário oficial (Contents).
+
+- id: cmu-15445-f24-lecture-11-sorting-notes
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #11: Sorting & Aggregations Algorithms (notas)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/11-sorting.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - searching-sorting
+  why: Notas da aula sobre ordenação no banco de dados quando os dados não cabem na memória (external merge sort) e agregações.
+  section: 'Lecture #11: Sorting & Aggregations Algorithms'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Aula localizada no cronograma oficial (schedule.html); PDF das notas abriu (200).
+
+- id: ostep-mlfq
+  title: 'OSTEP — Scheduling: The Multi-Level Feedback Queue'
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - heaps-priority-queues
+  why: 'Capítulo sobre MLFQ: filas por prioridade, starvation e como o escalonador evita que jobs de baixa prioridade nunca rodem.'
+  section: 'Scheduling: The Multi-Level Feedback Queue'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título conferido no PDF do capítulo.
