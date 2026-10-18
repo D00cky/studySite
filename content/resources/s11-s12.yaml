@@ -3,19 +3,6 @@
 
 # --- s11: PostgreSQL / CMU 15-445 ---------------------------------------------
 
-- id: cmu-15445-fall2024
-  title: "CMU 15-445/645 :: Intro to Database Systems (Fall 2024)"
-  author: Andy Pavlo (Carnegie Mellon University)
-  url: https://15445.courses.cs.cmu.edu/fall2024/
-  language: en
-  format: course
-  difficulty: advanced
-  topics: [indexes, query-plans, isolation-locks]
-  why: Curso de sistemas de banco recomendado pelo Teach Yourself CS, com slides, notas e vídeos de cada aula; mostra como o banco funciona por dentro.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: cmu-15445-f24-lecture-08-btree
   title: "#08 - Tree Indexes: B+Trees (CMU Intro to Database Systems)"
   author: CMU Database Group (Andy Pavlo)

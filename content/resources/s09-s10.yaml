@@ -155,8 +155,8 @@
   language: en
   format: course
   difficulty: intermediate
-  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics]
-  why: Página oficial do curso, com slides, notas e links para todas as aulas gravadas.
+  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics, indexes, query-plans, isolation-locks]
+  why: Curso de sistemas de banco recomendado pelo Teach Yourself CS. A página oficial tem slides, notas e links para todas as aulas gravadas; mostra como o banco funciona por dentro.
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
