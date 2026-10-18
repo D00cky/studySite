@@ -3,38 +3,251 @@
 - id: java-fundamentals
   stage: b-backend-java
   title: Fundamentos de Java moderno
-  status: planned
-  objective: Escrever Java moderno (records, coleções, exceções, streams) relacionando com o que vimos em C.
-  whyItMatters: Java é a linguagem principal do nosso backend.
+  status: authored
+  objective: Escrever Java moderno (records, coleções, exceções, streams) e usar jshell e javap para observar o que a linguagem e o compilador fazem, relacionando com o que vimos em C.
+  whyItMatters: Java é a linguagem principal do nosso backend. Saber o que vira bytecode, onde objetos vivem e como coleções funcionam por dentro evita surpresas como NullPointerException em autoboxing, `==` entre Integers e ConcurrentModificationException.
   prerequisites: [dynamic-allocation-ownership, complexity-analysis]
+  related: [hash-tables, dynamic-arrays, stack-heap-lifetime]
+  explanation: |
+    O `javac` não gera código de máquina: gera **bytecode** para a JVM, uma máquina de pilha. Em tempo de execução a JVM interpreta esse bytecode e o **JIT** compila os trechos quentes para código nativo. O `javap -c` mostra o bytecode de qualquer classe — é o equivalente Java a olhar o assembly que o gcc produziu.
+
+    Em Java há **tipos primitivos** (`int`, `long`, `double`), guardados por valor na stack ou dentro de objetos, e **referências** para objetos que vivem na heap. Uma referência é parecida com um ponteiro de C, mas sem aritmética e sem `free`: o **garbage collector** recupera objetos inalcançáveis. Isso elimina use-after-free e double free, mas não vazamentos lógicos (uma lista estática que só cresce). **Autoboxing** converte `int` em `Integer` automaticamente — e `Integer == Integer` compara referências, não valores.
+
+    **Records** (`record Task(long id, String title, boolean done) {}`) são classes imutáveis com construtor, acessores, `equals`, `hashCode` e `toString` gerados; `javap -p` mostra exatamente o que foi gerado. As **coleções** são as estruturas que você implementou em C: `ArrayList` é um vetor dinâmico, `HashMap` é uma tabela hash com buckets (e depende de `equals`/`hashCode` coerentes), `ArrayDeque` é um buffer circular.
+
+    **Exceções** substituem códigos de retorno: *checked* (o compilador obriga a tratar, como `IOException`) e *unchecked* (`RuntimeException`, erros de programação). `try-with-resources` fecha recursos como o `free` disciplinado que fazíamos em C. **Streams** expressam pipelines (`filter`, `map`, `collect`) avaliados de forma preguiçosa só quando uma operação terminal roda. O `jshell` deixa testar cada uma dessas hipóteses em segundos.
+  misconceptions:
+    - claim: Java passa objetos por referência.
+      correction: Java passa tudo por valor; para objetos, o valor copiado é a referência. Reatribuir o parâmetro não afeta quem chamou, mas alterar o objeto sim.
+    - claim: Com garbage collector não existe vazamento de memória.
+      correction: Objetos ainda alcançáveis (caches sem limite, listeners nunca removidos) nunca são coletados.
+    - claim: "`==` compara o conteúdo de Strings e Integers."
+      correction: Compara referências; use equals. Caches internos fazem o erro aparecer só com alguns valores.
   resources:
     start: dev-java
+    deeper: [dev-java-records, dev-java-jshell, dev-java-javap, javap-man-21, dev-java-collections, dev-java-exceptions]
+    videos: [oracle-java-bytecode-crash-course, akitando-136-python-java-rust-video]
+  exercise:
+    id: ex-jshell-javap-task
+    title: O que o compilador gerou para o seu record
+    prediction: "Escreva quantos métodos você acha que `record Task(long id, String title, boolean done) {}` ganha e qual o resultado de `Integer a = 127, b = 127; a == b` e de `Integer c = 128, d = 128; c == d`."
+    steps:
+      - No `jshell`, teste as comparações de Integer da previsão e também `new String("x") == "x"`.
+      - Crie `Task.java` com o record, compile com `javac` e rode `javap -p Task` e `javap -c -p Task`.
+      - "Crie uma classe `TaskStore` com `ArrayList<Task>` e `HashMap<Long, Task>` e remova itens dentro de um for-each para provocar ConcurrentModificationException; corrija com `removeIf`."
+      - Escreva um método que lê tarefas de um arquivo com try-with-resources e trate o arquivo ausente com uma exceção clara.
+    checks:
+      - A lista de métodos gerados do record bate com a saída do javap.
+      - A explicação do resultado 127 versus 128 menciona referências e o cache de Integer.
+  experiment:
+    title: Bytecode, boxing e a heap
+    steps:
+      - Escreva um loop que soma 10 milhões de números com `long` e outro com `Long`; rode `javap -c` e localize as chamadas `Long.valueOf`.
+      - Meça o tempo dos dois e rode com `-Xlog:gc` para ver a coleta provocada pelo boxing.
+      - Crie um `HashMap` com uma chave mutável, altere a chave depois de inserir e tente buscá-la.
+      - Implemente `equals` sem `hashCode` numa classe e mostre o HashMap "perdendo" o objeto.
+    observe:
+      - Instruções de bytecode que aparecem só na versão com boxing e a diferença de tempo.
+      - As linhas de log do GC e o comportamento do HashMap com chave mutável.
+  reflectionQuestions:
+    - O que muda para o programador quando a liberação de memória deixa de ser manual?
+    - Por que equals e hashCode precisam ser coerentes? Ligue com a tabela hash que você fez em C.
+    - Quando uma exceção checked ajuda e quando ela só gera try/catch vazio?
+  completionCriteria:
+    - Mostra a saída do javap para o record e aponta cada método gerado.
+    - Reproduz e explica ConcurrentModificationException e a armadilha de == com Integer.
+    - Apresenta a medição long versus Long com o bytecode e o log de GC que explicam a diferença.
+  evidencePrompts:
+    - Sessão do jshell e saída do javap anotadas.
+    - Tabela de tempos do experimento de boxing com as linhas de log do GC.
+  firstAction: Abra o terminal, rode `jshell` e digite `record Task(long id, String title) {}` seguido de `new Task(1, "estudar")`.
 
 - id: spring-web-backend
   stage: b-backend-java
   title: APIs HTTP com Spring Boot
-  status: planned
-  objective: Construir uma API HTTP com Spring Boot, entendendo o que o framework faz por você e o que não faz.
-  whyItMatters: Framework é ferramenta; entender o mecanismo HTTP por baixo evita depender de mágica.
+  status: authored
+  objective: Construir uma API HTTP com Spring Boot e explicar, com logs e o relatório de condições, o que o framework faz por você (servidor, roteamento, serialização, injeção de dependência) e o que continua sendo responsabilidade sua.
+  whyItMatters: Framework é ferramenta; entender o mecanismo HTTP por baixo evita depender de mágica. Quando algo dá errado — 415, 404 inesperado, bean não encontrado — quem sabe o que o Spring faz por baixo encontra a causa em minutos.
   prerequisites: [java-fundamentals, http-protocol]
+  related: [input-validation, authorization, timeouts-caching]
+  explanation: |
+    Uma API HTTP, sem framework, é: abrir um socket, ler a linha de requisição e os headers, escolher o código pelo método e caminho, ler o corpo, converter JSON em objetos, executar a regra, serializar a resposta com status e headers e escrever de volta. O Spring Boot automatiza cada etapa — e é útil saber qual peça faz o quê.
+
+    - **Servidor embutido** (Tomcat): aceita conexões e mantém um pool de threads; cada requisição ocupa uma thread enquanto é processada.
+    - **DispatcherServlet**: recebe todas as requisições e consulta os *handler mappings* para achar o método `@GetMapping`/`@PostMapping` certo.
+    - **HttpMessageConverters** (Jackson): transformam o corpo JSON em records e vice-versa, escolhidos pelos headers `Content-Type` e `Accept`.
+    - **Container de IoC**: cria seus objetos (*beans*) e injeta dependências pelo construtor. É só construção de objetos feita por outro — você poderia fazer `new TaskService(new TaskRepository(...))` à mão.
+    - **Auto-configuração**: classes condicionais (`@ConditionalOnClass`, `@ConditionalOnMissingBean`) que criam beans se uma biblioteca está no classpath e você não definiu o seu. Rodar com `--debug` imprime o *conditions evaluation report*.
+
+    O que o Spring **não** decide por você: o desenho dos recursos e status HTTP, validação de entrada (`@Valid` só funciona se você declarar as restrições), regras de autorização, timeouts para serviços externos e o formato de erro. Uma API boa responde `201` com `Location` ao criar, `400` com detalhes para entrada inválida, `404` para recurso inexistente e nunca devolve stack trace ao cliente.
+  misconceptions:
+    - claim: Spring Boot é uma linguagem ou um servidor diferente de Java.
+      correction: É um conjunto de bibliotecas Java que configura um servidor (Tomcat) e o Spring Framework por convenção; tudo pode ser inspecionado e substituído.
+    - claim: Injeção de dependência exige framework.
+      correction: É só passar dependências pelo construtor; o container apenas automatiza a montagem do grafo de objetos.
+    - claim: Anotar o parâmetro com @Valid já valida tudo.
+      correction: Só valida as restrições declaradas (@NotBlank, @Size...) e só se o starter de validação estiver presente; regras de negócio continuam no seu código.
   resources:
     start: spring-boot-docs
-    deeper: [roadmap-backend]
+    deeper: [spring-dispatcher-servlet, spring-boot-auto-configuration, spring-ioc-container, roadmap-backend, owasp-cheatsheets]
+    videos: [akitando-124-sockets-web-video]
+  exercise:
+    id: ex-tasks-api-no-magic
+    title: API de tarefas com e sem mágica
+    prediction: "O que o servidor responde a um `POST /tasks` com corpo JSON mas sem header `Content-Type`? E a um `GET /tasks/999` se você não tratar o caso? Escreva status e corpo esperados."
+    steps:
+      - Crie uma API com `GET /tasks`, `GET /tasks/{id}`, `POST /tasks` e `PATCH /tasks/{id}` guardando em memória.
+      - Teste tudo com `curl -v`, conferindo status, headers e corpo, incluindo os casos da previsão.
+      - Responda 201 com header `Location` ao criar, 400 com detalhes para título vazio (Bean Validation) e 404 para id inexistente via `@ExceptionHandler` ou `ProblemDetail`.
+      - Monte o mesmo `TaskController` à mão num teste, com `new`, sem o container, para mostrar que a injeção é só construção.
+    checks:
+      - As respostas de curl mostram os status e headers especificados para sucesso e para cada erro.
+      - Nenhuma resposta de erro expõe stack trace ou nome de classe interna.
+  experiment:
+    title: Abrir a caixa-preta do Spring
+    steps:
+      - Rode a aplicação com `--debug` e encontre no conditions evaluation report por que o DataSource ou o Jackson foram (ou não) configurados.
+      - Ative `logging.level.org.springframework.web=DEBUG` e acompanhe uma requisição do DispatcherServlet até o seu método.
+      - Faça uma requisição lenta (sleep de 5 s) em paralelo com várias outras e capture com `jstack` as threads `http-nio-*` ocupadas.
+      - Remova a anotação `@Service` de uma dependência e leia o erro de inicialização.
+    observe:
+      - Linhas do relatório de condições que explicam cada auto-configuração relevante.
+      - O caminho da requisição nos logs e o estado das threads no jstack.
+  reflectionQuestions:
+    - Que etapas de um servidor HTTP o Spring automatiza e quais você ainda precisa projetar?
+    - O que acontece com a API se todas as threads do Tomcat ficarem esperando um serviço lento?
+    - Por que injetar dependências pelo construtor facilita testes?
+  completionCriteria:
+    - Mostra uma sessão de curl cobrindo 200, 201 com Location, 400, 404 e 415 com as respostas corretas.
+    - Aponta no conditions evaluation report a linha que explica uma auto-configuração específica.
+    - Apresenta um jstack com threads do Tomcat bloqueadas pela requisição lenta e explica o efeito.
+  evidencePrompts:
+    - Transcrição do curl -v dos casos de sucesso e erro.
+    - Trecho do relatório de condições e do jstack com anotações.
+  firstAction: Gere um projeto em start.spring.io com Spring Web, rode-o e faça `curl -v localhost:8080/` para ver o 404 padrão e seus headers.
 
 - id: jdbc-postgresql
   stage: b-backend-java
   title: Acesso a dados com JDBC e PostgreSQL
-  status: planned
-  objective: Acessar o PostgreSQL com SQL explícito, transações e migrações versionadas.
-  whyItMatters: Conecta modelagem e internals de banco ao código de aplicação.
+  status: authored
+  objective: Acessar o PostgreSQL com SQL explícito via JDBC, controlar transações, usar PreparedStatement contra SQL injection, gerenciar um pool de conexões e versionar o esquema com migrações.
+  whyItMatters: Conecta modelagem e internals de banco ao código de aplicação. A maior parte dos problemas de backend em produção — N+1 queries, conexões esgotadas, transações longas, injeção de SQL — nasce nessa fronteira.
   prerequisites: [spring-web-backend, transactions-basics]
+  related: [query-plans, isolation-locks, input-validation, indexes]
+  explanation: |
+    **JDBC** é a interface padrão do Java para bancos relacionais. O driver do PostgreSQL abre uma conexão TCP, autentica e fala o protocolo do Postgres. As peças são poucas: `Connection` (uma sessão no servidor), `PreparedStatement` (SQL com parâmetros `?`) e `ResultSet` (um cursor sobre as linhas). Todos são recursos e precisam ser fechados — `try-with-resources` é obrigatório.
+
+    **PreparedStatement** envia o SQL e os valores separadamente; o valor nunca é interpretado como SQL. Concatenar strings (`"... WHERE title = '" + t + "'"`) é a porta de entrada clássica para **SQL injection**.
+
+    Por padrão a conexão está em **autocommit**: cada comando é uma transação. Para agrupar operações, use `setAutoCommit(false)`, `commit()` e `rollback()` no `catch`. No Spring, `@Transactional` faz isso via um **proxy** em volta do bean — chamar um método transacional de dentro da mesma classe não passa pelo proxy e não abre transação.
+
+    Abrir conexão é caro (TCP, autenticação, processo no servidor), então aplicações usam um **pool** (HikariCP no Spring Boot): um número fixo de conexões reaproveitadas. Se todas estão ocupadas, a próxima requisição espera até um timeout. O esquema evolui por **migrações versionadas** (Flyway: `V1__create_tasks.sql`, `V2__add_due_date.sql`), aplicadas em ordem e registradas numa tabela de histórico, para que todo ambiente tenha o mesmo banco. Abstrações como JdbcClient ou JPA reduzem código repetido, mas o SQL e o plano de execução continuam existindo — e o `EXPLAIN` continua sendo a ferramenta para entendê-los.
+  misconceptions:
+    - claim: Escapar aspas manualmente é suficiente contra SQL injection.
+      correction: Há muitas formas de escapar errado; parâmetros de PreparedStatement separam código e dado por construção.
+    - claim: "@Transactional sempre abre uma transação quando o método é chamado."
+      correction: Só quando a chamada passa pelo proxy do Spring; chamadas internas na mesma classe ignoram a anotação.
+    - claim: Aumentar o tamanho do pool sempre aumenta a vazão.
+      correction: O banco tem CPU e locks finitos; conexões demais aumentam contenção e trocas de contexto. O pool limita a concorrência de propósito.
   resources:
-    start: postgres-docs
+    start: jdbc-tutorial-basics
+    deeper: [jdbc-prepared-statements, jdbc-transactions, pgjdbc-docs, spring-jdbc-core, spring-declarative-transactions, spring-boot-data-initialization, flyway-docs, postgres-docs, postgres-explain]
+    videos: [akitando-118-servidor-sql-video]
+  exercise:
+    id: ex-jdbc-by-hand
+    title: Repositório de tarefas com JDBC puro
+    prediction: "Se uma busca concatenar o título na query, o que acontece com a entrada `x' OR '1'='1`? E se uma transferência de tarefas entre listas falhar no meio sem transação?"
+    steps:
+      - Suba um PostgreSQL de laboratório (Docker) e crie a tabela `tasks` com uma migração Flyway `V1__create_tasks.sql`.
+      - "Implemente `TaskRepository` com `DriverManager`/`DataSource`, PreparedStatement e try-with-resources: insert, findById, findByTitle, markDone."
+      - Escreva uma versão vulnerável de `findByTitle` com concatenação, explore-a com a entrada da previsão e depois corrija.
+      - Implemente "mover todas as tarefas de uma lista para outra" com duas operações e lance uma exceção entre elas, com e sem transação.
+      - Adicione `V2__add_due_date.sql` e observe a tabela `flyway_schema_history`.
+    checks:
+      - A versão vulnerável devolve todas as linhas com a entrada maliciosa e a corrigida não devolve nenhuma.
+      - Sem transação o banco fica num estado parcial; com transação e rollback, não.
+  experiment:
+    title: Ver as conexões e transações do lado do servidor
+    steps:
+      - Com a aplicação rodando, consulte `SELECT pid, state, query, xact_start FROM pg_stat_activity` e identifique as conexões do pool.
+      - Deixe uma transação aberta de propósito (breakpoint no meio) e observe o estado `idle in transaction` e os locks em `pg_locks`.
+      - Configure o pool com 2 conexões, dispare 10 requisições concorrentes e leia o erro de timeout do Hikari.
+      - Chame um método `@Transactional` de dentro da mesma classe e mostre, com os logs de transação do Spring, que nenhuma transação foi aberta.
+    observe:
+      - Estados das conexões no pg_stat_activity antes, durante e depois da transação.
+      - A mensagem de timeout do pool e o tempo de espera.
+  reflectionQuestions:
+    - Por que PreparedStatement protege contra injeção mesmo que o valor contenha aspas?
+    - O que uma transação esquecida aberta causa para as outras sessões?
+    - Como você escolheria o tamanho do pool de conexões?
+  completionCriteria:
+    - Demonstra a injeção de SQL na versão concatenada e a correção com PreparedStatement.
+    - Mostra o estado parcial sem transação e a consistência com rollback, consultando o banco.
+    - Apresenta a saída do pg_stat_activity com uma transação idle in transaction e o timeout do pool esgotado.
+  evidencePrompts:
+    - Código do repositório e as duas consultas (vulnerável e corrigida) com seus resultados.
+    - Saídas do pg_stat_activity e do log do Hikari anotadas.
+  firstAction: "Suba um Postgres com `docker run --rm -e POSTGRES_PASSWORD=lab -p 5432:5432 postgres` e conecte com `psql -h localhost -U postgres`."
 
 - id: backend-testing-java
   stage: b-backend-java
   title: Testes de backend em Java
-  status: planned
-  objective: Escrever testes de integração contra um PostgreSQL real e testar limites de autorização.
-  whyItMatters: Bugs de backend mais caros estão na integração com banco e nas regras de acesso.
+  status: authored
+  objective: Escrever testes de integração com JUnit e Testcontainers contra um PostgreSQL real, testar a API pela camada HTTP e verificar limites de autorização (quem não pode fazer o quê).
+  whyItMatters: Bugs de backend mais caros estão na integração com banco e nas regras de acesso. Um banco em memória diferente do de produção esconde erros de SQL, constraints e transações; um teste que só verifica o caminho feliz deixa passar o usuário que edita a tarefa de outro.
   prerequisites: [jdbc-postgresql, interfaces-testing]
+  related: [authorization, architecture-ci, isolation-locks]
+  explanation: |
+    Testes unitários isolam lógica pura e rodam em milissegundos. Mas a maior parte do comportamento de um backend está em **fronteiras**: o SQL que o Postgres aceita ou rejeita, constraints, transações, serialização JSON e a configuração de segurança. Esses só se verificam com **testes de integração**.
+
+    **Testcontainers** é uma biblioteca que, durante o teste, usa a API do Docker para subir um container real (ex.: `postgres:17`), esperar até ele aceitar conexões, entregar a URL JDBC ao teste e destruí-lo no final. Com Spring Boot, `@ServiceConnection` liga o DataSource ao container automaticamente. Você testa contra o mesmo banco de produção, com as mesmas migrações Flyway — em vez de H2, que aceita SQL diferente e não tem os mesmos tipos e locks.
+
+    Testes de integração precisam de **isolamento de dados**: cada teste prepara o que precisa e não depende da ordem de execução. Opções: transação com rollback no fim, truncar tabelas, ou dados com ids únicos. Reutilizar um container entre testes economiza tempo; compartilhar estado entre testes gera falhas intermitentes.
+
+    Na camada HTTP, `MockMvc` (ou um cliente HTTP real com `@SpringBootTest(webEnvironment = RANDOM_PORT)`) exercita roteamento, validação e serialização. Para **autorização**, escreva a matriz explicitamente: anônimo, dono e outro usuário × cada operação, verificando 401, 403 ou 404. Testes negativos ("Bia não consegue apagar a tarefa do Ana") são os que pegam falhas de controle de acesso — a categoria mais comum no OWASP Top 10.
+  misconceptions:
+    - claim: H2 em memória é bom o bastante para testar o acesso a dados.
+      correction: Dialeto, tipos, constraints e locking diferem do PostgreSQL; testes passam e produção quebra.
+    - claim: Testes de integração são lentos demais para rodar sempre.
+      correction: Com container reutilizado e dados isolados, uma suíte de dezenas de testes roda em segundos após a primeira inicialização.
+    - claim: Testar o caminho feliz de cada endpoint cobre a segurança.
+      correction: Falhas de autorização só aparecem em testes negativos com outro usuário ou sem credenciais.
+  resources:
+    start: testcontainers-java
+    deeper: [testcontainers-postgres-module, testcontainers-getting-started-java, spring-boot-testing, spring-boot-testcontainers, spring-security-authorization, owasp-cheatsheets, docker-get-started]
+    videos: [akitando-149-docker-compose-postgres-video]
+  exercise:
+    id: ex-testcontainers-authz-matrix
+    title: Repositório real e matriz de autorização
+    prediction: Liste quais testes do repositório de tarefas passariam com H2 e falhariam com PostgreSQL (pense em tipos, constraints e funções específicas). Liste também quais combinações usuário × operação devem retornar 403 ou 404.
+    steps:
+      - Escreva testes do `TaskRepository` com Testcontainers (`postgres`) aplicando as migrações Flyway reais.
+      - "Inclua um teste que viola uma constraint (título vazio com `CHECK`, ou id duplicado) e verifica a exceção traduzida."
+      - Isole os dados de cada teste e rode a suíte em ordem aleatória (`@TestMethodOrder(MethodOrderer.Random.class)`).
+      - Escreva a matriz de autorização (anônimo, dono, outro usuário × listar, ler, editar, apagar) como teste parametrizado via MockMvc.
+      - Remova de propósito a checagem de dono no serviço e veja quais testes falham.
+    checks:
+      - A suíte passa em qualquer ordem e contra o mesmo Postgres usado em produção.
+      - Remover a checagem de dono faz falhar exatamente os casos de "outro usuário".
+  experiment:
+    title: Ver o Testcontainers trabalhando
+    steps:
+      - Rode os testes com `docker ps` aberto em outro terminal e observe o container e o Ryuk aparecendo e sumindo.
+      - Ative o log do Testcontainers e meça o tempo de inicialização do container na primeira e nas demais classes de teste.
+      - Troque para H2 em modo PostgreSQL e encontre um teste que se comporta diferente.
+      - Faça dois testes compartilharem a mesma tarefa sem isolamento e rode 10 vezes para provocar uma falha dependente de ordem.
+    observe:
+      - Tempo de subida do container e quanto o reuso economiza.
+      - A diferença de comportamento entre H2 e PostgreSQL e a falha causada por estado compartilhado.
+  reflectionQuestions:
+    - Que tipo de bug só um teste contra o banco real encontra?
+    - Por que testes negativos de autorização são mais valiosos que os positivos?
+    - Como você manteria a suíte de integração rápida o suficiente para rodar a cada push?
+  completionCriteria:
+    - Mostra a suíte de integração passando contra PostgreSQL em container, com migrações aplicadas.
+    - Apresenta a matriz de autorização e a falha provocada ao remover a checagem de dono.
+    - Demonstra uma diferença concreta de comportamento entre H2 e PostgreSQL.
+  evidencePrompts:
+    - Saída do runner de testes com tempos e a lista de casos da matriz.
+    - Captura do docker ps durante os testes e o log do Testcontainers.
+  firstAction: Abra a página do módulo Postgres do Testcontainers e copie o exemplo mínimo de teste para uma pasta de laboratório.

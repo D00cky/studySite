@@ -3,23 +3,200 @@
 - id: systems-io-performance
   stage: b-systems
   title: I/O de baixo nível e desempenho
-  status: planned
-  objective: Comparar I/O com e sem buffer, mmap e chamadas em lote, medindo syscalls e tempo.
-  whyItMatters: Explica por que bancos de dados e servidores organizam I/O do jeito que organizam.
+  status: authored
+  objective: Comparar I/O com e sem buffer, mmap e chamadas em lote, medindo syscalls com strace e tempo e contadores com perf stat.
+  whyItMatters: Explica por que bancos de dados e servidores organizam I/O do jeito que organizam — buffers, escrita em lote, fsync em pontos específicos. Também explica por que um log com `printf` linha a linha pode derrubar a vazão de um serviço.
   prerequisites: [file-descriptors, profiling-benchmarks]
+  related: [virtual-memory, filesystems, processes-syscalls]
+  explanation: |
+    Cada `read` ou `write` é uma **syscall**: o processo troca para o modo kernel, o kernel valida argumentos, copia dados entre o espaço do usuário e o **page cache** e volta. Esse custo fixo por chamada — centenas de nanossegundos ou mais — é pequeno uma vez e enorme um milhão de vezes. Ler um arquivo de 100 MB um byte por vez faz 100 milhões de syscalls; ler em blocos de 64 KiB faz cerca de 1.600.
+
+    A **libc** amortiza esse custo com buffers: `fwrite`/`fprintf` acumulam dados num buffer do `FILE*` e só chamam `write` quando ele enche, numa quebra de linha (terminal, modo *line buffered*) ou no `fflush`. Por isso a saída para um pipe aparece "atrasada" e por isso um programa que morre com `_exit` ou por sinal pode perder dados ainda no buffer.
+
+    Mesmo depois do `write`, os dados estão no page cache, não no disco. **`fsync`** força a escrita no dispositivo e é lento — bancos de dados agrupam várias transações num único fsync (*group commit*). **`mmap`** mapeia o arquivo no espaço de endereçamento: acessos viram leituras de memória e falhas de página (*page faults*) trazem os dados sob demanda, sem cópia explícita. **`readv`/`writev`** juntam vários buffers numa só chamada.
+
+    Para medir, separe as perguntas:
+    - **quantas** syscalls e de que tamanho: `strace -c` e `strace -e trace=read,write`;
+    - **quanto tempo** e onde: `perf stat` (tempo, context switches, page faults) e `perf record`;
+    - com **cache quente ou frio**: a segunda execução lê do page cache e engana o benchmark.
+    `strace` desacelera muito o programa; use-o para contar, não para cronometrar.
+  misconceptions:
+    - claim: Depois que write retorna, os dados estão no disco.
+      correction: Estão no page cache do kernel; só fsync (ou fdatasync) garante persistência no dispositivo.
+    - claim: mmap é sempre mais rápido que read.
+      correction: Evita cópias, mas paga page faults e manutenção de tabelas de páginas; para leitura sequencial simples, read com bom buffer costuma empatar.
+    - claim: O tempo medido com strace representa o desempenho real.
+      correction: strace intercepta cada syscall e torna o programa muitas vezes mais lento; use perf stat ou time para medir tempo.
+  resources:
+    start: ostep-io-devices
+    deeper: [man-strace, man-setvbuf, man-mmap, man-readv, man-perf-stat, brendan-gregg-perf, beej-c-file-io, ostep-files-directories]
+    videos: [strange-loop-julia-evans-systems-swiss-army-knife, brendan-gregg-linux-performance-tools-1]
+  exercise:
+    id: ex-copy-four-ways
+    title: Copiar um arquivo de quatro jeitos
+    prediction: Para copiar um arquivo de 100 MB, estime quantas syscalls `read`/`write` cada versão faz e ordene as versões da mais rápida para a mais lenta.
+    steps:
+      - Numa pasta de laboratório, gere um arquivo de teste com `dd if=/dev/urandom of=big.bin bs=1M count=100`.
+      - Escreva em C quatro versões de cópia — `read`/`write` de 1 byte, `read`/`write` com buffer de 64 KiB, `fgetc`/`fputc` (stdio), e `mmap` + `write`.
+      - Rode cada uma com `strace -c` (use um arquivo de 1 MB para a versão de 1 byte) e anote contagem e tamanho das syscalls.
+      - Meça cada uma com `perf stat -r 5` com o cache quente, e confira o resultado com `cmp`.
+      - Explique por que a versão stdio byte a byte fica muito mais perto da versão com buffer do que da versão de 1 byte.
+    checks:
+      - A tabela tem contagem de syscalls, tempo mediano e verificação de integridade para cada versão.
+      - A explicação liga a diferença de tempo à quantidade de syscalls e ao buffer da libc.
+  experiment:
+    title: Buffers, fsync e page cache na prática
+    steps:
+      - Escreva um programa que grava 100.000 linhas de log com printf e rode com saída para terminal, para arquivo e para pipe; compare com `strace -e trace=write`.
+      - Mate o programa com `kill -9` no meio da gravação para arquivo e veja quantas linhas se perderam; repita com `setvbuf` sem buffer.
+      - Grave 1.000 registros com fsync após cada um e depois com um fsync no final; compare o tempo com perf stat.
+      - Meça a leitura do arquivo grande com cache frio (`echo 3 | sudo tee /proc/sys/vm/drop_caches`, só na sua máquina de laboratório) e quente.
+    observe:
+      - Tamanho dos writes em cada destino e linhas perdidas com kill -9.
+      - Diferença de tempo entre fsync por registro e em lote, e entre cache frio e quente.
+  reflectionQuestions:
+    - Por que a libc usa buffer de linha no terminal e buffer completo em arquivos?
+    - O que um banco de dados precisa garantir antes de responder "commit ok", e quanto isso custa?
+    - Em que situação mmap complica o tratamento de erros de I/O?
+  completionCriteria:
+    - Mostra a tabela das quatro cópias com syscalls contadas pelo strace e tempos medianos do perf stat.
+    - Demonstra perda de dados no buffer da libc com kill -9 e a mudança com setvbuf.
+    - Apresenta a medição de fsync por registro versus em lote e explica o group commit.
+  evidencePrompts:
+    - Saídas de strace -c e perf stat das quatro versões.
+    - Código e resultados do experimento com fsync e kill -9.
+  firstAction: "Rode `strace -c cat /etc/passwd > /dev/null` e anote quantos `read` e `write` aparecem."
 
 - id: memory-allocators
   stage: b-systems
   title: Alocadores de memória
-  status: planned
-  objective: Implementar um alocador simples (free list) e medir fragmentação.
-  whyItMatters: Revela o que malloc faz e por que padrões de alocação afetam desempenho.
+  status: authored
+  objective: Implementar um alocador simples com free list (first fit, splitting e coalescing) sobre um bloco obtido do sistema, e medir fragmentação interna e externa.
+  whyItMatters: Revela o que malloc faz e por que padrões de alocação afetam desempenho e uso de memória. Explica por que serviços de longa duração "incham" sem vazamento, por que arenas e pools existem e como bugs de heap viram falhas de segurança.
   prerequisites: [dynamic-allocation-ownership, virtual-memory]
+  related: [linked-lists, memory-debugging, cpu-memory-caches]
+  mathThreads: [probability]
+  explanation: |
+    `malloc` não pede memória ao kernel a cada chamada. Ele obtém regiões grandes — estendendo a heap com **`brk`/`sbrk`** ou mapeando com **`mmap`** — e as subdivide ele mesmo. O problema do alocador é: dado um pedido de `n` bytes, qual pedaço livre entregar, e como reaproveitar o que for liberado.
+
+    O desenho clássico usa uma **free list**. Cada bloco tem um **header** com tamanho e um bit "livre/ocupado"; os blocos livres ficam encadeados. Para alocar:
+    - **first fit** pega o primeiro bloco grande o suficiente; **best fit**, o menor que serve (busca mais, desperdiça menos);
+    - se o bloco é bem maior que o pedido, faz **splitting** e devolve o resto à lista.
+    Para liberar, `free(p)` acha o header logo antes de `p` (é assim que free sabe o tamanho) e marca o bloco como livre. Sem **coalescing** — juntar blocos livres vizinhos — a memória vira uma coleção de pedacinhos.
+
+    Duas medidas de desperdício:
+    - **fragmentação interna**: espaço perdido dentro de blocos (header, **alinhamento** a 16 bytes, arredondamento);
+    - **fragmentação externa**: memória livre total suficiente, mas nenhum bloco contíguo grande o bastante.
+
+    Alocadores reais (glibc, jemalloc, mimalloc) usam listas por classe de tamanho, caches por thread e `mmap` direto para blocos grandes. Como o header fica colado aos dados do usuário, escrever além do fim de um bloco corrompe o header do próximo — é por isso que heap overflow e double free podem virar execução de código e por que ferramentas como ASan colocam zonas vermelhas entre blocos.
+  misconceptions:
+    - claim: free devolve a memória ao sistema operacional imediatamente.
+      correction: Normalmente o bloco volta para a free list do alocador; só regiões grandes ou o topo da heap costumam ser devolvidos ao kernel.
+    - claim: Se não há vazamento, o uso de memória do processo não cresce.
+      correction: Fragmentação externa pode aumentar o RSS mesmo com toda memória corretamente liberada.
+    - claim: malloc(10) usa exatamente 10 bytes.
+      correction: Há header e alinhamento; o bloco real costuma ter 24 ou 32 bytes, o que malloc_usable_size revela.
+  resources:
+    start: ostep-free-space
+    deeper: [man-brk, man-mmap, man-malloc, ostep-memory-api, csapp, asan, valgrind-quickstart]
+    videos: [akitando-45-memoria-1-video, akitando-46-memoria-2-video]
+  exercise:
+    id: ex-free-list-allocator
+    title: Um alocador first fit com free list
+    prediction: Numa arena de 1 KiB, aloque blocos de 100, 200 e 100 bytes, libere o do meio e peça 250 bytes. Desenhe a arena e diga se o pedido é atendido com e sem coalescing (depois de liberar também o primeiro).
+    steps:
+      - "Obtenha uma arena de 1 MiB com `mmap` e implemente `my_malloc`/`my_free` com header (tamanho + bit livre) e alinhamento a 16 bytes."
+      - Implemente first fit com splitting e escreva uma função `dump_heap()` que imprime cada bloco (endereço, tamanho, livre/ocupado).
+      - Implemente coalescing de vizinhos livres (use um footer ou percorra a lista ordenada por endereço).
+      - Escreva testes com ASan que alocam, escrevem padrões, liberam em ordens diferentes e conferem o conteúdo.
+    checks:
+      - O dump_heap confirma o desenho feito na previsão, com e sem coalescing.
+      - Todos os ponteiros devolvidos são múltiplos de 16 e os testes não acusam erros.
+  experiment:
+    title: Medir fragmentação e corromper a heap de propósito
+    steps:
+      - Escreva um gerador de carga que faz 100.000 alocações e liberações aleatórias (tamanhos de 8 a 4096 bytes) com semente fixa.
+      - Meça a fragmentação externa (maior bloco livre ÷ total livre) e interna (bytes de header e alinhamento ÷ bytes alocados) com first fit e best fit.
+      - Compare o RSS (`/proc/self/status`) do seu alocador e do malloc da glibc com a mesma carga, e veja com `strace -e trace=brk,mmap` como a glibc pede memória.
+      - Escreva 8 bytes além do fim de um bloco no seu alocador, chame dump_heap e observe o header do vizinho corrompido; repita com malloc real e ASan.
+    observe:
+      - As métricas de fragmentação de cada política sob a mesma carga.
+      - O header corrompido no dump e o relatório do ASan para o mesmo erro.
+  reflectionQuestions:
+    - Por que free não precisa receber o tamanho do bloco?
+    - Que padrões de alocação um servidor de longa duração tem e como eles afetam a fragmentação?
+    - Por que um estouro de heap pode ser explorável, enquanto um vazamento geralmente não é?
+  completionCriteria:
+    - Mostra o alocador passando nos testes com ASan e o dump_heap coerente com o desenho da previsão.
+    - Apresenta as métricas de fragmentação de first fit e best fit sob a mesma carga aleatória.
+    - Demonstra a corrupção de header causada por um estouro e o diagnóstico da ferramenta no malloc real.
+  evidencePrompts:
+    - Saídas do dump_heap antes e depois do coalescing.
+    - Tabela de fragmentação e trecho do strace com brk/mmap da glibc.
+  firstAction: "Rode `strace -e trace=brk,mmap ./algum_programa_com_malloc` e conte quantas vezes a heap cresceu."
 
 - id: low-level-concurrency
   stage: b-systems
   title: Concorrência de baixo nível
-  status: planned
-  objective: Explicar operações atômicas e modelos de memória, implementando um spinlock e medindo contenção.
-  whyItMatters: Base das estruturas concorrentes usadas por runtimes e bancos de dados.
+  status: authored
+  objective: Explicar operações atômicas e modelos de memória (relaxed, acquire/release, seq_cst), implementando um spinlock com `stdatomic.h` e medindo contenção e false sharing com perf.
+  whyItMatters: Base das estruturas concorrentes usadas por runtimes, alocadores e bancos de dados. Entender o custo de uma linha de cache disputada por vários núcleos explica por que "adicionar threads" às vezes deixa o programa mais lento.
   prerequisites: [race-conditions-synchronization, cpu-memory-caches]
+  related: [threads-basics, deadlocks, bounded-queues]
+  explanation: |
+    `counter++` são três passos — ler, somar, escrever —, e duas threads podem intercalá-los e perder incrementos. Uma **operação atômica** (`atomic_fetch_add`) faz o read-modify-write como uma unidade indivisível, usando instruções especiais do processador (no x86, prefixo `lock`). A peça mais geral é o **compare-and-swap** (`atomic_compare_exchange`): "se o valor ainda é X, troque por Y; senão me diga o valor atual". Com ela se constroem locks e estruturas *lock-free*.
+
+    Atomicidade não basta: compiladores e processadores **reordenam** leituras e escritas para ganhar desempenho. O **modelo de memória** do C11 define o que outra thread pode observar:
+    - **relaxed**: só atomicidade, sem ordem em relação a outras operações (ok para contadores de estatística);
+    - **release** numa escrita + **acquire** na leitura que vê esse valor: tudo que a thread A escreveu antes do release fica visível para B depois do acquire — é o que um lock precisa;
+    - **seq_cst** (padrão): uma ordem global única, a mais fácil de raciocinar e a mais cara.
+
+    Um **spinlock** é um laço `while (atomic_flag_test_and_set_explicit(&f, memory_order_acquire)) ;` com `atomic_flag_clear_explicit(&f, memory_order_release)` para liberar. Ele gira gastando CPU — ótimo para seções críticas curtíssimas, péssimo se o dono do lock for desescalonado. Mutexes do glibc giram um pouco e depois dormem no kernel via **`futex`**.
+
+    O custo real vem do **protocolo de coerência de cache**: para escrever, um núcleo precisa da linha de cache (64 bytes) em modo exclusivo, e ela "viaja" entre núcleos a cada escrita. Muitas threads escrevendo na mesma variável — ou em variáveis diferentes **na mesma linha** (*false sharing*) — transformam o paralelismo em fila. Contadores por thread somados no fim, ou alinhados a 64 bytes, resolvem.
+  misconceptions:
+    - claim: volatile torna uma variável segura entre threads.
+      correction: Em C, volatile impede algumas otimizações do compilador, mas não dá atomicidade nem ordem entre núcleos; use _Atomic.
+    - claim: Lock-free significa mais rápido.
+      correction: Garante que alguma thread sempre progride, mas sob contenção alta CAS repetidos podem ser mais lentos que um mutex.
+    - claim: Variáveis diferentes não interferem entre threads.
+      correction: Se estão na mesma linha de cache, escritas de núcleos diferentes disputam a linha (false sharing).
+  resources:
+    start: beej-c-atomics
+    deeper: [beej-c-multithreading, cppreference-c-memory-order, preshing-lock-free-intro, man-futex, man-perf-stat, ostep-locks, ostep-lock-based-data-structures, drepper-memory]
+    videos: [cppcon-2017-pikus-atomics, akitando-43-concorrencia-1-video, akitando-44-concorrencia-2-video]
+  exercise:
+    id: ex-spinlock-counter
+    title: Contador com quatro sincronizações
+    prediction: Com 4 threads incrementando 10 milhões de vezes cada, estime o valor final e o tempo relativo de cada versão — sem sincronização, mutex, spinlock e `atomic_fetch_add`.
+    steps:
+      - Implemente as quatro versões em C com pthreads (ou `threads.h`) e compile com `-O2 -pthread`.
+      - Implemente o spinlock com `atomic_flag` e memory orders acquire/release explícitas.
+      - Rode cada versão 5 vezes com 1, 2, 4 e 8 threads e registre valor final e tempo mediano.
+      - Rode a versão sem sincronização com `-fsanitize=thread` e leia o relatório.
+      - Escreva um teste de mensagem (thread A escreve dado e depois flag; B espera a flag e lê o dado) e argumente por que precisa de release/acquire.
+    checks:
+      - A versão sem sincronização perde incrementos e o ThreadSanitizer aponta a data race.
+      - A tabela mostra como o tempo de cada versão escala com o número de threads.
+  experiment:
+    title: Contenção e false sharing vistos pelo perf
+    steps:
+      - Crie um array de contadores, um por thread, adjacentes na memória; cada thread incrementa só o seu.
+      - Meça com `perf stat -e cycles,instructions,cache-misses` e compare com a versão em que cada contador está alinhado a 64 bytes (`_Alignas(64)`).
+      - Rode o spinlock com mais threads do que núcleos e compare o tempo e os context switches com o mutex.
+      - Use `perf record` + `perf report` no spinlock disputado e encontre onde o tempo é gasto; use `strace -f -e trace=futex` no mutex.
+    observe:
+      - Diferença de tempo e cache misses entre contadores adjacentes e alinhados.
+      - Comportamento do spinlock com threads demais e as chamadas futex do mutex.
+  reflectionQuestions:
+    - Por que um lock precisa de acquire ao entrar e release ao sair?
+    - Quando um spinlock é preferível a um mutex, e quando é um desastre?
+    - Como false sharing pode aparecer numa struct de estatísticas de um servidor?
+  completionCriteria:
+    - Mostra a tabela das quatro versões do contador com valores finais e tempos por número de threads.
+    - Apresenta o relatório do ThreadSanitizer da versão sem sincronização.
+    - Demonstra com perf stat a diferença entre contadores com e sem false sharing.
+  evidencePrompts:
+    - Código do spinlock com comentários justificando cada memory order.
+    - Saídas do perf stat e do strace de futex anotadas.
+  firstAction: Escreva um programa com duas threads fazendo `counter++` um milhão de vezes cada e imprima o resultado três vezes.

@@ -1,0 +1,1332 @@
+# Recursos dos ramos opcionais (frontend, backend Java, interpretadores, sistemas).
+# Todos verificados em 2026-10-18 (HTTP 200 e título conferido; vídeos via oEmbed do YouTube).
+
+- id: mdn-accessibility-guide
+  title: "Accessibility on the web - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: "Módulo do MDN sobre acessibilidade: o que é, HTML como base, CSS/JS acessíveis, WAI-ARIA e multimídia."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-html-accessibility
+  title: "HTML: A good basis for accessibility - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: "Mostra por que elementos nativos (button, label, headings, landmarks) já trazem teclado e semântica para tecnologias assistivas."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-accessibility-tree
+  title: "Accessibility tree - Glossary | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Glossary/Accessibility_tree
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [semantic-html-accessibility, frontend-testing]
+  why: "Definição curta da accessibility tree (name, role, state) que o leitor de tela realmente consome."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wai-accessibility-intro
+  title: "Introduction to Web Accessibility | Web Accessibility Initiative (WAI) | W3C"
+  author: "W3C Web Accessibility Initiative"
+  url: https://www.w3.org/WAI/fundamentals/accessibility-intro/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: "Introdução oficial do W3C: quem depende de acessibilidade e quais princípios a sustentam."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wai-easy-checks
+  title: "Easy Checks – A First Review of Web Accessibility | W3C WAI"
+  author: "W3C Web Accessibility Initiative"
+  url: https://www.w3.org/WAI/test-evaluate/preliminary/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [semantic-html-accessibility, frontend-testing]
+  why: "Roteiro de verificações manuais rápidas (títulos, contraste, teclado, formulários) para revisar uma página."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wcag-22
+  title: "Web Content Accessibility Guidelines (WCAG) 2.2"
+  author: "W3C"
+  url: https://www.w3.org/TR/WCAG22/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [semantic-html-accessibility]
+  why: "A norma de referência; use para citar critérios de sucesso específicos (ex.: 2.1.1 Keyboard, 1.4.3 Contrast)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wai-aria-apg
+  title: "ARIA Authoring Practices Guide (APG) | WAI | W3C"
+  author: "W3C Web Accessibility Initiative"
+  url: https://www.w3.org/WAI/ARIA/apg/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [semantic-html-accessibility, javascript-browser]
+  why: "Padrões de teclado e ARIA para componentes como tabs, dialog e menu, para quando o HTML nativo não basta."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: chrome-devtools-accessibility-reference
+  title: "Accessibility features reference | Chrome DevTools"
+  author: "Google (Chrome for Developers)"
+  url: https://developer.chrome.com/docs/devtools/accessibility/reference
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [semantic-html-accessibility, frontend-testing]
+  why: "Como inspecionar a accessibility tree, nome acessível, ARIA e contraste no DevTools."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-accessibility
+  title: "Learn Accessibility | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/learn/accessibility
+  language: en
+  format: course
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: "Curso gratuito e modular de acessibilidade (ARIA e HTML, foco, estrutura, formulários, testes)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: orca-screen-reader
+  title: "Orca Screen Reader (manual)"
+  author: "GNOME Project"
+  url: https://help.gnome.org/users/orca/stable/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: "Leitor de tela livre do Linux, usado nos exercícios para ouvir a página como um usuário cego ouve."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-css-layout
+  title: "CSS layout - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [css-layout]
+  why: "Módulo do MDN sobre fluxo normal, flexbox, grid, posicionamento e responsividade, com exercícios."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-css-handling-conflicts
+  title: "Handling conflicts - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Handling_conflicts
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [css-layout]
+  why: "Cascata, especificidade e herança explicadas com exemplos que dá para reproduzir no navegador."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-css-flexbox
+  title: "Flexbox - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [css-layout]
+  why: "Eixo principal, eixo cruzado, flex-grow/shrink/basis."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-css-grid
+  title: "CSS grid layout - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [css-layout]
+  why: "Linhas, colunas, fr, áreas nomeadas e posicionamento explícito."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-css
+  title: "Learn CSS | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/learn/css
+  language: en
+  format: course
+  difficulty: intro
+  topics: [css-layout]
+  why: "Curso modular de CSS (box model, cascata, especificidade, flexbox, grid, layout)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-css-cascade
+  title: "The cascade | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/learn/css/the-cascade
+  language: en
+  format: course
+  difficulty: intro
+  topics: [css-layout]
+  why: "Algoritmo da cascata: origem, importância, especificidade e ordem de aparição."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-js-execution-model
+  title: "JavaScript execution model - JavaScript | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Agentes, pilha de execução, job queues e event loop descritos pelo MDN."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-microtask-in-depth
+  title: "In depth: Microtasks and the JavaScript runtime environment | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Tasks versus microtasks e quando cada fila é drenada."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-async-js-introducing
+  title: "Introducing asynchronous JavaScript - Learn web development | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Introducing
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [javascript-browser]
+  why: "Por que código síncrono longo congela a página e como callbacks e promises resolvem."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-using-promises
+  title: "Using promises - JavaScript | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Encadeamento, tratamento de erros e a relação de promises com a fila de microtasks."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jake-archibald-tasks-microtasks
+  title: "Tasks, microtasks, queues and schedules"
+  author: "Jake Archibald"
+  url: https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Artigo interativo que mostra passo a passo a ordem de execução de setTimeout, promises e eventos."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-js-closures
+  title: "Closures - JavaScript | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [scope-environments, javascript-browser]
+  why: "Escopo léxico e closures em JavaScript, para comparar com o ambiente do seu interpretador."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-critical-rendering-path
+  title: "Critical rendering path - Performance | MDN"
+  author: "Mozilla (contribuidores do MDN)"
+  url: https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [rendering-performance]
+  why: "Do HTML ao pixel: DOM, CSSOM, render tree, layout e paint."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-rendering-performance
+  title: "Rendering performance | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/articles/rendering-performance
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [rendering-performance]
+  why: "O pipeline JavaScript → style → layout → paint → composite e o orçamento de cada frame."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-layout-thrashing
+  title: "Avoid large, complex layouts and layout thrashing | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [rendering-performance]
+  why: "Forced synchronous layout e layout thrashing, com o que procurar no painel Performance."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-inp
+  title: "Interaction to Next Paint (INP) | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/articles/inp
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [rendering-performance, javascript-browser]
+  why: "Métrica de responsividade que liga tarefas longas no main thread ao atraso percebido pelo usuário."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-performance
+  title: "Learn Performance | web.dev"
+  author: "Google (web.dev)"
+  url: https://web.dev/learn/performance
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [rendering-performance]
+  why: "Curso sobre carregamento: recursos críticos, imagens, fontes, code splitting."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: chrome-devtools-performance
+  title: "Analyze runtime performance | Chrome DevTools"
+  author: "Google (Chrome for Developers)"
+  url: https://developer.chrome.com/docs/devtools/performance
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [rendering-performance, javascript-browser]
+  why: "Tutorial oficial do painel Performance: gravar, throttling de CPU, flame chart e achar o gargalo."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testing-library-guiding-principles
+  title: "Guiding Principles | Testing Library"
+  author: "Testing Library"
+  url: https://testing-library.com/docs/guiding-principles
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [frontend-testing]
+  why: "Por que testar pelo que o usuário vê e faz, e não por detalhes de implementação."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testing-library-queries
+  title: "About Queries | Testing Library"
+  author: "Testing Library"
+  url: https://testing-library.com/docs/queries/about/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [frontend-testing]
+  why: "Prioridade de queries (getByRole primeiro) — que usa a mesma accessibility tree do leitor de tela."
+  section: "Priority"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: playwright-locators
+  title: "Locators | Playwright"
+  author: "Microsoft (Playwright)"
+  url: https://playwright.dev/docs/locators
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [frontend-testing]
+  why: "Locators por role, label e texto em testes end-to-end num navegador real."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: playwright-accessibility-testing
+  title: "Accessibility testing | Playwright"
+  author: "Microsoft (Playwright)"
+  url: https://playwright.dev/docs/accessibility-testing
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [frontend-testing, semantic-html-accessibility]
+  why: "Como rodar verificações automáticas de acessibilidade (axe) e o que elas não pegam."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: vitest-guide
+  title: "Getting Started | Guide | Vitest"
+  author: "Vitest"
+  url: https://vitest.dev/guide/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [frontend-testing]
+  why: "Test runner para JS/TS usado nos exercícios de testes unitários e de DOM."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-records
+  title: "Using Records to Model Immutable Data - Dev.java"
+  author: "Oracle (dev.java)"
+  url: https://dev.java/learn/language/oop/records/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: "Records: componentes, construtor canônico compacto, equals/hashCode gerados."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-jshell
+  title: "JShell - The Java Shell Tool - Dev.java"
+  author: "Oracle (dev.java)"
+  url: https://dev.java/learn/first-steps/first-java-code/jshell-tool/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: "REPL do JDK para testar hipóteses sobre a linguagem em segundos."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-javap
+  title: "Javap - the Disassembler - Dev.java"
+  author: "Oracle (dev.java)"
+  url: https://dev.java/learn/jvm/core-tools/javap/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [java-fundamentals]
+  why: "Como usar javap para ver bytecode e o que o compilador gerou (records, lambdas, autoboxing)."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: javap-man-21
+  title: "The javap Command (JDK 21)"
+  author: "Oracle"
+  url: https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [java-fundamentals]
+  why: "Referência das opções do javap (-c, -p, -v)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-collections
+  title: "The Collections Framework - Dev.java"
+  author: "Oracle (dev.java)"
+  url: https://dev.java/learn/api/collections-and-streams/collections-framework/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: "Interfaces e implementações das coleções, para ligar ArrayList/HashMap ao vetor e à tabela hash feitos em C."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-exceptions
+  title: "Exceptions - Dev.java"
+  author: "Oracle (dev.java)"
+  url: https://dev.java/learn/language/annotations-exceptions/exceptions/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: "Checked vs unchecked, try-with-resources e propagação de exceções."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-auto-configuration
+  title: "Creating Your Own Auto-configuration :: Spring Boot"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [spring-web-backend]
+  why: "Mostra o mecanismo por trás da “mágica”: classes de auto-configuração com @Conditional*."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-dispatcher-servlet
+  title: "DispatcherServlet :: Spring Framework"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-servlet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [spring-web-backend]
+  why: "Como uma requisição HTTP chega ao seu @Controller: handler mappings, adapters, message converters."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-ioc-container
+  title: "Introduction to the Spring IoC Container and Beans :: Spring Framework"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-framework/reference/core/beans/introduction.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [spring-web-backend]
+  why: "O que é o container e por que injeção de dependência é só construção de objetos feita por outro."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jdbc-tutorial-basics
+  title: "Lesson: JDBC Basics (The Java Tutorials)"
+  author: "Oracle"
+  url: https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [jdbc-postgresql]
+  why: "Connection, Statement, ResultSet sem framework. Tutorial antigo, mas a API continua a mesma."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jdbc-transactions
+  title: "Using Transactions (The Java Tutorials)"
+  author: "Oracle"
+  url: https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [jdbc-postgresql]
+  why: "setAutoCommit(false), commit, rollback e savepoints."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jdbc-prepared-statements
+  title: "Using Prepared Statements (The Java Tutorials)"
+  author: "Oracle"
+  url: https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [jdbc-postgresql]
+  why: "Parâmetros com PreparedStatement — base da defesa contra SQL injection."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pgjdbc-docs
+  title: "Documentation | pgJDBC"
+  author: "PostgreSQL JDBC Driver project"
+  url: https://jdbc.postgresql.org/documentation/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Driver JDBC do PostgreSQL: URL de conexão, propriedades, tipos e comportamento do driver."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-jdbc-core
+  title: "Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling :: Spring Framework"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-framework/reference/data-access/jdbc/core.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "JdbcTemplate/JdbcClient: o que eles fazem por você (abrir/fechar, traduzir exceções) e o que continua sendo SQL seu."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-declarative-transactions
+  title: "Understanding the Spring Framework's Declarative Transaction Implementation :: Spring Framework"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/tx-decl-explained.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql, spring-web-backend]
+  why: "@Transactional é um proxy em volta do seu bean — explica por que chamadas internas não abrem transação."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-data-initialization
+  title: "Database Initialization :: Spring Boot"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-boot/how-to/data-initialization.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Como o Spring Boot executa migrações (Flyway/Liquibase) na inicialização."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: flyway-docs
+  title: "Redgate Flyway Documentation"
+  author: "Redgate"
+  url: https://documentation.red-gate.com/flyway
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Migrações versionadas: nomenclatura V1__, tabela de histórico e checksums."
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testcontainers-java
+  title: "Testcontainers for Java"
+  author: "Testcontainers (Docker)"
+  url: https://java.testcontainers.org/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Documentação oficial: containers descartáveis controlados pelo teste JUnit."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testcontainers-postgres-module
+  title: "Postgres Module - Testcontainers for Java"
+  author: "Testcontainers (Docker)"
+  url: https://java.testcontainers.org/modules/databases/postgres/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Módulo PostgreSQL: imagem, JDBC URL e scripts de inicialização."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testcontainers-getting-started-java
+  title: "Getting started with Testcontainers for Java"
+  author: "Testcontainers (Docker)"
+  url: https://testcontainers.com/guides/getting-started-with-testcontainers-for-java/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [backend-testing-java]
+  why: "Guia passo a passo de um teste de repositório contra PostgreSQL real."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-testing
+  title: "Testing :: Spring Boot"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-boot/reference/testing/index.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "@SpringBootTest, test slices e MockMvc — e o custo de subir o contexto inteiro."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-testcontainers
+  title: "Testcontainers :: Spring Boot"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-boot/reference/testing/testcontainers.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "@ServiceConnection e @DynamicPropertySource para ligar o contexto Spring ao container."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-security-authorization
+  title: "Authorization :: Spring Security"
+  author: "Spring (VMware/Broadcom)"
+  url: https://docs.spring.io/spring-security/reference/servlet/authorization/index.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [backend-testing-java, authorization]
+  why: "Como o Spring Security decide acesso, para escrever testes de limites de autorização."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-map-of-territory
+  title: "A Map of the Territory · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/a-map-of-the-territory.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [tokenizing-parsing]
+  why: "Capítulo 2: as etapas de uma implementação de linguagem (scanning, parsing, análise, execução)."
+  section: "Chapter 2"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-scanning
+  title: "Scanning · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/scanning.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [tokenizing-parsing]
+  why: "Capítulo 4: lexemas, tokens, lookahead e erros léxicos com número de linha."
+  section: "Chapter 4"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-representing-code
+  title: "Representing Code · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/representing-code.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [tokenizing-parsing]
+  why: "Capítulo 5: gramáticas livres de contexto e árvores sintáticas."
+  section: "Chapter 5"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-parsing-expressions
+  title: "Parsing Expressions · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/parsing-expressions.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tokenizing-parsing]
+  why: "Capítulo 6: precedência e associatividade codificadas em funções recursivas; erros de sintaxe e sincronização."
+  section: "Chapter 6"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-evaluating-expressions
+  title: "Evaluating Expressions · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/evaluating-expressions.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tree-walk-evaluation]
+  why: "Capítulo 7: avaliação pós-ordem da árvore, truthiness e erros de runtime."
+  section: "Chapter 7"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-statements-and-state
+  title: "Statements and State · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/statements-and-state.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [scope-environments, tree-walk-evaluation]
+  why: "Capítulo 8: variáveis, atribuição, blocos e ambientes encadeados."
+  section: "Chapter 8"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-functions
+  title: "Functions · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/functions.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [scope-environments]
+  why: "Capítulo 10: chamadas, ambiente por chamada e closures locais."
+  section: "Chapter 10"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-resolving-and-binding
+  title: "Resolving and Binding · Crafting Interpreters"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/resolving-and-binding.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [scope-environments]
+  why: "Capítulo 11: o bug de closure que um ambiente dinâmico causa e a passada de resolução estática que o corrige."
+  section: "Chapter 11"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: composing-programs-interpreters-combination
+  title: "3.4 Interpreters for Languages with Combination"
+  author: "John DeNero (Composing Programs)"
+  url: https://www.composingprograms.com/pages/34-interpreters-for-languages-with-combination.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [tokenizing-parsing, tree-walk-evaluation]
+  why: "Texto do CS 61A: interpretador de Calculator em Python com parsing e eval/apply."
+  section: "3.4"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: composing-programs-interpreters-abstraction
+  title: "3.5 Interpreters for Languages with Abstraction"
+  author: "John DeNero (Composing Programs)"
+  url: https://www.composingprograms.com/pages/35-interpreters-for-languages-with-abstraction.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [scope-environments]
+  why: "Texto do CS 61A: interpretador de Scheme com frames e ambientes."
+  section: "3.5"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-io-devices
+  title: "Operating Systems: Three Easy Pieces — I/O Devices"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/file-devices.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [systems-io-performance]
+  why: "Como o SO conversa com dispositivos (polling, interrupções, DMA) — o custo por trás de cada read/write."
+  section: "Chapter 36: I/O Devices"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-free-space
+  title: "Operating Systems: Three Easy Pieces — Free-Space Management"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [memory-allocators]
+  why: "Free list, splitting, coalescing, headers e políticas best/first/worst fit."
+  section: "Chapter 17: Free-Space Management"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-lock-based-data-structures
+  title: "Operating Systems: Three Easy Pieces — Lock-based Concurrent Data Structures"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [low-level-concurrency]
+  why: "Contadores, listas e filas com locks, incluindo medições de escalabilidade e o contador aproximado."
+  section: "Chapter 29: Lock-based Concurrent Data Structures"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-file-io
+  title: "Beej's Guide to C Programming — File Input/Output"
+  author: "Brian “Beej” Hall"
+  url: https://beej.us/guide/bgc/html/split/file-inputoutput.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [systems-io-performance]
+  why: "stdio com FILE*, leitura por linha e I/O binário — a camada com buffer acima das syscalls."
+  section: "9 File Input/Output"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-multithreading
+  title: "Beej's Guide to C Programming — Multithreading"
+  author: "Brian “Beej” Hall"
+  url: https://beej.us/guide/bgc/html/split/multithreading.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [low-level-concurrency]
+  why: "threads.h do C11: criar threads, mutex, condition variables."
+  section: "39 Multithreading"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-atomics
+  title: "Beej's Guide to C Programming — Atomics"
+  author: "Brian “Beej” Hall"
+  url: https://beej.us/guide/bgc/html/split/chapter-atomics.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [low-level-concurrency]
+  why: "stdatomic.h, atomic_flag, memory orders e acquire/release explicados com exemplos."
+  section: "40 Atomics"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-mmap
+  title: "mmap(2) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man2/mmap.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [systems-io-performance, memory-allocators]
+  why: "Mapear arquivos e memória anônima; usado por I/O e por alocadores para blocos grandes."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-setvbuf
+  title: "setbuf(3) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man3/setvbuf.3.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [systems-io-performance]
+  why: "Modos de buffer do stdio (unbuffered, line, full) e como mudar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-readv
+  title: "readv(2) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man2/readv.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [systems-io-performance]
+  why: "I/O vetorizado: várias regiões numa única syscall."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-perf-stat
+  title: "perf-stat(1) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man1/perf-stat.1.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [systems-io-performance, low-level-concurrency]
+  why: "Contadores de hardware e software (context switches, cache misses, ciclos)."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-brk
+  title: "brk(2) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man2/sbrk.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [memory-allocators]
+  why: "brk/sbrk: como a heap cresce, e por que malloc às vezes usa mmap no lugar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-futex
+  title: "futex(2) - Linux manual page"
+  author: "Linux man-pages project"
+  url: https://man7.org/linux/man-pages/man2/futex.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "A syscall usada por mutexes do glibc para dormir só quando há contenção."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: preshing-lock-free-intro
+  title: "An Introduction to Lock-Free Programming"
+  author: "Jeff Preshing"
+  url: https://preshing.com/20120612/an-introduction-to-lock-free-programming/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "CAS, operações read-modify-write e reordenação de memória com diagramas claros."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppreference-c-memory-order
+  title: "memory_order - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/atomic/memory_order
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "Referência precisa de relaxed, acquire, release e seq_cst em C."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jsconf-jake-archibald-in-the-loop
+  title: "Jake Archibald on the web browser event loop, setTimeout, micro tasks, requestAnimationFrame, ..."
+  author: "Jake Archibald (canal JSConf)"
+  url: https://www.youtube.com/watch?v=cCOL7MC4Pl0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [javascript-browser, rendering-performance]
+  why: "Palestra “In the Loop”: tasks, microtasks e requestAnimationFrame em relação ao render."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jsconf-philip-roberts-event-loop
+  title: "What the heck is the event loop anyway? | Philip Roberts | JSConf EU"
+  author: "Philip Roberts (canal JSConf)"
+  url: https://www.youtube.com/watch?v=8aGhZQkoFbQ
+  language: en
+  format: video
+  difficulty: intro
+  topics: [javascript-browser]
+  why: "Introdução visual a call stack, Web APIs e callback queue."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: chrome-debugging-accessibility-devtools-video
+  title: "Debugging accessibility with Chrome DevTools"
+  author: "Chrome for Developers"
+  url: https://www.youtube.com/watch?v=Th-nv-SCj4Q
+  language: en
+  format: video
+  difficulty: intro
+  topics: [semantic-html-accessibility, frontend-testing]
+  why: "Demonstra a accessibility tree completa no DevTools."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: blinkon-life-of-a-pixel
+  title: "Life of a Pixel"
+  author: "BlinkOn"
+  url: https://www.youtube.com/watch?v=K2QHdgAKP-s
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [rendering-performance, css-layout]
+  why: "Palestra de engenheiros do Chromium sobre o pipeline do navegador: DOM, style, layout, paint, composição e raster."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-39-historia-front-end-video
+  title: "A História do Front-End para Iniciantes em Programação | Série \"Começando aos 40\""
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=VKmPGmFY7H4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [semantic-html-accessibility, javascript-browser]
+  why: "Contexto histórico em português de HTML, CSS e JavaScript e da evolução dos navegadores."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kent-c-dodds-write-tests-video
+  title: "Kent C. Dodds – Write tests. Not too many. Mostly integration."
+  author: "Kent C. Dodds (canal Paul Dowman's tech events and interviews)"
+  url: https://www.youtube.com/watch?v=Fha2bVoC8SE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [frontend-testing]
+  why: "Versão em palestra do post do autor da Testing Library sobre onde investir em testes."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: oracle-java-bytecode-crash-course
+  title: "Java Bytecode Crash Course"
+  author: "Oracle Developers"
+  url: https://www.youtube.com/watch?v=e2zmmkc5xI0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [java-fundamentals]
+  why: "David Buck (Oracle) lê bytecode com javap: pilha de operandos, invocações, o que o javac gera."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-136-python-java-rust-video
+  title: "Python? Java? Rust? Qual a Diferença? | Discutindo Linguagens"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=MI9cdxETA4c
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: "Comparação em português de modelos de execução e de memória entre linguagens, incluindo a JVM."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-124-sockets-web-video
+  title: "Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [spring-web-backend]
+  why: "O que existe por baixo de um servidor web: sockets, HTTP em texto e o ciclo de requisição."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-118-servidor-sql-video
+  title: "Fiz um servidor de \"SQL\"?? | Entendendo Banco de Dados"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=_7nISfpofec
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [jdbc-postgresql]
+  why: "Em português: o que um servidor de banco faz entre receber SQL e devolver linhas."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-149-docker-compose-postgres-video
+  title: "Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=-yGHG3pnHLg
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Backend com PostgreSQL em containers sob teste de carga; contexto para testes contra banco real."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-117-compilada-interpretada-video
+  title: "Linguagem Compilada vs Interpretada | Qual é melhor?"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [tokenizing-parsing, tree-walk-evaluation]
+  why: "Vídeo do episódio #117: compilação, interpretação, bytecode e JIT em português."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61a-interpreters-su25-playlist
+  title: "Interpreters (Su25)"
+  author: "CS 61A Departmental (UC Berkeley)"
+  url: https://www.youtube.com/playlist?list=PLx38hZJ5RLZeeyD43PD6M-wNmMg88IZXW
+  language: en
+  format: video
+  difficulty: intro
+  topics: [tokenizing-parsing, tree-walk-evaluation]
+  why: "Aulas do CS 61A sobre interpretadores (Calculator/Scheme), ligadas na página oficial do curso."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61a-environments-su25-playlist
+  title: "Environments (Su25)"
+  author: "CS 61A Departmental (UC Berkeley)"
+  url: https://www.youtube.com/playlist?list=PLx38hZJ5RLZfuSmYOTG7sKY44pEC01398
+  language: en
+  format: video
+  difficulty: intro
+  topics: [scope-environments]
+  why: "Aulas do CS 61A sobre environment diagrams, frames e funções de ordem superior."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: strange-loop-julia-evans-systems-swiss-army-knife
+  title: "\"Systems programming as a swiss army knife\" by Julia Evans"
+  author: "Strange Loop Conference"
+  url: https://www.youtube.com/watch?v=HfD9IMZ9rKY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [systems-io-performance]
+  why: "Julia Evans mostra strace, /proc e outras ferramentas para ver o que um programa faz com o kernel."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-linux-performance-tools-1
+  title: "Linux Performance Tools, Brendan Gregg, part 1 of 2"
+  author: "Brendan Gregg"
+  url: https://www.youtube.com/watch?v=FJW8nGV4jxY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [systems-io-performance, low-level-concurrency]
+  why: "Tutorial sobre metodologia e ferramentas de observação (vmstat, iostat, strace, perf)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-45-memoria-1-video
+  title: "Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes  (Parte 5)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=9AK_1gqEfkQ
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [memory-allocators]
+  why: "Em português: stack, heap e como alocação de memória funciona por baixo."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-46-memoria-2-video
+  title: "Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=DGU1awKrNiA
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [memory-allocators]
+  why: "Continuação: fragmentação, coleta de lixo e custo de alocação."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-43-concorrencia-1-video
+  title: "Concorrência e Paralelismo (Parte 1) | Entendendo Back-End para Iniciantes (Parte 3)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=cx1ULv4wYxM
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [low-level-concurrency]
+  why: "Em português: concorrência vs paralelismo, threads e o papel do sistema operacional."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-44-concorrencia-2-video
+  title: "Concorrência e Paralelismo (Parte 2) | Entendendo Back-end para Iniciantes (Parte 4)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=gYJSWs-gp1g
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [low-level-concurrency]
+  why: "Continuação: modelos de concorrência e o custo de coordenação."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppcon-2017-pikus-atomics
+  title: "CppCon 2017: Fedor Pikus “C++ atomics, from basic to advanced.  What do they really do?”"
+  author: "Fedor Pikus (canal CppCon)"
+  url: https://www.youtube.com/watch?v=ZQFzMfHIxng
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "O que atomics fazem no hardware, custo de contenção em cache lines e memory orders — os conceitos valem para C11."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
