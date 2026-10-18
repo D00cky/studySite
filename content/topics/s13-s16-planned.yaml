@@ -1,0 +1,144 @@
+# Etapas 13–16 — visão geral. Lições completas ainda planejadas (status: planned).
+
+# --- Etapa 13: Sistemas distribuídos ------------------------------------------------
+
+- id: partial-failure-retries
+  stage: s13-distributed-systems
+  title: Falha parcial e retries
+  status: planned
+  objective: Explicar por que uma chamada remota pode falhar de formas ambíguas e aplicar retries com backoff e jitter.
+  whyItMatters: Retries ingênuos transformam uma lentidão pequena numa queda geral.
+  prerequisites: [timeouts-caching, bounded-queues]
+  mathThreads: [probability]
+  resources:
+    start: sre-book
+
+- id: idempotency
+  stage: s13-distributed-systems
+  title: Idempotência
+  status: planned
+  objective: Projetar operações que podem ser repetidas com segurança usando chaves de idempotência e constraints.
+  whyItMatters: Evita cobranças e pedidos duplicados quando a rede falha no meio.
+  prerequisites: [partial-failure-retries, transactions-basics]
+
+- id: queues-delivery-semantics
+  stage: s13-distributed-systems
+  title: Filas e semântica de entrega
+  status: planned
+  objective: Comparar entrega at-most-once, at-least-once e o que significa "exatamente uma vez" na prática.
+  whyItMatters: Processamento em background depende de entender o que pode ser duplicado ou perdido.
+  prerequisites: [idempotency, bounded-queues]
+  resources:
+    start: ddia
+
+- id: consistency-models
+  stage: s13-distributed-systems
+  title: Modelos de consistência
+  status: planned
+  objective: Distinguir consistência forte, eventual e causal com exemplos observáveis.
+  whyItMatters: Explica por que um usuário às vezes "não vê" o que acabou de salvar.
+  prerequisites: [queues-delivery-semantics, isolation-locks]
+  mathThreads: [logic]
+  resources:
+    start: jepsen-consistency
+    deeper: [ddia]
+
+# --- Etapa 14: Segurança ----------------------------------------------------------
+
+- id: authentication-sessions
+  stage: s14-security
+  title: Autenticação e sessões
+  status: planned
+  objective: Implementar login com hash de senha adequado e sessões seguras (cookies HttpOnly, Secure, SameSite).
+  whyItMatters: É a porta de entrada de qualquer sistema; erros aqui expõem todas as contas.
+  prerequisites: [http-protocol, relational-modeling-constraints]
+  resources:
+    start: owasp-cheatsheets
+
+- id: authorization
+  stage: s14-security
+  title: Autorização
+  status: planned
+  objective: Aplicar verificações de autorização no servidor para cada recurso e testar os limites de acesso.
+  whyItMatters: Acesso indevido a dados de outros usuários está entre as falhas mais comuns em aplicações web.
+  prerequisites: [authentication-sessions]
+  resources:
+    start: owasp-cheatsheets
+
+- id: input-validation
+  stage: s14-security
+  title: Validação de entrada e injeção
+  status: planned
+  objective: Validar entradas na fronteira e prevenir injeção de SQL e XSS com consultas parametrizadas e escaping.
+  whyItMatters: Injeção continua sendo uma das formas mais simples de comprometer um sistema.
+  prerequisites: [authentication-sessions, c-strings]
+  resources:
+    start: owasp-cheatsheets
+
+- id: secrets-threat-modeling
+  stage: s14-security
+  title: Segredos e threat modeling
+  status: planned
+  objective: Guardar segredos fora do código e conduzir um threat modeling simples de um sistema do time.
+  whyItMatters: Segredos vazados em repositórios e ameaças não pensadas viram incidentes.
+  prerequisites: [authorization, filesystem-permissions]
+
+# --- Etapa 15: Observabilidade e desempenho ---------------------------------------
+
+- id: logs-metrics-traces
+  stage: s15-observability-performance
+  title: Logs, métricas e traces
+  status: planned
+  objective: Instrumentar um serviço com logs estruturados, métricas e traces, e usar cada um para responder perguntas diferentes.
+  whyItMatters: Sem observabilidade, diagnosticar produção é adivinhação.
+  prerequisites: [http-protocol, processes-streams-exit-codes]
+  resources:
+    start: sre-book
+
+- id: profiling-benchmarks
+  stage: s15-observability-performance
+  title: Profiling e benchmarks
+  status: planned
+  objective: Medir onde o tempo é gasto com profilers e escrever benchmarks que resistem a ruído.
+  whyItMatters: Otimizar sem medir costuma piorar o código sem melhorar o desempenho.
+  prerequisites: [cpu-memory-caches, complexity-analysis]
+  resources:
+    start: brendan-gregg-perf
+
+- id: latency-percentiles-diagnosis
+  stage: s15-observability-performance
+  title: Latência, p95/p99 e diagnóstico
+  status: planned
+  objective: Interpretar distribuições de latência e conduzir um diagnóstico de lentidão do sintoma à causa.
+  whyItMatters: Médias escondem os usuários que mais sofrem; p99 revela.
+  prerequisites: [logs-metrics-traces, profiling-benchmarks, query-plans]
+  mathThreads: [probability]
+
+# --- Etapa 16: Infraestrutura e IA aplicada ----------------------------------------
+
+- id: containers-deployment
+  stage: s16-infra-applied-ai
+  title: Containers e deploy
+  status: planned
+  objective: Empacotar uma aplicação em container e explicar o que é isolado (processos, filesystem, rede).
+  whyItMatters: É a forma padrão de entregar e rodar serviços hoje.
+  prerequisites: [processes-syscalls, filesystems, architecture-ci]
+  resources:
+    start: docker-get-started
+
+- id: health-checks-rollback
+  stage: s16-infra-applied-ai
+  title: Health checks e rollback
+  status: planned
+  objective: Definir health checks significativos e um procedimento de rollback testado.
+  whyItMatters: Deploys falham; o que importa é detectar rápido e voltar com segurança.
+  prerequisites: [containers-deployment, logs-metrics-traces]
+
+- id: ai-evaluation-structured-outputs
+  stage: s16-infra-applied-ai
+  title: Avaliação, structured outputs e fallbacks em IA aplicada
+  status: planned
+  objective: Integrar um modelo de linguagem com saídas estruturadas validadas, avaliação com casos de teste e fallback quando a resposta falha.
+  whyItMatters: Funcionalidades com IA precisam dos mesmos cuidados de engenharia — validação, testes e degradação controlada.
+  prerequisites: [interfaces-testing, partial-failure-retries]
+  mathThreads: [probability]

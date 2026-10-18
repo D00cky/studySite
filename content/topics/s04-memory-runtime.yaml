@@ -1,0 +1,318 @@
+# Etapa 4 — Memória e runtime
+
+- id: pointers
+  stage: s04-memory-runtime
+  title: Ponteiros
+  status: authored
+  objective: Usar ponteiros para ler e alterar dados por endereço, explicando a relação entre ponteiros, arrays e passagem de parâmetros.
+  whyItMatters: Ponteiros explicam referências em Java, objetos em JavaScript, estruturas de dados encadeadas e a interface do sistema operacional. Erros com ponteiros estão entre as falhas de segurança mais comuns em software escrito em C.
+  prerequisites: [c-arrays-structs]
+  related: [stack-heap-lifetime, c-strings]
+  mathThreads: [logic]
+  explanation: |
+    Um **ponteiro** é uma variável que guarda um endereço de memória. `int *p = &x;` faz `p` guardar o endereço de `x`; `*p` acessa o valor nesse endereço. Alterar `*p` altera `x`.
+
+    É assim que uma função altera dados de quem a chamou: em vez do valor, recebe o endereço (`void incrementa(int *n) { (*n)++; }`).
+
+    **Aritmética de ponteiros** anda em unidades do tipo apontado: se `p` aponta para um `int`, `p + 1` aponta para o próximo `int`, `sizeof(int)` bytes adiante. `v[i]` é definido como `*(v + i)` — por isso arrays e ponteiros andam juntos.
+
+    `NULL` indica "não aponta para nada". Desreferenciar NULL, um ponteiro não inicializado ou um endereço já liberado é comportamento indefinido.
+  misconceptions:
+    - claim: Ponteiro e array são a mesma coisa.
+      correction: Um array é um bloco de memória; um ponteiro guarda um endereço. O array decai para ponteiro em muitas expressões, mas sizeof e atribuição se comportam diferente.
+    - claim: p + 1 avança um byte.
+      correction: Avança sizeof(*p) bytes.
+    - claim: Um ponteiro não inicializado vale NULL.
+      correction: Variáveis locais não inicializadas têm valor indeterminado. Inicialize explicitamente.
+  resources:
+    start: beej-c-pointers
+    deeper: [beej-c-pointers2, cs50-memory, gdb-sample-session]
+  exercise:
+    id: ex-swap-and-walk
+    title: swap e percurso por ponteiro
+    prediction: Escreva o que acontece com `a` e `b` se `swap` receber os valores em vez dos endereços.
+    steps:
+      - Escreva `swap_errado(int a, int b)` e `swap(int *a, int *b)` e mostre a diferença.
+      - Imprima endereços com `%p` de variáveis locais e dos elementos de um array.
+      - Percorra um array usando só aritmética de ponteiros, sem índices.
+      - Desenhe a memória (caixas e setas) antes e depois do swap.
+    checks:
+      - O desenho mostra endereços e valores coerentes com a saída.
+      - Você explica a diferença de endereço entre elementos consecutivos.
+  experiment:
+    title: Observar ponteiros no depurador
+    steps:
+      - Compile com `-g -O0` e abra no gdb.
+      - Coloque um breakpoint em swap, use `print a`, `print *a`, `print &x` e `x/4xw` num array.
+      - Passe um ponteiro NULL para swap, rode e observe a falha; use `bt` para ver a pilha.
+    observe:
+      - Endereços e valores mostrados pelo gdb.
+      - A mensagem de segmentation fault e o backtrace.
+  reflectionQuestions:
+    - Por que v[i] e *(v + i) são equivalentes?
+    - O que uma referência em Java tem em comum com um ponteiro, e o que ela proíbe?
+    - Como você protegeria uma função contra receber NULL?
+  completionCriteria:
+    - Implementa swap com ponteiros e explica a diferença para a versão por valor.
+    - Percorre um array com aritmética de ponteiros e explica o deslocamento em bytes.
+    - Usa o gdb para inspecionar ponteiros e diagnosticar uma desreferência de NULL.
+  evidencePrompts:
+    - Código e desenho da memória do swap.
+    - Sessão do gdb com print, x e bt anotados.
+  firstAction: Declare `int x = 5; int *p = &x;` e imprima `p`, `*p` e `&p`.
+
+- id: stack-heap-lifetime
+  stage: s04-memory-runtime
+  title: Stack, heap e lifetime
+  status: authored
+  objective: Explicar onde cada tipo de variável vive, quanto tempo ela existe e por que devolver o endereço de uma variável local é um erro.
+  whyItMatters: Ponteiros pendurados, stack overflow por recursão e vazamentos vêm de não saber quanto tempo um dado vive. O mesmo raciocínio aparece na coleta de lixo em Java e em closures de JavaScript.
+  prerequisites: [pointers]
+  related: [dynamic-allocation-ownership, cpu-memory-caches]
+  explanation: |
+    Um processo tem regiões de memória com papéis diferentes. As principais para começar:
+
+    - **Stack**: guarda variáveis locais e informações de cada chamada de função (o *stack frame*). Cresce quando uma função é chamada e encolhe quando ela retorna. Rápida e automática, mas limitada em tamanho.
+    - **Heap**: memória pedida explicitamente com `malloc` e devolvida com `free`. Vive até alguém liberar.
+    - **Dados estáticos**: variáveis globais e `static`, que existem durante toda a execução.
+
+    **Lifetime** é o intervalo em que um objeto existe. Uma variável local deixa de existir quando a função retorna; um ponteiro para ela vira um *dangling pointer*. O valor pode até parecer correto por um tempo — até a próxima chamada reaproveitar aquele espaço da stack.
+
+    Recursão muito profunda esgota a stack e gera *stack overflow*.
+  misconceptions:
+    - claim: Se o valor ainda aparece certo, devolver o endereço de uma variável local funciona.
+      correction: É comportamento indefinido; o espaço será reutilizado pela próxima chamada.
+    - claim: Heap é mais lenta porque fica num lugar diferente da RAM.
+      correction: Stack e heap estão ambas na memória do processo. A diferença está no custo de gerenciar a alocação e no padrão de acesso.
+    - claim: Variáveis globais vivem na stack de main.
+      correction: Vivem na região de dados estáticos, durante toda a execução.
+  resources:
+    start: ostep-memory-api
+    deeper: [akita-memory-1, ostep-address-spaces, csapp]
+  exercise:
+    id: ex-memory-map
+    title: Mapa de endereços
+    prediction: Ordene por endereço (do menor para o maior) uma global, uma local de main, uma local de uma função chamada e um bloco de malloc.
+    steps:
+      - Escreva um programa que imprime com `%p` os quatro endereços da previsão.
+      - Rode o programa e compare com `cat /proc/<pid>/maps` (use um `getchar()` para pausar).
+      - Identifique em qual região de `maps` cada endereço cai.
+      - Rode duas vezes e explique por que os endereços mudam (pesquise ASLR).
+    checks:
+      - Cada endereço está associado à região correta de /proc/pid/maps.
+      - Você menciona ASLR ao explicar a variação.
+  experiment:
+    title: Dangling pointer e stack overflow
+    steps:
+      - Escreva uma função que devolve o endereço de um array local e use-o depois de chamar outra função.
+      - Compile com `-Wall` e depois com `-fsanitize=address` e compare.
+      - Escreva uma recursão sem caso base, rode e observe a falha; veja o limite com `ulimit -s`.
+    observe:
+      - O aviso do compilador e o relatório do sanitizer.
+      - Em que profundidade aproximada a recursão falha e o valor de `ulimit -s`.
+  reflectionQuestions:
+    - Por que a stack não serve para dados que precisam viver após a função retornar?
+    - Quem decide quando a memória da heap é liberada em C? E em Java?
+    - Como closures em JavaScript mantêm variáveis vivas depois que a função externa retorna?
+  completionCriteria:
+    - Associa endereços reais às regiões de memória do processo.
+    - Reproduz um dangling pointer e mostra o diagnóstico de uma ferramenta.
+    - Explica lifetime de locais, globais e alocações na heap.
+  evidencePrompts:
+    - Saída do programa ao lado do trecho relevante de /proc/pid/maps.
+    - Relatório do sanitizer sobre o dangling pointer.
+  firstAction: Imprima o endereço de uma variável local em main e de outra dentro de uma função chamada por main. Qual é maior?
+
+- id: dynamic-allocation-ownership
+  stage: s04-memory-runtime
+  title: Alocação dinâmica e ownership
+  status: authored
+  objective: Alocar, redimensionar e liberar memória corretamente, definindo explicitamente quem é dono de cada bloco.
+  whyItMatters: Vazamentos, double free e use-after-free derrubam servidores e abrem falhas de segurança. Ownership explícito é o que linguagens como Rust formalizam e o que APIs bem documentadas deixam claro.
+  prerequisites: [stack-heap-lifetime]
+  related: [memory-debugging, c-strings]
+  mathThreads: [proofs]
+  explanation: |
+    `malloc(n)` reserva n bytes na heap e devolve um ponteiro (ou NULL se falhar). `calloc` também zera a memória. `realloc(p, n)` muda o tamanho e **pode mover o bloco** — o ponteiro antigo deixa de valer. `free(p)` devolve o bloco.
+
+    C não diz quem deve chamar `free`. Por isso definimos uma regra de **ownership**: para cada bloco, exatamente um dono é responsável por liberá-lo. Documente isso na interface: "a função devolve memória que o chamador deve liberar" ou "a função apenas empresta o ponteiro".
+
+    Os erros clássicos:
+    - **Leak**: o último ponteiro para um bloco se perde sem free.
+    - **Double free**: liberar o mesmo bloco duas vezes.
+    - **Use-after-free**: usar um ponteiro depois do free.
+
+    Um bom hábito: escreva o `free` junto com o `malloc` e trate o NULL de `realloc` sem perder o ponteiro original.
+  misconceptions:
+    - claim: realloc sempre aumenta o bloco no mesmo lugar.
+      correction: Pode mover o bloco para outro endereço; use sempre o ponteiro devolvido.
+    - claim: Depois de free, o ponteiro vira NULL.
+      correction: Continua com o endereço antigo. Atribua NULL manualmente se for reutilizar a variável.
+    - claim: Vazamentos não importam porque o sistema libera tudo quando o programa termina.
+      correction: Em processos de longa duração, como servidores, vazamentos se acumulam até esgotar a memória.
+  resources:
+    start: beej-c-malloc
+    deeper: [ostep-memory-api, akita-memory-2, man-malloc, valgrind-quickstart, cert-c]
+  exercise:
+    id: ex-dynamic-array-core
+    title: Um vetor que cresce
+    prediction: Quantas chamadas a realloc acontecem ao inserir 1000 elementos se a capacidade dobra a partir de 4?
+    steps:
+      - Implemente `struct vec { int *data; size_t len, cap; }` com `vec_init`, `vec_push`, `vec_get` e `vec_free`.
+      - Dobre a capacidade quando cheio, tratando falha de realloc sem perder os dados.
+      - Conte e imprima quantas vezes realloc foi chamado e compare com a previsão.
+      - Documente no header quem é dono do buffer e quando ele é liberado.
+    checks:
+      - Valgrind ou ASan não reportam leaks nem acessos inválidos.
+      - O tratamento de falha de realloc preserva o ponteiro original.
+  experiment:
+    title: Provocar os três erros e ver como as ferramentas os mostram
+    steps:
+      - Remova o free e rode com `valgrind --leak-check=full`.
+      - Chame free duas vezes e rode com `-fsanitize=address`.
+      - Leia um elemento depois do free e rode com ASan de novo.
+    observe:
+      - O tipo de erro que cada ferramenta reporta e a pilha de chamadas.
+      - Onde o bloco foi alocado e onde foi liberado, segundo o relatório.
+  reflectionQuestions:
+    - Por que dobrar a capacidade torna o push barato em média?
+    - Como você documentaria ownership numa função que devolve uma string?
+    - O que um coletor de lixo resolve e o que ele não resolve?
+  completionCriteria:
+    - Implementa um vetor dinâmico sem leaks ou acessos inválidos verificados por ferramenta.
+    - Reproduz leak, double free e use-after-free e interpreta os relatórios.
+    - Documenta claramente as regras de ownership da própria interface.
+  evidencePrompts:
+    - Link do código do vetor e saída limpa do valgrind ou ASan.
+    - Relatórios dos três erros provocados, com a linha culpada destacada.
+  firstAction: Escreva um programa com um malloc sem free e rode `valgrind ./programa`. Encontre a palavra "definitely".
+
+- id: c-strings
+  stage: s04-memory-runtime
+  title: Strings em C
+  status: authored
+  objective: Manipular strings como arrays de bytes terminados em `\0`, evitando estouros de buffer e explicando a relação com encoding.
+  whyItMatters: Estouros de buffer em strings causaram algumas das falhas de segurança mais conhecidas. Entender a representação explica por que outras linguagens guardam o tamanho junto com o texto.
+  prerequisites: [pointers, text-encoding]
+  related: [dynamic-allocation-ownership]
+  explanation: |
+    Em C, uma string é um array de `char` terminado pelo byte **`\0`**. Não há campo de tamanho: `strlen` percorre os bytes até achar o zero. Por isso `strlen` é O(n) e uma string sem terminador faz funções lerem memória além do fim.
+
+    Literais como `"oi"` ocupam 3 bytes (`o`, `i`, `\0`) e normalmente ficam em memória somente leitura — alterá-los é comportamento indefinido. `char s[] = "oi";` cria uma cópia modificável na stack.
+
+    `strcpy` e `strcat` não sabem o tamanho do destino. Prefira funções que recebem o tamanho, como `snprintf`, e sempre reserve espaço para o terminador. `strncpy` tem armadilhas: pode não colocar o `\0`.
+
+    Como as strings são bytes, `strlen("ação")` em UTF-8 é 6.
+  misconceptions:
+    - claim: strlen conta caracteres.
+      correction: Conta bytes até o primeiro \0.
+    - claim: strncpy sempre termina a string com \0.
+      correction: Não termina se a origem for maior ou igual ao limite.
+    - claim: char *s = "texto"; s[0] = 'T'; funciona.
+      correction: Literais normalmente estão em memória somente leitura; alterar é comportamento indefinido.
+  resources:
+    start: beej-c-strings
+    deeper: [beej-c-strings-ii, cert-c, asan]
+  exercise:
+    id: ex-safe-strings
+    title: Implementar strlen e uma cópia segura
+    prediction: Quantos bytes você precisa reservar para copiar "ação" incluindo o terminador?
+    steps:
+      - Implemente `meu_strlen` com ponteiros e compare com `strlen` em vários casos, incluindo string vazia.
+      - Implemente `copia_segura(char *dst, size_t cap, const char *src)` que sempre termina com `\0` e retorna se truncou.
+      - Teste com origem menor, igual e maior que o destino.
+      - Explique por que `meu_strlen` é O(n).
+    checks:
+      - Todos os casos de teste passam, inclusive o de truncamento.
+      - A função nunca escreve além de cap bytes.
+  experiment:
+    title: Estourar um buffer e ver o sanitizer pegar
+    steps:
+      - Use `strcpy` para copiar uma string longa num buffer pequeno.
+      - Rode com e sem `-fsanitize=address` e compare.
+      - Substitua por `snprintf` ou pela sua `copia_segura` e repita.
+    observe:
+      - O comportamento sem sanitizer (pode parecer funcionar).
+      - O relatório de stack-buffer-overflow do ASan.
+  reflectionQuestions:
+    - Por que guardar o tamanho junto com a string evita uma classe inteira de bugs?
+    - Que informação falta à função strcpy para ser segura?
+    - Como entradas de usuário viram estouros de buffer?
+  completionCriteria:
+    - Implementa strlen e uma cópia limitada com testes de casos-limite.
+    - Demonstra um estouro de buffer detectado pelo ASan e a correção.
+    - Explica a representação com terminador e suas consequências.
+  evidencePrompts:
+    - Código e saída dos testes das funções de string.
+    - Relatório do ASan antes da correção e execução limpa depois.
+  firstAction: Imprima `sizeof("oi")` e `strlen("oi")` e explique a diferença.
+
+- id: memory-debugging
+  stage: s04-memory-runtime
+  title: Depuração de memória e de programas
+  status: authored
+  objective: Diagnosticar falhas com gdb, Valgrind e sanitizers, partindo de um sintoma até a causa com evidência.
+  whyItMatters: Saber depurar é o que separa adivinhar de investigar. As mesmas atitudes — reproduzir, isolar, observar, formular hipótese — valem para bugs em Java, em produção e em sistemas distribuídos.
+  prerequisites: [dynamic-allocation-ownership]
+  related: [pointers, c-strings]
+  mathThreads: [logic]
+  explanation: |
+    Depurar é um método, não um talento:
+
+    1. **Reproduza** o problema de forma confiável e mínima.
+    2. **Observe** em vez de supor: adicione prints, use um depurador, rode com sanitizers.
+    3. **Formule uma hipótese** que explique todos os sintomas.
+    4. **Teste a hipótese** mudando uma coisa de cada vez.
+    5. **Registre** causa, correção e como você confirmou.
+
+    Ferramentas para C:
+    - **gdb**: breakpoints, execução passo a passo, inspeção de variáveis e de memória, backtrace depois de uma falha.
+    - **AddressSanitizer** (`-fsanitize=address`): detecta acessos fora do limite e uso depois de free no momento em que acontecem.
+    - **UndefinedBehaviorSanitizer** (`-fsanitize=undefined`): aponta overflow de signed, shifts inválidos e afins.
+    - **Valgrind** (memcheck): detecta leaks e acessos inválidos sem recompilar, com execução bem mais lenta.
+
+    Compile com `-g` para que as ferramentas mostrem linhas de código.
+  misconceptions:
+    - claim: Se não travou, não há bug de memória.
+      correction: Corrupção de memória pode passar despercebida e causar falhas em outro ponto. Sanitizers revelam o erro onde ele acontece.
+    - claim: Depurar é ler o código até achar o erro.
+      correction: Observar a execução com ferramentas costuma ser mais rápido e mais confiável do que reler o código.
+    - claim: Posso usar ASan e Valgrind juntos.
+      correction: Use um de cada vez; eles instrumentam a memória de formas incompatíveis.
+  resources:
+    start: gdb-sample-session
+    deeper: [valgrind-quickstart, asan, missing-semester-debugging, akita-fixing-c]
+  exercise:
+    id: ex-debug-journal
+    title: Diário de depuração
+    prediction: Antes de usar qualquer ferramenta, escreva sua hipótese sobre a causa da falha.
+    steps:
+      - Pegue um programa com bug (troque com um colega ou use um dos experimentos anteriores).
+      - Reproduza a falha com o menor número possível de passos.
+      - Use gdb para obter o backtrace e inspecionar as variáveis no ponto da falha.
+      - Confirme com ASan ou Valgrind e corrija.
+      - "Escreva um diário: sintoma, hipóteses, observações, causa, correção e verificação."
+    checks:
+      - O diário mostra pelo menos uma hipótese descartada por evidência.
+      - A correção vem acompanhada de uma execução limpa na ferramenta.
+  experiment:
+    title: Mesmo bug, três ferramentas
+    steps:
+      - Escreva um programa com um acesso fora do limite na heap.
+      - Rode sem ferramentas, com Valgrind e com ASan; compare velocidade e informação.
+      - No gdb, use um watchpoint para descobrir quem altera uma variável inesperadamente.
+    observe:
+      - O que cada ferramenta reporta e quanto tempo cada execução leva.
+      - Em que linha o watchpoint dispara.
+  reflectionQuestions:
+    - Qual parte do método de depuração você costuma pular?
+    - Quando você escolheria Valgrind em vez de ASan?
+    - Como um caso de reprodução mínimo ajuda numa revisão de código?
+  completionCriteria:
+    - Produz um diário de depuração com hipóteses, observações e verificação.
+    - Usa gdb para obter backtrace e inspecionar estado numa falha real.
+    - Compara Valgrind e ASan num mesmo bug e justifica quando usar cada um.
+  evidencePrompts:
+    - Diário de depuração completo.
+    - Saídas das três ferramentas no mesmo bug, com comentários.
+  firstAction: Compile um programa seu com `-g -fsanitize=address,undefined` e rode. Anote se algo aparece.

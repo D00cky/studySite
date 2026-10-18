@@ -1,0 +1,166 @@
+# Etapas 9–12 — visão geral. Lições completas ainda planejadas (status: planned).
+
+# --- Etapa 9: Redes ---------------------------------------------------------------
+
+- id: dns-ip
+  stage: s09-networking
+  title: DNS e IP
+  status: planned
+  objective: Rastrear como um nome vira um endereço IP e como pacotes chegam ao destino, usando dig, ip e traceroute.
+  whyItMatters: Boa parte dos incidentes de "o site caiu" começa em DNS ou roteamento.
+  prerequisites: [processes-streams-exit-codes, binary-hexadecimal]
+  resources:
+    start: akita-networks-1
+    deeper: [akita-networks-3]
+
+- id: tcp-udp-sockets
+  stage: s09-networking
+  title: TCP, UDP e sockets
+  status: planned
+  objective: Escrever um cliente e um servidor TCP com sockets, tratando leituras parciais e conexões encerradas.
+  whyItMatters: Todo protocolo de aplicação — HTTP, PostgreSQL, Redis — roda sobre isso.
+  prerequisites: [dns-ip, file-descriptors]
+  resources:
+    start: beej-network
+    deeper: [beej-network-ptbr]
+
+- id: http-protocol
+  stage: s09-networking
+  title: HTTP
+  status: planned
+  objective: Ler e escrever requisições e respostas HTTP à mão, incluindo métodos, status, cabeçalhos e corpo.
+  whyItMatters: É a interface de praticamente todo backend e frontend que vamos construir.
+  prerequisites: [tcp-udp-sockets, text-encoding]
+  resources:
+    start: mdn-learn
+
+- id: tls-concepts
+  stage: s09-networking
+  title: Conceitos de TLS
+  status: planned
+  objective: Explicar o que TLS garante (confidencialidade, integridade, autenticidade do servidor) e inspecionar um certificado.
+  whyItMatters: Configurar HTTPS e diagnosticar erros de certificado é rotina em deploy.
+  prerequisites: [http-protocol]
+  resources:
+    start: akita-crypto-1
+
+- id: timeouts-caching
+  stage: s09-networking
+  title: Timeouts e caching
+  status: planned
+  objective: Configurar timeouts de conexão e leitura e usar cabeçalhos de cache HTTP corretamente.
+  whyItMatters: Sem timeouts, uma dependência lenta trava o sistema inteiro; cache errado serve dados velhos.
+  prerequisites: [http-protocol]
+  mathThreads: [probability]
+
+# --- Etapa 10: Modelagem de dados e SQL -------------------------------------------
+
+- id: relational-modeling-constraints
+  stage: s10-data-modeling-sql
+  title: Modelagem relacional e constraints
+  status: planned
+  objective: Modelar entidades e relacionamentos em tabelas e proteger invariantes com constraints (NOT NULL, UNIQUE, CHECK, FOREIGN KEY).
+  whyItMatters: Constraints impedem dados inválidos mesmo quando o código da aplicação tem bugs.
+  prerequisites: [terminal-shell, complexity-analysis]
+  mathThreads: [sets, logic]
+  resources:
+    start: postgres-tutorial
+    deeper: [postgres-constraints]
+
+- id: joins-aggregation
+  stage: s10-data-modeling-sql
+  title: Joins e agregação
+  status: planned
+  objective: Escrever consultas com joins, GROUP BY e funções de agregação, prevendo o número de linhas do resultado.
+  whyItMatters: Relatórios, dashboards e APIs dependem de consultas corretas e eficientes.
+  prerequisites: [relational-modeling-constraints]
+  mathThreads: [sets]
+  resources:
+    start: postgres-queries
+
+- id: transactions-basics
+  stage: s10-data-modeling-sql
+  title: Transações
+  status: planned
+  objective: Usar transações para manter invariantes em operações de várias etapas e explicar atomicidade.
+  whyItMatters: Transferências, reservas e pedidos precisam ser tudo-ou-nada.
+  prerequisites: [joins-aggregation]
+  resources:
+    start: postgres-tutorial
+
+# --- Etapa 11: Internals de banco de dados -----------------------------------------
+
+- id: indexes
+  stage: s11-database-internals
+  title: Índices
+  status: planned
+  objective: Criar índices B-tree e compostos e explicar quando eles ajudam e quando atrapalham.
+  whyItMatters: A diferença entre uma consulta de milissegundos e uma de minutos costuma ser um índice.
+  prerequisites: [joins-aggregation, binary-search-trees]
+  resources:
+    start: postgres-indexes
+    deeper: [use-the-index-luke]
+
+- id: query-plans
+  stage: s11-database-internals
+  title: Query plans
+  status: planned
+  objective: Ler a saída de EXPLAIN ANALYZE e relacionar escolhas do planner com estatísticas e índices.
+  whyItMatters: É a ferramenta principal para diagnosticar consultas lentas.
+  prerequisites: [indexes]
+  resources:
+    start: postgres-explain
+
+- id: isolation-locks
+  stage: s11-database-internals
+  title: Isolamento e locks
+  status: planned
+  objective: Reproduzir anomalias de concorrência em transações e explicar os níveis de isolamento do PostgreSQL.
+  whyItMatters: Evita vender o mesmo assento duas vezes ou perder atualizações.
+  prerequisites: [transactions-basics, deadlocks]
+  resources:
+    start: postgres-mvcc
+
+- id: pagination
+  stage: s11-database-internals
+  title: Paginação
+  status: planned
+  objective: Comparar paginação por OFFSET e por keyset, medindo o custo em tabelas grandes.
+  whyItMatters: Listagens infinitas e APIs públicas sofrem com OFFSET em tabelas grandes.
+  prerequisites: [indexes, query-plans]
+
+# --- Etapa 12: Engenharia de software ----------------------------------------------
+
+- id: requirements-modularity
+  stage: s12-software-engineering
+  title: Requisitos e modularidade
+  status: planned
+  objective: Transformar uma necessidade em requisitos verificáveis e dividir o sistema em módulos com responsabilidades claras.
+  whyItMatters: A maior parte do custo de software está em mudar código mal dividido.
+  prerequisites: [linking-object-files, complexity-analysis]
+
+- id: interfaces-testing
+  stage: s12-software-engineering
+  title: Interfaces e testes
+  status: planned
+  objective: Projetar interfaces testáveis e escrever testes unitários e de integração que verificam comportamento.
+  whyItMatters: Testes permitem mudar código com confiança e documentam o comportamento esperado.
+  prerequisites: [requirements-modularity]
+  resources:
+    start: akita-why-test
+
+- id: refactoring
+  stage: s12-software-engineering
+  title: Refatoração
+  status: planned
+  objective: Melhorar a estrutura do código em passos pequenos, sem mudar o comportamento, protegido por testes.
+  whyItMatters: Mantém o código mutável à medida que os requisitos mudam.
+  prerequisites: [interfaces-testing, git-fundamentals]
+
+- id: architecture-ci
+  stage: s12-software-engineering
+  title: Arquitetura e integração contínua
+  status: planned
+  objective: Documentar decisões de arquitetura e configurar um pipeline de CI que compila, testa e falha cedo.
+  whyItMatters: Decisões registradas e CI confiável reduzem regressões e discussões repetidas.
+  prerequisites: [interfaces-testing, processes-streams-exit-codes]

@@ -1,0 +1,252 @@
+# Projetos que ensinam mecanismos.
+# Todos usam um domínio pequeno em comum — tarefas (tasks) — para conectar os conceitos:
+# a CLI de tarefas vira, ao longo das etapas, a plataforma cumulativa.
+# Experimentos rodam sempre em pastas de laboratório, nunca em sistemas de produção.
+
+- id: c-task-cli
+  title: CLI de tarefas em C
+  status: authored
+  cumulative: false
+  topics: [processes-streams-exit-codes, c-types-functions, c-arrays-structs, compilation-pipeline, linking-object-files, filesystem-permissions]
+  question: Como um programa de linha de comando recebe argumentos, guarda dados entre execuções e comunica sucesso ou falha para o shell?
+  prerequisites: [processes-streams-exit-codes, c-types-functions]
+  minimalVersion: |
+    `tasks add "texto"`, `tasks list` e `tasks done <id>`, guardando as tarefas num arquivo texto
+    (uma por linha). Exit code 0 em sucesso, 1 em uso incorreto e 2 em erro de arquivo.
+    Mensagens de erro vão para stderr; a listagem vai para stdout.
+  extensions:
+    - Dividir em vários arquivos (.c/.h) com Makefile e testes de linha de comando em shell.
+    - Escrita atômica do arquivo (escrever num temporário e renomear) e explicar por quê.
+    - Filtrar com `tasks list --pending` e combinar com outros programas via pipes.
+    - Formato binário de registros de tamanho fixo e comparação com o formato texto.
+  constraints:
+    - Sem bibliotecas além da libc.
+    - Compilar com `-Wall -Wextra -std=c17` sem avisos.
+    - Toda função que pode falhar retorna um código de erro verificado por quem chama.
+  milestones:
+    - id: m1-args
+      title: Argumentos e exit codes
+      description: Interpretar `argv`, imprimir uso em stderr e sair com códigos documentados.
+      minutes: 25
+    - id: m2-add-list
+      title: Adicionar e listar
+      description: Gravar tarefas num arquivo e listá-las com ids.
+      minutes: 50
+    - id: m3-done
+      title: Concluir tarefas
+      description: Marcar uma tarefa como concluída reescrevendo o arquivo com segurança.
+      minutes: 50
+    - id: m4-errors
+      title: Erros de arquivo
+      description: Tratar arquivo inexistente, sem permissão e corrompido com mensagens claras.
+      minutes: 25
+    - id: m5-build
+      title: Pipeline de build
+      description: Separar em módulos, escrever Makefile e documentar cada etapa da compilação.
+      minutes: 50
+  edgeCases:
+    - Texto da tarefa com espaços, aspas, acentos ou vazio.
+    - Id inexistente, negativo ou não numérico.
+    - Arquivo de dados ausente na primeira execução.
+    - Arquivo sem permissão de escrita.
+  failureExperiments:
+    - Remover a permissão de escrita do arquivo de dados e observar mensagem e exit code.
+    - Matar o programa (kill -9) durante a gravação e verificar se o arquivo ficou corrompido.
+    - Remover um .o do linking e ler o erro do linker.
+  tools: [gcc, make, nm, strace, valgrind, "echo $?"]
+  acceptanceCriteria:
+    - Os três comandos funcionam e os dados persistem entre execuções.
+    - Exit codes e uso de stdout/stderr seguem a especificação e são demonstrados.
+    - Todos os casos-limite listados têm comportamento definido e testado.
+    - O build é feito por Makefile e recompila só o necessário.
+  evidence:
+    - Link do repositório com README explicando build e uso.
+    - Saída de um script de testes cobrindo sucesso e erros com os exit codes.
+    - Saída do strace mostrando as syscalls de leitura e escrita do arquivo.
+  reviewQuestions:
+    - Por que mensagens de erro vão para stderr? O que quebra se forem para stdout?
+    - O que acontece com seus dados se o processo morrer no meio da gravação?
+    - Qual etapa do pipeline de compilação produziria cada um dos erros que você encontrou?
+
+- id: dynamic-array-hash-table
+  title: Vetor dinâmico e tabela hash
+  status: authored
+  cumulative: false
+  topics: [dynamic-allocation-ownership, pointers, memory-debugging, dynamic-arrays, hash-tables]
+  question: Como estruturas que crescem gerenciam memória, e o que acontece com desempenho e correção quando colisões e redimensionamentos entram em jogo?
+  prerequisites: [dynamic-allocation-ownership, c-strings]
+  minimalVersion: |
+    Um vetor dinâmico de inteiros (push, get, len, free) e uma tabela hash de string → int com
+    encadeamento separado (put, get, delete, free), ambos sem leaks verificados por ferramenta.
+    A tabela guarda tarefas por id textual, conectando ao domínio da CLI de tarefas.
+  extensions:
+    - Redimensionar a tabela quando o fator de carga passa de um limite e medir o efeito.
+    - Implementar endereçamento aberto (linear probing) e comparar com encadeamento.
+    - Comparar duas funções de hash e medir a distribuição dos buckets.
+    - Benchmark da tabela contra busca linear num array para tamanhos crescentes.
+  constraints:
+    - Implementação manual, sem bibliotecas de estruturas de dados.
+    - Ownership documentado no header de cada função (quem aloca, quem libera).
+    - Rodar a suíte de testes com ASan e com Valgrind sem erros.
+  milestones:
+    - id: m1-vec
+      title: Vetor dinâmico
+      description: push/get/free com capacidade dobrando e tratamento de falha de realloc.
+      minutes: 50
+    - id: m2-hash-fn
+      title: Função de hash
+      description: Implementar e testar uma função de hash para strings.
+      minutes: 25
+    - id: m3-chaining
+      title: Encadeamento separado
+      description: put/get/delete com listas por bucket e cópia das chaves.
+      minutes: 75
+    - id: m4-resize
+      title: Redimensionamento
+      description: Rehash ao ultrapassar o fator de carga, medindo antes e depois.
+      minutes: 50
+    - id: m5-bench
+      title: Medições
+      description: Benchmark contra busca linear, com várias execuções e explicação dos resultados.
+      minutes: 50
+  edgeCases:
+    - Chave vazia, chave repetida e chave muito longa.
+    - Remover chave inexistente e remover durante o redimensionamento.
+    - Muitas chaves caindo no mesmo bucket.
+    - Falha de alocação (simular retornando NULL).
+  failureExperiments:
+    - Usar uma função de hash constante e medir a degradação para O(n).
+    - Esquecer de copiar a chave e mostrar o bug quando o buffer original muda.
+    - Remover um free e ler o relatório de leak do Valgrind.
+  tools: [gcc, gdb, valgrind, "-fsanitize=address,undefined", perf]
+  acceptanceCriteria:
+    - Testes cobrem os casos-limite e passam sob ASan e Valgrind sem erros.
+    - O redimensionamento mantém todas as chaves acessíveis.
+    - O benchmark mostra várias execuções e uma explicação baseada em complexidade e cache.
+    - Ownership está documentado e é respeitado pelos testes.
+  evidence:
+    - Link do repositório com testes e instruções.
+    - Saídas limpas de Valgrind e ASan.
+    - Tabela ou gráfico do benchmark com a explicação.
+  reviewQuestions:
+    - Que invariante a tabela mantém e como seus testes verificam isso?
+    - Por que a função de hash constante degrada para O(n)?
+    - Quem é dono da memória de uma chave depois do put?
+
+- id: mini-shell
+  title: Mini shell
+  status: planned
+  cumulative: false
+  topics: [processes-syscalls, file-descriptors, signals, processes-streams-exit-codes]
+  question: O que um shell faz, em syscalls, para executar comandos, redirecionar saídas e montar pipelines?
+  prerequisites: [processes-syscalls, c-strings]
+  minimalVersion: Ler uma linha, separar em argumentos, executar com fork/exec/wait e reportar o exit code.
+  milestones:
+    - id: m1-exec
+      title: Executar um comando
+    - id: m2-redirect
+      title: Redirecionamento com dup2
+    - id: m3-pipes
+      title: Pipelines com pipe
+    - id: m4-signals
+      title: Ctrl+C sem matar o shell
+
+- id: concurrent-job-processor
+  title: Processador concorrente de jobs
+  status: planned
+  cumulative: false
+  topics: [threads-basics, race-conditions-synchronization, deadlocks, bounded-queues]
+  question: Como vários workers processam tarefas de uma fila compartilhada sem perder, duplicar ou travar trabalho?
+  prerequisites: [threads-basics]
+  minimalVersion: Uma fila limitada com produtores e consumidores processando tarefas, com contagem final correta.
+  milestones:
+    - id: m1-race
+      title: Reproduzir uma condição de corrida
+    - id: m2-mutex
+      title: Corrigir com sincronização
+    - id: m3-deadlock
+      title: Investigar um deadlock
+    - id: m4-throughput
+      title: Medir throughput por número de workers
+
+- id: tcp-http-lab
+  title: Laboratório TCP/HTTP
+  status: planned
+  cumulative: false
+  topics: [tcp-udp-sockets, http-protocol, timeouts-caching]
+  question: O que realmente trafega numa requisição HTTP, e como um servidor lida com entradas malformadas, leituras parciais e clientes lentos?
+  prerequisites: [tcp-udp-sockets]
+  minimalVersion: Um servidor TCP que responde HTTP simples para listar tarefas, inspecionado com curl e tcpdump.
+  milestones:
+    - id: m1-echo
+      title: Servidor de eco TCP
+    - id: m2-http
+      title: Parsing de requisição HTTP
+    - id: m3-malformed
+      title: Entradas malformadas e leituras parciais
+    - id: m4-timeouts
+      title: Timeouts e clientes lentos
+
+- id: postgres-performance-lab
+  title: Laboratório de desempenho no PostgreSQL
+  status: planned
+  cumulative: false
+  topics: [indexes, query-plans, isolation-locks, pagination]
+  question: Por que uma consulta fica lenta, e que evidência mostra que um índice ou uma mudança de consulta resolveu?
+  prerequisites: [joins-aggregation, transactions-basics]
+  minimalVersion: Gerar milhões de tarefas sintéticas, medir uma consulta lenta e explicar o plano com EXPLAIN ANALYZE.
+  milestones:
+    - id: m1-data
+      title: Dados sintéticos
+    - id: m2-plans
+      title: Ler query plans
+    - id: m3-indexes
+      title: Comparar índices
+    - id: m4-transactions
+      title: Explicar comportamento de transações concorrentes
+
+- id: small-interpreter
+  title: Pequeno interpretador
+  status: planned
+  cumulative: false
+  topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments]
+  question: Como um texto vira uma árvore e a árvore vira um resultado — e de onde vêm as mensagens de erro?
+  prerequisites: [binary-search-trees]
+  minimalVersion: Tokenizar, fazer parsing e avaliar expressões aritméticas com precedência e mensagens de erro com posição.
+  milestones:
+    - id: m1-tokens
+      title: Tokenizador
+    - id: m2-parser
+      title: Parser recursivo descendente
+    - id: m3-eval
+      title: Avaliação
+    - id: m4-scope
+      title: Variáveis e escopo
+
+- id: task-platform
+  title: "Projeto cumulativo: plataforma de processamento de tarefas"
+  status: planned
+  cumulative: true
+  topics: [processes-streams-exit-codes, tcp-udp-sockets, relational-modeling-constraints, requirements-modularity, bounded-queues, idempotency, authorization, logs-metrics-traces, containers-deployment]
+  question: Como um sistema pequeno evolui de uma CLI para uma aplicação em rede confiável, segura e observável — e o que cada etapa do roadmap acrescenta?
+  prerequisites: [c-types-functions]
+  minimalVersion: A CLI de tarefas em C (projeto c-task-cli). Cada marco seguinte reaproveita o domínio e acrescenta um mecanismo.
+  milestones:
+    - id: m1-cli
+      title: CLI em C com persistência em arquivo
+    - id: m2-network
+      title: Servidor em rede (TCP/HTTP)
+    - id: m3-postgres
+      title: Persistência em PostgreSQL com constraints e migrações
+    - id: m4-java
+      title: Backend Java modular
+    - id: m5-background
+      title: Processamento em background com fila
+    - id: m6-idempotency
+      title: Idempotência e retries
+    - id: m7-authz
+      title: Autenticação e autorização
+    - id: m8-observability
+      title: Logs, métricas e traces
+    - id: m9-deploy
+      title: Container, health check e rollback

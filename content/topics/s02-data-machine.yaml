@@ -1,0 +1,299 @@
+# Etapa 2 — Dados e a máquina
+
+- id: binary-hexadecimal
+  stage: s02-data-machine
+  title: Binário e hexadecimal
+  status: authored
+  objective: Converter números entre decimal, binário e hexadecimal e ler bytes em dumps de memória e arquivos.
+  whyItMatters: Endereços de memória, permissões em octal, cores em CSS, hashes, flags de bits e dumps de rede usam bases diferentes de 10. Sem fluência nisso, saídas de depuradores e ferramentas como `xxd` parecem ruído.
+  prerequisites: [terminal-shell]
+  related: [integer-representation-overflow, text-encoding]
+  mathThreads: [combinatorics]
+  explanation: |
+    Um computador guarda tudo como bits (0 ou 1). Oito bits formam um **byte**, que pode representar 2⁸ = 256 valores diferentes. Na base 2, cada posição vale o dobro da anterior: `1011₂ = 8 + 0 + 2 + 1 = 11`.
+
+    Binário é longo para ler, então usamos **hexadecimal** (base 16, dígitos 0–9 e a–f). Cada dígito hex corresponde a exatamente 4 bits, então um byte é sempre dois dígitos hex: `0xff = 1111 1111 = 255`. Converter entre binário e hex é só agrupar de quatro em quatro.
+
+    O mesmo padrão de bits não tem significado sozinho: `0x41` pode ser o número 65, a letra "A" em ASCII, parte de um endereço ou parte de um número de ponto flutuante. **Quem dá significado aos bits é a interpretação** — o tipo da variável, o formato do arquivo, o protocolo.
+  misconceptions:
+    - claim: Hexadecimal é um tipo de dado diferente.
+      correction: É só outra forma de escrever o mesmo número. `255`, `0xff` e `0b11111111` são o mesmo valor.
+    - claim: Um byte guarda um caractere.
+      correction: Em ASCII sim, mas em UTF-8 um caractere pode ocupar de 1 a 4 bytes.
+    - claim: Bits carregam o próprio significado.
+      correction: Os mesmos bytes viram números, texto ou instruções conforme a interpretação.
+  resources:
+    start: akita-binary-text
+    deeper: [cs50-memory, man-ascii, akita-intro-computing, csapp, nand2tetris]
+  exercise:
+    id: ex-bases-by-hand
+    title: Conversões à mão, conferidas pela máquina
+    prediction: Escreva em hex e binário os números 10, 127, 128, 255 e 4096 antes de qualquer ferramenta.
+    steps:
+      - Converta os cinco números à mão, mostrando o raciocínio.
+      - Confira com `printf '%x %o\n' 255 255` e com `echo 'obase=2; 255' | bc`.
+      - Crie um arquivo com `printf 'Oi\n' > oi.txt` e inspecione com `xxd oi.txt`. Identifique cada byte.
+      - Explique por que 128 é especial num byte.
+    checks:
+      - As conversões estão corretas e o raciocínio aparece.
+      - Você identifica o byte `0a` no dump e diz o que ele é.
+  experiment:
+    title: Os mesmos bytes, três leituras
+    steps:
+      - Crie um arquivo com os bytes `48 69 21 0a` usando `printf '\x48\x69\x21\x0a' > b.bin`.
+      - Leia como texto (`cat`), como hex (`xxd`) e como inteiros (`od -An -tu1 b.bin`).
+      - Mude um único bit de um dos bytes e repita as três leituras.
+    observe:
+      - Como a mesma sequência aparece em cada ferramenta.
+      - O efeito de alterar um único bit.
+  reflectionQuestions:
+    - Por que cada dígito hexadecimal corresponde a exatamente 4 bits?
+    - Quantos valores diferentes cabem em 2 bytes? E em 4?
+    - Onde você já viu hexadecimal fora de programação?
+  completionCriteria:
+    - Converte entre as três bases sem calculadora para números até 255.
+    - Lê um dump de `xxd` e identifica caracteres ASCII e quebras de linha.
+    - Explica com um exemplo que bits não carregam significado sem interpretação.
+  evidencePrompts:
+    - Conversões feitas à mão com a conferência na máquina.
+    - Dump do experimento com cada leitura anotada.
+  firstAction: Escreva 42 em binário à mão e confira com `echo 'obase=2; 42' | bc`.
+
+- id: integer-representation-overflow
+  stage: s02-data-machine
+  title: Inteiros, complemento de dois e overflow
+  status: authored
+  objective: Explicar como inteiros com e sem sinal são representados em largura fixa e prever o que acontece quando um cálculo ultrapassa o limite.
+  whyItMatters: Overflow já causou falhas em foguetes, contadores e verificações de tamanho que viraram falhas de segurança. Em C, overflow de inteiro com sinal é comportamento indefinido; em Java, o valor "dá a volta" silenciosamente.
+  prerequisites: [binary-hexadecimal]
+  related: [floating-point, c-types-functions]
+  mathThreads: [combinatorics, logic]
+  explanation: |
+    Inteiros no computador têm **largura fixa**: 8, 16, 32 ou 64 bits. Com n bits sem sinal, os valores vão de 0 a 2ⁿ − 1. Somar 1 ao máximo faz o valor voltar a 0, como um odômetro — aritmética módulo 2ⁿ.
+
+    Para números com sinal, quase todas as máquinas usam **complemento de dois**: o bit mais alto vale −2ⁿ⁻¹ em vez de +2ⁿ⁻¹. Num byte, `1000 0000` é −128 e `1111 1111` é −1. A vantagem é que a mesma soma de hardware serve para números com e sem sinal.
+
+    Em C, overflow de **unsigned** é definido (dá a volta). Overflow de **signed** é *undefined behavior*: o compilador pode assumir que nunca acontece e otimizar com base nisso, o que pode remover verificações que você escreveu. Por isso é preciso verificar *antes* de calcular.
+  misconceptions:
+    - claim: Se um inteiro estoura, o programa dá erro.
+      correction: Normalmente nada avisa. O valor fica errado silenciosamente (ou, em C com sinal, o comportamento é indefinido).
+    - claim: "-1 tem o bit de sinal ligado e o resto zerado."
+      correction: Em complemento de dois, -1 é todos os bits ligados (0xff num byte).
+    - claim: Posso checar overflow depois de somar com `if (a + b < a)`.
+      correction: Para signed em C isso depende de UB; o compilador pode remover o teste. Verifique os limites antes.
+  resources:
+    start: beej-c-types-ii
+    deeper: [beej-c-fixed-width, akita-640kb, cert-c, csapp]
+  exercise:
+    id: ex-overflow-table
+    title: Prever o odômetro
+    prediction: Para um `uint8_t` e um `int8_t`, escreva o resultado de 127+1, 255+1, 0−1 e −128−1.
+    steps:
+      - Escreva um programa em C que imprime essas operações usando `uint8_t` e `int8_t` (de `<stdint.h>`).
+      - Compile com `gcc -Wall -Wextra -o overflow overflow.c` e rode.
+      - Compare com sua previsão e explique cada diferença em binário.
+      - Recompile com `-fsanitize=undefined` e veja o que muda para as operações com sinal em `int`.
+    checks:
+      - A tabela tem previsão, resultado e explicação binária.
+      - Você explica por que o sanitizer reclama de uma operação e não de outra.
+  experiment:
+    title: Uma verificação de tamanho que falha
+    steps:
+      - "Escreva uma função que recebe `uint32_t count` e `uint32_t size` e calcula `count * size` para decidir quantos bytes alocar."
+      - Encontre valores de entrada que fazem a multiplicação dar a volta e resultar num número pequeno.
+      - Reescreva a função para detectar o problema antes da multiplicação.
+    observe:
+      - Os valores que causam o problema e o resultado da multiplicação.
+      - O comportamento da versão corrigida com as mesmas entradas.
+  reflectionQuestions:
+    - Por que o complemento de dois facilita o hardware?
+    - Como um overflow numa conta de tamanho pode virar uma falha de segurança?
+    - Quando faz sentido usar tipos sem sinal?
+  completionCriteria:
+    - Prevê resultados de overflow para tipos com e sem sinal de 8 bits.
+    - Demonstra um overflow em cálculo de tamanho e uma verificação correta antes da operação.
+    - Explica a diferença entre comportamento definido e indefinido nesse contexto.
+  evidencePrompts:
+    - Programa e saída da tabela de overflow.
+    - Função vulnerável, entradas que a quebram e a versão corrigida.
+  firstAction: Escreva à mão o byte que representa −1 em complemento de dois.
+
+- id: text-encoding
+  stage: s02-data-machine
+  title: Encoding de texto (ASCII, Unicode, UTF-8)
+  status: authored
+  objective: Explicar a diferença entre caractere, code point e byte, e diagnosticar texto corrompido por encoding errado.
+  whyItMatters: Nomes com acentos quebrados ("JoÃ£o"), contagens de caracteres erradas e falhas de validação vêm de confundir bytes com caracteres. Em português isso aparece o tempo todo.
+  prerequisites: [binary-hexadecimal]
+  related: [c-strings]
+  explanation: |
+    **ASCII** define 128 caracteres em 7 bits: letras sem acento, dígitos, pontuação e controles como `\n` (0x0a). Não tem "ç" nem "ã".
+
+    **Unicode** atribui um número — o *code point* — a cada caractere de praticamente todas as escritas: "ã" é U+00E3. Unicode não diz como guardar esse número em bytes; quem faz isso é um **encoding**.
+
+    **UTF-8** é o encoding dominante: code points até 127 usam 1 byte (idênticos ao ASCII); os demais usam de 2 a 4 bytes. "ã" vira os bytes `c3 a3`. Se um programa lê esses dois bytes achando que cada byte é um caractere Latin-1, mostra "Ã£" — o famoso *mojibake*.
+
+    Consequência prática: o "tamanho" de uma string depende do que você conta — bytes, code points ou caracteres percebidos. Em C, `strlen` conta bytes.
+  misconceptions:
+    - claim: Unicode e UTF-8 são a mesma coisa.
+      correction: Unicode é o catálogo de code points; UTF-8 é uma forma de codificá-los em bytes.
+    - claim: strlen("ação") é 4.
+      correction: Em UTF-8 são 6 bytes, e strlen conta bytes.
+    - claim: Texto puro não tem encoding.
+      correction: Todo texto em arquivo é bytes; sempre há um encoding implícito ou explícito.
+  resources:
+    start: joel-unicode
+    deeper: [akita-binary-text, utf8-everywhere, man-utf8, man-ascii, beej-c-unicode]
+  exercise:
+    id: ex-utf8-bytes
+    title: Contar bytes, code points e caracteres
+    prediction: Quantos bytes `xxd` vai mostrar para `printf 'ação'`? E para `printf 'a\xcc\x83'`?
+    steps:
+      - Rode `printf 'ação' | xxd` e identifique quais bytes pertencem a cada caractere.
+      - Rode `printf 'ação' | wc -c` e `printf 'ação' | wc -m` e explique a diferença.
+      - Compare `printf 'ã'` com `printf 'a\xcc\x83'` (a + til combinante). Visualmente iguais, bytes diferentes.
+      - Escreva em C um programa que imprime `strlen` de "ação" e explique o resultado.
+    checks:
+      - Você aponta no dump os bytes de "ç" e "ã".
+      - Você explica por que duas strings visualmente iguais podem ser diferentes.
+  experiment:
+    title: Fabricar e consertar mojibake
+    steps:
+      - Crie um arquivo UTF-8 com "João e Conceição".
+      - Converta-o como se fosse Latin-1 para UTF-8 com `iconv -f latin1 -t utf-8` e veja o resultado.
+      - Explique byte a byte por que apareceu "Ã£" e desfaça a conversão.
+    observe:
+      - Os bytes antes e depois da conversão errada.
+      - Qual operação recupera o texto original.
+  reflectionQuestions:
+    - Por que UTF-8 é compatível com ASCII?
+    - Como validar o tamanho máximo de um nome de usuário de forma justa com acentos?
+    - Onde no seu stack (banco, HTTP, terminal) o encoding precisa ser declarado?
+  completionCriteria:
+    - Identifica em um dump os bytes UTF-8 de caracteres acentuados.
+    - Reproduz e explica um caso de mojibake.
+    - Distingue bytes, code points e caracteres com um exemplo.
+  evidencePrompts:
+    - Dumps anotados de "ação" nas duas formas.
+    - Passo a passo do mojibake e da correção.
+  firstAction: Rode `printf 'ç' | xxd` e anote quantos bytes aparecem.
+
+- id: floating-point
+  stage: s02-data-machine
+  title: Ponto flutuante
+  status: authored
+  objective: Explicar por que números como 0.1 não são representados exatamente e escolher comparações e tipos adequados para cada situação.
+  whyItMatters: Comparações com `==` que falham, somas de dinheiro com centavos sobrando e testes instáveis vêm de tratar ponto flutuante como número real exato.
+  prerequisites: [binary-hexadecimal, integer-representation-overflow]
+  related: [cpu-memory-caches]
+  mathThreads: [probability]
+  explanation: |
+    Ponto flutuante (IEEE 754) guarda um número como **sinal × mantissa × 2^expoente**, com uma quantidade fixa de bits para cada parte. Um `double` tem 64 bits e cerca de 15–17 dígitos decimais de precisão.
+
+    Assim como 1/3 não tem representação finita em decimal, **0.1 não tem representação finita em binário**. O valor guardado é o double mais próximo, e pequenos erros se acumulam: `0.1 + 0.2` dá `0.30000000000000004`.
+
+    A precisão é relativa: entre 1 e 2 há muitos doubles; entre 10¹⁶ e 10¹⁶ + 2 quase nenhum. Somar um número minúsculo a um enorme pode não mudar nada. Há valores especiais: `inf`, `-inf` e `NaN`, que é diferente de tudo, inclusive de si mesmo.
+
+    Regras práticas: compare com tolerância; para dinheiro, use inteiros de centavos ou tipos decimais (como `numeric` no PostgreSQL ou `BigDecimal` em Java).
+  misconceptions:
+    - claim: Ponto flutuante é impreciso e aleatório.
+      correction: É determinístico e exato para os valores que consegue representar; o erro vem do arredondamento para o valor representável mais próximo.
+    - claim: double resolve problemas de dinheiro por ter mais precisão.
+      correction: Mais bits não tornam 0.1 representável. Use inteiros ou decimais.
+    - claim: NaN == NaN é verdadeiro.
+      correction: NaN é diferente de todo valor, inclusive de si mesmo; use isnan().
+  resources:
+    start: floating-point-gui
+    deeper: [beej-c-types-ii, goldberg-fp, csapp]
+  exercise:
+    id: ex-float-sum
+    title: Somar 0.1 dez vezes
+    prediction: Escreva se `soma == 1.0` vai ser verdadeiro depois de somar 0.1 dez vezes num double.
+    steps:
+      - Escreva em C um laço que soma 0.1 dez vezes e imprime o resultado com `%.17g`.
+      - Teste `soma == 1.0` e uma comparação com tolerância `fabs(soma - 1.0) < 1e-9`.
+      - Repita com `float` e compare os erros.
+      - Imprima `0.1` com `%.20f` e explique o que aparece.
+    checks:
+      - Você explica por que a igualdade falha.
+      - Você justifica a tolerância escolhida.
+  experiment:
+    title: Onde a soma para de crescer
+    steps:
+      - Comece com `double x = 1.0` e vá dobrando até que `x + 1.0 == x`.
+      - Anote em que potência de 2 isso acontece e relacione com o tamanho da mantissa.
+      - Calcule `0.0/0.0`, `1.0/0.0` e teste `NaN == NaN`.
+    observe:
+      - O valor de x quando somar 1 deixa de ter efeito.
+      - Os valores especiais e como se comportam em comparações.
+  reflectionQuestions:
+    - Por que o PostgreSQL oferece `numeric` além de `double precision`?
+    - Em que tipo de teste automatizado comparar floats com `==` causa instabilidade?
+    - Como representar R$ 19,99 de forma exata?
+  completionCriteria:
+    - Explica por que 0.1 não é exato em binário.
+    - Mostra o ponto em que somar 1.0 deixa de alterar um double e relaciona com a mantissa.
+    - Propõe representação exata para valores monetários.
+  evidencePrompts:
+    - Programa e saídas da soma de 0.1 com float e double.
+    - Resultado do experimento de potências de 2 com explicação.
+  firstAction: Abra `python3` ou `node` e rode `0.1 + 0.2`. Anote o resultado.
+
+- id: cpu-memory-caches
+  stage: s02-data-machine
+  title: CPU, RAM e caches
+  status: authored
+  objective: Explicar a hierarquia de memória e prever como o padrão de acesso aos dados afeta o desempenho.
+  whyItMatters: Dois algoritmos com a mesma complexidade podem ter desempenho muito diferente por causa do cache. Isso explica por que arrays costumam vencer listas ligadas e por que bancos de dados se organizam em páginas.
+  prerequisites: [binary-hexadecimal]
+  related: [floating-point, stack-heap-lifetime]
+  mathThreads: [probability]
+  explanation: |
+    A CPU executa instruções muito mais rápido do que a RAM consegue entregar dados. Para esconder essa diferença, há uma **hierarquia de memória**: registradores, caches L1/L2/L3 (pequenos e rápidos) e a RAM (grande e lenta em comparação). Abaixo disso, SSD e disco são ordens de grandeza mais lentos.
+
+    O cache traz dados em blocos chamados **cache lines** (tipicamente 64 bytes). Por isso o acesso tira proveito de **localidade espacial** (usar dados vizinhos) e **localidade temporal** (reusar dados recentes). Percorrer um array em sequência aproveita cada linha carregada; pular pela memória desperdiça.
+
+    Uma matriz em C é guardada linha por linha (*row-major*). Percorrer por linhas acessa memória contígua; percorrer por colunas salta `N * sizeof(elemento)` bytes a cada passo. O resultado é o mesmo, o tempo não.
+  misconceptions:
+    - claim: Acessar qualquer posição da RAM leva o mesmo tempo.
+      correction: O custo depende de o dado estar ou não no cache; padrões de acesso mudam muito o tempo total.
+    - claim: Complexidade O(n) igual significa desempenho igual.
+      correction: Constantes e localidade importam. Um percurso sequencial pode ser várias vezes mais rápido que um percurso com saltos.
+    - claim: Otimizar cache é coisa de quem escreve sistemas operacionais.
+      correction: Afeta estruturas de dados comuns, bancos de dados, jogos e qualquer laço sobre muitos dados.
+  resources:
+    start: drepper-memory
+    deeper: [akita-von-neumann, akita-640kb, csapp, nand2tetris]
+  exercise:
+    id: ex-row-vs-column
+    title: Linhas contra colunas
+    prediction: Estime quantas vezes mais lento será somar uma matriz 4096×4096 de `int` por colunas em vez de por linhas.
+    steps:
+      - Escreva em C as duas versões da soma, alocando a matriz com `malloc`.
+      - Meça cada uma com `clock_gettime` ou com `time`, compilando com `-O2`.
+      - Rode cada versão cinco vezes e registre mediana e variação.
+      - Explique o resultado usando cache lines.
+    checks:
+      - Você reporta várias execuções, não uma só.
+      - A explicação menciona contiguidade e cache line.
+  experiment:
+    title: Encontrar o tamanho do cache pelo tempo
+    steps:
+      - Percorra arrays de tamanhos crescentes (de 4 KiB a 256 MiB) repetidamente, medindo o tempo por acesso.
+      - Faça um gráfico simples (planilha ou texto) do tempo por acesso em função do tamanho.
+      - Compare os "degraus" com a saída de `lscpu` sobre caches.
+    observe:
+      - Onde o tempo por acesso muda de patamar.
+      - Se os patamares batem com L1, L2 e L3 da sua máquina.
+  reflectionQuestions:
+    - Por que listas ligadas sofrem mais com cache do que arrays?
+    - Como a ideia de cache line reaparece em páginas de banco de dados?
+    - Que cuidados um benchmark precisa para ser confiável?
+  completionCriteria:
+    - Mede e explica a diferença entre percurso por linhas e por colunas com várias execuções.
+    - Relaciona os patamares do experimento com a hierarquia de cache da máquina.
+    - Explica localidade espacial e temporal com exemplos próprios.
+  evidencePrompts:
+    - Código, comandos de compilação e tabela de tempos.
+    - Gráfico ou tabela do experimento de tamanhos com a saída de `lscpu`.
+  firstAction: Rode `lscpu | grep -i cache` e anote os tamanhos de L1, L2 e L3.

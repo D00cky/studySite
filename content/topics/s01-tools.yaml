@@ -1,0 +1,243 @@
+# Etapa 1 — Ferramentas e execução
+
+- id: terminal-shell
+  stage: s01-tools
+  title: Terminal e shell
+  status: authored
+  objective: Usar o shell para navegar, inspecionar e combinar programas, entendendo que cada comando é um programa que o shell encontra e executa.
+  whyItMatters: Servidores, CI, containers e ferramentas de depuração são operados pelo terminal. Quem entende o que o shell faz com uma linha de comando consegue reproduzir problemas, automatizar tarefas e ler scripts de outras pessoas.
+  mathThreads: [logic]
+  related: [processes-streams-exit-codes, filesystem-permissions]
+  explanation: |
+    O terminal é só a janela que mostra texto. O **shell** (bash, zsh, fish) é um programa que lê uma linha, separa as palavras, expande coisas como `*` e `$HOME`, e então procura um executável com o nome do primeiro termo nos diretórios listados em `PATH`. Quando encontra, pede ao sistema operacional para criar um processo que execute aquele arquivo, passando as demais palavras como argumentos.
+
+    Alguns comandos não são arquivos: `cd`, por exemplo, é um *builtin*, porque mudar o diretório atual precisa acontecer dentro do próprio shell. `type cd` e `type ls` mostram a diferença.
+
+    A ideia central: **a linha que você digita é transformada antes de chegar ao programa**. `echo *.c` não recebe o asterisco; recebe a lista de arquivos já expandida pelo shell. Aspas mudam essa transformação. Entender isso evita boa parte dos "funciona no meu terminal mas não no script".
+  misconceptions:
+    - claim: O terminal e o shell são a mesma coisa.
+      correction: O terminal (emulador) desenha caracteres; o shell interpreta comandos. Você pode trocar um sem trocar o outro.
+    - claim: O programa recebe exatamente o texto que eu digitei.
+      correction: O shell expande globs, variáveis e remove aspas antes. O programa recebe uma lista de argumentos já processada.
+    - claim: Todo comando é um arquivo em /usr/bin.
+      correction: Há builtins (cd, export), funções e aliases. `type nome` revela o que o shell vai executar.
+  resources:
+    start: missing-semester-shell
+    deeper: [tlcl, bash-manual, missing-semester-pt]
+  exercise:
+    id: ex-shell-expansion
+    title: O que o programa realmente recebe?
+    prediction: Antes de rodar, escreva quantos argumentos você acha que `printf '[%s]\n' *.txt "a b" $HOME` vai imprimir numa pasta com três arquivos .txt.
+    steps:
+      - Crie uma pasta de testes com `mkdir -p ~/lab/shell && cd ~/lab/shell` e três arquivos com `touch a.txt b.txt c.txt`.
+      - Rode `printf '[%s]\n' *.txt "a b" $HOME` e compare com sua previsão.
+      - Repita com `'*.txt'` entre aspas simples e com `"$HOME"` entre aspas duplas. Anote a diferença.
+      - Use `type printf`, `type cd` e `which printf` e explique por que as respostas diferem.
+      - Descubra em qual diretório do `PATH` o `ls` foi encontrado.
+    checks:
+      - Você explica, sem consultar, quem expandiu o `*` e quando.
+      - Você distingue builtin de executável com um exemplo.
+  experiment:
+    title: Mudar o PATH e quebrar o shell de propósito
+    steps:
+      - Num shell novo, rode `PATH=/nada ls` e observe a mensagem de erro.
+      - Crie um script `~/lab/shell/bin/ls` que imprime "falso ls", torne-o executável e rode `PATH=~/lab/shell/bin:$PATH ls`.
+      - Remova o script e explique o que o shell fez em cada caso.
+    observe:
+      - A mensagem de "command not found" e o exit code (`echo $?`).
+      - Qual `ls` foi executado e por quê.
+  reflectionQuestions:
+    - Por que `cd` não pode ser um programa separado?
+    - O que muda entre `rm *` e `rm '*'`? Qual é perigoso numa pasta errada?
+    - Como você descobriria qual versão de um programa está sendo executada?
+  completionCriteria:
+    - Prevê corretamente o resultado de expansões com e sem aspas em três exemplos.
+    - Explica como o shell encontra um executável usando PATH.
+    - Mostra um registro do experimento do PATH com comandos e saídas.
+  evidencePrompts:
+    - Cole os comandos do exercício com as saídas reais e marque onde sua previsão errou.
+    - Explique em 3–5 frases o caminho de uma linha de comando até virar processo.
+  firstAction: Abra um terminal, rode `echo $PATH | tr ':' '\n'` e escreva quantos diretórios aparecem.
+
+- id: filesystem-permissions
+  stage: s01-tools
+  title: Sistema de arquivos e permissões
+  status: authored
+  objective: Navegar pela árvore de diretórios e ler e alterar permissões, explicando quem pode ler, escrever ou executar cada arquivo e por quê.
+  whyItMatters: Erros de "Permission denied", segredos legíveis por qualquer usuário e scripts que não executam são problemas diários em servidores e CI. Permissões também são a primeira linha de defesa do sistema operacional.
+  prerequisites: [terminal-shell]
+  related: [processes-streams-exit-codes]
+  mathThreads: [logic, sets]
+  explanation: |
+    Tudo começa em `/`. Caminhos absolutos partem da raiz; caminhos relativos partem do diretório atual (`pwd`). `.` é o diretório atual e `..` o pai.
+
+    Cada arquivo tem um **dono**, um **grupo** e três conjuntos de permissões: para o dono (u), para o grupo (g) e para os outros (o). Cada conjunto tem leitura (r), escrita (w) e execução (x). `ls -l` mostra algo como `-rwxr-x---`.
+
+    Em diretórios, os bits mudam de sentido: `r` permite listar nomes, `w` permite criar e apagar entradas e `x` permite *atravessar* o diretório para chegar ao que está dentro. Por isso dá para ter um arquivo legível dentro de um diretório que você não consegue abrir.
+
+    Na forma octal, r=4, w=2, x=1: `chmod 640 segredo.txt` significa dono lê e escreve, grupo só lê, outros nada.
+  misconceptions:
+    - claim: Se o arquivo tem permissão de leitura, qualquer pessoa consegue lê-lo.
+      correction: Também é preciso permissão de execução (x) em todos os diretórios do caminho.
+    - claim: Apagar um arquivo depende da permissão do arquivo.
+      correction: Apagar remove uma entrada do diretório; depende da permissão de escrita no diretório.
+    - claim: chmod 777 resolve problemas de permissão.
+      correction: Resolve o sintoma abrindo o arquivo para todos. Entenda qual usuário precisa de qual acesso e dê só isso.
+  resources:
+    start: tlcl
+    deeper: [man-chmod, missing-semester-cli-env]
+  exercise:
+    id: ex-permissions-matrix
+    title: Matriz de permissões
+    prediction: Preveja se você conseguirá ler `cofre/nota.txt` depois de rodar `chmod 600 cofre/nota.txt` e `chmod 600 cofre`.
+    steps:
+      - Crie `~/lab/perm/cofre/nota.txt` com algum texto.
+      - "Para cada combinação a seguir, preveja e depois teste `cat`, `ls` e `rm`: diretório 700/600/100 e arquivo 600/400/000."
+      - Monte uma tabela com previsão, resultado real e explicação.
+      - Converta três permissões entre notação simbólica e octal.
+    checks:
+      - A tabela tem previsão, resultado e explicação para cada linha.
+      - Você explica a diferença entre `x` em arquivo e em diretório.
+  experiment:
+    title: Proteger um arquivo de segredos
+    steps:
+      - Crie um arquivo `.env` falso com um "token" inventado.
+      - Verifique as permissões padrão com `ls -l` e `umask`.
+      - Ajuste para que só o seu usuário leia, e confirme com `stat`.
+      - Descubra por que o padrão saiu daquele jeito, investigando `umask`.
+    observe:
+      - A saída de `stat` antes e depois.
+      - O valor de `umask` e como ele explica as permissões iniciais.
+  reflectionQuestions:
+    - Por que um servidor web não deve rodar como root?
+    - O que um bit `x` sem `r` permite num diretório?
+    - Como você verificaria se um arquivo de segredos no servidor está exposto?
+  completionCriteria:
+    - Prevê corretamente o resultado em pelo menos 8 de 9 combinações da matriz.
+    - Converte permissões entre notação simbólica e octal sem consulta.
+    - Explica a função do umask com um exemplo verificado.
+  evidencePrompts:
+    - Tabela da matriz de permissões com previsões erradas destacadas.
+    - Saída de `stat` do arquivo de segredos protegido.
+  firstAction: Rode `ls -la ~` e explique a permissão de três arquivos que aparecerem.
+
+- id: processes-streams-exit-codes
+  stage: s01-tools
+  title: Processos, stdin/stdout/stderr e exit codes
+  status: authored
+  objective: Explicar que todo programa em execução é um processo com três fluxos padrão e um código de saída, e combinar programas com pipes e redirecionamentos.
+  whyItMatters: Scripts de CI, healthchecks e pipelines de dados decidem se algo "deu certo" pelo exit code. Logs perdidos quase sempre são stderr indo para outro lugar. Isso aparece de novo em sistemas operacionais, no mini shell e em containers.
+  prerequisites: [terminal-shell]
+  related: [filesystem-permissions, git-fundamentals]
+  mathThreads: [logic]
+  explanation: |
+    Quando o shell executa um programa, cria um **processo**: um programa em execução, com um identificador (PID), memória própria e uma tabela de arquivos abertos. Por convenção, três entradas dessa tabela já vêm abertas: **0 = stdin**, **1 = stdout** e **2 = stderr**.
+
+    `>` redireciona o descritor 1 para um arquivo; `2>` redireciona o 2; `<` faz o 0 ler de um arquivo. Um pipe `a | b` liga o stdout de `a` ao stdin de `b` — os dois rodam **ao mesmo tempo**.
+
+    Ao terminar, o processo devolve um número de 0 a 255, o **exit code**. Zero significa sucesso; qualquer outro valor significa falha, e o significado exato depende do programa. O shell guarda o último em `$?`. `&&` só executa o próximo comando se o anterior saiu com 0; `||` só se falhou.
+
+    Separar stdout (dados) de stderr (diagnóstico) permite que `programa | outro` passe só os dados adiante enquanto as mensagens de erro continuam visíveis.
+  misconceptions:
+    - claim: Mensagens de erro saem no mesmo lugar que a saída normal.
+      correction: Saem no stderr (descritor 2). `cmd > out.txt` ainda mostra erros na tela.
+    - claim: Num pipe, o primeiro comando termina antes de o segundo começar.
+      correction: Os dois rodam em paralelo; os dados fluem conforme são produzidos.
+    - claim: Se o programa imprimiu "erro", ele falhou.
+      correction: Quem decide é o exit code. Há programas que imprimem erros e saem com 0, o que confunde scripts.
+  resources:
+    start: bash-manual
+    deeper: [man-pipe, man-exit, beej-c-outside-env, missing-semester-cli-env]
+  exercise:
+    id: ex-streams-exit
+    title: Para onde foi a saída?
+    prediction: Escreva o que vai aparecer na tela e em cada arquivo ao rodar `ls /etc /nao-existe > out.txt 2> err.txt; echo $?`.
+    steps:
+      - Rode o comando da previsão e inspecione `out.txt`, `err.txt` e o número impresso.
+      - Rode `ls /nao-existe 2>&1 | wc -l` e `ls /nao-existe | wc -l`. Explique a diferença.
+      - Teste `true && echo sim`, `false && echo sim` e `false || echo plano-b`.
+      - Escreva um script `checa.sh` que sai com 0 se um arquivo existe e com 3 se não existe; verifique com `$?`.
+    checks:
+      - Você explica a ordem de `2>&1` em relação a `>`.
+      - Seu script devolve códigos diferentes e você mostra isso com `echo $?`.
+  experiment:
+    title: Observar um pipe vivo
+    steps:
+      - Rode `yes | head -n 3` e explique por que termina, mesmo `yes` sendo infinito.
+      - Em outro terminal, rode `sleep 100 | cat` e use `ps -o pid,ppid,stat,cmd --forest` para ver os dois processos.
+      - Mate o `sleep` com `kill` e observe o que acontece com o `cat`.
+    observe:
+      - PIDs e o processo pai (PPID) de cada lado do pipe.
+      - O exit code reportado pelo shell depois do kill.
+  reflectionQuestions:
+    - Por que um pipeline de CI pode "passar" mesmo com um comando falhando no meio? (Pesquise `set -o pipefail`.)
+    - Qual a vantagem de separar dados e diagnósticos em fluxos diferentes?
+    - O que significa um exit code 130 depois de Ctrl+C?
+  completionCriteria:
+    - Prevê corretamente o destino de stdout e stderr em quatro redirecionamentos diferentes.
+    - Escreve um script com exit codes significativos e demonstra o comportamento com && e ||.
+    - Mostra a árvore de processos de um pipeline e explica a relação pai/filho.
+  evidencePrompts:
+    - Script checa.sh (link ou texto) e saídas de `echo $?` nos dois casos.
+    - Saída do `ps --forest` com uma explicação de cada linha.
+  firstAction: Rode `ls /nao-existe; echo $?` e anote o número que aparece.
+
+- id: git-fundamentals
+  stage: s01-tools
+  title: Fundamentos de Git
+  status: authored
+  objective: Usar Git para registrar, inspecionar e desfazer mudanças, explicando o modelo de commits, branches e working tree.
+  whyItMatters: Todo trabalho do time — inclusive as evidências deste site — passa por repositórios. Entender o modelo do Git evita perder trabalho, facilita revisões e permite investigar quando um bug apareceu.
+  prerequisites: [terminal-shell]
+  related: [processes-streams-exit-codes]
+  mathThreads: [graphs]
+  explanation: |
+    Git guarda **snapshots**, não diferenças. Cada commit aponta para uma árvore de arquivos completa e para seu(s) commit(s) pai(s), formando um grafo dirigido acíclico. Um **branch** é só um nome que aponta para um commit; `HEAD` indica onde você está.
+
+    Há três lugares que importam: o **working tree** (arquivos no disco), a **staging area/index** (o que vai entrar no próximo commit) e o **repositório** (commits já gravados). `git status` mostra a diferença entre os três; `git add` copia do working tree para o index; `git commit` grava o index como um novo snapshot.
+
+    Como commits são imutáveis e identificados por hash, "desfazer" quase sempre significa criar um commit novo (`git revert`) ou mover um nome para outro commit (`git reset`, `git switch`). `git reflog` lembra por onde o HEAD passou, o que torna raro perder algo que já foi commitado.
+  misconceptions:
+    - claim: Um branch é uma cópia dos arquivos.
+      correction: É um ponteiro leve para um commit. Criar um branch não copia nada.
+    - claim: git add salva meu trabalho.
+      correction: Só coloca na staging area. Até o commit, a mudança não está no histórico.
+    - claim: Depois de um reset, o commit sumiu para sempre.
+      correction: Ele continua acessível pelo reflog por um bom tempo, até a coleta de lixo.
+  resources:
+    start: pro-git-ptbr
+    deeper: [akita-git, missing-semester-git]
+  exercise:
+    id: ex-git-graph
+    title: Desenhar o grafo antes de ver
+    prediction: Antes de rodar `git log --graph --oneline --all`, desenhe no papel o grafo que você espera depois dos passos abaixo.
+    steps:
+      - Crie um repositório em `~/lab/git`, faça três commits pequenos em `main`.
+      - Crie o branch `experimento`, faça dois commits nele, volte para `main` e faça mais um.
+      - Faça merge de `experimento` em `main` e compare o grafo real com seu desenho.
+      - Use `git show HEAD~1` e `git diff HEAD~2 HEAD` e explique o que cada um mostra.
+    checks:
+      - O desenho e o grafo real batem, ou você explica a diferença.
+      - Você explica o que é HEAD naquele momento.
+  experiment:
+    title: Perder e recuperar um commit
+    steps:
+      - Faça um commit com uma mudança importante.
+      - Rode `git reset --hard HEAD~1` e confirme que a mudança sumiu do working tree.
+      - Encontre o commit com `git reflog` e recupere-o criando um branch.
+      - Repita usando `git revert` em vez de reset e compare os históricos.
+    observe:
+      - O hash do commit antes e depois da recuperação.
+      - A diferença entre o histórico com reset e com revert.
+  reflectionQuestions:
+    - Por que `git revert` é preferível a `reset` num branch compartilhado?
+    - O que um commit pequeno e bem descrito facilita numa revisão?
+    - Como você usaria o histórico para descobrir quando um bug foi introduzido? (Pesquise `git bisect`.)
+  completionCriteria:
+    - Desenha corretamente o grafo de commits de um cenário com branch e merge.
+    - Recupera um commit "perdido" usando o reflog.
+    - Explica a diferença entre working tree, index e repositório.
+  evidencePrompts:
+    - Foto ou texto do grafo previsto ao lado da saída de `git log --graph`.
+    - Comandos usados para recuperar o commit, com os hashes.
+  firstAction: Rode `git config --global --list` e confira se seu nome e e-mail estão configurados.

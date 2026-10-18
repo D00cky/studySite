@@ -1,0 +1,201 @@
+# Etapas 5–8 — visão geral. Lições completas ainda planejadas (status: planned).
+
+# --- Etapa 5: Algoritmos e estruturas básicas ---------------------------------
+
+- id: complexity-analysis
+  stage: s05-algorithms-basics
+  title: Análise de complexidade
+  status: planned
+  objective: Estimar como tempo e memória crescem com a entrada usando notação O, e confirmar a estimativa com medições.
+  whyItMatters: Permite prever se uma solução aguenta 10x mais dados antes de descobrir em produção.
+  prerequisites: [dynamic-allocation-ownership, cpu-memory-caches]
+  mathThreads: [proofs, combinatorics]
+  resources:
+    start: mit-6006
+    deeper: [teach-yourself-cs]
+
+- id: searching-sorting
+  stage: s05-algorithms-basics
+  title: Busca e ordenação
+  status: planned
+  objective: Implementar busca linear e binária e algoritmos de ordenação, comparando invariantes, estabilidade e desempenho medido.
+  whyItMatters: Ordenar e buscar estão por trás de índices, paginação e quase toda manipulação de dados.
+  prerequisites: [complexity-analysis]
+  mathThreads: [proofs]
+  resources:
+    start: mit-6006
+
+- id: dynamic-arrays
+  stage: s05-algorithms-basics
+  title: Arrays dinâmicos
+  status: planned
+  objective: Analisar o custo amortizado do redimensionamento e comparar estratégias de crescimento.
+  whyItMatters: ArrayList em Java, arrays em JavaScript e vetores em geral funcionam assim.
+  prerequisites: [complexity-analysis, dynamic-allocation-ownership]
+  resources:
+    start: open-data-structures
+
+- id: linked-lists
+  stage: s05-algorithms-basics
+  title: Listas ligadas
+  status: planned
+  objective: Implementar listas simples e duplamente ligadas e comparar seu desempenho real com arrays.
+  whyItMatters: Mostra na prática o custo de ponteiros e de má localidade de cache.
+  prerequisites: [pointers, complexity-analysis]
+
+- id: stacks-queues
+  stage: s05-algorithms-basics
+  title: Pilhas e filas
+  status: planned
+  objective: Implementar pilhas e filas (inclusive buffer circular) e reconhecê-las em sistemas reais.
+  whyItMatters: Chamadas de função, desfazer/refazer, filas de jobs e buffers de rede são pilhas e filas.
+  prerequisites: [dynamic-arrays, linked-lists]
+
+# --- Etapa 6: Árvores, hashing, heaps e grafos --------------------------------
+
+- id: binary-search-trees
+  stage: s06-trees-hashing-graphs
+  title: Árvores de busca
+  status: planned
+  objective: Implementar uma árvore binária de busca e explicar por que o balanceamento importa.
+  whyItMatters: Base para entender os índices B-tree dos bancos de dados.
+  prerequisites: [searching-sorting, linked-lists]
+  resources:
+    start: open-data-structures
+    deeper: [akita-trees]
+  mathThreads: [graphs, proofs]
+
+- id: hash-tables
+  stage: s06-trees-hashing-graphs
+  title: Tabelas hash
+  status: planned
+  objective: Implementar uma tabela hash com tratamento de colisões e redimensionamento, medindo o fator de carga.
+  whyItMatters: HashMap, objetos JavaScript, caches e índices hash dependem disso.
+  prerequisites: [dynamic-arrays, linked-lists]
+  resources:
+    start: open-data-structures
+  mathThreads: [probability]
+
+- id: heaps-priority-queues
+  stage: s06-trees-hashing-graphs
+  title: Heaps e filas de prioridade
+  status: planned
+  objective: Implementar um heap binário e usá-lo como fila de prioridade.
+  whyItMatters: Escalonadores, timers e algoritmos de caminho mínimo usam filas de prioridade.
+  prerequisites: [binary-search-trees, dynamic-arrays]
+
+- id: graphs-traversal
+  stage: s06-trees-hashing-graphs
+  title: Grafos e travessias
+  status: planned
+  objective: Representar grafos e implementar BFS e DFS, explicando quando usar cada uma.
+  whyItMatters: Redes, dependências, rotas e permissões são grafos.
+  prerequisites: [stacks-queues, hash-tables]
+  resources:
+    start: akita-graphs
+    deeper: [open-data-structures]
+  mathThreads: [graphs]
+
+- id: dependency-graphs
+  stage: s06-trees-hashing-graphs
+  title: Grafos de dependência e ordenação topológica
+  status: planned
+  objective: Modelar dependências como grafo dirigido, detectar ciclos e produzir uma ordem válida de execução.
+  whyItMatters: Make, gerenciadores de pacotes, migrations e este próprio roadmap usam essa ideia.
+  prerequisites: [graphs-traversal]
+  related: [linking-object-files]
+  mathThreads: [graphs, proofs]
+
+# --- Etapa 7: Sistemas operacionais -------------------------------------------
+
+- id: processes-syscalls
+  stage: s07-operating-systems
+  title: Processos e syscalls
+  status: planned
+  objective: Criar e esperar processos com fork, exec e wait, observando as syscalls com strace.
+  whyItMatters: Shells, servidores e containers são construídos sobre essas chamadas.
+  prerequisites: [processes-streams-exit-codes, stack-heap-lifetime]
+  resources:
+    start: ostep-process-api
+    deeper: [ostep-processes, man-fork, man-strace, akita-linux-boot]
+
+- id: file-descriptors
+  stage: s07-operating-systems
+  title: Descritores de arquivo, redirecionamento e pipes
+  status: planned
+  objective: Manipular descritores com open, dup2 e pipe para implementar redirecionamento e pipelines.
+  whyItMatters: Explica como o shell, sockets e logs funcionam por baixo.
+  prerequisites: [processes-syscalls]
+  resources:
+    start: man-pipe
+
+- id: signals
+  stage: s07-operating-systems
+  title: Sinais
+  status: planned
+  objective: Enviar, tratar e ignorar sinais, explicando o que Ctrl+C e kill fazem com um processo.
+  whyItMatters: Desligamento gracioso de servidores e containers depende de tratar SIGTERM corretamente.
+  prerequisites: [processes-syscalls]
+  resources:
+    start: man-signal
+
+- id: filesystems
+  stage: s07-operating-systems
+  title: Sistemas de arquivos
+  status: planned
+  objective: Explicar inodes, diretórios, links e durabilidade (fsync).
+  whyItMatters: Bancos de dados e logs dependem de garantias de escrita em disco.
+  prerequisites: [file-descriptors, filesystem-permissions]
+  resources:
+    start: ostep-files-directories
+    deeper: [akita-filesystems]
+
+- id: virtual-memory
+  stage: s07-operating-systems
+  title: Memória virtual
+  status: planned
+  objective: Explicar espaços de endereçamento, paginação, TLB e page faults.
+  whyItMatters: Explica isolamento entre processos, uso real de memória e o custo de acessos aleatórios.
+  prerequisites: [stack-heap-lifetime, cpu-memory-caches]
+  resources:
+    start: ostep-address-spaces
+
+# --- Etapa 8: Concorrência --------------------------------------------------------
+
+- id: threads-basics
+  stage: s08-concurrency
+  title: Threads
+  status: planned
+  objective: Criar threads e explicar o que elas compartilham e o que não compartilham.
+  whyItMatters: Servidores web, pools de conexão e processadores de jobs usam threads.
+  prerequisites: [processes-syscalls, virtual-memory]
+  resources:
+    start: ostep-concurrency-intro
+
+- id: race-conditions-synchronization
+  stage: s08-concurrency
+  title: Condições de corrida e sincronização
+  status: planned
+  objective: Reproduzir uma condição de corrida e corrigi-la com mutex e variáveis de condição.
+  whyItMatters: Saldos errados, contadores perdidos e bugs que "só acontecem às vezes" vêm daqui.
+  prerequisites: [threads-basics]
+  mathThreads: [logic, proofs]
+  resources:
+    start: ostep-locks
+
+- id: deadlocks
+  stage: s08-concurrency
+  title: Deadlocks
+  status: planned
+  objective: Provocar e diagnosticar um deadlock e aplicar ordenação de locks para evitá-lo.
+  whyItMatters: Deadlocks aparecem em código concorrente e em transações de banco de dados.
+  prerequisites: [race-conditions-synchronization]
+  mathThreads: [graphs]
+
+- id: bounded-queues
+  stage: s08-concurrency
+  title: Filas limitadas e produtor-consumidor
+  status: planned
+  objective: Implementar uma fila limitada thread-safe e medir throughput com diferentes números de workers.
+  whyItMatters: Backpressure e filas de trabalho são a base de sistemas que não desabam sob carga.
+  prerequisites: [race-conditions-synchronization, stacks-queues]

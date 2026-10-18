@@ -1,0 +1,308 @@
+# Etapa 3 — C e compilação
+
+- id: c-types-functions
+  stage: s03-c-compilation
+  title: Tipos, variáveis e funções em C
+  status: authored
+  objective: Escrever programas em C com tipos explícitos e funções, explicando declaração, definição, parâmetros por valor e retorno.
+  whyItMatters: C expõe o que linguagens de mais alto nível escondem — tamanhos de tipos, cópias de valores, conversões implícitas. Essa clareza ajuda a entender Java, JavaScript e o próprio sistema operacional.
+  prerequisites: [processes-streams-exit-codes, integer-representation-overflow]
+  related: [c-arrays-structs, compilation-pipeline]
+  mathThreads: [logic]
+  explanation: |
+    Em C, todo valor tem um **tipo** que define quantos bytes ocupa e como seus bits são interpretados. `int`, `long`, `char`, `double` e os tipos de largura fixa de `<stdint.h>` (`int32_t`, `uint8_t`) são os mais comuns. `sizeof(tipo)` diz o tamanho na sua plataforma.
+
+    Uma **declaração** informa ao compilador que algo existe e qual é o seu tipo (`int soma(int a, int b);`). Uma **definição** fornece o corpo. O compilador precisa ver a declaração antes do uso; por isso existem headers.
+
+    Parâmetros são passados **por valor**: a função recebe uma cópia. Alterar o parâmetro não altera a variável de quem chamou. O valor de retorno de `main` vira o exit code do processo.
+
+    Conversões implícitas acontecem em silêncio: `int x = 3.9;` guarda 3. Compile sempre com `-Wall -Wextra` para que o compilador aponte essas armadilhas.
+  misconceptions:
+    - claim: int tem sempre 32 bits.
+      correction: O padrão só garante um mínimo. Use `sizeof` ou tipos de `<stdint.h>` quando o tamanho importa.
+    - claim: Uma função altera a variável que recebeu como argumento.
+      correction: Ela recebe uma cópia. Para alterar o original, é preciso passar um ponteiro.
+    - claim: O valor de retorno de main não serve para nada.
+      correction: Ele vira o exit code que o shell e os scripts usam para decidir sucesso ou falha.
+  resources:
+    start: beej-c-functions
+    deeper: [beej-c-variables, akita-hello-world, cs50-week1, cppreference-c]
+  exercise:
+    id: ex-c-functions
+    title: Calculadora de linha de comando
+    prediction: Antes de rodar, escreva o que `./calc 7 / 2` vai imprimir se a divisão usar `int`.
+    steps:
+      - Escreva `calc.c` com funções `soma`, `subtrai`, `multiplica` e `divide`, declaradas antes de `main` e definidas depois.
+      - Leia os operandos de `argv` com `strtol` e o operador como string.
+      - Retorne 0 em sucesso, 1 em uso incorreto e 2 em divisão por zero.
+      - Compile com `gcc -Wall -Wextra -std=c17 -o calc calc.c` e corrija todos os avisos.
+      - Teste os exit codes com `echo $?`.
+    checks:
+      - Não há avisos de compilação.
+      - Cada caso de erro devolve um exit code diferente e documentado.
+  experiment:
+    title: O compilador como aliado
+    steps:
+      - Remova a declaração de uma das funções e compile de novo. Leia o aviso ou o erro.
+      - Passe um `double` para uma função que espera `int` e observe o aviso com `-Wconversion`.
+      - Imprima `sizeof` de `char`, `int`, `long`, `long long`, `float`, `double` e de um ponteiro.
+    observe:
+      - As mensagens do compilador para declaração ausente e conversão.
+      - Os tamanhos dos tipos na sua máquina.
+  reflectionQuestions:
+    - Por que o compilador precisa conhecer a assinatura antes da chamada?
+    - O que significa "passagem por valor" e como você contornaria isso?
+    - Como o exit code da calculadora ajudaria num script?
+  completionCriteria:
+    - A calculadora compila sem avisos com -Wall -Wextra e trata entrada inválida.
+    - Explica declaração versus definição com o próprio código.
+    - Demonstra passagem por valor com um exemplo que mostra a cópia.
+  evidencePrompts:
+    - Link do repositório ou código da calculadora e saídas dos casos de erro com `echo $?`.
+    - Lista de avisos que o compilador deu e como você os resolveu.
+  firstAction: Escreva um `hello.c` que retorna 3 em `main` e confirme com `echo $?`.
+
+- id: c-arrays-structs
+  stage: s03-c-compilation
+  title: Arrays e structs
+  status: authored
+  objective: Organizar dados com arrays e structs, explicando seu layout em memória e o que acontece quando um array é passado para uma função.
+  whyItMatters: Registros de banco, pacotes de rede e estruturas do kernel são structs. Saber como arrays e structs ocupam memória explica padding, cópias caras e por que índices fora do limite corrompem dados.
+  prerequisites: [c-types-functions]
+  related: [pointers, cpu-memory-caches]
+  explanation: |
+    Um **array** é uma sequência contígua de elementos do mesmo tipo. `int v[5]` reserva `5 * sizeof(int)` bytes seguidos. C **não verifica limites**: `v[5]` acessa memória que não pertence ao array, e o resultado é indefinido.
+
+    Quando você passa um array para uma função, ele "decai" para um ponteiro para o primeiro elemento. A função não sabe o tamanho — por isso funções em C recebem o tamanho como parâmetro separado.
+
+    Uma **struct** agrupa campos de tipos diferentes. O compilador pode inserir **padding** entre campos para alinhá-los, então `sizeof(struct)` pode ser maior que a soma dos campos. Structs são copiadas inteiras quando passadas por valor.
+  misconceptions:
+    - claim: C avisa quando acesso um índice fora do array.
+      correction: Não avisa em tempo de execução. Ferramentas como AddressSanitizer ajudam a detectar.
+    - claim: sizeof(array) dentro da função dá o tamanho do array.
+      correction: Dentro da função o parâmetro é um ponteiro; sizeof devolve o tamanho do ponteiro.
+    - claim: O tamanho de uma struct é a soma dos campos.
+      correction: Pode haver padding para alinhamento; a ordem dos campos muda o tamanho.
+  resources:
+    start: beej-c-arrays
+    deeper: [beej-c-structs, cs50-week2, asan, cppreference-c]
+  exercise:
+    id: ex-struct-layout
+    title: Medir o layout de uma struct
+    prediction: Escreva o `sizeof` que você espera para `struct { char c; int i; char d; }` e para a versão com os campos reordenados.
+    steps:
+      - Declare as duas structs e imprima `sizeof` de cada uma.
+      - Use `offsetof` de `<stddef.h>` para imprimir o deslocamento de cada campo.
+      - Escreva uma função que recebe um array de structs e o tamanho, e calcula uma média de um campo.
+      - Mostre que alterar um campo de uma struct passada por valor não altera o original.
+    checks:
+      - Você explica de onde vem cada byte de padding.
+      - A função recebe o tamanho explicitamente.
+  experiment:
+    title: Ultrapassar o limite de propósito
+    steps:
+      - Declare duas variáveis locais vizinhas, um array pequeno e um inteiro, e escreva além do fim do array.
+      - Observe se o inteiro muda (o resultado varia entre compiladores e flags).
+      - Recompile com `-fsanitize=address -g` e rode de novo. Leia o relatório.
+    observe:
+      - O valor do inteiro antes e depois da escrita fora do limite.
+      - O que o AddressSanitizer reporta e em qual linha.
+  reflectionQuestions:
+    - Por que C não verifica limites de array automaticamente?
+    - Como o padding afeta o tamanho de milhões de registros em memória?
+    - Por que funções C costumam receber ponteiro e tamanho juntos?
+  completionCriteria:
+    - Prevê e explica o sizeof e os offsets de structs com padding.
+    - Demonstra uma escrita fora do limite detectada pelo AddressSanitizer.
+    - Escreve uma função sobre arrays que recebe o tamanho explicitamente.
+  evidencePrompts:
+    - Saída de sizeof/offsetof com explicação do padding.
+    - Relatório do AddressSanitizer com a linha do erro destacada.
+  firstAction: Imprima `sizeof(int[10])` e explique o número.
+
+- id: c-preprocessor
+  stage: s03-c-compilation
+  title: Pré-processador e headers
+  status: authored
+  objective: Explicar o que o pré-processador faz com `#include`, `#define` e compilação condicional, inspecionando sua saída.
+  whyItMatters: Headers mal organizados causam erros de "redefinição", macros causam bugs sutis e flags de compilação ativam código diferente em cada ambiente. Saber ler a saída do pré-processador transforma esses erros em problemas diagnosticáveis.
+  prerequisites: [c-types-functions]
+  related: [compilation-pipeline, linking-object-files]
+  explanation: |
+    Antes de compilar, o **pré-processador** transforma o texto do arquivo. Ele não entende C; trabalha com texto e tokens.
+
+    `#include "x.h"` cola o conteúdo de `x.h` no lugar da diretiva. `#define N 10` substitui `N` por `10` em todo o resto do arquivo. `#ifdef DEBUG ... #endif` mantém ou remove trechos conforme definições, que podem vir da linha de comando com `-DDEBUG`.
+
+    O resultado é uma única **unidade de tradução** — o que o compilador de fato vê. `gcc -E arquivo.c` mostra esse resultado.
+
+    Headers costumam ter **include guards** (`#ifndef X_H / #define X_H / ... #endif`) para não serem colados duas vezes. Macros com parâmetros são substituição de texto: `#define DOBRO(x) x*2` faz `DOBRO(1+2)` virar `1+2*2`.
+  misconceptions:
+    - claim: "#include importa uma biblioteca já compilada."
+      correction: Só cola o texto do header (declarações). O código compilado entra na etapa de linking.
+    - claim: Macros são como funções.
+      correction: São substituição de texto, sem verificação de tipos e com armadilhas de precedência e avaliação dupla.
+    - claim: O compilador vê o arquivo .c que eu escrevi.
+      correction: Vê a unidade de tradução já pré-processada, que pode ter milhares de linhas.
+  resources:
+    start: beej-c-preprocessor
+    deeper: [gcc-overall-options, cppreference-c]
+  exercise:
+    id: ex-preprocess-output
+    title: Ler o que o compilador vê
+    prediction: Estime quantas linhas `gcc -E hello.c` vai gerar para um hello world com `#include <stdio.h>`.
+    steps:
+      - Rode `gcc -E hello.c | wc -l` e compare com sua estimativa.
+      - Procure na saída a declaração de `printf`.
+      - Crie `util.h` com a declaração de uma função e include guard; inclua duas vezes e veja que não há erro.
+      - Remova o guard e observe o erro (se houver uma definição de tipo no header).
+    checks:
+      - Você localiza a declaração de printf na saída do pré-processador.
+      - Você explica o papel do include guard.
+  experiment:
+    title: A macro que mente
+    steps:
+      - Defina `#define QUADRADO(x) x*x` e imprima `QUADRADO(1+2)`.
+      - Veja a expansão com `gcc -E` e explique o resultado.
+      - Corrija com parênteses e teste `QUADRADO(i++)` para ver a avaliação dupla.
+      - Compile o mesmo arquivo com e sem `-DDEBUG` usando um bloco `#ifdef DEBUG`.
+    observe:
+      - A expansão textual da macro em cada versão.
+      - A diferença na saída do programa com e sem -DDEBUG.
+  reflectionQuestions:
+    - Por que headers devem conter declarações e não definições de funções?
+    - Quando uma função `static inline` é preferível a uma macro?
+    - Como flags como -DDEBUG podem fazer o código de produção diferir do testado?
+  completionCriteria:
+    - Mostra e interpreta a saída de gcc -E.
+    - Explica e corrige uma macro com problema de precedência.
+    - Organiza um header com include guard e explica por que ele existe.
+  evidencePrompts:
+    - Trecho da saída de gcc -E com a declaração de printf.
+    - Expansões da macro QUADRADO antes e depois da correção.
+  firstAction: Rode `gcc -E hello.c | tail -n 20` e procure o seu próprio código no fim da saída.
+
+- id: compilation-pipeline
+  stage: s03-c-compilation
+  title: O pipeline de compilação
+  status: authored
+  objective: Separar e observar cada etapa — pré-processamento, compilação para assembly, montagem em object file, linking e execução — e explicar o que cada uma produz.
+  whyItMatters: Distinguir erro de compilação, erro de linking e erro de execução economiza horas. O mesmo modelo explica bytecode em Java, bundlers em JavaScript e imagens de container.
+  prerequisites: [c-preprocessor]
+  related: [linking-object-files, c-types-functions]
+  explanation: |
+    `gcc programa.c -o programa` parece um passo só, mas são quatro:
+
+    1. **Pré-processamento** (`gcc -E`): resolve `#include` e macros → unidade de tradução.
+    2. **Compilação** (`gcc -S`): traduz C para **assembly** da sua arquitetura → arquivo `.s`.
+    3. **Montagem** (`gcc -c`): converte assembly em código de máquina num **object file** `.o`, que ainda tem referências não resolvidas (como `printf`).
+    4. **Linking**: junta object files e bibliotecas, resolve os símbolos e gera o **executável**.
+
+    Compilar não é executar. Uma função definida fora de `main` é compilada normalmente, vira código no `.o`, mas só roda se alguém a chamar. Um arquivo sem `main` compila com `-c` sem erro; só o linking de um executável exige um `main`.
+
+    A **execução** é outra fase: o sistema operacional carrega o executável, cria um processo e começa a executar a partir do ponto de entrada.
+  misconceptions:
+    - claim: Compilar um programa também o executa.
+      correction: Compilar produz um arquivo. Executar é outra etapa, feita pelo sistema operacional quando você roda o binário.
+    - claim: Uma função fora de main não é compilada.
+      correction: Ela é compilada e aparece no object file; só não é chamada se ninguém a referenciar.
+    - claim: Todo arquivo .c precisa de main.
+      correction: Só o programa final precisa de um main. Arquivos de biblioteca compilam com -c sem main.
+  resources:
+    start: gcc-overall-options
+    deeper: [akita-hello-world, beej-c-hello-world, akita-compiled-interpreted, godbolt, csapp]
+  exercise:
+    id: ex-pipeline-stages
+    title: Parar em cada etapa
+    prediction: Para cada comando (`-E`, `-S`, `-c`, sem flag), escreva que arquivo será gerado e se ele pode ser executado.
+    steps:
+      - Escreva `soma.c` com uma função `int soma(int, int)` definida fora de `main` e um `main` que a chama.
+      - "Gere cada etapa: `gcc -E soma.c -o soma.i`, `gcc -S soma.c`, `gcc -c soma.c` e `gcc soma.o -o soma`."
+      - Use `file` em cada arquivo gerado e `nm soma.o` para listar os símbolos.
+      - Encontre a função `soma` no `.s` e no `nm`.
+      - Crie `sem_main.c` só com uma função e compile com `gcc -c`. Depois tente gerar um executável e leia o erro.
+    checks:
+      - Você explica o tipo de cada arquivo segundo `file`.
+      - Você identifica qual etapa reclamou da falta de main.
+  experiment:
+    title: Comparar níveis de otimização no assembly
+    steps:
+      - Gere assembly de `soma.c` com `-O0` e com `-O2` e compare o tamanho e as instruções.
+      - Cole a função no Compiler Explorer e observe o assembly lado a lado com o código.
+      - Escreva uma função cujo resultado é constante e veja o que o -O2 faz com ela.
+    observe:
+      - Quantas instruções a função soma tem em cada nível.
+      - Se o compilador eliminou ou simplificou código com -O2.
+  reflectionQuestions:
+    - Como você distingue um erro de compilação de um erro de linking pela mensagem?
+    - O que existe num object file que ainda não existe no executável, e vice-versa?
+    - Por que uma função definida e nunca chamada ainda aparece no object file?
+  completionCriteria:
+    - Gera e identifica os arquivos de todas as etapas do pipeline.
+    - Explica por que um arquivo sem main compila com -c e falha no linking.
+    - Distingue compilação de execução com um exemplo próprio.
+  evidencePrompts:
+    - Comandos de cada etapa com a saída de `file` e `nm`.
+    - A mensagem de erro de linking do arquivo sem main e sua explicação.
+  firstAction: Rode `gcc -c hello.c` e `file hello.o`. Anote o que o file diz.
+
+- id: linking-object-files
+  stage: s03-c-compilation
+  title: Object files, símbolos e linking
+  status: authored
+  objective: Construir um programa com vários arquivos e uma biblioteca, explicando símbolos definidos e indefinidos, linking estático e dinâmico e os erros mais comuns.
+  whyItMatters: Erros como "undefined reference" e "multiple definition" e falhas de bibliotecas compartilhadas ao fazer deploy vêm do linking. O mesmo modelo de dependências reaparece em módulos Java e pacotes npm.
+  prerequisites: [compilation-pipeline]
+  related: [c-preprocessor, dynamic-allocation-ownership]
+  mathThreads: [graphs]
+  explanation: |
+    Cada object file tem uma **tabela de símbolos**: nomes que ele **define** (funções e variáveis globais com corpo) e nomes que ele **usa sem definir** (indefinidos). `nm` mostra isso: `T` para código definido, `U` para indefinido.
+
+    O **linker** junta object files e tenta casar cada símbolo indefinido com exatamente uma definição. Se não acha nenhuma: *undefined reference*. Se acha duas: *multiple definition*.
+
+    Bibliotecas podem entrar de dois jeitos. **Estáticas** (`.a`) têm o código copiado para dentro do executável. **Dinâmicas** (`.so`) ficam fora; o executável guarda só a dependência, e o *dynamic loader* carrega a biblioteca quando o programa começa. `ldd` lista essas dependências.
+
+    `static` numa função global limita o símbolo ao próprio arquivo, evitando colisões de nome.
+  misconceptions:
+    - claim: Se o header foi incluído, a função vai funcionar.
+      correction: O header só declara. Sem o object file ou biblioteca com a definição, o linker reclama.
+    - claim: Erros de linking são erros de sintaxe.
+      correction: O código pode estar correto; o problema está nas definições disponíveis no momento de juntar as partes.
+    - claim: O executável contém todo o código que ele usa.
+      correction: Com linking dinâmico, partes como a libc são carregadas de arquivos externos na execução.
+  resources:
+    start: beej-c-multifile
+    deeper: [gcc-overall-options, csapp]
+  exercise:
+    id: ex-multifile-build
+    title: Um programa em três arquivos e um Makefile
+    prediction: Preveja quais símbolos aparecerão como U e como T em cada object file.
+    steps:
+      - Divida a calculadora em `main.c`, `ops.c` e `ops.h`.
+      - Compile cada `.c` com `-c` e inspecione com `nm`.
+      - Faça o linking manual e depois escreva um `Makefile` com dependências corretas.
+      - Altere só `ops.c` e confirme que `make` recompila apenas o necessário.
+    checks:
+      - A previsão de símbolos bate com o nm ou as diferenças estão explicadas.
+      - O Makefile recompila apenas o que mudou.
+  experiment:
+    title: Provocar os três erros clássicos
+    steps:
+      - Remova `ops.o` do linking e leia o "undefined reference".
+      - Defina a mesma função em dois arquivos e leia o "multiple definition".
+      - Crie uma biblioteca estática com `ar rcs libops.a ops.o` e use-a no linking.
+      - Rode `ldd` no executável e identifique as bibliotecas dinâmicas.
+    observe:
+      - As mensagens exatas do linker em cada caso.
+      - A diferença de tamanho entre linking com e sem a biblioteca estática, e a saída do ldd.
+  reflectionQuestions:
+    - Por que o linker precisa de exatamente uma definição para cada símbolo usado?
+    - Quais as vantagens e riscos de linking dinâmico num deploy?
+    - Como o Makefile modela um grafo de dependências?
+  completionCriteria:
+    - Constrói um programa com vários arquivos e Makefile funcional.
+    - Reproduz e explica undefined reference e multiple definition.
+    - Explica a diferença entre biblioteca estática e dinâmica usando nm e ldd.
+  evidencePrompts:
+    - Link do repositório com o Makefile e a saída do nm de cada object file.
+    - Mensagens dos erros provocados com uma explicação de cada uma.
+  firstAction: Rode `nm` num object file que você já tem e encontre um símbolo U.

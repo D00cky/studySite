@@ -1,0 +1,1482 @@
+# Biblioteca curada.
+#
+# Regras:
+# - Nada inventado: título, autor, URL e seção vêm do que foi observado na página.
+# - verification.status = verified exige checkedOn (data em que o link foi aberto com sucesso).
+# - verification.status = pending NÃO tem data. Interface mostra "aguardando verificação".
+# - section só é preenchida quando o capítulo/seção foi visto no índice da fonte.
+# - Akita para intuição e contexto; documentação e livros para precisão; laboratórios para verificar.
+#
+# Verificação inicial: 2026-10-18 (curl e/ou WebFetch, status HTTP 200).
+
+# --- Guias gerais ---------------------------------------------------------------
+
+- id: teach-yourself-cs
+  title: Teach Yourself Computer Science
+  author: teachyourselfcs.com
+  url: https://teachyourselfcs.com/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [complexity-analysis]
+  why: Mapa das grandes áreas de CS (programação, arquitetura, algoritmos, matemática, SO, redes, bancos, linguagens, distribuídos) com um livro ou curso recomendado para cada uma. Útil para ver o todo e planejar aprofundamentos.
+  section: "Subject guides (Programming, Computer Architecture, Algorithms and Data Structures, ...)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Autoria não aparecia na página verificada." }
+
+- id: teach-yourself-cs-pt
+  title: TeachYourselfCS-PT (tradução comunitária)
+  author: Clemens Schrage (tradução)
+  url: https://github.com/Clemensss/TeachYourselfCS-PT/blob/master/TeachYourselfCS-PT.md
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [complexity-analysis]
+  why: Tradução em português do Teach Yourself CS, linkada pela página original.
+  access: free
+  priority: optional
+  verification: { status: pending, note: "Link encontrado na página original, mas o conteúdo ainda não foi aberto." }
+
+- id: akita-cs
+  title: "AkitaOnRails — tag Ciência da Computação"
+  author: Fabio Akita
+  url: https://akitaonrails.com/tags/ciencia-da-computacao/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [binary-hexadecimal, compilation-pipeline, stack-heap-lifetime]
+  why: Índice dos artigos do Akita sobre fundamentos de computação, em português. Bom para intuição e contexto de engenharia antes de ir à fonte precisa.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "25 artigos em página única." }
+
+- id: missing-semester
+  title: The Missing Semester of Your CS Education (edição 2026)
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [terminal-shell, filesystem-permissions, processes-streams-exit-codes, git-fundamentals, memory-debugging]
+  why: Curso do MIT sobre as ferramentas que a faculdade costuma não ensinar — shell, ambiente de linha de comando, Git, depuração.
+  section: "Edição 2026: 9 aulas"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-shell
+  title: "Missing Semester 2026 — Course Overview + Introduction to the Shell"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/course-shell/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [terminal-shell]
+  why: Primeira aula do curso, dedicada ao shell. Ponto de partida direto para o tópico.
+  section: Course Overview + Introduction to the Shell
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-cli-env
+  title: "Missing Semester 2026 — Command-line Environment"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/command-line-environment/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [processes-streams-exit-codes, filesystem-permissions]
+  why: Aula sobre o ambiente de linha de comando, complementar ao trabalho com processos e fluxos.
+  section: Command-line Environment
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-git
+  title: "Missing Semester 2026 — Version Control and Git"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/version-control/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: Aula sobre o modelo de dados do Git e o uso no dia a dia.
+  section: Version Control and Git
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-debugging
+  title: "Missing Semester 2026 — Debugging and Profiling"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/debugging-profiling/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [memory-debugging, profiling-benchmarks]
+  why: Aula sobre depuração e profiling, ligando o método de investigação às ferramentas.
+  section: Debugging and Profiling
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-pt
+  title: O semestre que falta na sua faculdade em ciência da computação (tradução)
+  author: Tradução comunitária
+  url: https://missing-semester-pt.github.io/
+  language: pt-BR
+  format: course
+  difficulty: intro
+  topics: [terminal-shell, git-fundamentals]
+  why: Tradução em português do Missing Semester, linkada pelo site oficial. Aparenta ser baseada na edição de 2020, então pode diferir da edição atual.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Baseada em edição anterior (aparentemente 2020)." }
+
+# --- Shell, Linux e Git ------------------------------------------------------------
+
+- id: tlcl
+  title: The Linux Command Line
+  author: William Shotts
+  url: https://linuxcommand.org/tlcl.php
+  language: en
+  format: book
+  difficulty: intro
+  topics: [terminal-shell, filesystem-permissions]
+  why: Livro completo e gratuito sobre a linha de comando do Linux, do básico a scripts. Referência paciente para quem está começando.
+  section: Seventh Internet Edition
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página verificada (licença CC BY-NC-ND, PDF gratuito). O download do PDF no SourceForge não pôde ser confirmado por bloqueio a bots." }
+
+- id: bash-manual
+  title: Bash Reference Manual
+  author: GNU Project
+  url: https://www.gnu.org/software/bash/manual/bash.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-streams-exit-codes, terminal-shell]
+  why: Definição precisa de como o bash trata pipelines, redirecionamentos e exit status.
+  section: "3.2.3 Pipelines · 3.6 Redirections · 3.7.5 Exit Status (Bash 5.3)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pages
+  title: Linux man pages online
+  author: man7.org (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors, signals]
+  why: Páginas de manual do Linux, a referência oficial de syscalls e funções da libc.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch; conexão direta por curl falhou nesta máquina." }
+
+- id: man-chmod
+  title: chmod(1) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man1/chmod.1.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: Referência exata dos modos simbólico e octal do chmod.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-pipe
+  title: pipe(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/pipe.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-streams-exit-codes, file-descriptors]
+  why: Visão geral de pipes e FIFOs pelo lado do sistema operacional.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-exit
+  title: exit(3) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man3/exit.3.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [processes-streams-exit-codes]
+  why: O que acontece quando um processo termina normalmente e como o status chega ao pai.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-fork
+  title: fork(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/fork.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: Referência da syscall que cria processos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-signal
+  title: signal(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/signal.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [signals]
+  why: Visão geral dos sinais, suas ações padrão e regras de tratamento.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-malloc
+  title: malloc(3) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man3/malloc.3.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [dynamic-allocation-ownership]
+  why: Contrato exato de malloc, calloc, realloc e free, incluindo os casos de erro.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-ascii
+  title: ascii(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/ascii.7.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [text-encoding, binary-hexadecimal]
+  why: Tabela ASCII em octal, decimal e hexadecimal — útil para ler dumps.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-utf8
+  title: utf-8(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/utf-8.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [text-encoding]
+  why: Descrição precisa de como UTF-8 codifica code points em bytes.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: man-strace
+  title: strace(1) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man1/strace.1.html
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: Ferramenta para observar as syscalls de qualquer programa — essencial nos laboratórios.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Aberto via WebFetch." }
+
+- id: pro-git-ptbr
+  title: Pro Git (2ª edição, em português)
+  author: Scott Chacon e Ben Straub
+  url: https://git-scm.com/book/pt-br/v2
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: O livro de referência sobre Git, traduzido. Os três primeiros capítulos cobrem o necessário para o tópico.
+  section: "1. Primeiros Passos · 2. Fundamentos do Git · 3. Ramificação (Branching) no Git"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-git
+  title: "[Akitando] #70 - Entendendo GIT | (não é um tutorial!)"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2020/02/05/akitando-70-entendendo-git-nao-e-um-tutorial/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: Intuição sobre como o Git funciona por dentro, em português, antes ou depois do Pro Git.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Dados e a máquina ---------------------------------------------------------------
+
+- id: akita-binary-text
+  title: "[Akitando] #91 - Qual a REAL diferença entre Arquivos Binário e Texto??"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/01/20/akitando-91-qual-a-real-diferenca-entre-arquivos-binario-e-texto/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [binary-hexadecimal, text-encoding]
+  why: Intuição em português sobre bytes, texto e binário — exatamente a ideia de que a interpretação dá significado aos bits.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-intro-computing
+  title: "[Akitando] #80 - O Guia +Hardcore de Introdução à COMPUTAÇÃO"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2020/06/04/akitando-80-o-guia-hardcore-de-introducao-a-computacao/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [binary-hexadecimal, cpu-memory-caches]
+  why: Panorama em português dos fundamentos de computação, bom para contexto.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-640kb
+  title: "[Akitando] #97 - Só Precisamos de 640 kB de Memória? | 16-bits até 64-bits!"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/05/13/akitando-97-so-precisamos-de-640-kb-de-memoria-16-bits-ate-64-bits/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [integer-representation-overflow, cpu-memory-caches]
+  why: Contexto histórico em português sobre larguras de 16 a 64 bits e endereçamento de memória.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-von-neumann
+  title: "[Akitando] #86 - O Computador de Turing e Von Neumann | Por que calculadoras não são computadores?"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2020/10/23/akitando-86-o-computador-de-turing-e-von-neumann-por-que-calculadoras-nao-sao-computadores/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: Intuição em português sobre o modelo de computador com CPU e memória.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50
+  title: CS50x 2026
+  author: David J. Malan (Harvard)
+  url: https://cs50.harvard.edu/x/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [c-types-functions, pointers, binary-hexadecimal]
+  why: Curso introdutório de Harvard que usa C nas primeiras semanas, com aulas, notas e exercícios.
+  section: "Semanas 0–10 (Week 1 C, Week 2 Arrays, Week 4 Memory)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50-week1
+  title: "CS50x 2026 — Week 1: C"
+  author: David J. Malan (Harvard)
+  url: https://cs50.harvard.edu/x/weeks/1/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [c-types-functions]
+  why: Primeira semana de C do CS50, com aula e exercícios.
+  section: Week 1 C
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50-week2
+  title: "CS50x 2026 — Week 2: Arrays"
+  author: David J. Malan (Harvard)
+  url: https://cs50.harvard.edu/x/weeks/2/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [c-arrays-structs]
+  why: Semana do CS50 dedicada a arrays em C.
+  section: Week 2 Arrays
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Semana listada no índice do curso; página da semana não aberta individualmente." }
+
+- id: cs50-memory
+  title: "CS50x 2026 — Week 4: Memory"
+  author: David J. Malan (Harvard)
+  url: https://cs50.harvard.edu/x/weeks/4/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [pointers, binary-hexadecimal]
+  why: Semana do CS50 dedicada à memória em C.
+  section: Week 4 Memory
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: csapp
+  title: "Computer Systems: A Programmer's Perspective (3ª edição)"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal, integer-representation-overflow, floating-point, cpu-memory-caches, compilation-pipeline, linking-object-files, stack-heap-lifetime]
+  why: O livro de referência sobre como programas rodam na máquina — representação de dados, assembly, linking e hierarquia de memória. Pago; o site tem materiais gratuitos para estudantes.
+  section: "3ª edição (site oferece Student Site, Web Asides e PDF com sumário e prefácio)"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris
+  title: From Nand to Tetris
+  author: Noam Nisan e Shimon Schocken
+  url: https://www.nand2tetris.org/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [binary-hexadecimal, cpu-memory-caches]
+  why: Curso que constrói um computador a partir de portas lógicas — ótimo para quem quer ver a máquina por baixo.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Livro é pago; disponibilidade gratuita dos materiais do curso não foi conferida nesta verificação." }
+
+- id: joel-unicode
+  title: The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)
+  author: Joel Spolsky
+  url: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [text-encoding]
+  why: Artigo clássico e curto que separa caractere, code point e encoding.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: utf8-everywhere
+  title: UTF-8 Everywhere
+  author: UTF-8 Everywhere Manifesto
+  url: https://utf8everywhere.org/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [text-encoding]
+  why: Argumentação detalhada a favor de UTF-8 como encoding padrão, com consequências práticas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: floating-point-gui
+  title: The Floating-Point Guide
+  author: floating-point-gui.de
+  url: https://floating-point-gui.de/
+  language: en
+  format: article
+  difficulty: intro
+  topics: [floating-point]
+  why: Explicação direta, começando por 0.1 + 0.2, do que todo programador precisa saber sobre ponto flutuante.
+  section: Basic Answers
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: goldberg-fp
+  title: What Every Computer Scientist Should Know About Floating-Point Arithmetic
+  author: David Goldberg
+  url: https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [floating-point]
+  why: O artigo de referência (Computing Surveys, 1991) sobre aritmética de ponto flutuante, para quem quer a precisão matemática.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: drepper-memory
+  title: What Every Programmer Should Know About Memory
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [cpu-memory-caches]
+  why: Referência aprofundada (2007) sobre RAM e caches da CPU e o efeito disso no desempenho. Longo e técnico; leia por partes junto com os experimentos.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- C ---------------------------------------------------------------------------
+
+- id: beej-c
+  title: Beej's Guide to C Programming
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-types-functions, c-arrays-structs, c-preprocessor, pointers, c-strings, linking-object-files]
+  why: Guia gratuito, completo e bem-humorado de C. As etapas 3 e 4 usam vários capítulos dele.
+  section: v0.11.2
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-hello-world
+  title: "Beej's Guide to C — 2 Hello, World! (2.3 Compilation Details, 2.4 Building with gcc)"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/hello-world.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: Primeiro programa e detalhes de como o gcc o transforma em executável.
+  section: "2 Hello, World! · 2.3 Compilation Details · 2.4 Building with gcc"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-variables
+  title: "Beej's Guide to C — 3 Variables and Statements"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/variables-and-statements.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-types-functions]
+  why: Variáveis, operadores e controle de fluxo em C.
+  section: 3 Variables and Statements
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-functions
+  title: "Beej's Guide to C — 4 Functions"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/functions.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-types-functions]
+  why: Funções, protótipos e passagem por valor — o centro do tópico.
+  section: 4 Functions
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-pointers
+  title: "Beej's Guide to C — 5 Pointers—Cower In Fear!"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/pointers.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [pointers]
+  why: Introdução gradual a ponteiros, endereços e desreferência.
+  section: 5 Pointers—Cower In Fear!
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-arrays
+  title: "Beej's Guide to C — 6 Arrays"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/arrays.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-arrays-structs]
+  why: Arrays em C, inclusive como se comportam ao serem passados para funções.
+  section: 6 Arrays
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-strings
+  title: "Beej's Guide to C — 7 Strings"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/strings.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-strings]
+  why: Strings como arrays de char terminados em zero.
+  section: 7 Strings
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-structs
+  title: "Beej's Guide to C — 8 Structs"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/structs.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-arrays-structs]
+  why: Declaração e uso de structs.
+  section: 8 Structs
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-pointers2
+  title: "Beej's Guide to C — 11 Pointers II: Arithmetic"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/pointers2.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [pointers]
+  why: Aritmética de ponteiros e a equivalência com índices de array.
+  section: "11 Pointers II: Arithmetic"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-malloc
+  title: "Beej's Guide to C — 12 Manual Memory Allocation"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/manual-memory-allocation.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dynamic-allocation-ownership]
+  why: malloc, free e realloc com exemplos práticos.
+  section: 12 Manual Memory Allocation
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-types-ii
+  title: "Beej's Guide to C — 14 Types II: Way More Types!"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/types-ii-way-more-types.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [integer-representation-overflow, floating-point]
+  why: Inteiros com e sem sinal, tipos de caractere, inteiros maiores e floats em C.
+  section: "14.1 Signed and Unsigned Integers · 14.4 More Float: double and long double"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-fixed-width
+  title: "Beej's Guide to C — 37 Fixed Width Integer Types"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/fixed-width-integer-types.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: Tipos de largura fixa (int32_t, uint8_t...) para quando o tamanho importa.
+  section: 37 Fixed Width Integer Types
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-multifile
+  title: "Beej's Guide to C — 17 Multifile Projects"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/multifile-projects.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [linking-object-files]
+  why: Como dividir um programa em vários arquivos e juntá-los no linking.
+  section: 17 Multifile Projects
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-outside-env
+  title: "Beej's Guide to C — 18 The Outside Environment"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/the-outside-environment.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [processes-streams-exit-codes, c-types-functions]
+  why: Argumentos de linha de comando, exit status e variáveis de ambiente vistos de dentro de um programa C.
+  section: "18.1 Command Line Arguments · 18.2 Exit Status · 18.3 Environment Variables"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-preprocessor
+  title: "Beej's Guide to C — 19 The C Preprocessor"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/the-c-preprocessor.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [c-preprocessor]
+  why: include, define, macros e compilação condicional.
+  section: 19 The C Preprocessor
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-strings-ii
+  title: "Beej's Guide to C — 21 Characters and Strings II"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/characters-and-strings-ii.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [c-strings]
+  why: Aprofundamento em caracteres e strings.
+  section: 21 Characters and Strings II
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-c-unicode
+  title: "Beej's Guide to C — 27 Unicode, Wide Characters, and All That"
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgc/html/split/unicode-wide-characters-and-all-that.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [text-encoding, c-strings]
+  why: Unicode e caracteres largos em C, ligando encoding à linguagem.
+  section: 27 Unicode, Wide Characters, and All That
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-hello-world
+  title: "[Akitando] #93 - Hello World Como Você Nunca Viu! | Entendendo C"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/03/06/akitando-93-hello-world-como-voce-nunca-viu-entendendo-c/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [compilation-pipeline, c-types-functions]
+  why: Intuição em português sobre o que existe por trás de um hello world em C.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-fixing-c
+  title: "[Akitando] #94 - O que vem DEPOIS do Hello World | Consertando meu C"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/03/22/akitando-94-o-que-vem-depois-do-hello-world-consertando-meu-c/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [c-types-functions, memory-debugging]
+  why: Continuação do artigo anterior, em português, sobre corrigir e evoluir código C.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-compiled-interpreted
+  title: "[Akitando] #117 - Linguagem Compilada vs Interpretada | Qual é melhor?"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2022/04/15/akitando-117-linguagem-compilada-vs-interpretada-qual-e-melhor/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [compilation-pipeline, tokenizing-parsing]
+  why: Contexto em português sobre compilação e interpretação, útil ao comparar C com Java e JavaScript.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gcc-overall-options
+  title: Overall Options (Using the GNU Compiler Collection)
+  author: GNU Project
+  url: https://gcc.gnu.org/onlinedocs/gcc/Overall-Options.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [compilation-pipeline, c-preprocessor, linking-object-files]
+  why: Documentação oficial das opções -E, -S, -c e -o, que param o gcc em cada etapa do pipeline.
+  section: "-E (--preprocess) · -S (--assemble) · -c (--compile) · -o"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppreference-c
+  title: C reference — cppreference.com
+  author: cppreference.com
+  url: https://en.cppreference.com/c
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-types-functions, c-arrays-structs, c-preprocessor, pointers, c-strings, integer-representation-overflow]
+  why: Referência precisa da linguagem C e da biblioteca padrão, para tirar dúvidas exatas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "URL /w/c redireciona para /c." }
+
+- id: godbolt
+  title: Compiler Explorer
+  author: Matt Godbolt
+  url: https://godbolt.org/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: Mostra o assembly gerado lado a lado com o código-fonte, com diferentes compiladores e flags.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cert-c
+  title: SEI CERT C Coding Standard
+  author: Software Engineering Institute (CMU)
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [integer-representation-overflow, dynamic-allocation-ownership, c-strings]
+  why: Regras de codificação segura em C com exemplos de código vulnerável e corrigido. Introduz secure coding desde os fundamentos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "O endereço antigo no wiki.sei.cmu.edu redireciona para este." }
+
+# --- Memória, SO e depuração ----------------------------------------------------------
+
+- id: ostep
+  title: "Operating Systems: Three Easy Pieces"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, virtual-memory, threads-basics, filesystems]
+  why: Livro gratuito e muito claro sobre sistemas operacionais — virtualização, concorrência e persistência.
+  section: Versão 1.10 (capítulos em PDF)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-memory-api
+  title: "OSTEP — Memory API"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-api.pdf
+  language: en
+  format: book
+  difficulty: intro
+  topics: [stack-heap-lifetime, dynamic-allocation-ownership]
+  why: Capítulo curto sobre stack, heap, malloc/free e os erros comuns de memória.
+  section: Memory API
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-address-spaces
+  title: "OSTEP — Address Spaces"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf
+  language: en
+  format: book
+  difficulty: intro
+  topics: [stack-heap-lifetime, virtual-memory]
+  why: Como o sistema operacional dá a cada processo seu próprio espaço de endereçamento.
+  section: Address Spaces
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-processes
+  title: "OSTEP — Processes"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf
+  language: en
+  format: book
+  difficulty: intro
+  topics: [processes-syscalls, processes-streams-exit-codes]
+  why: O que é um processo para o sistema operacional.
+  section: Processes
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-process-api
+  title: "OSTEP — Process API"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf
+  language: en
+  format: book
+  difficulty: intro
+  topics: [processes-syscalls]
+  why: fork, exec e wait com exemplos — base direta do mini shell.
+  section: Process API
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-files-directories
+  title: "OSTEP — Files and Directories"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [filesystems, file-descriptors]
+  why: A interface de arquivos e diretórios do ponto de vista do SO.
+  section: Files and Directories
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-concurrency-intro
+  title: "OSTEP — Concurrency and Threads"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: Introdução a threads e por que a concorrência gera condições de corrida.
+  section: Concurrency and Threads
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-locks
+  title: "OSTEP — Locks"
+  author: Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [race-conditions-synchronization]
+  why: Como locks funcionam e como são construídos.
+  section: Locks
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-memory-1
+  title: "[Akitando] #45 - Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes (Parte 5)"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2019/03/27/akitando-45-gerenciamento-de-memoria-parte-1-entendendo-back-end-para-iniciantes-parte-5/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [stack-heap-lifetime, dynamic-allocation-ownership]
+  why: Intuição em português sobre gerenciamento de memória, conectando C ao backend.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-memory-2
+  title: "[Akitando] #46 - Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2019/04/03/akitando-46-gerenciamento-de-memoria-parte-2-entendendo-back-end-para-iniciantes-parte-6/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [stack-heap-lifetime, dynamic-allocation-ownership]
+  why: Continuação sobre gerenciamento de memória, em português.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-filesystems
+  title: "[Akitando] #103 - Todos os Sistemas de Arquivos: de FAT a ZFS"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/08/03/akitando-103-todos-os-sistemas-de-arquivos-de-fat-a-zfs/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [filesystems]
+  why: Panorama em português dos sistemas de arquivos, para contexto antes do OSTEP.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-linux-boot
+  title: "[Akitando] #127 - Como Funciona o Boot de um Linux? | O que tem num LiveCD?"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2022/09/12/akitando-127-como-funciona-o-boot-de-um-linux-o-que-tem-num-livecd/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [processes-syscalls]
+  why: Contexto em português sobre o que acontece quando o Linux inicia.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gdb-sample-session
+  title: "Debugging with GDB — 1 A Sample GDB Session"
+  author: GNU Project
+  url: https://sourceware.org/gdb/current/onlinedocs/gdb.html/Sample-Session.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [memory-debugging, pointers]
+  why: Sessão de exemplo do manual oficial do gdb — mostra o fluxo de depuração do início ao fim.
+  section: 1 A Sample GDB Session
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Manual da versão de desenvolvimento (current)." }
+
+- id: valgrind-quickstart
+  title: The Valgrind Quick Start Guide
+  author: Valgrind Developers
+  url: https://valgrind.org/docs/manual/quick-start.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [memory-debugging, dynamic-allocation-ownership]
+  why: Como rodar o Memcheck e ler seus relatórios de leaks e acessos inválidos.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: asan
+  title: AddressSanitizer — Clang documentation
+  author: LLVM Project
+  url: https://clang.llvm.org/docs/AddressSanitizer.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [memory-debugging, c-arrays-structs, c-strings]
+  why: Documentação do AddressSanitizer — o que ele detecta e como ler os relatórios.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Algoritmos ---------------------------------------------------------------------
+
+- id: mit-6006
+  title: "MIT 6.006 Introduction to Algorithms (Spring 2020)"
+  author: Erik Demaine, Jason Ku e Justin Solomon (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [complexity-analysis, searching-sorting]
+  why: Curso completo do MIT com notas de aula, exercícios e provas.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: open-data-structures
+  title: Open Data Structures
+  author: Pat Morin
+  url: https://opendatastructures.org/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dynamic-arrays, linked-lists, hash-tables, binary-search-trees, heaps-priority-queues]
+  why: Livro livre sobre estruturas de dados, com edições em pseudocódigo, Java e C++.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-trees
+  title: "[Akitando] #95 - Árvores: O Começo de TUDO | Estruturas de Dados e Algoritmos"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2021/04/06/akitando-95-arvores-o-comeco-de-tudo/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [binary-search-trees]
+  why: Intuição em português sobre árvores e por que elas aparecem em todo lugar.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-graphs
+  title: "[Akitando #140] Desbloqueando o \"Algoritmo\" do Twitter - Introdução a Grafos"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2023/04/11/akitando-140-desbloqueando-o-algoritmo-do-twitter-introducao-a-grafos/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [graphs-traversal]
+  why: Introdução a grafos em português, com um exemplo do mundo real.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Redes, bancos e sistemas ---------------------------------------------------------
+
+- id: beej-network
+  title: Beej's Guide to Network Programming
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgnet/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: O guia clássico de programação com sockets em C.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: beej-network-ptbr
+  title: Guia Beej de Programação em Redes (tradução pt-BR)
+  author: Brian "Beej Jorgensen" Hall (tradução comunitária)
+  url: https://beej.us/guide/bgnet/translations/bgnet_ptbr.html
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: Tradução em português do guia de sockets. Pode estar atrás da versão em inglês.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Tradução possivelmente desatualizada em relação ao original." }
+
+- id: akita-networks-1
+  title: "[Akitando] #121 - Introdução a Redes: Como Dados viram Ondas? | Parte 1"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2022/07/01/akitando-121-entendendo-transferencia-de-sinais-digitais-introducao-a-redes-parte-1/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [dns-ip]
+  why: Início da série do Akita sobre redes, em português.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-networks-3
+  title: "[Akitando] #123 - Como sua Internet Funciona | Introdução a Redes Parte 3"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2022/07/23/akitando-123-como-sua-internet-funciona-introducao-a-redes-parte-3/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [dns-ip]
+  why: Continuação da série de redes, em português.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-crypto-1
+  title: "[Akitando] #67 - Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2019/11/21/akitando-67-entendendo-conceitos-basicos-de-criptografia-parte-1-2/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [tls-concepts]
+  why: Conceitos básicos de criptografia em português, base para entender TLS.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-learn
+  title: Aprendendo desenvolvimento web (MDN)
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/pt-BR/docs/Learn_web_development
+  language: pt-BR
+  format: documentation
+  difficulty: intro
+  topics: [http-protocol, semantic-html-accessibility, javascript-browser]
+  why: Trilha oficial do MDN em português sobre HTML, CSS, JavaScript e a web. Algumas subpáginas podem não estar traduzidas.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn
+  title: Learn web development (web.dev)
+  author: Google (web.dev)
+  url: https://web.dev/learn
+  language: en
+  format: course
+  difficulty: intro
+  topics: [css-layout, rendering-performance, semantic-html-accessibility]
+  why: Cursos de HTML, CSS, JavaScript, desempenho e acessibilidade.
+  section: "Learn HTML · Learn CSS · Learn JavaScript · Learn Performance · Learn Accessibility"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: roadmap-frontend
+  title: Frontend Developer Roadmap (roadmap.sh)
+  author: roadmap.sh
+  url: https://roadmap.sh/frontend
+  language: en
+  format: article
+  difficulty: intro
+  topics: [semantic-html-accessibility]
+  why: Referência de navegação de tópicos de frontend que inspirou este roadmap.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: roadmap-backend
+  title: Backend Developer Roadmap (roadmap.sh)
+  author: roadmap.sh
+  url: https://roadmap.sh/backend
+  language: en
+  format: article
+  difficulty: intro
+  topics: [spring-web-backend]
+  why: Mapa de tópicos de backend para orientar o ramo Java.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-docs
+  title: PostgreSQL Documentation
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [relational-modeling-constraints, indexes, query-plans, isolation-locks, jdbc-postgresql]
+  why: A documentação oficial, precisa e muito bem escrita. Use a versão correspondente ao seu servidor.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "'current' era a versão 18; a 19 estava em RC. Números de capítulo podem mudar com a nova versão." }
+
+- id: postgres-tutorial
+  title: "PostgreSQL — Part I. Tutorial"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [relational-modeling-constraints, transactions-basics]
+  why: Tutorial oficial, de criar tabelas a transações.
+  section: Part I. Tutorial
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-constraints
+  title: "PostgreSQL — 5.5. Constraints"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/ddl-constraints.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [relational-modeling-constraints]
+  why: Referência das constraints que protegem invariantes no banco.
+  section: 5.5. Constraints (versão 18)
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-queries
+  title: "PostgreSQL — Chapter 7. Queries"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/queries.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [joins-aggregation]
+  why: Como consultas, joins e agregações funcionam no PostgreSQL.
+  section: Chapter 7. Queries (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-indexes
+  title: "PostgreSQL — Chapter 11. Indexes"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/indexes.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [indexes]
+  why: Tipos de índice e quando cada um é usado.
+  section: Chapter 11. Indexes (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-explain
+  title: "PostgreSQL — 14.1. Using EXPLAIN"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/using-explain.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [query-plans]
+  why: Como ler planos de execução com EXPLAIN e EXPLAIN ANALYZE.
+  section: 14.1. Using EXPLAIN (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-mvcc
+  title: "PostgreSQL — Chapter 13. Concurrency Control"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/mvcc.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [isolation-locks]
+  why: MVCC, níveis de isolamento (13.2 Transaction Isolation) e locks no PostgreSQL.
+  section: "Chapter 13. Concurrency Control · 13.2. Transaction Isolation (versão 18)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: use-the-index-luke
+  title: Use The Index, Luke
+  author: Markus Winand
+  url: https://use-the-index-luke.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [indexes, pagination]
+  why: Livro web gratuito sobre índices e desempenho de SQL para desenvolvedores. Não há versão em português.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ddia
+  title: Designing Data-Intensive Applications
+  author: Martin Kleppmann
+  url: https://dataintensive.net/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [queues-delivery-semantics, consistency-models]
+  why: Referência sobre dados em sistemas distribuídos — replicação, particionamento, transações e consistência. Livro pago.
+  section: 1ª edição (ISBN 9781449373320)
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jepsen-consistency
+  title: Consistency Models (Jepsen)
+  author: Jepsen
+  url: https://jepsen.io/consistency
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Guia de referência dos modelos de consistência e suas relações.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book
+  title: Site Reliability Engineering (Google)
+  author: Google
+  url: https://sre.google/sre-book/table-of-contents/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [partial-failure-retries, logs-metrics-traces]
+  why: Livro gratuito do Google sobre operar sistemas confiáveis.
+  section: "6. Monitoring Distributed Systems · 21. Handling Overload · 22. Addressing Cascading Failures"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-cheatsheets
+  title: OWASP Cheat Sheet Series
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions, authorization, input-validation]
+  why: Guias práticos e objetivos de segurança para autenticação, sessões, autorização e validação.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-perf
+  title: Linux Performance
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/linuxperf.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [profiling-benchmarks]
+  why: Coletânea de referências e ferramentas de análise de desempenho no Linux.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: docker-get-started
+  title: Get started with Docker
+  author: Docker
+  url: https://docs.docker.com/get-started/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [containers-deployment]
+  why: Introdução oficial a containers com Docker.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-why-test
+  title: Por que Testar?
+  author: Fabio Akita
+  url: https://akitaonrails.com/2007/08/25/por-que-testar/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [interfaces-testing]
+  why: Argumento em português (2007) a favor de testes automatizados.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java
+  title: Learn Java (dev.java)
+  author: Oracle
+  url: https://dev.java/learn/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: Trilha oficial de aprendizado de Java moderno.
+  section: Your First Steps in Java
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-docs
+  title: Spring Boot Reference Documentation
+  author: Spring (Broadcom)
+  url: https://docs.spring.io/spring-boot/index.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [spring-web-backend]
+  why: Documentação oficial do framework usado no backend deste site.
+  section: Spring Boot 4.1.1
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters
+  title: Crafting Interpreters
+  author: Robert Nystrom
+  url: https://craftinginterpreters.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments]
+  why: Livro gratuito na web que constrói um interpretador completo passo a passo. A Parte II (tree-walk) cobre o ramo de interpretadores.
+  section: "II. A Tree-Walk Interpreter (4. Scanning · 6. Parsing Expressions · 7. Evaluating Expressions · 8. Statements and State)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }

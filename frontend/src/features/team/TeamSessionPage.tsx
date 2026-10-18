@@ -1,0 +1,182 @@
+import { useState, type FormEvent } from 'react'
+import { Link, useParams } from 'react-router'
+import {
+  useGroup,
+  useMe,
+  usePolicies,
+  useSetContribution,
+  useSetTeamRoles,
+  useSuggestedRoles,
+  useTeamSession,
+  useUpdateTeamSession,
+} from '../../api/queries'
+import type { RoleAssignment, TeamSessionDetail } from '../../api/types'
+import { TextArea } from '../../components/Field'
+import { ErrorMessage, Loading } from '../../components/Status'
+import { formatDateTime } from '../../lib/format'
+import { SESSION_ROLE_LABEL } from '../../lib/labels'
+import { useTopicTitles } from '../../lib/useTopicTitles'
+
+export function TeamSessionPage() {
+  const { sessionId = '' } = useParams()
+  const { data, error, isPending } = useTeamSession(sessionId)
+  const { data: me } = useMe()
+  const { data: group } = useGroup(data?.session.groupId)
+  const topicTitle = useTopicTitles()
+
+  if (isPending) return <Loading />
+  if (error) return <ErrorMessage error={error} />
+  const { session, roles } = data
+  const isMentor = group?.myRole === 'mentor'
+  const isCreator = session.createdBy === me?.id
+  const holdsRole = roles.some((r) => r.userId === me?.id)
+  const canEdit = isCreator || isMentor || holdsRole
+
+  return (
+    <div className="prose">
+      <p className="muted small">
+        <Link to="/time">Time</Link> / Sessão
+      </p>
+      <h1>{session.title}</h1>
+      <p className="muted small">
+        {formatDateTime(session.scheduledFor ?? session.createdAt)}
+        {session.topicId && (
+          <>
+            {' '}
+            · <Link to={`/topicos/${session.topicId}`}>{topicTitle(session.topicId)}</Link>
+          </>
+        )}
+      </p>
+      {session.agenda && !canEdit && (
+        <section aria-labelledby="agenda-title">
+          <h2 id="agenda-title">Pauta</h2>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{session.agenda}</p>
+        </section>
+      )}
+      <Roles detail={data} myId={me?.id} canAssign={isCreator || isMentor} />
+      {canEdit && <SessionRecord detail={data} />}
+      {!canEdit && (session.findings || session.nextSteps) && (
+        <section>
+          <h2>Achados</h2>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{session.findings}</p>
+          <h2>Próximos passos</h2>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{session.nextSteps}</p>
+        </section>
+      )}
+    </div>
+  )
+}
+
+function Roles({ detail, myId, canAssign }: { detail: TeamSessionDetail; myId?: string; canAssign: boolean }) {
+  const { data: policies } = usePolicies()
+  const { data: suggested = [] } = useSuggestedRoles(canAssign ? detail.session.groupId : undefined)
+  const { data: group } = useGroup(detail.session.groupId)
+  const setRoles = useSetTeamRoles()
+  const nameOf = (id: string) => group?.members.find((m) => m.userId === id)?.displayName ?? id
+
+  return (
+    <section className="panel stack" aria-labelledby="roles-title">
+      <h2 id="roles-title">Papéis</h2>
+      {policies && (
+        <p className="hint">Cada participante implementa ou investiga algo e explica a própria contribuição.</p>
+      )}
+      {detail.roles.length === 0 ? (
+        <p className="muted" style={{ margin: 0 }}>
+          Papéis ainda não distribuídos.
+        </p>
+      ) : (
+        <ul className="list-plain">
+          {detail.roles.map((r) => (
+            <li key={`${r.userId}-${r.role}`}>
+              <div className="row">
+                <strong>{SESSION_ROLE_LABEL[r.role]}</strong>
+                <span>{r.displayName}</span>
+              </div>
+              {policies && (
+                <p className="hint">{policies.sessionRoles.find((p) => p.id === r.role)?.description}</p>
+              )}
+              {r.userId === myId ? (
+                <ContributionForm sessionId={detail.session.id} assignment={r} />
+              ) : (
+                r.contribution && <p style={{ margin: '0.3rem 0 0', whiteSpace: 'pre-wrap' }}>{r.contribution}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      {canAssign && suggested.length > 0 && (
+        <div className="stack">
+          <p className="small" style={{ margin: 0 }}>
+            Rotação sugerida:{' '}
+            {suggested.map((s) => `${SESSION_ROLE_LABEL[s.role as RoleAssignment['role']]}: ${nameOf(s.userId)}`).join(' · ')}
+          </p>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={() => setRoles.mutate({ id: detail.session.id, body: suggested })}
+            disabled={setRoles.isPending}
+          >
+            Usar rotação sugerida
+          </button>
+        </div>
+      )}
+      <ErrorMessage error={setRoles.error} />
+    </section>
+  )
+}
+
+function ContributionForm({ sessionId, assignment }: { sessionId: string; assignment: RoleAssignment }) {
+  const save = useSetContribution()
+  const [text, setText] = useState(assignment.contribution)
+  function submit(e: FormEvent) {
+    e.preventDefault()
+    save.mutate({ id: sessionId, body: { role: assignment.role, contribution: text } })
+  }
+  return (
+    <form onSubmit={submit} className="stack" style={{ marginTop: '0.4rem' }}>
+      <TextArea
+        label={`Sua contribuição como ${SESSION_ROLE_LABEL[assignment.role]}`}
+        rows={3}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <ErrorMessage error={save.error} />
+      <button type="submit" className="button-quiet" disabled={save.isPending}>
+        Salvar contribuição
+      </button>
+      {save.isSuccess && <p className="success small">Contribuição salva.</p>}
+    </form>
+  )
+}
+
+function SessionRecord({ detail }: { detail: TeamSessionDetail }) {
+  const update = useUpdateTeamSession()
+  const [form, setForm] = useState({
+    agenda: detail.session.agenda,
+    findings: detail.session.findings,
+    nextSteps: detail.session.nextSteps,
+  })
+  function submit(e: FormEvent) {
+    e.preventDefault()
+    update.mutate({ id: detail.session.id, body: form })
+  }
+  return (
+    <form onSubmit={submit} className="panel stack" aria-labelledby="record-title" style={{ marginTop: '1rem' }}>
+      <h2 id="record-title">Registro da sessão</h2>
+      <TextArea label="Pauta" rows={3} value={form.agenda} onChange={(e) => setForm({ ...form, agenda: e.target.value })} />
+      <TextArea
+        label="Achados"
+        rows={5}
+        hint="O que a evidência mostrou? Que casos-limite quebraram algo?"
+        value={form.findings}
+        onChange={(e) => setForm({ ...form, findings: e.target.value })}
+      />
+      <TextArea label="Próximos passos" rows={3} value={form.nextSteps} onChange={(e) => setForm({ ...form, nextSteps: e.target.value })} />
+      <ErrorMessage error={update.error} />
+      <button type="submit" disabled={update.isPending}>
+        Salvar registro da sessão
+      </button>
+      {update.isSuccess && <p className="success small">Registro salvo.</p>}
+    </form>
+  )
+}

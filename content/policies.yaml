@@ -1,0 +1,133 @@
+# Políticas visíveis na interface: como aprendemos, como usamos IA e como estudamos.
+
+learningLoop:
+  - id: question
+    title: Pergunta
+    description: Formule o que você quer entender. "Por que este programa termina com código 1?" é melhor que "estudar exit codes".
+  - id: prediction
+    title: Previsão
+    description: Antes de rodar ou ler, escreva o que você espera que aconteça. Previsões erradas são as mais úteis.
+  - id: study
+    title: Estudo focado
+    description: Leia ou assista um trecho específico — um capítulo, uma seção — com a pergunta em mente.
+  - id: implementation
+    title: Implementação manual
+    description: Escreva o código ou execute os comandos você mesmo, sem copiar uma solução pronta.
+  - id: experiment
+    title: Experimento
+    description: Mude uma coisa de cada vez, provoque falhas de propósito e observe com ferramentas.
+  - id: evidence
+    title: Evidência
+    description: Registre o que aconteceu de fato — saída, comando, link do commit — e não apenas o que você acha que aprendeu.
+  - id: explanation
+    title: Explicação
+    description: Explique o mecanismo com suas palavras, incluindo o que ainda não está claro.
+  - id: review
+    title: Revisão
+    description: Peça que outra pessoa examine sua evidência e seu raciocínio. Aprovação vem da revisão, não do tempo gasto.
+
+recordKinds:
+  - "Consumo de recurso: abrir ou terminar um material. Não demonstra domínio."
+  - "Tentativa de exercício: previsão, anotações e status do que você tentou."
+  - "Evidência: texto, link de repositório ou artefato que mostra o que você fez."
+  - "Autoavaliação: como você julga seu entendimento, com histórico."
+  - "Revisão: feedback de colega ou mentor sobre uma evidência."
+
+aiPolicy:
+  - id: foundations
+    title: Fundamentos (etapas 1–8)
+    allowed:
+      - Pedir explicação de um conceito ou de uma mensagem de erro.
+      - Pedir dicas graduais ("me dê só a próxima pista").
+      - Pedir revisão de uma tentativa que você já escreveu.
+    expectations:
+      - Tente a habilidade-alvo manualmente antes de pedir uma solução completa.
+      - Não cole soluções geradas como evidência de uma habilidade que você ainda não praticou.
+      - Registre ajuda significativa de IA no campo "assistência de IA" da evidência.
+  - id: applied
+    title: Aplicação (etapas 9 em diante)
+    allowed:
+      - Delegar tarefas de implementação delimitadas (um teste, um script, um refactor pequeno).
+      - Usar IA para gerar casos de teste e cenários de falha que você vai avaliar.
+    expectations:
+      - Você continua dono dos requisitos, do raciocínio, da validação e da revisão.
+      - Leia e entenda cada linha que entra no repositório; explique-a na revisão se perguntarem.
+      - Registre onde a IA ajudou e como você validou o resultado.
+  - id: tutor
+    title: Tutor integrado (fora do MVP)
+    allowed:
+      - Um tutor de IA integrado é opcional e não faz parte da primeira versão.
+    expectations:
+      - O site funciona por completo sem APIs pagas de IA.
+
+weeklyModes:
+  - id: survival
+    title: Sobrevivência
+    time: Duas sessões de 25 minutos em dias diferentes
+    description: Mantém o contato e o fio da meada em semanas difíceis.
+    completesMilestones: true
+  - id: compact
+    title: Compacto
+    time: Cerca de 90 minutos por semana
+    description: Um ciclo curto completo por semana — previsão, prática e evidência.
+    completesMilestones: true
+  - id: standard
+    title: Padrão
+    time: 3 a 4 horas por semana
+    description: Avança um tópico com exercício e experimento.
+    completesMilestones: true
+  - id: expansion
+    title: Expansão
+    time: 6 a 7 horas por semana
+    description: Espaço para extensões de projeto e investigação mais funda.
+    completesMilestones: true
+  - id: rescue
+    title: Resgate excepcional
+    time: 10 minutos
+    description: Rode algo, observe e deixe uma nota de retomada. Preserva o contato; não conclui marcos de aprendizagem.
+    completesMilestones: false
+
+sessionTemplate:
+  - title: Recordar e prever
+    minutes: 5
+    description: Releia sua nota de retomada. Sem consultar, escreva o que lembra e o que espera do próximo passo.
+  - title: Explicação ou leitura focada
+    minutes: 7
+    description: Leia só a seção indicada, procurando a resposta da sua pergunta.
+  - title: Implementação ou investigação manual
+    minutes: 10
+    description: Escreva, rode, quebre e observe.
+  - title: Evidência e próxima ação
+    minutes: 3
+    description: Registre o que aconteceu e escreva uma próxima ação pequena e concreta.
+
+sessionRoles:
+  - id: author
+    title: Autor(a)
+    description: Explica a própria implementação, as decisões e o que ainda não funciona.
+  - id: challenger
+    title: Desafiante
+    description: Propõe casos-limite e cenários de falha para testar a implementação ao vivo.
+  - id: reviewer
+    title: Revisor(a)
+    description: Examina raciocínio, invariantes e se a evidência sustenta as conclusões.
+  - id: synthesizer
+    title: Sintetizador(a)
+    description: Registra achados, dúvidas abertas e próximos passos na sessão do time.
+
+selfAssessmentLevels:
+  - level: 0
+    title: Ainda não comecei
+    description: Não tive contato com o tema.
+  - level: 1
+    title: Reconheço
+    description: Sei do que se trata, mas não conseguiria explicar sem consultar.
+  - level: 2
+    title: Explico
+    description: Consigo explicar o mecanismo com minhas palavras e dar um exemplo.
+  - level: 3
+    title: Implemento
+    description: Consigo implementar ou investigar sozinho(a) e interpretar o resultado.
+  - level: 4
+    title: Depuro e ensino
+    description: Consigo diagnosticar falhas, prever casos-limite e ensinar a outra pessoa.

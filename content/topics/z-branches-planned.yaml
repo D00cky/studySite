@@ -1,0 +1,152 @@
+# Ramos opcionais — visão geral (status: planned).
+
+# --- Frontend ---------------------------------------------------------------------
+
+- id: semantic-html-accessibility
+  stage: b-frontend
+  title: HTML semântico e acessibilidade
+  status: planned
+  objective: Estruturar páginas com HTML semântico e verificar navegação por teclado e leitor de tela.
+  whyItMatters: Acessibilidade é requisito, não acabamento; HTML semântico também melhora manutenção.
+  prerequisites: [terminal-shell]
+  resources:
+    start: mdn-learn
+    deeper: [roadmap-frontend]
+
+- id: css-layout
+  stage: b-frontend
+  title: CSS e layout
+  status: planned
+  objective: Construir layouts responsivos com fluxo normal, flexbox e grid, explicando a cascata e a especificidade.
+  whyItMatters: Entender a cascata evita o ciclo de "!important" e layouts frágeis.
+  prerequisites: [semantic-html-accessibility]
+  resources:
+    start: web-dev-learn
+
+- id: javascript-browser
+  stage: b-frontend
+  title: JavaScript e o navegador
+  status: planned
+  objective: Manipular o DOM, tratar eventos e explicar o event loop e requisições assíncronas.
+  whyItMatters: Frameworks mudam; o modelo do navegador permanece.
+  prerequisites: [semantic-html-accessibility, http-protocol]
+  resources:
+    start: mdn-learn
+
+- id: rendering-performance
+  stage: b-frontend
+  title: Renderização e desempenho no navegador
+  status: planned
+  objective: Explicar o pipeline de renderização e medir desempenho com as ferramentas do navegador.
+  whyItMatters: Páginas lentas perdem usuários; medir evita otimizações às cegas.
+  prerequisites: [javascript-browser, css-layout]
+  resources:
+    start: web-dev-learn
+
+- id: frontend-testing
+  stage: b-frontend
+  title: Testes de frontend
+  status: planned
+  objective: Testar componentes e fluxos pelo comportamento visível ao usuário, incluindo acessibilidade.
+  whyItMatters: Interfaces quebram silenciosamente sem testes de comportamento.
+  prerequisites: [javascript-browser, interfaces-testing]
+
+# --- Backend com Java e PostgreSQL ------------------------------------------------
+
+- id: java-fundamentals
+  stage: b-backend-java
+  title: Fundamentos de Java moderno
+  status: planned
+  objective: Escrever Java moderno (records, coleções, exceções, streams) relacionando com o que vimos em C.
+  whyItMatters: Java é a linguagem principal do nosso backend.
+  prerequisites: [dynamic-allocation-ownership, complexity-analysis]
+  resources:
+    start: dev-java
+
+- id: spring-web-backend
+  stage: b-backend-java
+  title: APIs HTTP com Spring Boot
+  status: planned
+  objective: Construir uma API HTTP com Spring Boot, entendendo o que o framework faz por você e o que não faz.
+  whyItMatters: Framework é ferramenta; entender o mecanismo HTTP por baixo evita depender de mágica.
+  prerequisites: [java-fundamentals, http-protocol]
+  resources:
+    start: spring-boot-docs
+    deeper: [roadmap-backend]
+
+- id: jdbc-postgresql
+  stage: b-backend-java
+  title: Acesso a dados com JDBC e PostgreSQL
+  status: planned
+  objective: Acessar o PostgreSQL com SQL explícito, transações e migrações versionadas.
+  whyItMatters: Conecta modelagem e internals de banco ao código de aplicação.
+  prerequisites: [spring-web-backend, transactions-basics]
+  resources:
+    start: postgres-docs
+
+- id: backend-testing-java
+  stage: b-backend-java
+  title: Testes de backend em Java
+  status: planned
+  objective: Escrever testes de integração contra um PostgreSQL real e testar limites de autorização.
+  whyItMatters: Bugs de backend mais caros estão na integração com banco e nas regras de acesso.
+  prerequisites: [jdbc-postgresql, interfaces-testing]
+
+# --- Linguagens e interpretadores ------------------------------------------------
+
+- id: tokenizing-parsing
+  stage: b-interpreters
+  title: Tokenização e parsing
+  status: planned
+  objective: Transformar texto em tokens e tokens em uma árvore sintática com um parser recursivo descendente.
+  whyItMatters: Compiladores, linters, formatadores e consultas SQL passam por essas etapas.
+  prerequisites: [binary-search-trees, c-strings]
+  resources:
+    start: crafting-interpreters
+    deeper: [akita-compiled-interpreted]
+
+- id: tree-walk-evaluation
+  stage: b-interpreters
+  title: Avaliação de expressões
+  status: planned
+  objective: Avaliar uma árvore sintática e produzir mensagens de erro úteis.
+  whyItMatters: Mostra como linguagens executam código e por que erros aparecem onde aparecem.
+  prerequisites: [tokenizing-parsing]
+  resources:
+    start: crafting-interpreters
+
+- id: scope-environments
+  stage: b-interpreters
+  title: Escopo e ambientes
+  status: planned
+  objective: Implementar variáveis, blocos e escopo léxico, relacionando com closures em JavaScript.
+  whyItMatters: Escopo explica bugs de variáveis "fantasma" e o funcionamento de closures.
+  prerequisites: [tree-walk-evaluation, stack-heap-lifetime]
+  resources:
+    start: crafting-interpreters
+
+# --- Programação de sistemas --------------------------------------------------------
+
+- id: systems-io-performance
+  stage: b-systems
+  title: I/O de baixo nível e desempenho
+  status: planned
+  objective: Comparar I/O com e sem buffer, mmap e chamadas em lote, medindo syscalls e tempo.
+  whyItMatters: Explica por que bancos de dados e servidores organizam I/O do jeito que organizam.
+  prerequisites: [file-descriptors, profiling-benchmarks]
+
+- id: memory-allocators
+  stage: b-systems
+  title: Alocadores de memória
+  status: planned
+  objective: Implementar um alocador simples (free list) e medir fragmentação.
+  whyItMatters: Revela o que malloc faz e por que padrões de alocação afetam desempenho.
+  prerequisites: [dynamic-allocation-ownership, virtual-memory]
+
+- id: low-level-concurrency
+  stage: b-systems
+  title: Concorrência de baixo nível
+  status: planned
+  objective: Explicar operações atômicas e modelos de memória, implementando um spinlock e medindo contenção.
+  whyItMatters: Base das estruturas concorrentes usadas por runtimes e bancos de dados.
+  prerequisites: [race-conditions-synchronization, cpu-memory-caches]
