@@ -163,19 +163,6 @@
 
 # --- Aprofundamento: infraestrutura ---
 
-- id: man-capabilities
-  title: capabilities(7) - Linux manual page
-  author: Michael Kerrisk (man7.org)
-  url: https://man7.org/linux/man-pages/man7/capabilities.7.html
-  language: en
-  format: documentation
-  difficulty: advanced
-  topics: [containers-deployment]
-  why: Como o poder do root é dividido em capabilities e por que containers devem descartar as que não usam.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: docker-seccomp
   title: Seccomp security profiles for Docker
   author: Docker

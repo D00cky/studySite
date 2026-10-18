@@ -20,7 +20,7 @@
   language: en
   format: documentation
   difficulty: advanced
-  topics: [filesystem-permissions]
+  topics: [filesystem-permissions, containers-deployment]
   why: Mostra como o Linux divide os poderes do root em capabilities, base para rodar serviços e containers com o mínimo de privilégio.
   access: free
   priority: optional
