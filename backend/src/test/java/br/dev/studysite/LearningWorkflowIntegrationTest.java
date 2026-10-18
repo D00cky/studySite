@@ -118,6 +118,23 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void projectListSeparatesBuildYourOwnProjectsAndSummarisesEffort() {
+        ApiClient someone = register("Construtora");
+        JsonNode projects = someone.get("/api/curriculum/projects").expect(200).json();
+        java.util.Map<String, JsonNode> byId = new java.util.HashMap<>();
+        projects.forEach(p -> byId.put(p.get("id").asString(), p));
+
+        for (String id : java.util.List.of("build-a-compiler", "build-a-database", "build-an-emulator",
+                "build-a-raft-kv", "build-your-own-git", "build-a-memory-allocator")) {
+            assertThat(byId.get(id).get("track").asString()).as(id).isEqualTo("build");
+        }
+        assertThat(byId.get("c-task-cli").get("track").asString()).isEqualTo("lab");
+        JsonNode cli = byId.get("c-task-cli");
+        assertThat(cli.get("milestoneCount").asInt()).isEqualTo(6);
+        assertThat(cli.get("minutes").asInt()).isEqualTo(250);
+    }
+
+    @Test
     void topicPageListsMoreLibraryContentNotAlreadyInTheLesson() {
         ApiClient someone = register("Curiosa");
         JsonNode page = someone.get("/api/curriculum/topics/pointers").expect(200).json();

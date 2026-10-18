@@ -2,6 +2,7 @@
   title: Construa um banco de dados
   status: authored
   cumulative: false
+  track: build
   topics: [indexes, query-plans, transactions-basics, isolation-locks, filesystems, file-descriptors, binary-search-trees, hash-tables, dynamic-allocation-ownership, c-arrays-structs, memory-debugging, systems-io-performance]
   question: Como um banco de dados transforma `insert` e `select` em páginas de bytes num arquivo, encontra uma linha sem ler tudo e sobrevive a um processo morto no meio da escrita?
   prerequisites: [c-arrays-structs, dynamic-allocation-ownership, file-descriptors, binary-search-trees]

@@ -2,6 +2,7 @@
   title: Construa um key-value distribuído com Raft
   status: authored
   cumulative: false
+  track: build
   topics: [partial-failure-retries, idempotency, queues-delivery-semantics, consistency-models, tcp-udp-sockets, race-conditions-synchronization, deadlocks, threads-basics, timeouts-caching, logs-metrics-traces]
   question: Como três ou cinco processos que podem cair, atrasar ou ficar isolados concordam sobre a mesma sequência de operações, e como um cliente que repete pedidos não aplica a mesma operação duas vezes?
   prerequisites: [race-conditions-synchronization, partial-failure-retries, tcp-udp-sockets, consistency-models]

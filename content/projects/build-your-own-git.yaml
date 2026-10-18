@@ -2,6 +2,7 @@
   title: Construa seu próprio Git
   status: authored
   cumulative: false
+  track: build
   topics: [git-fundamentals, hash-tables, filesystems, dependency-graphs, text-encoding, binary-hexadecimal, file-descriptors, input-validation]
   question: Como o Git guarda a história inteira de um projeto usando só arquivos comprimidos endereçados pelo hash do próprio conteúdo, e por que isso torna os commits imutáveis?
   prerequisites: [git-fundamentals, hash-tables, filesystems]

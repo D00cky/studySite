@@ -40,10 +40,12 @@ class CurriculumController {
             List<ProjectSummary> projects) {
     }
 
-    record ProjectSummary(String id, String title, String status, boolean cumulative, String question,
-            List<String> topics) {
+    record ProjectSummary(String id, String title, String status, boolean cumulative, String track, String question,
+            List<String> topics, int milestoneCount, int minutes) {
         static ProjectSummary of(Project p) {
-            return new ProjectSummary(p.id(), p.title(), p.status(), p.cumulative(), p.question(), p.topics());
+            int minutes = p.milestones().stream().mapToInt(m -> m.minutes() == null ? 0 : m.minutes()).sum();
+            return new ProjectSummary(p.id(), p.title(), p.status(), p.cumulative(), p.track(), p.question(), p.topics(),
+                    p.milestones().size(), minutes);
         }
     }
 

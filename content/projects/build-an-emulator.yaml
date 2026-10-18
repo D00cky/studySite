@@ -2,6 +2,7 @@
   title: Construa um emulador (CHIP-8)
   status: authored
   cumulative: false
+  track: build
   topics: [binary-hexadecimal, integer-representation-overflow, cpu-memory-caches, stack-heap-lifetime, c-arrays-structs, stacks-queues, compilation-pipeline]
   question: O que uma CPU realmente faz a cada ciclo — e quanto de "computador" cabe num laço `while` que busca, decodifica e executa bytes?
   prerequisites: [binary-hexadecimal, integer-representation-overflow, c-arrays-structs, pointers]

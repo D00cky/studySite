@@ -2,6 +2,7 @@
   title: Construa um alocador de memória (malloc)
   status: authored
   cumulative: false
+  track: build
   topics: [dynamic-allocation-ownership, stack-heap-lifetime, virtual-memory, memory-allocators, memory-debugging, profiling-benchmarks, pointers, linked-lists, processes-syscalls]
   question: O que acontece entre `malloc(24)` e o kernel — de onde vem a memória, onde fica o tamanho do bloco que `free` recebe sem saber, e por que a memória fragmenta?
   prerequisites: [pointers, dynamic-allocation-ownership, stack-heap-lifetime, virtual-memory]

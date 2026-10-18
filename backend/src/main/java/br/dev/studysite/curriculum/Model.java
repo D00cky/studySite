@@ -153,9 +153,11 @@ public final class Model {
             List<String> acceptanceCriteria,
             List<String> evidence,
             List<String> reviewQuestions,
-            Practice practice) {
+            Practice practice,
+            String track) {
         public Project {
             cumulative = Boolean.TRUE.equals(cumulative);
+            track = track == null ? "lab" : track;
             topics = list(topics);
             prerequisites = list(prerequisites);
             extensions = list(extensions);

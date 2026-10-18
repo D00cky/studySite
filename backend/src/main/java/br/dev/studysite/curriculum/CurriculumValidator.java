@@ -22,6 +22,7 @@ final class CurriculumValidator {
 
     private static final Pattern ID = Pattern.compile("[a-z0-9]+(-[a-z0-9]+)*");
     private static final Set<String> STATUS = Set.of("authored", "planned");
+    private static final Set<String> TRACKS = Set.of("lab", "build");
     private static final Set<String> STAGE_KINDS = Set.of("core", "branch");
     private static final Set<String> LANGUAGES = Set.of("pt-BR", "en");
     private static final Set<String> FORMATS = Set.of("book", "article", "course", "documentation", "video", "tool", "lab");
@@ -200,6 +201,7 @@ final class CurriculumValidator {
         required(where, "question", p.question());
         required(where, "minimalVersion", p.minimalVersion());
         oneOf(where, "status", p.status(), STATUS);
+        oneOf(where, "track", p.track(), TRACKS);
         nonEmpty(where, "topics", p.topics());
         refs(where, "topics", p.topics(), topicIds);
         refs(where, "prerequisites", p.prerequisites(), topicIds);

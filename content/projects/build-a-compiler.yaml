@@ -2,6 +2,7 @@
   title: Construa um compilador
   status: authored
   cumulative: false
+  track: build
   topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments, compilation-pipeline, stacks-queues, hash-tables, binary-hexadecimal, linking-object-files]
   question: O que muda quando, em vez de percorrer a árvore e executar, você traduz o programa inteiro antes — e o que a tradução precisa saber que o interpretador nunca precisou?
   prerequisites: [tokenizing-parsing, tree-walk-evaluation, stacks-queues, compilation-pipeline]

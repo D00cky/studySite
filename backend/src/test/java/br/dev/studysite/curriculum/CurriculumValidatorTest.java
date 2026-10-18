@@ -94,11 +94,20 @@ class CurriculumValidatorTest {
     }
 
     @Test
+    void projectTrackMustBeKnown() {
+        Project p = new Project("p1", "P", "planned", false, List.of("a"), "Q?", List.of(), null, List.of(),
+                List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), null, "moon");
+        List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(planned("a", List.of())),
+                List.of(), List.of(p), NO_POLICIES);
+        assertThat(errors).anyMatch(e -> e.contains("track") && e.contains("moon"));
+    }
+
+    @Test
     void authoredProjectNeedsPracticeReference() {
         Project p = new Project("p1", "P", "authored", false, List.of("a"), "Q?", List.of(), "Min", List.of("e"),
                 List.of("c"), List.of(new Model.Milestone("m1", "M", "d", 25)), List.of("x"), List.of("f"), List.of("t"),
                 List.of("ac"), List.of("ev"), List.of("rq"),
-                new Model.Practice("guia", List.of(new Model.PracticeReference("Ref", "Autor", "http://inseguro", "C", null))));
+                new Model.Practice("guia", List.of(new Model.PracticeReference("Ref", "Autor", "http://inseguro", "C", null))), null);
         List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(planned("a", List.of())),
                 List.of(), List.of(p), NO_POLICIES);
         assertThat(errors).anyMatch(e -> e.contains("practice") && e.contains("https"));
