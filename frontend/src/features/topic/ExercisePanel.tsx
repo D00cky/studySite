@@ -5,7 +5,7 @@ import { TextArea, TextField } from '../../components/Field'
 import { InlineMarkdown } from '../../components/Markdown'
 import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage } from '../../components/Status'
-import { AiHelper } from './AiHelper'
+import { AiHelper, AiHelperLocked } from './AiHelper'
 
 const STATUS_LABEL: Record<Attempt['status'], string> = {
   in_progress: 'Em andamento',
@@ -19,7 +19,14 @@ export function ExercisePanel({ topic, stage, attempts }: { topic: Topic; stage:
   return (
     <section className="panel stack" aria-labelledby="exercise-panel-title">
       <h2 id="exercise-panel-title">{active ? 'Tentativa em andamento' : 'Exercício'}</h2>
-      {active ? <ActiveAttempt topic={topic} stage={stage} attempt={active} /> : <StartAttempt topic={topic} />}
+      {active ? (
+        <ActiveAttempt topic={topic} stage={stage} attempt={active} />
+      ) : (
+        <>
+          <StartAttempt topic={topic} />
+          <AiHelperLocked />
+        </>
+      )}
       {past.length > 0 && (
         <details>
           <summary>Tentativas anteriores ({past.length})</summary>
@@ -80,7 +87,6 @@ function StartAttempt({ topic }: { topic: Topic }) {
       <button type="submit" disabled={start.isPending}>
         Começar exercício
       </button>
-      <p className="hint">Comece o exercício e escreva sua previsão antes de pedir ajuda a uma IA.</p>
     </form>
   )
 }

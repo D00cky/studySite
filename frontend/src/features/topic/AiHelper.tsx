@@ -97,6 +97,20 @@ function buildPrompt({
   return lines.join('\n')
 }
 
+/** Antes da tentativa: a seção aparece, mas só explica como liberar (a política pede tentar antes). */
+export function AiHelperLocked() {
+  return (
+    <section className="ai-helper ai-helper-locked" aria-labelledby="ai-helper-title">
+      <h3 id="ai-helper-title">Pedir ajuda a uma IA</h3>
+      <p className="small muted">
+        Disponível depois de começar o exercício: escreva sua previsão e clique em “Começar exercício”. Aí o site monta
+        um pedido com o contexto certo para você colar no ChatGPT, Gemini, Claude ou outra IA, e ajuda a verificar a
+        resposta.
+      </p>
+    </section>
+  )
+}
+
 /**
  * Ajuda de IA sem integração: o site monta o prompt com contexto e regras da etapa,
  * a pessoa usa a IA que quiser e volta para verificar e registrar o que aproveitou.

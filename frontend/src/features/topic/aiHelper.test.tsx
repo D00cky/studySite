@@ -30,12 +30,13 @@ async function openHelper() {
 }
 
 describe('pedir ajuda a uma IA externa', () => {
-  it('só aparece depois de começar o exercício', async () => {
+  it('antes de começar o exercício, aparece bloqueada e explica como liberar', async () => {
     setup()
     renderApp('/topicos/compilation-pipeline')
     const exercise = await screen.findByRole('region', { name: 'Exercício' })
-    expect(within(exercise).queryByRole('region', { name: 'Pedir ajuda a uma IA' })).not.toBeInTheDocument()
-    expect(within(exercise).getByText(/Comece o exercício e escreva sua previsão antes de pedir ajuda a uma IA/)).toBeInTheDocument()
+    const helper = within(exercise).getByRole('region', { name: 'Pedir ajuda a uma IA' })
+    expect(within(helper).getByText(/Disponível depois de começar o exercício/)).toBeInTheDocument()
+    expect(within(helper).queryByRole('button', { name: 'Copiar prompt' })).not.toBeInTheDocument()
   })
 
   it('monta um prompt com o contexto do tópico, a política da etapa e o pedido de verificação', async () => {
