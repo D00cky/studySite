@@ -4,11 +4,13 @@ import type {
   Attempt,
   ContinueView,
   Evidence,
+  FocusBlock,
   GroupDetail,
   GroupProjectDetail,
   HelpSignal,
   Me,
   MemberProgress,
+  Metrics,
   MyReviews,
   Note,
   Policies,
@@ -48,6 +50,8 @@ export const keys = {
   assessments: ['mine', 'assessments'] as const,
   resourceEvents: ['mine', 'resource-events'] as const,
   myReviews: ['mine', 'reviews'] as const,
+  focus: ['mine', 'focus'] as const,
+  metrics: ['mine', 'metrics'] as const,
   group: (id: string) => ['group', id] as const,
   groupPart: (id: string, part: string) => ['group', id, part] as const,
   review: (id: string) => ['review', id] as const,
@@ -446,4 +450,36 @@ export function useReviewSuggestion() {
   return useGroupMutation(({ id, ...body }: { id: string; status: 'accepted' | 'rejected'; note?: string }) =>
     api.post<Suggestion>(`/api/resource-suggestions/${id}/review`, body),
   )
+}
+
+// --- Foco (pomodoro) e métricas -----------------------------------------------------------
+
+/** Fuso do navegador, para as métricas agruparem por semana e hora locais. */
+export const localTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+
+export function useCurrentFocus() {
+  return useQuery({
+    queryKey: keys.focus,
+    // 204 (nenhum bloco aberto) vira null: o React Query não aceita undefined como dado.
+    queryFn: async () => (await api.get<FocusBlock | undefined>('/api/me/focus-blocks/current')) ?? null,
+  })
+}
+
+export function useStartFocus() {
+  return useMineMutation((body: { kind: FocusBlock['kind']; plannedMinutes: number; topicId?: string }) =>
+    api.post<FocusBlock>('/api/me/focus-blocks', body),
+  )
+}
+
+export function useUpdateFocus() {
+  return useMineMutation(({ id, ...body }: { id: string; plannedMinutes?: number; end?: boolean }) =>
+    api.patch<FocusBlock>(`/api/me/focus-blocks/${id}`, body),
+  )
+}
+
+export function useMetrics() {
+  return useQuery({
+    queryKey: keys.metrics,
+    queryFn: () => api.get<Metrics>(`/api/me/metrics?${new URLSearchParams({ tz: localTimeZone(), weeks: '8' })}`),
+  })
 }

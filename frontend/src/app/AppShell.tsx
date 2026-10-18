@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useLogout, useMe } from '../api/queries'
 import { useTheme } from '../lib/theme'
+import { FocusDock } from '../features/focus/FocusDock'
 import { CommandPalette } from './CommandPalette'
 
 const NAV = [
@@ -93,7 +94,11 @@ export function AppShell() {
             >
               <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
             </button>
-            {me && <span className="muted">{me.displayName}</span>}
+            {me && (
+              <NavLink to="/progresso" className="account-name" title="Meu progresso">
+                {me.displayName}
+              </NavLink>
+            )}
             <button
               type="button"
               className="button-quiet"
@@ -107,6 +112,7 @@ export function AppShell() {
       <main id="conteudo" tabIndex={-1} className="page">
         <Outlet />
       </main>
+      <FocusDock />
       {paletteOpen && <CommandPalette onClose={closePalette} />}
       <footer className="status-bar">
         <div className="status-bar-inner">

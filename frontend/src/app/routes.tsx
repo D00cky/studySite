@@ -30,6 +30,7 @@ export const routes: RouteObject[] = [
             path: 'projetos-do-grupo/:groupProjectId',
             lazy: page(() => import('../features/projects/GroupProjectPage').then((m) => ({ default: m.GroupProjectPage }))),
           },
+          { path: 'progresso', lazy: page(() => import('../features/progress/ProgressPage').then((m) => ({ default: m.ProgressPage }))) },
           { path: 'registro', lazy: page(() => import('../features/log/LogPage').then((m) => ({ default: m.LogPage }))) },
           { path: 'como-estudamos', lazy: page(() => import('../features/policies/PoliciesPage').then((m) => ({ default: m.PoliciesPage }))) },
           { path: 'sessoes/:sessionId', lazy: page(() => import('../features/team/TeamSessionPage').then((m) => ({ default: m.TeamSessionPage }))) },

@@ -13,6 +13,8 @@ export function signedIn(overrides: Partial<typeof f.me> = {}) {
     http.get('/api/curriculum', () => HttpResponse.json(f.roadmap)),
     http.get('/api/curriculum/policies', () => HttpResponse.json(f.policies)),
     http.get('/api/me/progress', () => HttpResponse.json({})),
+    http.get('/api/me/focus-blocks/current', () => new HttpResponse(null, { status: 204 })),
+    http.get('/api/me/metrics', () => HttpResponse.json(f.emptyMetrics)),
   ]
 }
 

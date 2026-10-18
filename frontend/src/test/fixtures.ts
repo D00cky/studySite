@@ -1,5 +1,6 @@
 import type {
   ContinueView,
+  Metrics,
   GroupDetail,
   Me,
   Policies,
@@ -178,4 +179,15 @@ export const group: GroupDetail = {
     { userId: 'u-lia', displayName: 'Lia', role: 'learner' },
   ],
   signals: { openReviews: 1, openBlockers: 1, wantHelp: 0, canHelp: 0 },
+}
+
+export const emptyMetrics: Metrics = {
+  totalMinutes: 0,
+  focusBlocks: 0,
+  medianBlockMinutes: 0,
+  thisWeekMinutes: 0,
+  weeks: [],
+  byHour: Array(24).fill(0),
+  byWeekday: Array(7).fill(0),
+  topics: [],
 }

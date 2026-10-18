@@ -484,3 +484,29 @@ export interface Suggestion {
   reviewNote?: string
   createdAt: string
 }
+
+// --- Foco (pomodoro) e métricas ---------------------------------------------------------
+
+export interface FocusBlock {
+  id: Uuid
+  kind: 'focus' | 'break'
+  topicId?: string
+  plannedMinutes: number
+  startedAt: string
+  endedAt?: string
+}
+
+export interface Metrics {
+  totalMinutes: number
+  focusBlocks: number
+  medianBlockMinutes: number
+  firstFocusAt?: string
+  thisWeekMinutes: number
+  /** Últimas semanas, segunda a domingo no fuso de quem pede; a última é a atual. */
+  weeks: { weekStart: string; minutes: number; blocks: number }[]
+  /** Minutos por hora do dia (0–23). */
+  byHour: number[]
+  /** Minutos por dia da semana, segunda (0) a domingo (6). */
+  byWeekday: number[]
+  topics: { topicId: string; minutes: number }[]
+}

@@ -1,8 +1,8 @@
 import { Link } from 'react-router'
-import { useContinue, useMe, useMyProgress, useRoadmap } from '../../api/queries'
+import { useContinue, useMe, useMetrics, useMyProgress, useRoadmap } from '../../api/queries'
 import { InlineMarkdown } from '../../components/Markdown'
 import { EmptyState, ErrorMessage, Loading } from '../../components/Status'
-import { formatDate, formatDateTime } from '../../lib/format'
+import { formatDate, formatDateTime, formatMinutes, plural } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
 import { StageProgress } from './StageProgress'
 import { StudySessionPanel } from './StudySessionPanel'
@@ -14,6 +14,7 @@ export function HomePage() {
   const { data: me } = useMe()
   const { data: progress = {}, isSuccess: progressLoaded } = useMyProgress()
   const { data: roadmap } = useRoadmap()
+  const { data: metrics } = useMetrics()
   const topicTitle = useTopicTitles()
   const counts = Object.values(progress).reduce(
     (acc, p) => {
@@ -129,6 +130,24 @@ export function HomePage() {
           </div>
 
           <aside className="stack" aria-label="Sessão e pendências">
+            <section className="panel study-time" aria-labelledby="study-time-title">
+              <h2 id="study-time-title">Seu tempo de estudo</h2>
+              {metrics && (
+                <div className="stat-row">
+                  <div className="stat">
+                    <strong>{formatMinutes(metrics.thisWeekMinutes)}</strong>
+                    <span>nesta semana</span>
+                  </div>
+                  <div className="stat">
+                    <strong>{formatMinutes(metrics.totalMinutes)}</strong>
+                    <span>no total · {plural(metrics.focusBlocks, 'bloco', 'blocos')}</span>
+                  </div>
+                </div>
+              )}
+              <p className="small" style={{ margin: '0.6rem 0 0' }}>
+                <Link to="/progresso">Ver meu progresso</Link>
+              </p>
+            </section>
             <StudySessionPanel topicId={data.nextAction.topicId} />
             {data.reviewsToGive > 0 && (
               <p>
