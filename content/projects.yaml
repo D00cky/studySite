@@ -24,6 +24,10 @@
     - Compilar com `-Wall -Wextra -std=c17` sem avisos.
     - Toda função que pode falhar retorna um código de erro verificado por quem chama.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão os programas completos dos capítulos 18 (`argc`/`argv` e exit status) e 9 (leitura e escrita de arquivo) do Beej's Guide to C. Evidência: commits incrementais, comentários \"o que faz / por quê\" em cada bloco e um erro provocado (ex.: abrir arquivo inexistente sem checar NULL) registrado com a saída real."
+      minutes: 50
     - id: m1-args
       title: Argumentos e exit codes
       description: Interpretar `argv`, imprimir uso em stderr e sair com códigos documentados.
@@ -63,10 +67,36 @@
     - Link do repositório com README explicando build e uso.
     - Saída de um script de testes cobrindo sucesso e erros com os exit codes.
     - Saída do strace mostrando as syscalls de leitura e escrita do arquivo.
+    - "Trecho de um programa da referência reescrito de memória (sem olhar), com a diferença em relação ao original anotada."
   reviewQuestions:
     - Por que mensagens de erro vão para stderr? O que quebra se forem para stdout?
     - O que acontece com seus dados se o processo morrer no meio da gravação?
     - Qual etapa do pipeline de compilação produziria cada um dos erros que você encontrou?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, os programas completos dos
+      capítulos "The Outside Environment" e "File Input/Output" do Beej's Guide to C. Comente cada bloco
+      com o que faz e por quê, e quebre de propósito 2–3 pontos (tirar a checagem de `fopen`, trocar
+      `return 1` por `return 0`, esquecer `fclose`) prevendo e registrando o efeito com `echo $?` e
+      strace. Modifique um deles para ler o nome do arquivo de `argv[1]` e devolver exit codes distintos
+      por erro; dias depois, reescreva de memória o programa que lê e grava arquivo. Para quem quer ir
+      além, o tutorial kilo mostra um programa C real de ~1000 linhas construído passo a passo.
+    references:
+      - title: "Beej's Guide to C Programming — 18 The Outside Environment"
+        author: "Brian \"Beej Jorgensen\" Hall"
+        url: https://beej.us/guide/bgc/html/split/the-outside-environment.html
+        language: C
+        license: "Código em domínio público (declarado no guia)"
+      - title: "Beej's Guide to C Programming — 9 File Input/Output"
+        author: "Brian \"Beej Jorgensen\" Hall"
+        url: https://beej.us/guide/bgc/html/split/file-inputoutput.html
+        language: C
+        license: "Código em domínio público (declarado no guia)"
+      - title: "Build Your Own Text Editor (kilo)"
+        author: "snaptoken (tutorial), sobre o kilo de Salvatore Sanfilippo (antirez)"
+        url: https://viewsourcecode.org/snaptoken/kilo/
+        language: C
+        license: "BSD-2-Clause (código kilo)"
 
 - id: dynamic-array-hash-table
   title: Vetor dinâmico e tabela hash
@@ -89,6 +119,10 @@
     - Ownership documentado no header de cada função (quem aloca, quem libera).
     - Rodar a suíte de testes com ASan e com Valgrind sem erros.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão `hash_table.c`, `hash_table.h` e `prime.c` do tutorial write-a-hash-table (endereçamento aberto com double hashing). Evidência: commits incrementais, anotações por função e um erro provocado (ex.: remover o free das chaves e ler o relatório do Valgrind) registrado."
+      minutes: 75
     - id: m1-vec
       title: Vetor dinâmico
       description: push/get/free com capacidade dobrando e tratamento de falha de realloc.
@@ -128,7 +162,28 @@
     - Link do repositório com testes e instruções.
     - Saídas limpas de Valgrind e ASan.
     - Tabela ou gráfico do benchmark com a explicação.
+    - "Funções de inserção e busca da referência reescritas de memória, com o diff contra o original comentado."
   reviewQuestions:
     - Que invariante a tabela mantém e como seus testes verificam isso?
     - Por que a função de hash constante degrada para O(n)?
     - Quem é dono da memória de uma chave depois do put?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, a tabela hash do tutorial
+      write-a-hash-table de James Routley, seguindo os capítulos na ordem até o redimensionamento. Anote
+      cada função com quem aloca e quem libera, e quebre de propósito: hash constante, apagar o item na
+      remoção em vez de usar a sentinela de "deleted", tirar um `free` — prevendo e registrando o que ASan/Valgrind mostram.
+      Modifique para guardar tarefas (id textual → struct) e compare com a tabela do clox (capítulo Hash
+      Tables do Crafting Interpreters); depois reescreva de memória `insert` e `search` e só então parta
+      para a sua versão com encadeamento separado.
+    references:
+      - title: "Write a hash table in C"
+        author: "James Routley"
+        url: https://github.com/jamesroutley/write-a-hash-table
+        language: C
+        license: "MIT"
+      - title: "Crafting Interpreters — 20 Hash Tables"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/hash-tables.html
+        language: C
+        license: "Código MIT; texto CC BY-NC-ND 4.0"

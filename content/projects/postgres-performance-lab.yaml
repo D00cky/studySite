@@ -24,6 +24,10 @@
     - EXPLAIN ANALYZE de UPDATE ou DELETE só dentro de BEGIN ... ROLLBACK.
     - Scripts e relatórios versionados em Git, um commit por experimento.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar no psql, sobre o banco `regression` (tabelas tenk1/onek), as consultas de EXPLAIN e EXPLAIN ANALYZE da seção 14.1 da documentação do PostgreSQL. Evidência: arquivo .sql com commits incrementais, anotações sobre cada nó do plano e um plano previsto errado registrado ao lado do real."
+      minutes: 50
     - id: m1-data
       title: Dados sintéticos
       description: Escrever o schema e o script com generate_series que gera 1 milhão de tarefas com distribuição conhecida; conferir contagens por status e por dono com consultas de agregação.
@@ -71,8 +75,24 @@
     - Link do repositório com scripts SQL, docker compose e README com o relatório.
     - Saídas de EXPLAIN (ANALYZE, BUFFERS) anotadas para cada experimento, com previsão e resultado.
     - Linhas do tempo das transações concorrentes com as mensagens de erro e a saída de pg_locks.
+    - "Script SQL com consultas da referência reescritas de memória e os planos obtidos comparados aos da documentação."
   reviewQuestions:
     - Qual índice você não criaria em produção, mesmo tendo acelerado uma consulta, e por quê?
     - Que número no plano mostrou que o planner estava enganado, e o que causou o engano?
     - Como a aplicação Java deveria reagir a deadlock detected e a erros de serialização?
     - Se a tabela crescer 100 vezes, quais das suas conclusões continuam valendo?
+  practice:
+    guidance: >-
+      Aqui não há um programa para redigitar: a referência são os exemplos de EXPLAIN da documentação
+      oficial do PostgreSQL (seção 14.1 Using EXPLAIN), que usam as tabelas `tenk1`/`onek` do banco de
+      testes de regressão. Antes do marco 1, redigite à mão (sem colar) cada consulta num arquivo `.sql`,
+      preveja o plano antes de rodar e anote custo estimado, linhas e tipo de nó; quebre de propósito
+      (remover um índice, `SET enable_indexscan = off`, desatualizar estatísticas) e registre a mudança.
+      Modifique as consultas para o esquema de tarefas e, dias depois, reescreva de memória as consultas e
+      a leitura de um plano com EXPLAIN (ANALYZE, BUFFERS).
+    references:
+      - title: "PostgreSQL Documentation — 14.1 Using EXPLAIN"
+        author: "The PostgreSQL Global Development Group"
+        url: https://www.postgresql.org/docs/current/using-explain.html
+        language: SQL
+        license: "PostgreSQL License"
