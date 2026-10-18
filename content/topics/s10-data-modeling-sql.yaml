@@ -33,9 +33,9 @@
     - claim: Uma tabela pode ter linhas duplicadas sem problema porque o id é diferente.
       correction: Um id gerado não impede que o mesmo fato seja gravado duas vezes. Identifique a chave natural do fato e proteja-a com UNIQUE.
   resources:
-    start: postgres-tutorial
-    deeper: [postgres-constraints, postgres-tutorial-fk, postgres-ddl, postgres-psql, cmu-15445-fall2024]
-    videos: [cmu-15445-f24-lecture-01-relational-model]
+    start: postgres-tutorial-sql-language
+    deeper: [postgres-constraints, postgres-tutorial-fk, postgres-ddl, postgres-psql, cmu-15445-f24-notes-01-relational-model]
+    videos: [cmu-15445-f24-lecture-01-relational-model-the-relational-model, cmu-15445-f24-lecture-01-relational-model-structure-and-constraints]
   exercise:
     id: ex-tasks-schema
     title: Esquema de tarefas à prova de dados inválidos
@@ -100,7 +100,7 @@
       resource: postgres-datatype-json
     - title: Migrações de esquema sem downtime
       why: Ao alterar tabelas grandes em produção enquanto a aplicação continua rodando.
-      resource: flyway-docs
+      resource: flyway-concepts-migrations
 
 - id: joins-aggregation
   stage: s10-data-modeling-sql
@@ -134,7 +134,7 @@
   resources:
     start: postgres-tutorial-join
     deeper: [postgres-tutorial-agg, postgres-queries, postgres-table-expressions]
-    videos: [cmu-15445-f24-lecture-02-modern-sql, cmu-15445-f24-lecture-01-relational-model]
+    videos: [cmu-15445-f24-lecture-01-relational-model-joins-and-complex-operations, cmu-15445-f24-lecture-02-modern-sql-aggregation-functions, cmu-15445-f24-lecture-02-modern-sql-group-by-and-errors]
   exercise:
     id: ex-predict-cardinality
     title: Prever cardinalidade antes de rodar
@@ -195,7 +195,7 @@
       resource: postgres-queries-with
     - title: Algoritmos de join (nested loop, hash, merge)
       why: Quando for otimizar consultas e precisar entender por que o planner escolheu um tipo de join.
-      resource: cmu-15445-f24-lecture-13-query-execution-1
+      resource: cmu-15445-f24-notes-12-joins
     - title: LATERAL, GROUPING SETS e subconsultas correlacionadas
       why: Em relatórios com subtotais ou consultas de "top N por grupo".
       resource: postgres-queries
@@ -230,8 +230,8 @@
       correction: No PostgreSQL a transação fica abortada; tudo falha até ROLLBACK (ou ROLLBACK TO SAVEPOINT).
   resources:
     start: postgres-tutorial-transactions
-    deeper: [postgres-tutorial, postgres-sql-begin, postgres-mvcc, postgres-psql]
-    videos: [cmu-15445-f24-lecture-16-concurrency-control-theory]
+    deeper: [postgres-tutorial-advanced-features, postgres-sql-begin, postgres-mvcc, postgres-psql]
+    videos: [cmu-15445-f24-lecture-16-concurrency-control-theory-introduction-to-acid, cmu-15445-f24-lecture-16-concurrency-control-theory-atomicity-mechanisms]
   exercise:
     id: ex-two-terminals
     title: Transações em dois terminais
