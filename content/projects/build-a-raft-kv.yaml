@@ -1,0 +1,160 @@
+- id: build-a-raft-kv
+  title: Construa um key-value distribuído com Raft
+  status: authored
+  cumulative: false
+  topics: [partial-failure-retries, idempotency, queues-delivery-semantics, consistency-models, tcp-udp-sockets, race-conditions-synchronization, deadlocks, threads-basics, timeouts-caching, logs-metrics-traces]
+  question: Como três ou cinco processos que podem cair, atrasar ou ficar isolados concordam sobre a mesma sequência de operações, e como um cliente que repete pedidos não aplica a mesma operação duas vezes?
+  prerequisites: [race-conditions-synchronization, partial-failure-retries, tcp-udp-sockets, consistency-models]
+  minimalVersion: |
+    Um cluster de 3 nós, em Go, implementa Raft com eleição de líder (timeouts aleatórios,
+    `RequestVote`, termos) e replicação de log (`AppendEntries`, verificação de
+    `prevLogIndex/prevLogTerm`, avanço do `commitIndex` por maioria). Sobre o log roda uma
+    máquina de estados key-value que guarda tarefas (`put task:42 "{...}"`, `get task:42`,
+    `append`), aplicando apenas entradas comprometidas. Um cliente descobre o líder, faz retry
+    com timeout quando o líder cai e envia `clientId` + número de sequência para que a operação
+    seja aplicada no máximo uma vez. `currentTerm`, `votedFor` e o log são persistidos com
+    `fsync` antes de responder RPCs. Os testes rodam o cluster em memória com uma rede
+    simulada capaz de descartar, atrasar e particionar mensagens.
+  extensions:
+    - Snapshot e compactação do log (`InstallSnapshot`) quando o log passa de um limite, com seguidor atrasado sendo recuperado por snapshot.
+    - "Leituras linearizáveis: `get` passando pelo log, ou read index/lease com justificativa e teste."
+    - Transporte real via TCP (net/rpc ou gRPC) com cada nó num processo, mais um script que mata e reinicia nós aleatoriamente.
+    - "Verificação de linearizabilidade do histórico de operações dos clientes com o Porcupine (biblioteca Go de checagem de linearizabilidade) ou checador próprio, inspirado nos testes do Jepsen."
+    - Mudança de membros do cluster (adicionar/remover nó) com uma configuração por vez.
+    - Painel de observabilidade simples (logs estruturados por termo/índice, métricas de eleições e latência de commit).
+  constraints:
+    - Go com a biblioteca padrão (goroutines, `sync.Mutex`, canais); nenhuma biblioteca de consenso pronta.
+    - Todos os testes passam com `go test -race` repetidos pelo menos 50 vezes seguidas (falhas intermitentes contam como bugs).
+    - Nenhum lock é mantido durante envio de RPC ou espera em canal (evitar deadlock); documentar a ordem de locks.
+    - Estado persistente gravado e com `fsync` antes de responder a RPCs que dependem dele.
+    - Logs de depuração com termo, papel, índice e nó em cada linha, ligáveis por variável de ambiente.
+    - Experimentos de partição e kill apenas em processos locais ou contêineres de laboratório.
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão a Parte 1 (eleições) da série \"Implementing Raft\" de Eli Bendersky (`part1/raft.go` e seus testes) acompanhando a Figura 2 do paper. Evidência: commits incrementais, anotações ligando cada regra da Figura 2 a uma linha de código, e um erro provocado e registrado (ex.: timeout de eleição fixo em vez de aleatório e mostrar nos logs as eleições divididas repetidas)."
+      minutes: 75
+    - id: m1-eleicao
+      title: Eleição de líder
+      description: Estados follower/candidate/leader, termos, `RequestVote` com regra de voto único por termo, timeouts aleatórios e heartbeats; teste derrubando o líder e medindo o tempo até um novo líder.
+      minutes: 60
+    - id: m2-replicacao
+      title: Replicação de log
+      description: "`AppendEntries` com checagem de consistência, `nextIndex`/`matchIndex`, avanço do `commitIndex` por maioria (só entradas do termo atual) e entrega ordenada no `applyCh`."
+      minutes: 75
+    - id: m3-conflitos
+      title: Logs divergentes e partições
+      description: Testes com rede simulada que particiona o líder antigo, deixa-o aceitar entradas que nunca comprometem e verifica que, ao voltar, ele trunca o log conflitante. Otimização de backtracking por termo conflitante.
+      minutes: 60
+    - id: m4-persistencia
+      title: Persistência e reinício
+      description: Persistir `currentTerm`, `votedFor` e log (encoding próprio ou gob) com fsync; testes que reiniciam nós no meio da replicação e conferem que nenhum voto duplo ou entrada comprometida se perde.
+      minutes: 50
+    - id: m5-kv
+      title: Máquina de estados key-value de tarefas
+      description: Servidor KV sobre o Raft (put/get/append de tarefas), esperando a entrada aplicada no índice certo e detectando perda de liderança (termo mudou) para responder erro ao cliente.
+      minutes: 60
+    - id: m6-cliente-idempotente
+      title: Cliente com retries e idempotência
+      description: Clerk com descoberta de líder, timeout por pedido, retry em outro nó e deduplicação por `clientId`/`seq` na máquina de estados (tabela de última operação por cliente, também incluída no snapshot).
+      minutes: 50
+    - id: m7-snapshot
+      title: Snapshot e compactação (extensão)
+      description: Snapshot do estado KV + tabela de deduplicação, descarte do prefixo do log, `InstallSnapshot` para seguidores atrasados e testes com nó desligado durante milhares de operações.
+      minutes: 75
+    - id: m8-caos
+      title: Testes de caos e linearizabilidade
+      description: Rodar clientes concorrentes enquanto um script particiona, derruba e reinicia nós; gravar o histórico de operações e verificar linearizabilidade (Porcupine ou checador próprio).
+      minutes: 75
+    - id: m9-de-memoria
+      title: Reescrever de memória
+      description: Dias depois, reescrever sem olhar os handlers de `RequestVote` e `AppendEntries` a partir só da Figura 2 e comparar com a sua versão; registrar quais regras esqueceu.
+      minutes: 50
+  edgeCases:
+    - Dois candidatos com o mesmo termo dividindo votos (split vote) várias vezes seguidas.
+    - Líder antigo isolado numa partição minoritária que continua aceitando pedidos de clientes.
+    - Seguidor que volta depois de muito tempo com log mais curto, mais longo ou com entradas de termos antigos conflitantes.
+    - "Entrada de termo anterior replicada na maioria mas ainda não comprometida (cenário da Figura 8 do paper)."
+    - Resposta de RPC atrasada que chega depois de o nó mudar de termo ou de papel.
+    - Cliente que reenvia o mesmo `put` após timeout quando o pedido original já tinha sido aplicado.
+    - Nó reiniciado com arquivo de estado truncado ou ausente.
+    - "Cluster sem maioria (2 de 5 nós vivos): o sistema deve parar de aceitar escritas, não divergir."
+  failureExperiments:
+    - Remover a aleatoriedade do timeout de eleição e mostrar nos logs a sequência de split votes e o cluster sem líder.
+    - Particionar o líder (rede simulada ou `iptables`/`tc netem` num laboratório com contêineres) e mostrar que escritas na minoria nunca comprometem e são descartadas ao curar a partição.
+    - "Desligar a deduplicação no servidor e, com perda de respostas simulada, mostrar uma tarefa com `append` aplicado duas vezes no histórico."
+    - Não persistir `votedFor` antes de responder o voto, matar e reiniciar o nó, e construir o cenário em que dois líderes existem no mesmo termo.
+    - Comprometer entradas de termos anteriores contando réplicas (violando a regra da Figura 8) e reproduzir a perda de uma entrada comprometida.
+    - Manter o mutex durante o envio de RPC e mostrar o deadlock com dump de goroutines (`SIGQUIT` ou `go test -timeout`).
+    - Rodar sem `-race` e depois com `-race` para encontrar um acesso concorrente não protegido a `commitIndex` ou ao log.
+  tools: ["go test -race", "go test -run 3A -count 50", "go tool pprof", delve, "kill -QUIT (dump de goroutines)", tcpdump, "tc netem", iptables, docker, porcupine]
+  acceptanceCriteria:
+    - Com 3 ou 5 nós, um novo líder é eleito em poucos segundos após o líder cair, e nunca há dois líderes no mesmo termo (verificado nos testes).
+    - Toda operação comprometida aparece na mesma ordem em todas as réplicas, mesmo com partições, perdas e reinícios.
+    - "Os testes de eleição, replicação e persistência passam 50 vezes seguidas com `go test -race`."
+    - Clientes que repetem pedidos após timeout não causam aplicação dupla (histórico de tarefas sem duplicatas).
+    - O sistema recusa escritas sem maioria e volta a aceitá-las quando a maioria se recompõe.
+    - O histórico de um teste de caos com clientes concorrentes passa no verificador de linearizabilidade.
+  evidence:
+    - Link do repositório com README (arquitetura, ordem de locks, formato do estado persistido, limitações).
+    - "Saída de `go test -race -count 50` dos testes de eleição, replicação, persistência e KV."
+    - Trecho de log anotado de uma partição do líder e da reconciliação dos logs ao curar a rede.
+    - Relato dos experimentos de falha (timeout fixo, sem deduplicação, sem persistir votedFor, deadlock) com o que foi observado.
+    - Resultado do verificador de linearizabilidade para um teste de caos (e um histórico não linearizável produzido com a deduplicação desligada).
+    - "Handlers de RequestVote e AppendEntries reescritos de memória, com o diff comentado."
+  reviewQuestions:
+    - Por que o timeout de eleição precisa ser aleatório e muito maior que o intervalo de heartbeat?
+    - Por que um líder só pode comprometer por contagem de réplicas entradas do seu próprio termo?
+    - Que estado precisa ser persistido antes de responder um RPC, e que bug aparece se for persistido depois?
+    - Como a deduplicação por `clientId`/`seq` transforma entrega at-least-once do cliente em efeito exactly-once na máquina de estados?
+    - Por que um `get` respondido direto pela memória do líder pode violar linearizabilidade?
+    - O que acontece com a disponibilidade do sistema numa partição 2–3 de um cluster de 5 nós, e por que isso é escolha de consistência (CAP)?
+  practice:
+    guidance: >-
+      Antes do marco 1, leia o paper do Raft até a Seção 5 com a Figura 2 impressa ao lado e assista à
+      visualização do Raft (The Secret Lives of Data) para fixar eleição e replicação. Em seguida redigite à
+      mão (sem colar), num diretório novo, a Parte 1 da série "Implementing Raft" de Eli Bendersky
+      (código Go no repositório eliben/raft, licença Unlicense), um commit por função. Anote cada regra da
+      Figura 2 no código e quebre de propósito 2–3 pontos (timeout fixo, não voltar a follower ao ver termo
+      maior, segurar o lock durante o RPC), observando com logs e `go test -race`. Depois redigite as Partes 2
+      e 3 (replicação e persistência) e use a Parte 4 como referência do KV. Para o projeto próprio, siga a
+      estrutura e os testes dos labs do MIT 6.5840 (Lab 2: KV server com versões, Lab 3: Raft, Lab 4: KV
+      tolerante a falhas — edição Spring 2026), e use os artigos do Jepsen como inspiração para os testes de
+      caos. Dias depois, reescreva os handlers de RPC de memória a partir só da Figura 2.
+    references:
+      - title: "Implementing Raft (série em 4 partes) e repositório eliben/raft"
+        author: "Eli Bendersky"
+        url: https://eli.thegreenplace.net/2020/implementing-raft-part-0-introduction/
+        language: Go
+        license: "Unlicense (repositório eliben/raft)"
+      - title: "In Search of an Understandable Consensus Algorithm (Extended Version)"
+        author: "Diego Ongaro, John Ousterhout"
+        url: https://raft.github.io/raft.pdf
+        language: "Paper (pseudocódigo na Figura 2)"
+      - title: "Raft Consensus Algorithm (site oficial, visualizações e implementações)"
+        author: "Diego Ongaro et al."
+        url: https://raft.github.io/
+        language: "Página de referência"
+      - title: "The Secret Lives of Data — Raft"
+        author: "The Secret Lives of Data"
+        url: https://thesecretlivesofdata.com/raft/
+        language: "Visualização interativa"
+      - title: "6.5840 Lab 3: Raft (Spring 2026)"
+        author: "MIT PDOS (Robert Morris et al.)"
+        url: https://pdos.csail.mit.edu/6.824/labs/lab-raft1.html
+        language: Go
+        license: "Material de curso do MIT; sem licença de código declarada na página"
+      - title: "6.5840 Lab 4: Fault-tolerant Key/Value Service (Spring 2026)"
+        author: "MIT PDOS (Robert Morris et al.)"
+        url: https://pdos.csail.mit.edu/6.824/labs/lab-kvraft1.html
+        language: Go
+        license: "Material de curso do MIT; sem licença de código declarada na página"
+      - title: "6.5840 Lab 2: Key/Value Server (Spring 2026)"
+        author: "MIT PDOS (Robert Morris et al.)"
+        url: https://pdos.csail.mit.edu/6.824/labs/lab-kvsrv1.html
+        language: Go
+        license: "Material de curso do MIT; sem licença de código declarada na página"
+      - title: "Jepsen — Consistency Models"
+        author: "Kyle Kingsbury (Jepsen)"
+        url: https://jepsen.io/consistency
+        language: "Artigos (inspiração para testes)"
