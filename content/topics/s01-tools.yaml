@@ -59,6 +59,25 @@
     - Cole os comandos do exercício com as saídas reais e marque onde sua previsão errou.
     - Explique em 3–5 frases o caminho de uma linha de comando até virar processo.
   firstAction: Abra um terminal, rode `echo $PATH | tr ':' '\n'` e escreva quantos diretórios aparecem.
+  essentials:
+    - "Use `type nome` para saber se um comando é builtin, alias, função ou arquivo, e `echo $PATH` para ver onde o shell procura executáveis."
+    - "Ponha variáveis entre aspas duplas (`\"$arquivo\"`) por padrão; aspas simples quando quiser o texto literal, sem expansão."
+    - "Antes de um comando destrutivo com glob (`rm *.log`), rode `echo rm *.log` para ver a lista que o shell vai realmente passar."
+    - "Leia a ajuda local primeiro: `man cmd`, `cmd --help` e `help builtin`; navegue com `cd -`, Tab e Ctrl+R para buscar no histórico."
+    - "Nunca rode `curl ... | sh` nem comandos com `sudo` que você não entende; leia o script antes num arquivo."
+  deepDive:
+    - title: Scripts robustos (set -euo pipefail, trap, quoting)
+      why: Quando seus scripts de CI ou deploy passarem de poucas linhas e uma falha silenciosa no meio custar caro.
+      resource: shellcheck
+    - title: Ordem completa das expansões do bash
+      why: Ao depurar scripts com brace expansion, substituição de comandos e word splitting que se comportam de forma inesperada.
+      resource: bash-manual
+    - title: Job control, tmux e sessões remotas por SSH
+      why: Quando começar a operar servidores e precisar manter processos rodando depois de fechar o terminal.
+      resource: missing-semester-cli-env
+    - title: Dotfiles, aliases e customização do ambiente
+      why: Depois que o básico estiver automático e você quiser acelerar tarefas repetidas e levar o ambiente para outras máquinas.
+      resource: missing-semester-cli-env
 
 - id: filesystem-permissions
   stage: s01-tools
@@ -122,6 +141,25 @@
     - Tabela da matriz de permissões com previsões erradas destacadas.
     - Saída de `stat` do arquivo de segredos protegido.
   firstAction: Rode `ls -la ~` e explique a permissão de três arquivos que aparecerem.
+  essentials:
+    - "Leia `ls -l` como tipo + dono/grupo/outros (`-rw-r-----`) e converta com r=4, w=2, x=1; `chmod 640` e `chmod u=rw,g=r,o=` são a mesma coisa."
+    - "Para ler `a/b/c.txt` você precisa de `x` em todos os diretórios do caminho; apagar um arquivo depende de `w` no diretório, não no arquivo."
+    - "Segredos (`.env`, chaves SSH) ficam com `chmod 600` e diretórios privados com `700`; confira com `stat` e nunca use `chmod 777`."
+    - "Script não executa? Verifique `x` (`chmod +x`) e o shebang na primeira linha; arquivo novo nasce com permissões ditadas pelo `umask`."
+    - "Use `sudo` só para o comando que precisa; arquivos criados como root no seu projeto viram `Permission denied` depois. Corrija com `chown`."
+  deepDive:
+    - title: setuid, setgid e sticky bit
+      why: Ao entender por que `passwd` altera arquivos do root ou por que todos escrevem em `/tmp` sem apagar arquivos alheios.
+      resource: man-chmod
+    - title: ACLs POSIX (getfacl/setfacl)
+      why: Quando o trio dono/grupo/outros não basta, por exemplo para dar acesso de leitura a um único usuário de serviço.
+      resource: man-setfacl
+    - title: Inodes, hard links e symlinks
+      why: Ao estudar sistemas de arquivos ou investigar disco cheio com arquivos apagados que ainda ocupam espaço.
+      resource: ostep-files-directories
+    - title: Capabilities e user namespaces
+      why: Quando for rodar serviços e containers com o mínimo de privilégio, sem dar root inteiro ao processo.
+      resource: man-capabilities
 
 - id: processes-streams-exit-codes
   stage: s01-tools
@@ -184,6 +222,28 @@
     - Script checa.sh (link ou texto) e saídas de `echo $?` nos dois casos.
     - Saída do `ps --forest` com uma explicação de cada linha.
   firstAction: Rode `ls /nao-existe; echo $?` e anote o número que aparece.
+  essentials:
+    - "Descritores 0, 1 e 2 são stdin, stdout e stderr: `cmd > out.txt 2> err.txt` separa dados de erros; `cmd > tudo.log 2>&1` junta (a ordem importa)."
+    - "Exit code 0 é sucesso, qualquer outro é falha; consulte com `echo $?` e encadeie com `&&` (se deu certo) e `||` (se falhou)."
+    - "Num pipe `a | b` os dois rodam ao mesmo tempo e o shell reporta o exit code do último; use `set -o pipefail` em scripts."
+    - "Nos seus programas e scripts, mande diagnósticos para stderr (`echo erro >&2`) e saia com código diferente de zero ao falhar."
+    - "Inspecione processos com `ps -o pid,ppid,stat,cmd --forest` e encerre com `kill PID`; 128+N no exit code indica morte pelo sinal N (130 = Ctrl+C)."
+  deepDive:
+    - title: fork, exec e wait
+      why: Quando for implementar o mini shell ou entender como servidores e o próprio shell criam processos.
+      resource: ostep-process-api
+    - title: dup2 e a tabela de descritores de arquivo
+      why: Ao implementar redirecionamentos e pipes em C ou depurar descritores vazando em servidores.
+      resource: man-dup
+    - title: Sinais e trap
+      why: Quando precisar de desligamento gracioso (SIGTERM em containers) ou limpar arquivos temporários ao interromper um script.
+      resource: sorber-signals-in-c
+    - title: Buffering de stdio
+      why: Ao estranhar saída fora de ordem ou que só aparece no fim quando o programa escreve num pipe em vez do terminal.
+      resource: man-setvbuf
+    - title: Inspecionar processos pelo /proc
+      why: Ao depurar em produção quais arquivos, variáveis de ambiente e limites um processo realmente tem.
+      resource: man-proc
 
 - id: git-fundamentals
   stage: s01-tools
@@ -245,3 +305,25 @@
     - Foto ou texto do grafo previsto ao lado da saída de `git log --graph`.
     - Comandos usados para recuperar o commit, com os hashes.
   firstAction: Rode `git config --global --list` e confira se seu nome e e-mail estão configurados.
+  essentials:
+    - "Ciclo diário: `git status` → `git add -p` (revise o que entra) → `git commit -m` com mensagem clara → `git push`; rode `git status` o tempo todo."
+    - "Branch é um ponteiro: crie com `git switch -c nome`, troque com `git switch`, integre com `git merge` e visualize com `git log --oneline --graph --all`."
+    - "Veja o que mudou antes de commitar: `git diff` (working tree vs index) e `git diff --staged` (index vs último commit)."
+    - "Em branch compartilhado, desfaça com `git revert`; `git reset --hard` só no seu branch local. Algo sumiu? `git reflog` e crie um branch no hash."
+    - "Nunca commite segredos nem artefatos gerados: use `.gitignore` e, se vazou, troque a credencial — apagar o commit não basta."
+  deepDive:
+    - title: Rebase interativo e reescrita de histórico
+      why: Quando for limpar commits antes de abrir um pull request ou o time adotar histórico linear.
+      resource: pro-git-ptbr-reescrevendo-historico
+    - title: git bisect para caçar regressões
+      why: Quando um bug aparecer e você souber uma versão boa e uma ruim, mas não qual commit o introduziu.
+      resource: git-docs-bisect
+    - title: Internals (objetos blob, tree, commit e refs)
+      why: Ao querer entender por que o Git é rápido ou recuperar situações estranhas no repositório.
+      resource: akita-git
+    - title: Fluxos de equipe (pull requests, convenções, resolução de conflitos)
+      why: Quando o time crescer e várias pessoas mexerem no mesmo código ao mesmo tempo.
+      resource: akitando-71-usando-git-direito-video
+    - title: Detecção de segredos no histórico
+      why: Antes de tornar um repositório público ou ao configurar CI para barrar credenciais vazadas.
+      resource: gitleaks

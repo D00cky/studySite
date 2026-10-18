@@ -1,0 +1,106 @@
+# Recursos do drill-down 80/20 das etapas 1 e 2
+
+- id: shellcheck
+  title: ShellCheck – shell script analysis tool
+  author: Vidar Holen
+  url: https://www.shellcheck.net/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [terminal-shell]
+  why: Analisador estático de scripts shell que aponta falta de aspas, expansões perigosas e armadilhas de portabilidade, explicando cada aviso.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-capabilities
+  title: capabilities(7) - Linux manual page
+  author: Michael Kerrisk (man-pages project)
+  url: https://man7.org/linux/man-pages/man7/capabilities.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [filesystem-permissions]
+  why: Mostra como o Linux divide os poderes do root em capabilities, base para rodar serviços e containers com o mínimo de privilégio.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-setfacl
+  title: setfacl(1) - Linux manual page
+  author: Andreas Gruenbacher (man-pages project)
+  url: https://man7.org/linux/man-pages/man1/setfacl.1.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [filesystem-permissions]
+  why: Referência das ACLs POSIX, para dar acesso a usuários específicos além do trio dono/grupo/outros.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: git-docs-bisect
+  title: git-bisect Documentation
+  author: Git project
+  url: https://git-scm.com/docs/git-bisect
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [git-fundamentals]
+  why: Documentação oficial da busca binária no histórico para achar o commit que introduziu um bug, inclusive automatizada com `git bisect run`.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pro-git-ptbr-reescrevendo-historico
+  title: Pro Git — Reescrevendo o Histórico
+  author: Scott Chacon e Ben Straub
+  url: https://git-scm.com/book/pt-br/v2/Ferramentas-do-Git-Reescrevendo-o-Hist%C3%B3rico
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [git-fundamentals]
+  why: Explica `commit --amend`, rebase interativo, squash e divisão de commits, e quando reescrever histórico é seguro.
+  section: "7.6 Ferramentas do Git - Reescrevendo o Histórico"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: unicode-uax15-normalization
+  title: "UAX #15: Unicode Normalization Forms"
+  author: Unicode Consortium
+  url: https://unicode.org/reports/tr15/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [text-encoding]
+  why: Especificação de NFC/NFD/NFKC/NFKD, que explica por que "ã" pré-composto e "a" + til combinante precisam ser normalizados antes de comparar.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: unicode-uax29-text-segmentation
+  title: "UAX #29: Unicode Text Segmentation"
+  author: Unicode Consortium
+  url: https://www.unicode.org/reports/tr29/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [text-encoding]
+  why: Define grapheme clusters, a unidade de "caractere percebido" usada para contar, cortar e mover o cursor em texto com emojis e acentos combinantes.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-numeric-types
+  title: PostgreSQL Documentation — 8.1. Numeric Types
+  author: The PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/datatype-numeric.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [floating-point, integer-representation-overflow]
+  why: Compara `integer`, `bigint`, `numeric` e `double precision` (faixas, precisão, arredondamento), útil para escolher o tipo certo para dinheiro e contadores.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
