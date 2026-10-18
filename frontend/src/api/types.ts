@@ -124,13 +124,20 @@ export interface Resource {
   verification: Verification
 }
 
-export interface ProjectSummary {
+interface ProjectBase {
   id: string
   title: string
   status: 'authored' | 'planned'
   cumulative: boolean
+  /** lab = laboratório de uma etapa; build = "construa o seu" (compilador, banco, Git...). */
+  track: 'lab' | 'build'
   question: string
   topics: string[]
+}
+
+export interface ProjectSummary extends ProjectBase {
+  milestoneCount: number
+  minutes: number
 }
 
 export interface Milestone {
@@ -140,7 +147,7 @@ export interface Milestone {
   minutes?: number
 }
 
-export interface Project extends ProjectSummary {
+export interface Project extends ProjectBase {
   prerequisites: string[]
   minimalVersion: string
   extensions: string[]

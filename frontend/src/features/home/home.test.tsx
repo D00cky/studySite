@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import type { ContinueView, StudySession } from '../../api/types'
@@ -108,5 +108,29 @@ describe('painel continue de onde parou', () => {
       end: true,
     })
     expect(await screen.findByRole('button', { name: 'Começar sessão' })).toBeInTheDocument()
+  })
+})
+
+describe('painel de progresso da home', () => {
+  it('mostra o progresso por etapa do núcleo com tópicos demonstrados sobre o total', async () => {
+    server.use(...signedIn())
+    server.use(
+      withSessions([]),
+      http.get('/api/me/progress', () =>
+        HttpResponse.json({
+          'terminal-shell': {
+            topicId: 'terminal-shell', status: 'demonstrated', resourcesOpened: 1, resourcesFinished: 1, attempts: 1,
+            submittedAttempts: 1, evidence: 1, sharedEvidence: 1, acceptedReviews: 1,
+          },
+        }),
+      ),
+    )
+    renderApp('/')
+    const panel = await screen.findByRole('region', { name: 'Progresso por etapa' })
+    const tools = within(panel).getByRole('progressbar', { name: /Ferramentas e execução/ })
+    await waitFor(() => expect(tools).toHaveAttribute('aria-valuenow', '1'))
+    expect(tools).toHaveAttribute('aria-valuemax', '1')
+    expect(within(panel).getByRole('progressbar', { name: /C e compilação/ })).toHaveAttribute('aria-valuenow', '0')
+    expect(within(panel).queryByText(/Ramo: fundamentos de frontend/)).not.toBeInTheDocument()
   })
 })

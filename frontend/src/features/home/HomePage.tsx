@@ -1,9 +1,10 @@
 import { Link } from 'react-router'
-import { useContinue, useMe, useMyProgress } from '../../api/queries'
+import { useContinue, useMe, useMyProgress, useRoadmap } from '../../api/queries'
 import { InlineMarkdown } from '../../components/Markdown'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { formatDate, formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
+import { StageProgress } from './StageProgress'
 import { StudySessionPanel } from './StudySessionPanel'
 
 const VERDICT_LABEL = { comment: 'Comentário', changes_requested: 'Pediu mudanças', accepted: 'Aprovou' } as const
@@ -12,6 +13,7 @@ export function HomePage() {
   const { data, error, isPending } = useContinue()
   const { data: me } = useMe()
   const { data: progress = {} } = useMyProgress()
+  const { data: roadmap } = useRoadmap()
   const topicTitle = useTopicTitles()
   const counts = Object.values(progress).reduce(
     (acc, p) => {
@@ -107,6 +109,8 @@ export function HomePage() {
                 <Link to="/roadmap">Ver a trilha completa</Link>
               </p>
             </section>
+
+            {roadmap && <StageProgress roadmap={roadmap} progress={progress} />}
 
             {data.suggestedTopic && data.nextAction.topicId !== data.suggestedTopic.topicId && (
               <p className="muted">

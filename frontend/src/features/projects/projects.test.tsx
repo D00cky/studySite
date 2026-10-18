@@ -7,7 +7,7 @@ import { renderApp } from '../../test/render'
 import { server } from '../../test/server'
 
 const project: Project = {
-  id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false,
+  id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false, track: 'lab',
   topics: ['compilation-pipeline'], question: 'Como um programa recebe argumentos e comunica falhas?',
   prerequisites: ['terminal-shell'], minimalVersion: '`tasks add`, `tasks list` e `tasks done`.',
   extensions: ['Escrita atômica.'], constraints: ['Sem bibliotecas além da libc.'],
@@ -24,8 +24,9 @@ const project: Project = {
 }
 
 const summaries = [
-  { id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false, question: project.question, topics: [] },
-  { id: 'task-platform', title: 'Projeto cumulativo: plataforma', status: 'planned', cumulative: true, question: 'Como evolui?', topics: [] },
+  { id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false, track: 'lab', question: project.question, topics: ['compilation-pipeline'], milestoneCount: 6, minutes: 250 },
+  { id: 'task-platform', title: 'Projeto cumulativo: plataforma', status: 'planned', cumulative: true, track: 'lab', question: 'Como evolui?', topics: [], milestoneCount: 0, minutes: 0 },
+  { id: 'build-a-compiler', title: 'Construa um compilador', status: 'authored', cumulative: false, track: 'build', question: 'Como `x + 1` vira bytecode?', topics: [], milestoneCount: 10, minutes: 500 },
 ]
 
 const groupProject: GroupProjectDetail = {
@@ -38,11 +39,29 @@ const groupProject: GroupProjectDetail = {
 }
 
 describe('projetos', () => {
+  it('separa "construa o seu", laboratórios e o cumulativo, com o esforço de cada card', async () => {
+    server.use(...signedIn())
+    server.use(http.get('/api/curriculum/projects', () => HttpResponse.json(summaries)))
+    renderApp('/projetos')
+    const build = await screen.findByRole('region', { name: 'Construa o seu' })
+    expect(within(build).getByRole('link', { name: 'Construa um compilador' })).toHaveAttribute('href', '/projetos/build-a-compiler')
+    expect(within(build).queryByRole('link', { name: 'CLI de tarefas em C' })).not.toBeInTheDocument()
+    expect(within(build).getByText('x + 1', { selector: 'code' })).toBeInTheDocument()
+
+    const labs = screen.getByRole('region', { name: 'Laboratórios por etapa' })
+    const cli = within(labs).getByRole('link', { name: 'CLI de tarefas em C' }).closest('article')!
+    expect(within(cli).getByText('6 marcos · ~4h10')).toBeInTheDocument()
+    expect(within(cli).getByText('O pipeline de compilação')).toBeInTheDocument()
+
+    const cumulative = screen.getByRole('region', { name: 'Projeto cumulativo' })
+    expect(within(cumulative).getByRole('link', { name: 'Projeto cumulativo: plataforma' })).toBeInTheDocument()
+  })
+
   it('lista projetos sinalizando o cumulativo e os planejados', async () => {
     server.use(...signedIn())
     server.use(http.get('/api/curriculum/projects', () => HttpResponse.json(summaries)))
     renderApp('/projetos')
-    const platform = (await screen.findByRole('link', { name: 'Projeto cumulativo: plataforma' })).closest('li')!
+    const platform = (await screen.findByRole('link', { name: 'Projeto cumulativo: plataforma' })).closest('article')!
     expect(within(platform).getByText('Cumulativo')).toBeInTheDocument()
     expect(within(platform).getByText('Detalhes planejados')).toBeInTheDocument()
   })

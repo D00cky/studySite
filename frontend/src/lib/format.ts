@@ -25,3 +25,11 @@ export const PROGRESS_TONE: Record<ProgressStatus, string> = {
 export function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`
 }
+
+/** 250 → "4h10", 50 → "50 min". */
+export function formatMinutes(total: number) {
+  if (total < 60) return `${total} min`
+  const h = Math.floor(total / 60)
+  const m = total % 60
+  return m === 0 ? `${h}h` : `${h}h${String(m).padStart(2, '0')}`
+}

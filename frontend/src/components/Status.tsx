@@ -2,7 +2,7 @@ import { ApiError } from '../api/client'
 
 export function Loading({ label = 'Carregando…' }: { label?: string }) {
   return (
-    <p className="muted" role="status">
+    <p className="loading" role="status">
       {label}
     </p>
   )

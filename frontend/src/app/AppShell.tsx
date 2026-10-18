@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { useState } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useLogout, useMe } from '../api/queries'
 import { useTheme } from '../lib/theme'
 
@@ -17,6 +18,8 @@ export function AppShell() {
   const logout = useLogout()
   const navigate = useNavigate()
   const { theme, toggle } = useTheme()
+  const { pathname } = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <>
@@ -31,11 +34,20 @@ export function AppShell() {
             </span>
             StudySite
           </NavLink>
-          <nav aria-label="Principal">
+          <button
+            type="button"
+            className="button-quiet menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="menu-principal"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            Menu
+          </button>
+          <nav aria-label="Principal" id="menu-principal" className={menuOpen ? 'site-nav open' : 'site-nav'}>
             <ul className="nav-list">
               {NAV.map((item) => (
                 <li key={item.to}>
-                  <NavLink to={item.to} end={item.end}>
+                  <NavLink to={item.to} end={item.end} onClick={() => setMenuOpen(false)}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -60,6 +72,13 @@ export function AppShell() {
       <main id="conteudo" tabIndex={-1} className="page">
         <Outlet />
       </main>
+      <footer className="status-bar">
+        <div className="status-bar-inner">
+          <span className="status-branch">main</span>
+          <span>~{decodeURI(pathname)}</span>
+          <span className="status-right">UTF-8 · pt-BR · {theme === 'dark' ? 'escuro' : 'claro'}</span>
+        </div>
+      </footer>
     </>
   )
 }

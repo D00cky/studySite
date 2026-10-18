@@ -111,7 +111,7 @@ export const topicPage: TopicPage = {
   prerequisites: [roadmap.topics[0]!],
   unlocks: [roadmap.topics[2]!],
   related: [],
-  projects: [{ id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false, question: 'Como...', topics: ['compilation-pipeline'] }],
+  projects: [{ id: 'c-task-cli', title: 'CLI de tarefas em C', status: 'authored', cumulative: false, track: 'lab', milestoneCount: 6, minutes: 250, question: 'Como...', topics: ['compilation-pipeline'] }],
 }
 
 export const emptyWorkspace: TopicWorkspace = {

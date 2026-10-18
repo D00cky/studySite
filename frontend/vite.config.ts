@@ -6,6 +6,20 @@ import { defineConfig } from 'vite'
 // sessão e CSRF funcionam sem CORS.
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rolldownOptions: {
+      output: {
+        // Bibliotecas em chunks próprios: mudam pouco e ficam em cache entre deploys.
+        advancedChunks: {
+          groups: [
+            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/ },
+            { name: 'query', test: /node_modules[\\/]@tanstack[\\/]/ },
+            { name: 'markdown', test: /node_modules[\\/](react-markdown|remark-.*|rehype-.*|mdast-.*|micromark.*|unified|hast-.*|unist-.*|vfile.*|property-information|decode-named-character-reference|character-entities.*)[\\/]/ },
+          ],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {
