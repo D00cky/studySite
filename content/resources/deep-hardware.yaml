@@ -1,0 +1,1982 @@
+# Frente "hardware": Ben Eater, Crash Course Computer Science, Computerphile, MIT 6.004 (OCW),
+# nand2tetris e Code (Charles Petzold, 2ª ed.). Vídeos verificados via oEmbed do YouTube em 2026-10-18;
+# trechos com minuto usam capítulos oficiais (descrição) ou automáticos do YouTube, conforme indicado.
+
+- id: ben-eater-4-bit-adder
+  title: "Learn how computers add numbers and build a 4 bit adder circuit"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=wvJc9CZcvBc
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow, binary-hexadecimal]
+  why: "Monta um somador de 4 bits com portas lógicas e mostra o carry se propagando — a origem física do \"vai um\" e do overflow."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-twos-complement
+  title: "Twos complement: Negative numbers in binary"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=4qH4unVtJkE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Compara bit de sinal, complemento de um e complemento de dois e mostra por que o último deixa o mesmo somador servir para subtrair."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-alu-design
+  title: "ALU Design"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=mOVOS9AjgFs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Projeto da ALU do computador de 8 bits: subtração como soma do complemento de dois e o bit de carry saindo do somador."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-cpu-flags-register
+  title: "CPU flags register"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=ObnosznZvHY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [integer-representation-overflow, cpu-memory-caches]
+  why: "Constrói o registrador de flags (carry e zero) e liga às instruções de salto — de onde vêm as flags que o compilador usa para comparar inteiros."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-7-segment-hex-decoder
+  title: "Designing a 7-segment hex decoder"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=7zffjsXqATg
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Projeta à mão a tabela-verdade que transforma 4 bits num dígito hexadecimal, mostrando por que um nibble vira exatamente um dígito hex."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-8-bit-decimal-display
+  title: "Build an 8-bit decimal display for our 8-bit computer"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=dLh1n2dErzE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [binary-hexadecimal, integer-representation-overflow]
+  why: "Usa uma EEPROM como tabela de conversão binário→decimal, com modos sem sinal e com sinal (complemento de dois) para o mesmo byte."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-logic-gates-from-transistors
+  title: "Making logic gates from transistors"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=sTu3LwpF6XI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Mostra o que um bit é fisicamente: transistores como chaves formando NOT, AND, OR e XOR."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-sr-latch
+  title: "SR latch"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=KM0DdEaY5sY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Realimentação de portas lógicas formando o circuito mais simples que \"lembra\" um bit — a base de registradores e SRAM."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-d-latch
+  title: "D latch"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=peCh_859q7Q
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Evolui o SR latch para o D latch, que guarda um bit de dados sob um sinal de enable."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-d-flip-flop
+  title: "D flip-flop"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=YW-_GkUguMM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Flip-flop D sensível à borda do clock: como o hardware sincroniza a gravação de estado a cada ciclo."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-bus-architecture-register-transfers
+  title: "Bus architecture and how register transfers work - 8 bit register - Part 1"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=QzWW-CBugZo
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Explica o barramento e como os dados passam de um módulo para outro sob sinais de controle — o caminho que todo load/store percorre."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-8-bit-ram-intro
+  title: "8-bit computer RAM intro"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=FnxPIZR1ybs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Introdução à RAM: tipos (estática e dinâmica) e decodificação de endereço, ou seja, como um endereço seleciona uma célula de memória."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-8-bit-cpu-control-logic-part-1
+  title: "8-bit CPU control logic: Part 1"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=dXdoim96v5A
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches, compilation-pipeline]
+  why: "Escreve um programa numa linguagem de máquina inventada e percorre o ciclo de busca e execução que a lógica de controle precisa realizar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-8-bit-cpu-control-logic-part-1-fetch
+  title: "8-bit CPU control logic: Part 1 — 07:56 Instruction fetch cycle"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=dXdoim96v5A&t=476s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Trecho que detalha o ciclo de busca (fetch): PC → endereço → instrução no registrador de instrução (até o próximo capítulo)."
+  section: "07:56 Instruction fetch cycle (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: ben-eater-8-bit-cpu-control-logic-part-2
+  title: "8-bit CPU control logic: Part 2"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=X7rCxs1ppyY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Diferencia instrução de microinstrução e constrói o contador de passos que sequencia o ciclo de instrução."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-stepping-through-8-bit-program
+  title: "Stepping through a program on the 8-bit breadboard computer"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=35zLnS3fXeA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Executa um programa passo a passo no computador de 8 bits, mostrando cada fase do ciclo de instrução nos LEDs."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-programming-8-bit-computer
+  title: "Programming my 8-bit breadboard computer"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=9PPrrSyubG0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Monta um programa à mão: do mnemônico ao padrão de bits digitado na RAM — o trabalho que um assembler faz por você."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-comparing-c-to-machine-language
+  title: "Comparing C to machine language"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=yOyaJXpAYZQ
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Compara um programa em C com o código de máquina gerado, instrução por instrução — ponte direta entre fonte, assembly e bytes."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-1-hello-world-from-scratch
+  title: "“Hello, world” from scratch on a 6502 — Part 1"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=LnzuMJLZRdU
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Liga um 6502 e observa os barramentos de endereço e dados ciclo a ciclo, incluindo a sequência de reset — a CPU vista de fora."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-2-how-cpus-read-machine-code
+  title: "How do CPUs read machine code? — 6502 part 2"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=yl8vPW5hydQ
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches, compilation-pipeline]
+  why: "Mostra a CPU buscando opcodes e operandos da ROM e executando-os, com o código de máquina escrito byte a byte."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-3-assembly-vs-machine-code
+  title: "Assembly language vs. machine code — 6502 part 3"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=oO8_2JJV0B4
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Troca bytes escritos à mão por assembly e um assembler (vasm): opcodes, diretivas de origem e labels."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-3-assembly-labels
+  title: "Assembly language vs. machine code — 6502 part 3 — 10:06 Using assembly labels"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=oO8_2JJV0B4&t=606s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [linking-object-files]
+  why: "Trecho em que labels substituem endereços fixos e o assembler resolve os símbolos — a mesma ideia que o linker aplica entre arquivos (até o próximo capítulo)."
+  section: "10:06 Using assembly labels (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: ben-eater-6502-part-5-what-is-a-stack
+  title: "What is a stack and how does it work? — 6502 part 5"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=xBjQVxVxOxc
+  language: en
+  format: video
+  difficulty: intro
+  topics: [stack-heap-lifetime]
+  why: "Depura um travamento causado por não haver RAM para a pilha e mostra como JSR/RTS empilham o endereço de retorno e como o stack pointer anda."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-6-ram-and-bus-timing
+  title: "RAM and bus timing — 6502 part 6"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=i_wrxBdXTgM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Adiciona RAM ao 6502 lendo diagramas de temporização: por que a memória precisa responder dentro de uma janela do ciclo de clock."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-part-7-subroutine-calls-with-ram
+  title: "Subroutine calls, now with RAM — 6502 part 7"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=omI0MrTWiMU
+  language: en
+  format: video
+  difficulty: intro
+  topics: [stack-heap-lifetime]
+  why: "Com RAM instalada, as chamadas de sub-rotina funcionam: observa no barramento o endereço de retorno sendo gravado e lido da pilha."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-how-assembly-loops-work
+  title: "How assembly language loops work"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=ZYJIakkcLYw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Loops em assembly com flags e branches condicionais — como um while/for vira comparação e salto."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-binary-to-decimal
+  title: "Binary to decimal can’t be that hard, right?"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=v3-a-zqKfgA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Converte binário em decimal implementando divisão binária à mão e em assembly do 6502 — conversão de base sem printf."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-hardware-interrupts
+  title: "Hardware interrupts"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=DlEa8kd7n3Q
+  language: en
+  format: video
+  difficulty: intro
+  topics: [signals, processes-syscalls]
+  why: "IRQ e NMI no 6502: vetores de interrupção, o handler e o retorno — o mecanismo de hardware que o kernel usa e que sinais imitam em software."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-hardware-interrupts-data-consistency
+  title: "Hardware interrupts — 21:55 Data consistency issues"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=DlEa8kd7n3Q&t=1315s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [signals, race-conditions-synchronization]
+  why: "Trecho sobre dados inconsistentes quando o handler altera uma variável no meio do código principal — a raiz do problema de async-signal-safety (até o próximo capítulo)."
+  section: "21:55 Data consistency issues (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: ben-eater-6502-interrupt-handling
+  title: "Interrupt handling"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=oOYA-jsWTmc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [signals]
+  why: "Flags e enable de interrupção no 6522 e a necessidade de \"limpar\" a interrupção no handler para não reentrar indefinidamente."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-hardware-timers
+  title: "How do hardware timers work?"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=g_koa00MBLg
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [signals]
+  why: "Compara espera ativa, polling de timer e timer com interrupção — a base de alarmes como SIGALRM e da preempção por tempo."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-keyboard-interface-software
+  title: "Keyboard interface software"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=dL0GO9SeBh0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stacks-queues, text-encoding]
+  why: "Buffer circular entre o handler de interrupção e o loop principal, e a tradução de scan codes do teclado para ASCII."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-6502-input-buffering
+  title: "How input buffering works"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=mpIFag8zSWo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stacks-queues, bounded-queues]
+  why: "Implementa em assembly o buffer circular de entrada serial alimentado por interrupção: ponteiros de leitura/escrita e o que acontece quando enche."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-rs232-character-framing
+  title: "The RS-232 protocol — 09:13 Character framing"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=AHYNxpqKqwo&t=553s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [text-encoding]
+  why: "Trecho sobre o enquadramento de um caractere no RS-232 (start bit, bits de dados, stop bit): um byte ASCII viajando por um fio (até o próximo capítulo)."
+  section: "09:13 Character framing (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: ben-eater-rs232-flow-control
+  title: "RS232 flow control"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=LuKMVXWD7FY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [bounded-queues]
+  why: "Controle de fluxo RTS/CTS para o buffer de recepção não transbordar — backpressure no nível mais baixo possível."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-01-sending-digital-information
+  title: "Sending digital information over a wire | Networking tutorial (1 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=XaGXPObx2Gs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Primeiro passo da série de redes: como bits viram sinais elétricos num fio de cobre (camada física)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-02-fiber-optics-rf-encoding
+  title: "Intro to fiber optics and RF encoding | Networking tutorial (2 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=lUo45NqPyq8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Como os mesmos bits são codificados em fibra óptica e rádio — a camada física além do cobre."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-03-manchester-coding
+  title: "Clock synchronization and Manchester coding | Networking tutorial (3 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=8BhjXqw9MqI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Sincronização de clock entre transmissor e receptor e a codificação Manchester, que leva clock e dados no mesmo sinal."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-04-ethernet-encoding
+  title: "Analyzing actual Ethernet encoding | Networking tutorial (4 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=i8CmibhvZ0c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dns-ip]
+  why: "Osciloscópio num link Ethernet real para ver a codificação dos bits na prática."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-05-framing
+  title: "The importance of framing | Networking tutorial (5 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=xrVN9jKjIKQ
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Por que precisamos de quadros (frames): delimitação no HDLC (bit stuffing) e no Ethernet."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-06-frame-formats
+  title: "Frame formats | Networking tutorial (6 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=1XrRT0CmzYw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Redes ponto a ponto e multiponto e os formatos de quadro Ethernet e PPP — o envelope da camada de enlace que carrega o pacote IP."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-07-lower-layers-osi
+  title: "Lower layers of the OSI model | Networking tutorial (7 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=MGAaTqFct_I
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Situa camada física e de enlace no modelo OSI, ligando o que está abaixo do IP."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-08-internet-protocol
+  title: "The Internet Protocol | Networking tutorial (8 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=rPoalUa4m8E
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Introdução ao IP: endereçamento, prefixos, roteamento e encaminhamento."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-09-arp
+  title: "ARP: Mapping between IP and Ethernet | Networking tutorial (9 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=aamG4-tH_m8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Por que o ARP existe e como mapeia endereço IP para endereço Ethernet na rede local."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-10-arp-and-ping-packets
+  title: "Looking at ARP and ping packets | Networking tutorial (10 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=xNbdeyEI-nE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Captura no Wireshark de requisição ARP e de pacotes de ping, lendo os campos byte a byte."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-11-hop-by-hop-routing
+  title: "Hop-by-hop routing | Networking tutorial (11 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=VWJ8GmYnjTs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "O cabeçalho IP em detalhe e como o pacote é roteado salto a salto — o caminho que o traceroute revela."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-12-tcp
+  title: "TCP: Transmission control protocol | Networking tutorial (12 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=4IMc3CaMhyY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [tcp-udp-sockets]
+  why: "Como o TCP oferece um fluxo de bytes confiável e orientado a conexão sobre um IP que pode perder e reordenar pacotes."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-net-13-tcp-connection-walkthrough
+  title: "TCP connection walkthrough | Networking tutorial (13 of 13)"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=F27PLin3TV0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [tcp-udp-sockets]
+  why: "Conexão TCP pacote a pacote: abertura, envio de dados, encerramento e a mesma conversa capturada no Wireshark."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-why-facebook-was-down
+  title: "Why was Facebook down for five hours?"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=-wMU8vmfaYo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dns-ip]
+  why: "Caso real que junta DNS, roteamento salto a salto, peering e BGP para explicar a queda de 5 horas do Facebook em 2021."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ben-eater-why-facebook-was-down-caching-dns
+  title: "Why was Facebook down for five hours? — 07:13 Caching DNS"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=-wMU8vmfaYo&t=433s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [timeouts-caching, dns-ip]
+  why: "Trecho sobre cache de DNS e TTL: por que a falha não apareceu para todos ao mesmo tempo (até o próximo capítulo)."
+  section: "07:13 Caching DNS"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos da descrição do vídeo." }
+
+- id: ben-eater-checksums-internet-checksum
+  title: "Checksums and Hamming distance — 08:52 Internet checksum implementation"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=ppU41c15Xho&t=532s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: "Trecho que implementa o Internet checksum usado nos cabeçalhos IP, TCP e UDP e mostra suas limitações (até o próximo capítulo)."
+  section: "08:52 Internet checksum implementation (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: ben-eater-how-do-crcs-work
+  title: "How do CRCs work?"
+  author: "Ben Eater"
+  url: https://www.youtube.com/watch?v=izG7qT0EpBw
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [dns-ip]
+  why: "A matemática do CRC (divisão de polinômios) que protege cada quadro Ethernet na camada de enlace."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-04-representing-numbers-letters-binary
+  title: "Representing Numbers and Letters with Binary: Crash Course Computer Science #4"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=1GSjbWt0c9M
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal, text-encoding]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre como sequências de bits representam números e letras, até chegar a uma codificação universal (Unicode); há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-05-alu
+  title: "How Computers Calculate - the ALU: Crash Course Computer Science #5"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=1I5ZMmrOfnA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) que constrói a ALU do zero a partir de portas lógicas e somadores binários; há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-06-registers-and-ram
+  title: "Registers and RAM: Crash Course Computer Science #6"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=fpnE6UAfbtU
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) que vai do latch ao registrador e à matriz de RAM endereçável."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-07-cpu
+  title: "The Central Processing Unit (CPU): Crash Course Computer Science #7"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=FZGugFqdr60
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) que monta uma CPU com ALU, registradores e unidade de controle e percorre o ciclo fetch-decode-execute; há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-08-instructions-and-programs
+  title: "Instructions & Programs: Crash Course Computer Science #8"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=zltgXvg6r3k
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre conjuntos de instruções e como um programa roda no nível da máquina; há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-09-advanced-cpu-designs
+  title: "Advanced CPU Designs: Crash Course Computer Science #9"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=rtAlC5J1U40
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre caches, pipelining, execução especulativa e múltiplos núcleos; há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-11-first-programming-languages
+  title: "The First Programming Languages: Crash Course Computer Science #11"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=RU1u-js7db8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) que conta a passagem do código de máquina para assemblers e compiladores."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-18-operating-systems
+  title: "Operating Systems: Crash Course Computer Science #18"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=26QPDBe-NB8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [processes-syscalls, virtual-memory]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre o sistema operacional como programa privilegiado que gerencia outros programas: multitarefa, memória virtual e proteção de memória, do Atlas ao Unix."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-20-files-and-file-systems
+  title: "Files & File Systems: Crash Course Computer Science #20"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=KN8YgJnShPM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [filesystems]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre formatos de arquivo e como um sistema de arquivos organiza blocos e diretórios."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-28-computer-networks
+  title: "Computer Networks: Crash Course Computer Science #28"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=3QhU9jd03a0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre LANs, Ethernet, endereços MAC, colisões e comutação de pacotes; há legendas em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-29-the-internet
+  title: "The Internet: Crash Course Computer Science #29"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=AEaKrq3SpW8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip, tcp-udp-sockets]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) sobre IP, UDP, TCP e DNS — do nome digitado ao pacote entregue."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crash-course-cs-30-world-wide-web
+  title: "The World Wide Web: Crash Course Computer Science #30"
+  author: "CrashCourse"
+  url: https://www.youtube.com/watch?v=guvsH5OFizE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [http-protocol]
+  why: "Episódio do Crash Course Computer Science (PBS Digital Studios) que separa a Web da Internet e apresenta URLs, HTTP e HTML."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-why-use-binary
+  title: "Why Use Binary? - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=thrx3SBEpL8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Prof. Brailsford explica por que computadores usam binário em vez de decimal (energia, ruído e simplicidade)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-where-did-bytes-come-from
+  title: "Where did Bytes Come From? - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=ixJCo0cyAuA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "A origem do byte de 8 bits e por que agrupamos bits desse jeito — contexto para ler dumps em hexadecimal."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-endianness-explained-with-an-egg
+  title: "Endianness Explained With an Egg - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=NcaiHcBvDR4
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Ordem de bytes (big e little endian) explicada com cuidado — essencial para ler inteiros num dump de memória ou de rede."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-binary-addition-overflow
+  title: "Binary Addition & Overflow - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=WN8i5cwjkSE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Soma binária e o que significa overflow numa largura fixa de bits."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-twos-complement
+  title: "Binary: Plusses & Minuses (Why We Use Two's Complement) - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=lKTsv6iVxV4
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Não só como, mas por que usamos complemento de dois para números negativos, comparado a alternativas."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-xor-half-adder
+  title: "XOR & the Half Adder - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=VPw9vPN-3ac
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "XOR e o meio-somador: a porta lógica por trás do dígito da soma e do carry."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-how-computer-memory-works
+  title: "How Computer Memory Works - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=XETZoRYdtkw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Como portas lógicas guardam informação: o primeiro passo para entender registradores e RAM."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-flip-flops-latches-memory
+  title: "Flip Flops, Latches & Memory Details - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=-Ecf7lb4aZ0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Monta um latch e mostra como ele guarda um bit — continuação de \"How Computer Memory Works\"."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-addressing-memory-pt1
+  title: "Addressing Memory (Pt1) - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=-N5pDcfNzqo
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Como as células de memória compartilham fios e são selecionadas por endereço."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-machine-code-explained
+  title: "Machine Code Explained - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=8VsiYWW9r48
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Matt Godbolt (Compiler Explorer) explica código de máquina do zero: instruções, registradores e codificação."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-cpu-pipeline
+  title: "CPU Pipeline - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=BVNx3wtJ9vs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Matt Godbolt mostra o pipeline da CPU: várias instruções em estágios diferentes a cada ciclo."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-branch-prediction
+  title: "How Branch Prediction Works in CPUs - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=nczJ58WvtYo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches, profiling-benchmarks]
+  why: "Como a predição de desvios mantém o pipeline cheio — explica por que dados previsíveis deixam um loop mais rápido."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-cpu-interrupts
+  title: "CPU Interrupts - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=tGMSARJk7cA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [signals, processes-syscalls]
+  why: "Matt Godbolt explica como a CPU lida com o mundo externo por interrupções: salvar estado, desviar para o handler e voltar."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-program-interrupted
+  title: "Program, Interrupted - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=54BrU82ANww
+  language: en
+  format: video
+  difficulty: intro
+  topics: [signals]
+  why: "Interrupções demonstradas num Arduino: o programa principal é pausado, o handler roda e a execução continua."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-cpu-kernel-mode
+  title: "CPU Kernel Mode - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=yV4fGeIv7MI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, virtual-memory]
+  why: "Modo kernel e modo usuário: como a CPU impede que um programa comum acesse memória e instruções privilegiadas."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-os-context-switching
+  title: "OS Context Switching - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=DKmBRl8j3Ak
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, threads-basics]
+  why: "Como o sistema operacional alterna entre programas salvando e restaurando registradores (troca de contexto)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-whats-virtual-memory
+  title: "What's Virtual Memory? - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=5lFnKYCZT5o
+  language: en
+  format: video
+  difficulty: intro
+  topics: [virtual-memory]
+  why: "Steve Bagley explica memória virtual: endereços virtuais, páginas e o que acontece quando a página não está na RAM."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-buffer-overflow-attack
+  title: "Running a Buffer Overflow Attack - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=1S0aBV-Waeo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [c-strings, stack-heap-lifetime]
+  why: "Mike Pound executa um buffer overflow que sobrescreve o endereço de retorno na pilha para obter root."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-reverse-polish-notation-stack
+  title: "Reverse Polish Notation and The Stack - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=7ha78yWRDlE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [stacks-queues]
+  why: "Notação polonesa reversa avaliada com uma pilha — aplicação clássica de LIFO."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-crc
+  title: "Cyclic Redundancy Check (CRC) - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=_x0vbnUKYSU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dns-ip]
+  why: "Matt Godbolt explica o CRC, o checksum robusto e barato que protege quadros Ethernet."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-how-ethernet-sends-data
+  title: "How Ethernet Sends Data - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=SJE2lFR5utM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dns-ip]
+  why: "Matt Godbolt mostra como os dados são organizados no cabo Ethernet: codificação, preâmbulo e quadro."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-network-layers-model
+  title: "Network Layers Model (Networking Basics) - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=eelvWAURfdI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip, tcp-udp-sockets]
+  why: "O modelo de camadas de rede (OSI e o que se usa de fato), para situar enlace, IP e transporte."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-transport-layer-udp
+  title: "Network Basics - Transport Layer and User Datagram Protocol Explained - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=ihvbhwGblQg
+  language: en
+  format: video
+  difficulty: intro
+  topics: [tcp-udp-sockets]
+  why: "A camada de transporte e o UDP: portas, datagramas e o que o UDP deliberadamente não garante."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-tcp-a
+  title: "TCP a : Ensuring Your Data Gets There & in the Right Order! - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=IADOV8UZO34
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: "Como o TCP garante entrega e ordem: números de sequência, ACKs e retransmissão."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-how-dns-works
+  title: "How DNS Works - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=uOfonONtIuk
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Mike Pound explica a resolução DNS: resolvedores, servidores raiz, TLD e autoritativos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-why-ip-addresses
+  title: "Why Do We Need IP Addresses? - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=iGPXkxeOfdk
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: "Por que precisamos de endereços IP se toda interface já tem endereço MAC — a divisão de papéis entre enlace e rede."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-fixed-length-encodings-video
+  title: "1.2.5 Fixed-length Encodings"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=cVEj5p9GiBA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Aula curta do MIT 6.004 sobre codificações de tamanho fixo: quantos bits são necessários para representar N valores."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-twos-complement-addition-worked-example-video
+  title: "1.2.12 Worked Examples: Two's Complement Addition"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=ydboHy_yNts
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Exemplos resolvidos do MIT 6.004 de soma em complemento de dois, incluindo detecção de overflow."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-von-neumann-model-video
+  title: "9.2.3 The von Neumann Model"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=H0xGKKpKaRE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "O modelo de von Neumann no MIT 6.004: CPU, memória única para dados e instruções e o ciclo de execução."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-intro-assembly-language-video
+  title: "10.2.1 Intro to Assembly Language"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=j35fYO_ASeY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Introdução à linguagem de montagem no MIT 6.004: do mnemônico ao padrão de bits da instrução."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-symbols-and-labels-video
+  title: "10.2.2 Symbols and Labels"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=CbcJFO6VtsY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [linking-object-files, compilation-pipeline]
+  why: "Símbolos e labels no assembler do MIT 6.004 — como nomes viram endereços, a mesma ideia que o linker estende entre arquivos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-interpretation-and-compilation-video
+  title: "11.2.1 Iterpretation and Compilation"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=F5-87RM_zHA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "MIT 6.004 compara interpretação e compilação como duas formas de executar uma linguagem de alto nível."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-compiling-expressions-video
+  title: "11.2.2 Compiling Expressions"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=Sqhb-TGC4aQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Como um compilador simples traduz expressões em instruções de máquina e registradores."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-optimization-code-generation-video
+  title: "11.2.5 Optimization and Code Generation"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=e8eEyYmLx98
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Otimização e geração de código no MIT 6.004: como o compilador melhora o código antes de emitir as instruções."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-procedures-video
+  title: "12.2.1 Procedures"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=ZUWb9HHXGHM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [stack-heap-lifetime]
+  why: "Procedimentos no MIT 6.004: convenção de chamada, endereço de retorno e por que a recursão exige uma pilha."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-activation-records-stacks-video
+  title: "12.2.2 Activation Records and Stacks"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=3eQh_W8YF_g
+  language: en
+  format: video
+  difficulty: intro
+  topics: [stack-heap-lifetime]
+  why: "Registros de ativação (stack frames) e a pilha — onde vivem argumentos, variáveis locais e endereço de retorno."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-stack-frame-organization-video
+  title: "12.2.3 Stack Frame Organization"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=00KTZ7t_rWw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime]
+  why: "A organização de um stack frame, com frame pointer e stack pointer."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-compiling-a-procedure-video
+  title: "12.2.4 Compiling a Procedure"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=-Zg3fxOmjVs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime, compilation-pipeline]
+  why: "Compila um procedimento recursivo passo a passo, mostrando prólogo, epílogo e uso da pilha."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-stack-detective-video
+  title: "12.2.5 Stack Detective"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=xd35dftjRrc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime, memory-debugging]
+  why: "Reconstrói chamadas a partir do conteúdo bruto da pilha — o mesmo raciocínio de um backtrace no gdb."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-exceptions-video
+  title: "13.2.5 Exceptions"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=QBcQJdJk9r8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Como a CPU Beta trata exceções: salvar o PC e desviar para um handler do sistema — base de traps e syscalls."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-sram-video
+  title: "14.2.2 SRAM"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=GBL28_Tw6UQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Como funciona uma célula de SRAM e por que ela é rápida e cara — o material dos caches."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-dram-video
+  title: "14.2.3 DRAM"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=9eWKuWyXYKY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Como funciona a DRAM (capacitor, refresh, linhas) e por que acessos sequenciais são mais baratos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-direct-mapped-caches-video
+  title: "14.2.7 Direct-mapped Caches"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=p2DReFbW35c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Cache diretamente mapeado: índice, tag e offset extraídos do endereço."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-block-size-cache-conflicts-video
+  title: "14.2.8 Block Size; Cache Conflicts"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=YOABS3tTHVc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Tamanho de bloco e conflitos de cache — por que certos padrões de acesso derrubam a taxa de acerto."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-associative-caches-video
+  title: "14.2.9 Associative Caches"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=q30W7ApRqjI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Caches associativos e por conjunto como resposta aos conflitos do mapeamento direto."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-write-strategies-video
+  title: "14.2.10 Write Strategies"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=nlKV2hX1AZs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Estratégias de escrita no cache (write-through, write-back) e seus custos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-basic-5-stage-pipeline-video
+  title: "15.2.2 Basic 5-Stage Pipeline"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=yauQ7o1ZAAw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "O pipeline clássico de 5 estágios aplicado à CPU Beta."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-exceptions-and-interrupts-pipeline-video
+  title: "15.2.5 Exceptions and Interrupts"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=iQR_6f5Jdns
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [signals, processes-syscalls]
+  why: "Como exceções e interrupções são tratadas numa CPU com pipeline sem perder o estado preciso do programa."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-basics-of-virtual-memory-video
+  title: "16.2.2 Basics of Virtual Memory"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=8yO2FBBfaB0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Fundamentos de memória virtual no MIT 6.004: tradução de endereço virtual para físico por tabela de páginas."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-page-faults-video
+  title: "16.2.3 Page Faults"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=RrZ8-1w7iok
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "O que acontece num page fault e como o sistema traz a página para a memória."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-building-the-mmu-video
+  title: "16.2.4 Building the MMU"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=sz4kq_ltDrM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Como a MMU é construída em hardware para traduzir cada acesso à memória."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-contexts-video
+  title: "16.2.5 Contexts"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=Z7pKkCDmHh0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory, processes-syscalls]
+  why: "Contextos: cada processo com seu próprio mapeamento de memória e o que muda numa troca de contexto."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-mmu-improvements-video
+  title: "16.2.6 MMU Improvements"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=-OduZBd1aHw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Melhorias da MMU, incluindo a TLB que evita consultar a tabela de páginas a cada acesso."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-processes-video
+  title: "17.2.2 Processes"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=UW9k06c63ts
+  language: en
+  format: video
+  difficulty: intro
+  topics: [processes-syscalls]
+  why: "O que é um processo do ponto de vista do hardware e do kernel no MIT 6.004."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-timesharing-video
+  title: "17.2.3 Timesharing"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=R7U0Xezxo_0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Timesharing: interrupção de timer, salvamento de estado e escalonamento entre processos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-handling-illegal-instructions-video
+  title: "17.2.4 Handling Illegal Instructions"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=usMPXTDOIn0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, signals]
+  why: "Como a CPU desvia para o kernel numa instrução ilegal — o caminho de hardware antes de o kernel entregar algo como SIGILL."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-supervisor-calls-video
+  title: "17.2.5 Supevisor Calls"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=Ykep0YaxgYw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Supervisor calls (SVCs): a instrução que entra no kernel de forma controlada — exatamente o que é uma syscall."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-os-device-handlers-video
+  title: "18.2.1 OS Device Handlers"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=8MWU1PxvaDY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Handlers de dispositivo no sistema operacional: como interrupções de I/O chegam ao kernel."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-svcs-for-input-output-video
+  title: "18.2.2 SVCs for Input/Output"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=LWE5p2sCI6o
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors]
+  why: "SVCs de entrada e saída: como um read() bloqueia o processo até o dispositivo ter dados."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-semaphores-video
+  title: "19.2.2 Semaphores"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=70auqrv84y8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization]
+  why: "Semáforos como primitiva de sincronização entre processos no MIT 6.004."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-semaphore-implementation-video
+  title: "19.2.4 Semaphore Implementation"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=VxVF6QzwtwI
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [race-conditions-synchronization, low-level-concurrency]
+  why: "Como implementar semáforos de verdade, com instruções atômicas e ajuda do kernel."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-deadlock-video
+  title: "19.2.5 Deadlock"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=Teo5DweypWU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [deadlocks]
+  why: "Deadlock: as condições necessárias e como evitá-lo ordenando a aquisição de recursos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-cache-coherence-video
+  title: "21.2.5 Cache Coherence"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=ISaYWm8T8n4
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "Coerência de cache entre núcleos — a razão do custo do false sharing e da contenção em variáveis compartilhadas."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-03-memory
+  title: "From Nand to Tetris — Project 3: Memory"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project03
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Projeto em que você constrói bit, registrador e RAM a partir de flip-flops DFF, resolvendo armazenamento e endereçamento."
+  section: "Project 3: Memory"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-04-machine-language
+  title: "From Nand to Tetris — Project 4: Machine Language Programming"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project04
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Projeto de programação em assembly da máquina Hack: escrever à mão o que um compilador geraria."
+  section: "Project 4: Machine Language Programming"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-06-assembler
+  title: "From Nand to Tetris — Project 6: The Assembler"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project06
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [compilation-pipeline, linking-object-files]
+  why: "Projeto em que você escreve um assembler com tabela de símbolos, transformando labels e variáveis em endereços."
+  section: "Project 6: The Assembler"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-07-vm-stack-arithmetic
+  title: "From Nand to Tetris — Project 7: Virtual Machine I - Stack Arithmetic"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project07
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [compilation-pipeline, java-fundamentals]
+  why: "Projeto que traduz uma VM de pilha (no estilo do bytecode da JVM) para assembly — a camada intermediária dos compiladores de dois níveis."
+  section: "Project 7: Virtual Machine I - Stack Arithmetic"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-08-vm-program-control
+  title: "From Nand to Tetris — Project 8: Virtual Machine II - Program Control"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project08
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [stack-heap-lifetime]
+  why: "Projeto em que você implementa chamada e retorno de função na VM, montando e desmontando stack frames à mão."
+  section: "Project 8: Virtual Machine II - Program Control"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-10-syntax-analysis
+  title: "From Nand to Tetris — Project 10: Compiler I - Syntax Analysis"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project10
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [tokenizing-parsing]
+  why: "Projeto que constrói tokenizador e parser da linguagem Jack seguindo sua gramática."
+  section: "Project 10: Compiler I - Syntax Analysis"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-11-code-generation
+  title: "From Nand to Tetris — Project 11: Compiler II - Code Generation"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project11
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [scope-environments, compilation-pipeline]
+  why: "Projeto que completa o compilador com tabela de símbolos (escopos de classe e de sub-rotina) e geração de código VM."
+  section: "Project 11: Compiler II - Code Generation"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-12-operating-system
+  title: "From Nand to Tetris — Project 12: The Operating System"
+  author: "Noam Nisan e Shimon Schocken"
+  url: https://www.nand2tetris.org/project12
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [memory-allocators]
+  why: "Projeto do sistema operacional Jack, incluindo Memory.alloc/deAlloc — um alocador de heap escrito por você."
+  section: "Project 12: The Operating System"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch12-bytes-and-hexadecimal
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Capítulo que introduz bytes e hexadecimal partindo de circuitos e códigos concretos. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Twelve: Bytes and Hexadecimal"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch13-ascii-to-unicode
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intro
+  topics: [text-encoding]
+  why: "Capítulo que percorre a história do ASCII ao Unicode e às codificações como UTF-8. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Thirteen: From ASCII to Unicode"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch16-subtraction
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Capítulo que estende o somador para subtrair e chega ao complemento de dois. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Sixteen: But What About Subtraction?"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch19-assemblage-of-memory
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Capítulo que monta memória endereçável a partir de flip-flops e decodificadores. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Nineteen: An Assemblage of Memory"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch23-cpu-control-signals
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Capítulo que liga ALU, registradores e decodificador de instruções numa CPU compatível com um subconjunto do Intel 8080. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Twenty-Three: CPU Control Signals"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch24-loops-jumps-calls
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Capítulo sobre saltos, laços e chamadas no nível das instruções de máquina. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Twenty-Four: Loops, Jumps, and Calls"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-2e-ch27-coding
+  title: "Code: The Hidden Language of Computer Hardware and Software (2ª edição)"
+  author: "Charles Petzold"
+  url: https://www.informit.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780137909100
+  language: en
+  format: book
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Capítulo sobre programar em assembly do 8080 e a passagem para linguagens de alto nível. Livro pago (Pearson/Microsoft Press); consulte a biblioteca da sua instituição."
+  section: "Chapter Twenty-Seven: Coding"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch10-alternative-10s
+  title: "Code — Interactive Illustrations: Chapter 10. Alternative 10s"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter10/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Ilustrações interativas oficiais do livro (grátis): decodificador e codificador que mostram números binários sendo interpretados por portas lógicas."
+  section: "Chapter 10. Alternative 10s"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch14-adding-with-logic-gates
+  title: "Code — Interactive Illustrations: Chapter 14. Adding with Logic Gates"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter14/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Somadores interativos em que você liga os bits e vê o carry se propagar porta a porta."
+  section: "Chapter 14. Adding with Logic Gates"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch16-subtraction
+  title: "Code — Interactive Illustrations: Chapter 16. But What About Subtraction?"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter16/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Somador/subtrator de 8 bits interativo: veja a inversão dos bits e o carry de entrada que implementam o complemento de dois."
+  section: "Chapter 16. But What About Subtraction?"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch17-flip-flops
+  title: "Code — Interactive Illustrations: Chapter 17. Feedback and Flip-Flops"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter17/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Osciladores e flip-flops interativos: como a realimentação cria memória de um bit."
+  section: "Chapter 17. Feedback and Flip-Flops"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch19-assemblage-of-memory
+  title: "Code — Interactive Illustrations: Chapter 19. An Assemblage of Memory"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter19/
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Matrizes de memória interativas: escreva e leia bytes por endereço e veja o decodificador selecionando a linha."
+  section: "Chapter 19. An Assemblage of Memory"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch23-cpu-control-signals
+  title: "Code — Interactive Illustrations: Chapter 23. CPU Control Signals"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter23/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "CPU interativa (subconjunto do 8080) que executa instruções passo a passo mostrando os sinais de controle."
+  section: "Chapter 23. CPU Control Signals"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch24-loops-jumps-calls
+  title: "Code — Interactive Illustrations: Chapter 24. Loops, Jumps, and Calls"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter24/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "CPU interativa com instruções de salto rodando programas com e sem laço, com as flags de carry, zero e sinal visíveis."
+  section: "Chapter 24. Loops, Jumps, and Calls"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: petzold-code-interactive-ch27-assembly
+  title: "Code — Interactive Illustrations: Chapter 27. Coding: Assembly Language"
+  author: "Charles Petzold"
+  url: https://codehiddenlanguage.com/Chapter27a/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Ambiente interativo para escrever e montar assembly do 8080 e ver o código de máquina resultante."
+  section: "Chapter 27. Coding: Assembly Language"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
