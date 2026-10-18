@@ -1,0 +1,619 @@
+# Trechos (capítulos de vídeo e seções) dos tópicos de s15, s16 e ramos z1-z4.
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-debugging
+  title: 'Lecture 4: Debugging and Profiling — 0:00:11 Debugging'
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs&t=11s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - logs-metrics-traces
+  why: Trecho sobre depuração com printf e logs (de 0:11 até 7:58, Record-Replay Debugging).
+  section: 0:00:11 Debugging
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-profiling
+  title: 'Lecture 4: Debugging and Profiling — 0:54:42 Profiling'
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs&t=3282s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - profiling-benchmarks
+  why: Trecho de profiling, timing, monitoramento de recursos e visualização (de 54:42 até 1:12:40, Conclusion).
+  section: 0:54:42 Profiling
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: brendan-gregg-linux-performance-tools-1-cpu-profile-method
+  title: Linux Performance Tools, Brendan Gregg, part 1 of 2 — 22:35 CPU Profile Method
+  author: Brendan Gregg
+  url: https://www.youtube.com/watch?v=FJW8nGV4jxY&t=1355s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - profiling-benchmarks
+  why: Trecho sobre o método de profiling de CPU (de 22:35 até 24:19, RTFM Method).
+  section: 22:35 CPU Profile Method (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: brendan-gregg-linux-performance-tools-1-observability-tools-basic
+  title: 'Linux Performance Tools, Brendan Gregg, part 1 of 2 — 27:07 Observability Tools: Basic'
+  author: Brendan Gregg
+  url: https://www.youtube.com/watch?v=FJW8nGV4jxY&t=1627s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - systems-io-performance
+  why: 'Trecho com as ferramentas básicas de observação (de 27:07 até 42:37, Observability Tools: Intermediate).'
+  section: '27:07 Observability Tools: Basic (capítulo automático do YouTube)'
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: akitando-149-docker-compose-postgres-cap-07-testes-de-carga
+  title: Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend — 00:30:21 CAP 07 - Básico de Testes de Carga - Gatling
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=-yGHG3pnHLg&t=1821s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics:
+  - latency-percentiles-diagnosis
+  - backend-testing-java
+  why: Trecho sobre testes de carga com Gatling e leitura dos resultados (de 30:21 até 44:26, CAP 08).
+  section: 00:30:21 CAP 07 - Básico de Testes de Carga - Gatling
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: missing-semester-2026-lecture-6-shipping-code-vms-containers
+  title: 'Lecture 6: Packaging and Shipping Code — 0:30:53 VMs & Containers'
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=KBMiB-8P4Ns&t=1853s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - containers-deployment
+  why: Trecho sobre VMs e containers (de 30:53 até 45:37, Services & Orchestration).
+  section: 0:30:53 VMs & Containers
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: chrome-debugging-accessibility-devtools-testing
+  title: Debugging accessibility with Chrome DevTools — 7:37 Testing
+  author: Chrome for Developers
+  url: https://www.youtube.com/watch?v=Th-nv-SCj4Q&t=457s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - frontend-testing
+  why: Trecho sobre testar acessibilidade (de 7:37 até o fim).
+  section: 7:37 Testing (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: jsconf-jake-archibald-in-the-loop-rendering-and-task-blocking
+  title: Jake Archibald on the web browser event loop, setTimeout, micro tasks, requestAnimationFrame, ... — 8:55 Rendering and task blocking
+  author: Jake Archibald (canal JSConf)
+  url: https://www.youtube.com/watch?v=cCOL7MC4Pl0&t=535s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: Trecho sobre renderização e tarefas que bloqueiam o frame (de 8:55 até 12:41, RequestAnimationFrame).
+  section: 8:55 Rendering and task blocking (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: blinkon-life-of-a-pixel-rasterization
+  title: Life of a Pixel — 26:07 Rasterization
+  author: BlinkOn
+  url: https://www.youtube.com/watch?v=K2QHdgAKP-s&t=1567s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - rendering-performance
+  why: Trecho sobre raster, processo de GPU, composição e camadas (de 26:07 até 45:02, Q&A and Conclusion).
+  section: 26:07 Rasterization (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: akitando-136-python-java-rust-cap-5-compilado-vs-interpretado
+  title: Python? Java? Rust? Qual a Diferença? | Discutindo Linguagens — 22:31 Cap 5 - Compilado vs Interpretado | ABI de C
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=MI9cdxETA4c&t=1351s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - java-fundamentals
+  why: Trecho sobre compilado vs interpretado e ABI (de 22:31 até 28:21, Cap 6).
+  section: 22:31 Cap 5 - Compilado vs Interpretado | ABI de C
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: dan-vega-spring-boot-3-crash-course-spring-core-concepts
+  title: Spring Boot Tutorial for Beginners - Crash Course using Spring Boot 3 — 00:30:00 Spring Core Concepts (IoC, Beans, etc)
+  author: Dan Vega
+  url: https://www.youtube.com/watch?v=UgX5lgv4uVM&t=1800s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - spring-web-backend
+  why: Trecho sobre IoC, beans e injeção de dependência (de 30:00 até 45:30).
+  section: 00:30:00 Spring Core Concepts (IoC, Beans, etc)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: dan-vega-spring-boot-3-crash-course-rest-api-spring-mvc
+  title: Spring Boot Tutorial for Beginners - Crash Course using Spring Boot 3 — 00:45:30 Building a REST API with Spring MVC
+  author: Dan Vega
+  url: https://www.youtube.com/watch?v=UgX5lgv4uVM&t=2730s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - spring-web-backend
+  why: Trecho construindo uma API REST com Spring MVC (de 45:30 até 1:10:00).
+  section: 00:45:30 Building a REST API with Spring MVC
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: spring-io-2025-demystifying-spring-boot-magic-auto-configuration-mechanics
+  title: Demystifying Spring Boot Magic by Patrick Baumgartner @ Spring I/O 2025 — 15:55 Auto-configuration mechanics
+  author: Patrick Baumgartner (canal Spring I/O)
+  url: https://www.youtube.com/watch?v=yOdfWyIHmRg&t=955s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - spring-web-backend
+  why: Trecho sobre a mecânica da auto-configuração (de 15:55 até 20:04, Conditions and profiles).
+  section: 15:55 Auto-configuration mechanics (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: akitando-124-sockets-web-bsd-sockets
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 09:56 BSD Sockets
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=596s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - spring-web-backend
+  why: Trecho sobre a API de sockets e o fluxo de conexão por trás de um servidor web (de 09:56 até 16:54, Portas).
+  section: 09:56 BSD Sockets
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-118-servidor-sql-transaction-log
+  title: Fiz um servidor de "SQL"?? | Entendendo Banco de Dados — 00:49:51 Transaction Log!
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=_7nISfpofec&t=2991s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - jdbc-postgresql
+  why: Trecho sobre log de transações e gravação em disco (de 49:51 até 55:33).
+  section: 00:49:51 Transaction Log!
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-117-compilada-interpretada-analise-lexica
+  title: Linguagem Compilada vs Interpretada | Qual é melhor? — 00:07:37 Análise Léxica
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU&t=457s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tokenizing-parsing
+  why: Trecho sobre análise léxica (de 07:37 até 10:59, Análise Sintática).
+  section: 00:07:37 Análise Léxica
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-117-compilada-interpretada-analise-sintatica
+  title: Linguagem Compilada vs Interpretada | Qual é melhor? — 00:10:59 Análise Sintática
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU&t=659s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tokenizing-parsing
+  why: Trecho sobre análise sintática e gramáticas (de 10:59 até 14:39, AST).
+  section: 00:10:59 Análise Sintática
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-117-compilada-interpretada-interpretadores-maquinas-virtuais
+  title: Linguagem Compilada vs Interpretada | Qual é melhor? — 00:32:58 Interpretadores e Máquinas Virtuais
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU&t=1978s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tree-walk-evaluation
+  why: Trecho sobre interpretadores e máquinas virtuais (de 32:58 até 36:56).
+  section: 00:32:58 Interpretadores e Máquinas Virtuais
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cppcon-2017-pikus-atomics-compare-and-swap
+  title: 'CppCon 2017: Fedor Pikus “C++ atomics, from basic to advanced.  What do they really do?” — 17:08 Compare and swap'
+  author: Fedor Pikus (canal CppCon)
+  url: https://www.youtube.com/watch?v=ZQFzMfHIxng&t=1028s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  why: Trecho sobre compare-and-swap (de 17:08 até 26:30, Secrets).
+  section: 17:08 Compare and swap (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: cppcon-2017-pikus-atomics-memory-barriers
+  title: 'CppCon 2017: Fedor Pikus “C++ atomics, from basic to advanced.  What do they really do?” — 43:13 Memory barriers'
+  author: Fedor Pikus (canal CppCon)
+  url: https://www.youtube.com/watch?v=ZQFzMfHIxng&t=2593s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  why: Trecho sobre barreiras de memória, seguido de memory order (de 43:13 até o fim).
+  section: 43:13 Memory barriers (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: cs61a-su25-parsing-video
+  title: Parsing
+  author: John DeNero
+  url: https://www.youtube.com/watch?v=qPp53qYtuzk&list=PLx38hZJ5RLZeeyD43PD6M-wNmMg88IZXW
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tokenizing-parsing
+  why: Aula curta do CS 61A sobre tokenização e parsing de expressões Scheme.
+  section: Interpreters (Su25) — Parsing
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo da playlist oficial do CS 61A; título e canal conferidos via oEmbed." }
+
+- id: cs61a-su25-evaluation-video
+  title: Evaluation
+  author: John DeNero
+  url: https://www.youtube.com/watch?v=7UBDPeepqvQ&list=PLx38hZJ5RLZeeyD43PD6M-wNmMg88IZXW
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tree-walk-evaluation
+  why: Aula curta do CS 61A sobre avaliação recursiva da árvore de expressões.
+  section: Interpreters (Su25) — Evaluation
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo da playlist oficial do CS 61A; título e canal conferidos via oEmbed." }
+
+- id: cs61a-su25-environments-nested-definitions-video
+  title: Environments for Nested Definitions
+  author: John DeNero
+  url: https://www.youtube.com/watch?v=qLZhkM45Jtc&list=PLx38hZJ5RLZfuSmYOTG7sKY44pEC01398
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - scope-environments
+  why: Aula curta do CS 61A sobre frames e ambientes encadeados em funções aninhadas.
+  section: Environments (Su25) — Environments for Nested Definitions
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo da playlist oficial do CS 61A; título e canal conferidos via oEmbed." }
+
+- id: cs61a-su25-dynamic-scope-video
+  title: Dynamic Scope
+  author: John DeNero
+  url: https://www.youtube.com/watch?v=BW8Y_OVpzDo&list=PLx38hZJ5RLZeeyD43PD6M-wNmMg88IZXW
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - scope-environments
+  why: Aula curta do CS 61A que contrasta escopo léxico e dinâmico.
+  section: Interpreters (Su25) — Dynamic Scope
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo da playlist oficial do CS 61A; título e canal conferidos via oEmbed." }
+
+- id: docker-get-started-what-is-a-container
+  title: What is a container? | Docker Docs
+  author: Docker
+  url: https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - containers-deployment
+  - backend-testing-java
+  why: Seção do guia Get started que explica o que é um container e como rodá-lo.
+  section: Docker concepts › The basics › What is a container?
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-servlet-web-applications
+  title: 'Servlet Web Applications :: Spring Boot'
+  author: Spring (Broadcom)
+  url: https://docs.spring.io/spring-boot/reference/web/servlet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - spring-web-backend
+  why: Capítulo da referência do Spring Boot sobre aplicações web servlet (Spring MVC, servidor embutido, tratamento de erros).
+  section: Reference › Web › Servlet Web Applications
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-first-steps
+  title: Your First Steps in Java - Dev.java
+  author: Oracle
+  url: https://dev.java/learn/first-steps/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - java-fundamentals
+  why: 'Seção inicial dos tutoriais do dev.java: primeiro código, JShell e ferramentas.'
+  section: Your First Steps in Java
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-css-layout
+  title: Layout | web.dev
+  author: Google (web.dev)
+  url: https://web.dev/learn/css/layout
+  language: en
+  format: course
+  difficulty: intro
+  topics:
+  - css-layout
+  why: Módulo do curso Learn CSS que compara os mecanismos de layout (fluxo, flexbox, grid, posicionamento).
+  section: Learn CSS › Layout
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-accessibility-structure
+  title: Content structure | web.dev
+  author: Google (web.dev)
+  url: https://web.dev/learn/accessibility/structure
+  language: en
+  format: course
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: Módulo do curso Learn Accessibility sobre landmarks, headings e estrutura semântica.
+  section: Learn Accessibility › Content structure
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-learn-performance-critical-path
+  title: Understand the critical path | web.dev
+  author: Google (web.dev)
+  url: https://web.dev/learn/performance/understanding-the-critical-path
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: Módulo do curso Learn Performance sobre o caminho crítico de renderização.
+  section: Learn Performance › Understand the critical path
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-llm-prompt-injection-prevention-cheatsheet
+  title: LLM Prompt Injection Prevention - OWASP Cheat Sheet Series
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - ai-evaluation-structured-outputs
+  why: Cheat sheet da OWASP sobre prompt injection e como validar e isolar entradas e saídas de LLM.
+  section: LLM Prompt Injection Prevention Cheat Sheet
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-csp-cheatsheet
+  title: Content Security Policy - OWASP Cheat Sheet Series
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - javascript-browser
+  why: Cheat sheet da OWASP sobre CSP como defesa em profundidade contra XSS.
+  section: Content Security Policy Cheat Sheet
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wai-aria-apg-patterns
+  title: Patterns | APG | WAI | W3C
+  author: W3C Web Accessibility Initiative
+  url: https://www.w3.org/WAI/ARIA/apg/patterns/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - semantic-html-accessibility
+  why: Seção do APG com os padrões de widgets (tabs, combobox, menu, dialog) e o comportamento de teclado esperado.
+  section: ARIA Authoring Practices Guide › Patterns
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: lord-of-the-io-uring-what-is-io-uring
+  title: What is io_uring? — Lord of the io_uring documentation
+  author: Shuveb Hussain (unixism.net)
+  url: https://unixism.net/loti/what_is_io_uring.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics:
+  - systems-io-performance
+  why: 'Seção introdutória do guia: o modelo de filas de submissão e conclusão do io_uring.'
+  section: What is io_uring?
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: csapp-9-9-dynamic-memory-allocation
+  title: 'Computer Systems: A Programmer''s Perspective (3ª edição) — 9.9 Dynamic Memory Allocation'
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/3e/pieces/preface3e.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - memory-allocators
+  why: Seção do CS:APP sobre malloc/free, fragmentação e listas livres. O link leva ao sumário oficial; o livro é pago.
+  section: 9.9 Dynamic Memory Allocation (p. 839)
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no sumário oficial (TOC and Preface)." }
+
+- id: drepper-memory-6-4-multi-thread-optimizations
+  title: What Every Programmer Should Know About Memory — 6.4 Multi-Thread Optimizations
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf
+  language: en
+  format: article
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  why: Seção do artigo sobre false sharing, linhas de cache compartilhadas e custo de operações atômicas (CAS).
+  section: 6.4 Multi-Thread Optimizations (6.4.1 Concurrency Optimizations, 6.4.2 Atomicity Optimizations)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no texto do PDF." }
+
+- id: cert-c-memory-management-mem
+  title: Memory Management (MEM) | CERT Secure Coding
+  author: Software Engineering Institute (CMU)
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics:
+  - memory-allocators
+  why: Regras do CERT C sobre memória dinâmica (use-after-free, double free, tamanhos de alocação).
+  section: Rules › Memory Management (MEM)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: junit-user-guide-extension-model
+  title: 'Extension Model :: JUnit User Guide'
+  author: The JUnit Team
+  url: https://docs.junit.org/current/extensions/overview.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - backend-testing-java
+  why: Capítulo do guia do JUnit sobre o modelo de extensões.
+  section: Extension Model
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: flyway-migrations
+  title: Migrations - Redgate Flyway - Product Documentation
+  author: Redgate
+  url: https://documentation.red-gate.com/fd/migrations-271585107.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - jdbc-postgresql
+  why: Página da documentação do Flyway sobre migrações versionadas e a tabela de histórico.
+  section: Concepts › Migrations
+  access: mixed
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pgjdbc-query
+  title: Issuing a Query and Processing the Result | pgJDBC
+  author: PostgreSQL JDBC Driver project
+  url: https://jdbc.postgresql.org/documentation/query/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - jdbc-postgresql
+  why: Capítulo da documentação do pgJDBC sobre Statement, PreparedStatement e ResultSet.
+  section: Issuing a Query and Processing the Result
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: testcontainers-junit5-quickstart
+  title: JUnit 5 Quickstart - Testcontainers for Java
+  author: Testcontainers (Docker)
+  url: https://java.testcontainers.org/quickstart/junit_5_quickstart/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - backend-testing-java
+  why: Guia rápido da documentação do Testcontainers com JUnit 5.
+  section: Quickstart › JUnit 5 Quickstart
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+

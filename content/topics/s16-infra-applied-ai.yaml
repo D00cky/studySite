@@ -28,9 +28,9 @@
     - claim: Apagar um arquivo de segredo numa camada posterior do Dockerfile remove o segredo da imagem.
       correction: A camada anterior continua na imagem e pode ser extraída. Segredos entram em tempo de execução, nunca no build.
   resources:
-    start: docker-get-started
+    start: docker-get-started-what-is-a-container
     deeper: [docker-build-best-practices, dockerfile-reference, man-namespaces, man-cgroups, missing-semester-shipping-code, sre-book-release-engineering]
-    videos: [akitando-139-containers, missing-semester-2026-lecture-6-shipping-code-video, akitando-48-devops-parte-2]
+    videos: [akitando-139-containers, missing-semester-2026-lecture-6-shipping-code-vms-containers, akitando-48-devops-parte-2]
   exercise:
     id: ex-container-from-scratch
     title: Containerizar o serviço de tarefas e ver o isolamento
@@ -221,7 +221,7 @@
       correction: Texto do usuário é entrada não confiável; pode conter instruções (prompt injection). Separe instrução de dados, valide a saída e nunca dê ao modelo poder que o usuário não tem.
   resources:
     start: json-schema-getting-started
-    deeper: [ollama-structured-outputs, hamel-your-ai-product-needs-evals, claude-structured-outputs, owasp-cheatsheets]
+    deeper: [ollama-structured-outputs, hamel-your-ai-product-needs-evals, claude-structured-outputs, owasp-llm-prompt-injection-prevention-cheatsheet]
     videos: [peter-yang-hamel-husain-ai-evals-50-min-video, openai-devday-2024-structured-outputs-video]
   exercise:
     id: ex-task-parser-with-fallback
