@@ -1,0 +1,662 @@
+# Vídeos para as etapas 1–4 (verificados via oEmbed do YouTube em 2026-10-18).
+
+- id: ms-2026-lecture-1-shell-video
+  title: "Lecture 1: Course Overview + Introduction to the Shell"
+  author: "MIT CSAIL — Missing Semester"
+  url: https://www.youtube.com/watch?v=MSgoeuMqUmU
+  language: en
+  format: video
+  difficulty: intro
+  topics: [terminal-shell, filesystem-permissions]
+  why: "Gravação oficial da primeira aula do Missing Semester 2026: o shell como interface para o sistema, caminhos, comandos e scripts."
+  section: "Lecture 1: Course Overview + Introduction to the Shell"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ms-2026-lecture-2-cli-env-video
+  title: "Lecture 2: Command-line Environment"
+  author: "MIT CSAIL — Missing Semester"
+  url: https://www.youtube.com/watch?v=ccBGsPedE9Q
+  language: en
+  format: video
+  difficulty: intro
+  topics: [processes-streams-exit-codes, terminal-shell]
+  why: "Gravação oficial da aula sobre argumentos, streams, variáveis de ambiente, códigos de retorno e sinais — o mecanismo de comunicação entre processos no shell."
+  section: "Lecture 2: Command-line Environment"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ms-2026-lecture-4-debugging-video
+  title: "Lecture 4: Debugging and Profiling"
+  author: "MIT CSAIL — Missing Semester"
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [memory-debugging]
+  why: "Gravação oficial da aula de depuração e profiling: depuradores, ferramentas de análise e como investigar um programa que falha."
+  section: "Lecture 4: Debugging and Profiling"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ms-2026-lecture-5-git-video
+  title: "Lecture 5: Version Control and Git"
+  author: "MIT CSAIL — Missing Semester"
+  url: https://www.youtube.com/watch?v=9K8lB61dl3Y
+  language: en
+  format: video
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: "Gravação oficial da aula de Git do Missing Semester 2026: o modelo de dados (blobs, trees, commits, refs) antes dos comandos."
+  section: "Lecture 5: Version Control and Git"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-54-ubuntu-devs-video
+  title: "O Guia DEFINITIVO de UBUNTU para Devs Iniciantes"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=epiyExCyb2s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [terminal-shell, filesystem-permissions]
+  why: "Episódio #54 do Akitando: tour em português pelo Linux para devs — terminal, shell, comandos básicos e a ideia de permissão de execução."
+  section: "Akitando #54"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-70-entendendo-git-video
+  title: "Entendendo GIT | (não é um tutorial!)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=6Czd1Yetaac
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: "Vídeo do episódio #70 do Akitando: intuição em português de como o Git funciona por dentro."
+  section: "Akitando #70"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-71-usando-git-direito-video
+  title: "Usando Git Direito | Limpando seus Commits!"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=6OokP-NE49k
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [git-fundamentals]
+  why: "Episódio #71 do Akitando, continuação do #70: como organizar e limpar o histórico de commits."
+  section: "Akitando #71"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-91-binario-texto-video
+  title: "Qual a REAL diferença entre Arquivos Binário e Texto?? 🤔"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=oSCVb4Ts-G4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal, text-encoding]
+  why: "Vídeo do episódio #91 do Akitando: bytes só ganham significado pela interpretação — binário, texto e encodings em português."
+  section: "Akitando #91"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-97-640kb-video
+  title: "Só Precisamos de 640 kB de Memória? | 16-bits até 64-bits!"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=cTVXKfYOYxo
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow, cpu-memory-caches]
+  why: "Vídeo do episódio #97 do Akitando: larguras de 16 a 64 bits, limites de representação e endereçamento de memória."
+  section: "Akitando #97"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-86-turing-von-neumann-video
+  title: "O Computador de Turing e Von Neumann | Por que calculadoras não são computadores?"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=G4MvFT8TGII
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Vídeo do episódio #86 do Akitando: o modelo de Von Neumann, com CPU e memória separadas — base para entender por que caches existem."
+  section: "Akitando #86"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-93-hello-world-video
+  title: "Hello World Como Você Nunca Viu! | Entendendo C"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=Gp2m8ZuXoPg
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-types-functions, pointers]
+  why: "Vídeo do episódio #93 do Akitando: um hello world em C dissecado — binário ELF, endereços, ponteiros, stack e heap."
+  section: "Akitando #93"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-94-consertando-c-video
+  title: "O que vem DEPOIS do Hello World | Consertando meu C"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=YyWMN_0g3BQ
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime, c-strings]
+  why: "Vídeo do episódio #94 do Akitando: corrige o episódio anterior e explica o layout de memória (stack, heap, BSS) e onde strings literais vivem."
+  section: "Akitando #94"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-117-compilada-interpretada-video
+  title: "Linguagem Compilada vs Interpretada | Qual é melhor?"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Vídeo do episódio #117 do Akitando: o que realmente diferencia compilação, interpretação e as etapas intermediárias."
+  section: "Akitando #117"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-45-memoria-parte-1-video
+  title: "Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes  (Parte 5)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=9AK_1gqEfkQ
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [stack-heap-lifetime]
+  why: "Vídeo do episódio #45 do Akitando: stack, heap e o custo de gerenciar memória, em português."
+  section: "Akitando #45"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-46-memoria-parte-2-video
+  title: "Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=DGU1awKrNiA
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [dynamic-allocation-ownership]
+  why: "Vídeo do episódio #46 do Akitando: continuação sobre alocação, liberação e estratégias de gerenciamento de memória."
+  section: "Akitando #46"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50x-lecture-1-c-pt-video
+  title: "CS50x em Português - Aula 1 - C"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=eepzDoovmAw
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Versão oficial em português da aula da Week 1 do CS50x (linkada na página do curso): tipos, funções, condicionais e laços em C."
+  section: "Week 1: C"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50x-lecture-1-c-video
+  title: "CS50x - Lecture 1 - C"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=SlqjA04_dpk
+  language: en
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Aula original da Week 1 do CS50x: primeiros programas em C, compilação com make/clang, tipos e funções."
+  section: "Week 1: C"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50x-lecture-2-arrays-pt-video
+  title: "CS50x em Português - Aula 2 - Arrays"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=vdCJU-1mB-A
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-arrays-structs, c-strings]
+  why: "Versão oficial em português da aula da Week 2 do CS50x: arrays na memória, strings como arrays de char terminados em NUL, argv."
+  section: "Week 2: Arrays"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50x-lecture-4-memory-pt-video
+  title: "CS50x em Português - Aula 4 - Memória"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=DweS4KseeDE
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [pointers, c-strings]
+  why: "Versão oficial em português da aula da Week 4 do CS50x: endereços, ponteiros, strings como char *, malloc/free e valgrind."
+  section: "Week 4: Memory"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs50x-lecture-4-memory-video
+  title: "CS50x - Lecture 4 - Memory"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=db0H0U13YsA
+  language: en
+  format: video
+  difficulty: intro
+  topics: [pointers, dynamic-allocation-ownership]
+  why: "Aula original da Week 4 do CS50x: ponteiros, alocação dinâmica e erros de memória."
+  section: "Week 4: Memory"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-02-1-bits-video
+  title: "[CS61C FA20] Lecture 02.1 - Number Representation: Intro, Bits can be anything"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=mGgOK9ShS6g
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Aula do CS61C (Berkeley): n bits representam 2^n coisas, e o significado depende da interpretação."
+  section: "Lecture 02.1 - Number Representation: Intro, Bits can be anything"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-02-2-conversions-video
+  title: "[CS61C FA20] Lecture 02.2 - Number Representation: Conversions"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=5rmB4SvfDPo
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Aula do CS61C: conversões entre decimal, binário e hexadecimal."
+  section: "Lecture 02.2 - Number Representation: Conversions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-02-4-twos-complement-video
+  title: "[CS61C FA20] Lecture 02.4 - Number Representation: Two's Complement"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=opFCs4m7pW8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Aula do CS61C sobre complemento de dois: por que a mesma soma serve para com e sem sinal e onde ocorre overflow."
+  section: "Lecture 02.4 - Number Representation: Two's Complement"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-04-1-pointers-video
+  title: "[CS61C FA20] Lecture 04.1 - C Intro: Pointers, Arrays, Strings: Pointers and Bugs"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=tS3MOTQraL4
+  language: en
+  format: video
+  difficulty: intro
+  topics: [pointers]
+  why: "Aula do CS61C: ponteiros como endereços, a memória como um array de bytes e os bugs típicos."
+  section: "Lecture 04.1 - C Intro: Pointers, Arrays, Strings: Pointers and Bugs"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-04-3-arrays-video
+  title: "[CS61C FA20] Lecture 04.3 - C Intro: Pointers, Arrays, Strings: Arrays"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=hJNoW4hlZDg
+  language: en
+  format: video
+  difficulty: intro
+  topics: [c-arrays-structs]
+  why: "Aula do CS61C: arrays em C, sua relação com ponteiros e por que não carregam o próprio tamanho."
+  section: "Lecture 04.3 - C Intro: Pointers, Arrays, Strings: Arrays"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-05-1-dynamic-allocation-video
+  title: "[CS61C FA20] Lecture 05.1 - C Memory Management: Dynamic Memory Allocation"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=J6mhHw7UTPM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dynamic-allocation-ownership]
+  why: "Aula do CS61C sobre malloc, calloc, realloc e free."
+  section: "Lecture 05.1 - C Memory Management: Dynamic Memory Allocation"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-05-3-memory-locations-video
+  title: "[CS61C FA20] Lecture 05.3 - C Memory Management: Memory Locations"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=Keducx5bp-g
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime]
+  why: "Aula do CS61C: onde cada dado vive (stack, heap, static, code) e quanto tempo dura."
+  section: "Lecture 05.3 - C Memory Management: Memory Locations"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-05-5-memory-goes-bad-video
+  title: "[CS61C FA20] Lecture 05.5 - C Memory Management: When Memory Goes Bad"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=f7KHu6KvO_g
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dynamic-allocation-ownership, memory-debugging]
+  why: "Aula do CS61C sobre os erros clássicos de memória: use-after-free, double free, leaks e acessos fora dos limites."
+  section: "Lecture 05.5 - C Memory Management: When Memory Goes Bad"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-06-1-fixed-point-video
+  title: "[CS61C FA20] Lecture 06.1 - Floating Point: Basics & Fixed Point"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=-nB32FCrlTA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [floating-point]
+  why: "Aula do CS61C: frações em binário e ponto fixo, a motivação para o ponto flutuante."
+  section: "Lecture 06.1 - Floating Point: Basics & Fixed Point"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-06-2-floating-point-video
+  title: "[CS61C FA20] Lecture 06.2 - Floating Point: Floating Point"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=GzOMIRj1yO0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [floating-point]
+  why: "Aula do CS61C sobre o formato IEEE 754: sinal, expoente com bias e significando."
+  section: "Lecture 06.2 - Floating Point: Floating Point"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-13-2-compiler-video
+  title: "[CS61C FA20] Lecture 13.2 - Compilation, Assembly, Linking, Loading: Compiler"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=QrRbiNPz-Kw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Aula do CS61C (CALL) sobre o papel do compilador na cadeia código-fonte → assembly."
+  section: "Lecture 13.2 - Compilation, Assembly, Linking, Loading: Compiler"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-13-3-assembler-video
+  title: "[CS61C FA20] Lecture 13.3 - Compilation, Assembly, Linking, Loading: Assembler"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=87YbZ9x8QEY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [compilation-pipeline, linking-object-files]
+  why: "Aula do CS61C (CALL): o assembler gera o arquivo objeto com tabela de símbolos e informações de relocação."
+  section: "Lecture 13.3 - Compilation, Assembly, Linking, Loading: Assembler"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-13-4-linker-video
+  title: "[CS61C FA20] Lecture 13.4 - Compilation, Assembly, Linking, Loading: Linker"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=2lVYrK7spaw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [linking-object-files]
+  why: "Aula do CS61C (CALL) sobre o linker: resolução de símbolos e relocação ao juntar arquivos objeto."
+  section: "Lecture 13.4 - Compilation, Assembly, Linking, Loading: Linker"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61c-fa20-lecture-13-5-loader-video
+  title: "[CS61C FA20] Lecture 13.5 - Compilation, Assembly, Linking, Loading: Loader"
+  author: "UC Berkeley CS61C (CS 61C Departmental)"
+  url: https://www.youtube.com/watch?v=E9zh8pobPNw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [linking-object-files]
+  why: "Aula do CS61C (CALL) sobre o loader: como o executável vira um processo na memória."
+  section: "Lecture 13.5 - Compilation, Assembly, Linking, Loading: Loader"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-signed-integers-twos-complement-video
+  title: "1.2.6 Signed Integers: 2's complement"
+  author: "MIT OpenCourseWare — 6.004 Computation Structures (Chris Terman)"
+  url: https://www.youtube.com/watch?v=RbJV-g9Lob8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Vídeo curto do MIT 6.004 (OCW) sobre representação de inteiros com sinal em complemento de dois."
+  section: "1.2.6 Signed Integers: 2's complement"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-locality-principle-video
+  title: "14.2.5 The Locality Principle"
+  author: "MIT OpenCourseWare — 6.004 Computation Structures (Chris Terman)"
+  url: https://www.youtube.com/watch?v=M-ZgVhzvh24
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Vídeo do MIT 6.004 (OCW) sobre localidade temporal e espacial — a razão pela qual a hierarquia de memória funciona."
+  section: "14.2.5 The Locality Principle"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6004-caches-video
+  title: "14.2.6 Caches"
+  author: "MIT OpenCourseWare — 6.004 Computation Structures (Chris Terman)"
+  url: https://www.youtube.com/watch?v=TV6AtNbmLBE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Vídeo do MIT 6.004 (OCW) que introduz caches: hits, misses e tempo médio de acesso."
+  section: "14.2.6 Caches"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-unicode-video
+  title: "Characters, Symbols and the Unicode Miracle - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=MijmeoH9LT4
+  language: en
+  format: video
+  difficulty: intro
+  topics: [text-encoding]
+  why: "Tom Scott explica como o UTF-8 codifica code points em sequências de bytes compatíveis com ASCII."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-floating-point-video
+  title: "Floating Point Numbers - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=PZRI1IfStY0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [floating-point]
+  why: "Intuição sobre notação científica em binário e por que 0.1 + 0.2 não dá exatamente 0.3."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-cpu-memory-caches-video
+  title: "How CPU Memory & Caches Work - Computerphile"
+  author: "Computerphile"
+  url: https://www.youtube.com/watch?v=SAk-6gVkio0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Intuição sobre a distância de velocidade entre CPU e RAM e como caches escondem essa latência."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-preprocessor-macros-video
+  title: "How to Write Function-Like Preprocessor Macros (C example)"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=w3iXBUbq4NY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [c-preprocessor]
+  why: "Jacob Sorber (professor de CS, Clemson) mostra macros com parâmetros e as armadilhas da substituição textual."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-header-guards-video
+  title: "Header Issues: Guards, Name Mangling, and extern \"C\""
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=NeOTr0u7ALk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [c-preprocessor, linking-object-files]
+  why: "Include guards e problemas de headers na prática — por que incluir duas vezes quebra e como evitar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-multiple-files-video
+  title: "Compiling C programs with Multiple Files"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=2YfM-HxQd_8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [linking-object-files]
+  why: "Compilação separada de vários .c em arquivos objeto e a ligação final com o gcc."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-struct-packing-video
+  title: "Struct packing: No, you're not going crazy."
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=grk4QUDveFw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [c-arrays-structs]
+  why: "Padding e alinhamento de structs — exatamente o que o exercício de medir sizeof e offsetof expõe."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-stderr-video
+  title: "To err is human, to stderr divine"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=DTTo9T6LBlk
+  language: en
+  format: video
+  difficulty: intro
+  topics: [processes-streams-exit-codes]
+  why: "Por que separar stdout de stderr num programa C e como isso interage com redirecionamento no shell."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-valgrind-video
+  title: "Finding memory errors with Valgrind"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=Sddn1UjzSAo
+  language: en
+  format: video
+  difficulty: intro
+  topics: [memory-debugging]
+  why: "Demonstração de valgrind encontrando leaks e acessos inválidos num programa C."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-address-sanitizer-video
+  title: "find memory errors quickly. (-fsanitize, addresssanitizer)"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=tEbV21aPSKw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [memory-debugging]
+  why: "Demonstração do AddressSanitizer (-fsanitize=address) para encontrar erros de memória."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: learnlinuxtv-file-permissions-video
+  title: "Linux Crash Course - Understanding File & Directory Permissions"
+  author: "Learn Linux TV (Jay LaCroix)"
+  url: https://www.youtube.com/watch?v=4e669hSjaX8
+  language: en
+  format: video
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: "Explicação de rwx para usuário, grupo e outros, e o significado diferente das permissões em diretórios."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }

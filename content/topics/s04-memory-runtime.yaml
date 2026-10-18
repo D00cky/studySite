@@ -27,6 +27,7 @@
   resources:
     start: beej-c-pointers
     deeper: [beej-c-pointers2, cs50-memory, gdb-sample-session]
+    videos: [cs50x-lecture-4-memory-pt-video, akitando-93-hello-world-video, cs61c-fa20-lecture-04-1-pointers-video]
   exercise:
     id: ex-swap-and-walk
     title: swap e percurso por ponteiro
@@ -89,6 +90,7 @@
   resources:
     start: ostep-memory-api
     deeper: [akita-memory-1, ostep-address-spaces, csapp]
+    videos: [akitando-45-memoria-parte-1-video, cs61c-fa20-lecture-05-3-memory-locations-video, akitando-94-consertando-c-video]
   exercise:
     id: ex-memory-map
     title: Mapa de endereços
@@ -153,6 +155,7 @@
   resources:
     start: beej-c-malloc
     deeper: [ostep-memory-api, akita-memory-2, man-malloc, valgrind-quickstart, cert-c]
+    videos: [cs61c-fa20-lecture-05-1-dynamic-allocation-video, akitando-46-memoria-parte-2-video, cs61c-fa20-lecture-05-5-memory-goes-bad-video]
   exercise:
     id: ex-dynamic-array-core
     title: Um vetor que cresce
@@ -213,6 +216,7 @@
   resources:
     start: beej-c-strings
     deeper: [beej-c-strings-ii, cert-c, asan]
+    videos: [cs50x-lecture-2-arrays-pt-video, cs50x-lecture-4-memory-pt-video, akitando-94-consertando-c-video]
   exercise:
     id: ex-safe-strings
     title: Implementar strlen e uma cópia segura
@@ -282,6 +286,7 @@
   resources:
     start: gdb-sample-session
     deeper: [valgrind-quickstart, asan, missing-semester-debugging, akita-fixing-c]
+    videos: [sorber-valgrind-video, ms-2026-lecture-4-debugging-video, sorber-address-sanitizer-video]
   exercise:
     id: ex-debug-journal
     title: Diário de depuração

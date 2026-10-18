@@ -27,6 +27,7 @@
   resources:
     start: beej-c-functions
     deeper: [beej-c-variables, akita-hello-world, cs50-week1, cppreference-c]
+    videos: [akitando-93-hello-world-video, cs50x-lecture-1-c-pt-video, cs50x-lecture-1-c-video]
   exercise:
     id: ex-c-functions
     title: Calculadora de linha de comando
@@ -86,6 +87,7 @@
   resources:
     start: beej-c-arrays
     deeper: [beej-c-structs, cs50-week2, asan, cppreference-c]
+    videos: [cs50x-lecture-2-arrays-pt-video, cs61c-fa20-lecture-04-3-arrays-video, sorber-struct-packing-video]
   exercise:
     id: ex-struct-layout
     title: Medir o layout de uma struct
@@ -146,6 +148,7 @@
   resources:
     start: beej-c-preprocessor
     deeper: [gcc-overall-options, cppreference-c]
+    videos: [sorber-preprocessor-macros-video, sorber-header-guards-video]
   exercise:
     id: ex-preprocess-output
     title: Ler o que o compilador vê
@@ -210,6 +213,7 @@
   resources:
     start: gcc-overall-options
     deeper: [akita-hello-world, beej-c-hello-world, akita-compiled-interpreted, godbolt, csapp]
+    videos: [cs61c-fa20-lecture-13-2-compiler-video, cs61c-fa20-lecture-13-3-assembler-video, akitando-117-compilada-interpretada-video]
   exercise:
     id: ex-pipeline-stages
     title: Parar em cada etapa
@@ -272,6 +276,7 @@
   resources:
     start: beej-c-multifile
     deeper: [gcc-overall-options, csapp]
+    videos: [sorber-multiple-files-video, cs61c-fa20-lecture-13-4-linker-video, cs61c-fa20-lecture-13-5-loader-video]
   exercise:
     id: ex-multifile-build
     title: Um programa em três arquivos e um Makefile

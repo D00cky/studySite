@@ -24,6 +24,7 @@
   resources:
     start: missing-semester-shell
     deeper: [tlcl, bash-manual, missing-semester-pt]
+    videos: [ms-2026-lecture-1-shell-video, akitando-54-ubuntu-devs-video]
   exercise:
     id: ex-shell-expansion
     title: O que o programa realmente recebe?
@@ -86,6 +87,7 @@
   resources:
     start: tlcl
     deeper: [man-chmod, missing-semester-cli-env]
+    videos: [learnlinuxtv-file-permissions-video, akitando-54-ubuntu-devs-video]
   exercise:
     id: ex-permissions-matrix
     title: Matriz de permissões
@@ -148,6 +150,7 @@
   resources:
     start: bash-manual
     deeper: [man-pipe, man-exit, beej-c-outside-env, missing-semester-cli-env]
+    videos: [ms-2026-lecture-2-cli-env-video, sorber-stderr-video]
   exercise:
     id: ex-streams-exit
     title: Para onde foi a saída?
@@ -207,6 +210,7 @@
   resources:
     start: pro-git-ptbr
     deeper: [akita-git, missing-semester-git]
+    videos: [akitando-70-entendendo-git-video, ms-2026-lecture-5-git-video, akitando-71-usando-git-direito-video]
   exercise:
     id: ex-git-graph
     title: Desenhar o grafo antes de ver
