@@ -434,3 +434,48 @@ section[id], h2[id], aside[id] { scroll-margin-top: 6.5rem; }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 0; }
 .kv dt { color: var(--muted); font-family: var(--mono); font-size: 0.88rem; }
 .kv dd { margin: 0; }
+
+/* Estrutura em markdown ------------------------------------------------------------ */
+/* Títulos mostram o marcador markdown (decorativo, mudo para leitores de tela). */
+.page :is(h1, h2, h3):not(.terminal *):not(.trail *):not(.visually-hidden)::before {
+  color: var(--comment); font-weight: 500; margin-right: 0.15em;
+}
+.page h1:not(.terminal *):not(.trail *)::before { content: "# " / ""; }
+.page h2:not(.terminal *):not(.trail *):not(.visually-hidden)::before { content: "## " / ""; }
+.page h3:not(.terminal *):not(.trail *)::before { content: "### " / ""; }
+
+/* Conteúdo renderizado de markdown (lições e o que vocês escrevem) */
+.md > :first-child { margin-top: 0; }
+.md > :last-child { margin-bottom: 0; }
+.md h1, .md h2, .md h3, .md h4 { margin: 1.2em 0 0.4em; }
+.md pre { position: relative; background: var(--bg); border: 1px solid var(--line); }
+.md pre code { background: none; border: 0; padding: 0; color: var(--text); }
+.md blockquote { color: var(--muted); }
+.md table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: 0.92rem; }
+.md th, .md td { border: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+.md th { background: var(--surface-2); font-family: var(--mono); font-size: 0.84rem; }
+.md ul.contains-task-list { list-style: none; padding-left: 0.2rem; }
+.md .task-list-item input { margin-right: 0.45rem; vertical-align: -0.15rem; }
+.md hr { margin: 1.2rem 0; }
+
+/* Editor markdown com abas */
+.md-editor-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.4rem; }
+.md-tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.md-tabs button {
+  background: transparent; border: 0; border-radius: 0; color: var(--muted); font-weight: 600; font-size: 0.74rem;
+  padding: 0.18rem 0.6rem; min-height: 0;
+}
+.md-tabs button + button { border-left: 1px solid var(--line); }
+.md-tabs button:hover:not(:disabled) { box-shadow: none; color: var(--text); }
+.md-tabs button[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
+.md-preview {
+  min-height: 5.5rem; padding: 0.65rem 0.8rem; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--bg);
+}
+.md-hint { font-family: var(--mono); font-size: 0.74rem; color: var(--comment); }
+
+/* Vídeo: trecho a partir de um minuto */
+.video-start {
+  align-self: flex-start; margin-top: 0.15rem; font-family: var(--mono); font-size: 0.74rem; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 5px; padding: 0 0.4rem;
+}

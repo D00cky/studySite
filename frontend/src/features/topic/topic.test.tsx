@@ -153,6 +153,16 @@ describe('página de tópico — vídeos', () => {
     expect(within(section).getByRole('link', { name: /CS162 Lectures/ })).toHaveAttribute('href', 'https://www.youtube.com/playlist?list=PLxyz')
   })
 
+  it('abre o player no minuto do trecho indicado', async () => {
+    const segment = { ...video, id: 'seg', title: 'Aula — 23:10 Linking', url: 'https://www.youtube.com/watch?v=abc123XYZ_0&t=1390s', section: '23:10 Linking' }
+    setup({}, { ...topicPage, videos: [segment] })
+    const { user } = renderApp('/topicos/compilation-pipeline')
+    const section = await screen.findByRole('region', { name: 'Assista' })
+    expect(within(section).getByText(/a partir de 23:10/)).toBeInTheDocument()
+    await user.click(within(section).getByRole('button', { name: /Assistir/ }))
+    expect(section.querySelector('iframe')!.getAttribute('src')).toBe('https://www.youtube-nocookie.com/embed/abc123XYZ_0?start=1390&autoplay=1')
+  })
+
   it('não mostra a seção quando o tópico não tem vídeos', async () => {
     setup({}, { ...topicPage, videos: [] })
     renderApp('/topicos/compilation-pipeline')

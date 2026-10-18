@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { useCreateEvidence, useMe, useRequestReview } from '../../api/queries'
 import type { Evidence, Topic, TopicWorkspace } from '../../api/types'
 import { Select, TextArea, TextField } from '../../components/Field'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage } from '../../components/Status'
 
 const KIND_LABEL: Record<Evidence['kind'], string> = { text: 'Texto', repository: 'Repositório', artifact: 'Artefato (link)' }
@@ -148,12 +149,12 @@ function EvidenceForm({ topic, attemptId }: { topic: Topic; attemptId?: string }
       {form.kind !== 'text' && (
         <TextField label="Link" type="url" required value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
       )}
-      <TextArea
+      <MarkdownEditor
         label="O que a evidência mostra"
-        rows={4}
-        hint="Cole saídas reais e explique com suas palavras. Código enviado nunca é executado."
+        rows={5}
+        hint="Cole saídas reais (em blocos ```) e explique com suas palavras. Código enviado nunca é executado."
         value={form.body}
-        onChange={(e) => setForm({ ...form, body: e.target.value })}
+        onChange={(body) => setForm({ ...form, body })}
       />
       <TextArea
         label="Assistência de IA (se houve)"

@@ -11,7 +11,9 @@ import {
   useUpdateTeamSession,
 } from '../../api/queries'
 import type { RoleAssignment, TeamSessionDetail } from '../../api/types'
-import { Select, TextArea } from '../../components/Field'
+import { Select } from '../../components/Field'
+import { Markdown } from '../../components/Markdown'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { SESSION_ROLE_LABEL } from '../../lib/labels'
@@ -50,7 +52,7 @@ export function TeamSessionPage() {
       {session.agenda && !canEdit && (
         <section aria-labelledby="agenda-title">
           <h2 id="agenda-title">Pauta</h2>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{session.agenda}</p>
+          <Markdown text={session.agenda} />
         </section>
       )}
       <Roles detail={data} myId={me?.id} canAssign={isCreator || isMentor} />
@@ -58,9 +60,9 @@ export function TeamSessionPage() {
       {!canEdit && (session.findings || session.nextSteps) && (
         <section>
           <h2>Achados</h2>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{session.findings}</p>
+          <Markdown text={session.findings} />
           <h2>Próximos passos</h2>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{session.nextSteps}</p>
+          <Markdown text={session.nextSteps} />
         </section>
       )}
     </div>
@@ -98,7 +100,7 @@ function Roles({ detail, myId, canAssign }: { detail: TeamSessionDetail; myId?: 
               {r.userId === myId ? (
                 <ContributionForm sessionId={detail.session.id} assignment={r} />
               ) : (
-                r.contribution && <p style={{ margin: '0.3rem 0 0', whiteSpace: 'pre-wrap' }}>{r.contribution}</p>
+                r.contribution && <Markdown text={r.contribution} />
               )}
             </li>
           ))}
@@ -176,11 +178,11 @@ function ContributionForm({ sessionId, assignment }: { sessionId: string; assign
   }
   return (
     <form onSubmit={submit} className="stack" style={{ marginTop: '0.4rem' }}>
-      <TextArea
+      <MarkdownEditor
         label={`Sua contribuição como ${SESSION_ROLE_LABEL[assignment.role]}`}
-        rows={3}
+        rows={4}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={setText}
       />
       <ErrorMessage error={save.error} />
       <button type="submit" className="button-quiet" disabled={save.isPending}>
@@ -205,15 +207,15 @@ function SessionRecord({ detail }: { detail: TeamSessionDetail }) {
   return (
     <form onSubmit={submit} className="panel stack" aria-labelledby="record-title" style={{ marginTop: '1rem' }}>
       <h2 id="record-title">Registro da sessão</h2>
-      <TextArea label="Pauta" rows={3} value={form.agenda} onChange={(e) => setForm({ ...form, agenda: e.target.value })} />
-      <TextArea
+      <MarkdownEditor label="Pauta" rows={3} value={form.agenda} onChange={(agenda) => setForm({ ...form, agenda })} />
+      <MarkdownEditor
         label="Achados"
-        rows={5}
+        rows={6}
         hint="O que a evidência mostrou? Que casos-limite quebraram algo?"
         value={form.findings}
-        onChange={(e) => setForm({ ...form, findings: e.target.value })}
+        onChange={(findings) => setForm({ ...form, findings })}
       />
-      <TextArea label="Próximos passos" rows={3} value={form.nextSteps} onChange={(e) => setForm({ ...form, nextSteps: e.target.value })} />
+      <MarkdownEditor label="Próximos passos" rows={3} value={form.nextSteps} onChange={(nextSteps) => setForm({ ...form, nextSteps })} />
       <ErrorMessage error={update.error} />
       <button type="submit" disabled={update.isPending}>
         Salvar registro da sessão

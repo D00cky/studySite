@@ -118,6 +118,23 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void bookChaptersReplaceTheWholeBookOnATopicPage() {
+        ApiClient someone = register("Leitor");
+        JsonNode books = someone.get("/api/curriculum/topics/processes-syscalls").expect(200).json().get("books");
+        java.util.Set<String> chapterUrls = new java.util.HashSet<>();
+        for (JsonNode b : books) {
+            if (b.hasNonNull("section")) chapterUrls.add(b.get("url").asString());
+        }
+        assertThat(chapterUrls).as("o tópico tem capítulos de livros mapeados").isNotEmpty();
+        for (JsonNode b : books) {
+            if (!b.hasNonNull("section")) {
+                assertThat(chapterUrls).as("livro inteiro repetido junto do capítulo: %s", b.get("id").asString())
+                        .doesNotContain(b.get("url").asString());
+            }
+        }
+    }
+
+    @Test
     void groupProjectMilestonesDoNotGrantIndividualProficiency() {
         ApiClient mentor = register("Mentor");
         ApiClient learner = register("Rafa");

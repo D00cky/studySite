@@ -16,6 +16,19 @@ describe('Markdown leve do conteúdo', () => {
     expect(container.querySelectorAll('ol > li')).toHaveLength(2)
   })
 
+  it('renderiza títulos, blocos de código e listas de tarefas', () => {
+    const { container } = render(<Markdown text={'## Achados\n\n```c\nint x = 1;\n```\n\n- [x] compilou\n- [ ] linkou'} />)
+    expect(screen.getByRole('heading', { level: 2, name: 'Achados' })).toBeInTheDocument()
+    expect(container.querySelector('pre > code')).toHaveTextContent('int x = 1;')
+    expect(container.querySelectorAll('input[type="checkbox"]')).toHaveLength(2)
+  })
+
+  it('abre links em nova aba e remove links perigosos', () => {
+    render(<Markdown text={'[ok](https://example.test) e [mau](javascript:alert(1))'} />)
+    expect(screen.getByRole('link', { name: 'ok' })).toHaveAttribute('target', '_blank')
+    expect(screen.queryByRole('link', { name: 'mau' })?.getAttribute('href') ?? '').not.toMatch(/javascript/i)
+  })
+
   it('nunca interpreta HTML do texto', () => {
     const { container } = render(<Markdown text={'<img src=x onerror=alert(1)>'} />)
     expect(container.querySelector('img')).toBeNull()

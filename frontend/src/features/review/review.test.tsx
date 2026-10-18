@@ -14,7 +14,7 @@ const thread: ReviewThread = {
   },
   evidence: {
     id: 'e1', userId: 'u-lia', authorName: 'Lia', groupId: 'g1', topicId: 'compilation-pipeline', kind: 'repository',
-    title: 'Etapas do pipeline', body: 'Saídas de file e nm', url: 'https://example.test/repo',
+    title: 'Etapas do pipeline', body: '### Saídas\n\n```\nsoma.o: ELF relocatable\n```', url: 'https://example.test/repo',
     aiAssistance: 'Pedi explicação do erro de linking.', visibility: 'group', createdAt: '', updatedAt: '',
   },
   feedback: [
@@ -33,7 +33,8 @@ describe('revisão', () => {
     renderApp('/revisoes/r1')
     expect(await screen.findByRole('heading', { level: 1, name: 'Etapas do pipeline' })).toBeInTheDocument()
     expect(screen.getByText('Minha explicação do linking está certa?')).toBeInTheDocument()
-    expect(screen.getByText('Saídas de file e nm')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: 'Saídas' })).toBeInTheDocument()
+    expect(screen.getByText('soma.o: ELF relocatable', { selector: 'code' })).toBeInTheDocument()
     expect(screen.getByText('Pedi explicação do erro de linking.')).toBeInTheDocument()
     const history = screen.getByRole('region', { name: 'Feedback' })
     expect(within(history).getByText(/Gabriel/)).toBeInTheDocument()

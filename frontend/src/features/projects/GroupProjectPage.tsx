@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { useCreateEvidence, useGroupProject, useSetMilestone } from '../../api/queries'
 import type { Evidence, GroupProjectDetail, MilestoneStatus } from '../../api/types'
 import { Select, TextArea, TextField } from '../../components/Field'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage, Loading } from '../../components/Status'
 
 const STATUS_LABEL: Record<MilestoneStatus['status'], string> = { todo: 'A fazer', in_progress: 'Em andamento', done: 'Concluído' }
@@ -126,7 +127,7 @@ function ContributionForm({ detail }: { detail: GroupProjectDetail }) {
       {form.kind !== 'text' && (
         <TextField label="Link" type="url" required value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
       )}
-      <TextArea label="O que você fez e o que observou" rows={4} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
+      <MarkdownEditor label="O que você fez e o que observou" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
       <TextArea label="Assistência de IA (se houve)" rows={2} value={form.aiAssistance} onChange={(e) => setForm({ ...form, aiAssistance: e.target.value })} />
       <ErrorMessage error={create.error} />
       <button type="submit" disabled={create.isPending}>

@@ -2,7 +2,8 @@ import { useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router'
 import { useClaimReview, useCloseReview, useGiveFeedback, useMe, useReviewThread } from '../../api/queries'
 import type { ReviewThread, Verdict } from '../../api/types'
-import { TextArea } from '../../components/Field'
+import { Markdown } from '../../components/Markdown'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { REVIEW_STATUS_LABEL, REVIEW_STATUS_TONE, ROLE_LABEL, VERDICT_LABEL } from '../../lib/labels'
@@ -68,7 +69,7 @@ export function ReviewPage() {
             </a>
           </p>
         )}
-        {evidence.body && <pre style={{ whiteSpace: 'pre-wrap' }}>{evidence.body}</pre>}
+        {evidence.body && <Markdown text={evidence.body} />}
         {evidence.aiAssistance && (
           <p className="small">
             <span className="muted">Assistência de IA registrada:</span> {evidence.aiAssistance}
@@ -90,7 +91,7 @@ export function ReviewPage() {
                   <span className="tag">{VERDICT_LABEL[f.verdict]}</span>
                   <span className="muted">{formatDateTime(f.createdAt)}</span>
                 </div>
-                <p style={{ margin: '0.3rem 0 0', whiteSpace: 'pre-wrap' }}>{f.body}</p>
+                <Markdown text={f.body} />
               </li>
             ))}
           </ol>
@@ -142,7 +143,7 @@ function FeedbackForm({ thread, isRequester }: { thread: ReviewThread; isRequest
           <p className="hint">Examine raciocínio, invariantes e se a evidência sustenta as conclusões.</p>
         </fieldset>
       )}
-      <TextArea label="Seu feedback" required rows={5} value={body} onChange={(e) => setBody(e.target.value)} />
+      <MarkdownEditor label="Seu feedback" required rows={5} value={body} onChange={setBody} />
       <ErrorMessage error={give.error} />
       <button type="submit" disabled={give.isPending}>
         {isRequester ? 'Responder' : 'Enviar feedback'}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Resource } from '../api/types'
-import { youtubeId } from '../lib/youtube'
+import { formatTimestamp, youtubeId, youtubeStart } from '../lib/youtube'
 
 /**
  * Vídeos da lição. O player do YouTube (domínio nocookie) só é carregado quando a
@@ -21,12 +21,13 @@ export function VideoList({ videos }: { videos: Resource[] }) {
 function VideoCard({ video }: { video: Resource }) {
   const [playing, setPlaying] = useState(false)
   const id = youtubeId(video.url)
+  const start = youtubeStart(video.url)
   return (
     <article className="video-card">
       <div className="video-frame">
         {id && playing ? (
           <iframe
-            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
+            src={`https://www.youtube-nocookie.com/embed/${id}?${start ? `start=${start}&` : ''}autoplay=1`}
             title={video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -50,6 +51,7 @@ function VideoCard({ video }: { video: Resource }) {
       <div className="video-meta">
         <strong>{video.title}</strong>
         <span className="muted small">{video.author}</span>
+        {start !== null && <span className="video-start">▶ a partir de {formatTimestamp(start)}</span>}
         {video.section && video.section !== video.title && <span className="small">{video.section}</span>}
         <span className="small">
           {video.language === 'pt-BR' ? 'Português' : 'Inglês'} ·{' '}

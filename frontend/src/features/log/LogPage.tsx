@@ -15,7 +15,9 @@ import {
   useUpdateProfile,
 } from '../../api/queries'
 import type { Note } from '../../api/types'
-import { Select, TextArea, TextField } from '../../components/Field'
+import { Select, TextField } from '../../components/Field'
+import { Markdown } from '../../components/Markdown'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
@@ -234,7 +236,11 @@ function Notes() {
                 <strong>{n.title}</strong>
                 <span className="tag">{n.visibility === 'group' ? 'Compartilhada' : 'Privada'}</span>
               </div>
-              {n.body && <p className="small" style={{ margin: '0.3rem 0', whiteSpace: 'pre-wrap' }}>{n.body}</p>}
+              {n.body && (
+                <div className="small">
+                  <Markdown text={n.body} />
+                </div>
+              )}
               {group && (
                 <button type="button" className="button-quiet" onClick={() => toggle(n)}>
                   {n.visibility === 'group' ? 'Tornar privada' : `Compartilhar com ${group.name}`}
@@ -246,7 +252,7 @@ function Notes() {
       )}
       <form onSubmit={submit} className="stack">
         <TextField label="Título da nota" required maxLength={200} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-        <TextArea label="Texto" rows={4} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
+        <MarkdownEditor label="Texto" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
         <ErrorMessage error={create.error ?? update.error} />
         <button type="submit" className="button-secondary" disabled={create.isPending}>
           Salvar nota

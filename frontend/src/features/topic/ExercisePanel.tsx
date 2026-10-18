@@ -3,6 +3,7 @@ import { useStartAttempt, useUpdateAttempt } from '../../api/queries'
 import type { Attempt, Topic } from '../../api/types'
 import { TextArea, TextField } from '../../components/Field'
 import { InlineMarkdown } from '../../components/Markdown'
+import { MarkdownEditor } from '../../components/MarkdownEditor'
 import { ErrorMessage } from '../../components/Status'
 
 const STATUS_LABEL: Record<Attempt['status'], string> = {
@@ -103,7 +104,7 @@ function ActiveAttempt({ attempt }: { attempt: Attempt }) {
           <span className="muted">Sua previsão:</span> {attempt.prediction}
         </p>
       )}
-      <TextArea label="Anotações" rows={5} hint="O que aconteceu de fato? Onde a previsão errou?" value={notes} onChange={(e) => setNotes(e.target.value)} />
+      <MarkdownEditor label="Anotações" rows={6} hint="O que aconteceu de fato? Onde a previsão errou?" value={notes} onChange={setNotes} />
       <TextArea
         label="Assistência de IA (se houve)"
         rows={2}

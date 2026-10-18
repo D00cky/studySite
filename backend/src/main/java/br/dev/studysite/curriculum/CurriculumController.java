@@ -80,8 +80,14 @@ class CurriculumController {
                 .distinct().map(r -> curriculum.resource(r).orElseThrow()).toList();
         // Livros de referência: qualquer recurso de formato book ligado ao tópico na biblioteca
         // (essenciais primeiro), mesmo que a lição não o cite diretamente.
-        List<Resource> books = curriculum.resources().stream()
+        List<Resource> candidates = curriculum.resources().stream()
                 .filter(r -> "book".equals(r.format()) && r.topics().contains(id))
+                .toList();
+        // Quando um capítulo do livro está ligado ao tópico, o livro inteiro (mesma URL, sem seção) sai da lista.
+        java.util.Set<String> chapterUrls = candidates.stream().filter(r -> r.section() != null)
+                .map(Resource::url).collect(java.util.stream.Collectors.toSet());
+        List<Resource> books = candidates.stream()
+                .filter(r -> r.section() != null || !chapterUrls.contains(r.url()))
                 .sorted(java.util.Comparator.comparing((Resource r) -> !"core".equals(r.priority())))
                 .toList();
         return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos, deepDive, books,
