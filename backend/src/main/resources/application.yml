@@ -20,6 +20,11 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+  compression:
+    # A biblioteca tem milhares de recursos; JSON comprime muito bem.
+    enabled: true
+    mime-types: application/json,application/problem+json,text/plain
+    min-response-size: 2KB
   error:
     include-message: always
   servlet:

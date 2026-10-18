@@ -14,7 +14,12 @@ export function ResourcesPage() {
   const { data, error, isPending } = useResources({ ...filters, q })
   const { data: roadmap } = useRoadmap()
   const topicTitle = useTopicTitles()
-  const set = (key: keyof typeof filters) => (e: { target: { value: string } }) => setFilters({ ...filters, [key]: e.target.value })
+  const PAGE = 50
+  const [visible, setVisible] = useState(PAGE)
+  const set = (key: keyof typeof filters) => (e: { target: { value: string } }) => {
+    setFilters({ ...filters, [key]: e.target.value })
+    setVisible(PAGE)
+  }
 
   return (
     <>
@@ -66,7 +71,7 @@ export function ResourcesPage() {
                 {plural(data.length, 'recurso', 'recursos')}
               </p>
               <ul className="list-plain">
-                {data.map((r) => (
+                {data.slice(0, visible).map((r) => (
                   <li key={r.id}>
                     <ResourceDetails resource={r} />
                     <p className="small" style={{ margin: '0.4rem 0 0' }}>
@@ -82,6 +87,13 @@ export function ResourcesPage() {
                   </li>
                 ))}
               </ul>
+              {data.length > visible && (
+                <p style={{ marginTop: '1rem' }}>
+                  <button type="button" className="button-secondary" onClick={() => setVisible(visible + PAGE)}>
+                    Mostrar mais ({Math.min(PAGE, data.length - visible)} de {data.length - visible} restantes)
+                  </button>
+                </p>
+              )}
             </>
           )}
         </div>

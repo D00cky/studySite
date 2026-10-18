@@ -20,6 +20,23 @@ function setup() {
   )
 }
 
+describe('biblioteca de recursos — paginação', () => {
+  it('mostra 50 por vez e carrega mais sob demanda', async () => {
+    const many = Array.from({ length: 120 }, (_, i) => ({ ...resource, id: `r-${i}`, title: `Recurso número ${i}`, url: `https://example.test/${i}` }))
+    server.use(...signedIn())
+    server.use(http.get('/api/curriculum/resources', () => HttpResponse.json(many)))
+    const { user } = renderApp('/recursos')
+    await screen.findByText('Recurso número 0')
+    expect(screen.getByRole('status')).toHaveTextContent('120 recursos')
+    expect(screen.queryByText('Recurso número 50')).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /Mostrar mais/ }))
+    expect(screen.getByText('Recurso número 99')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /Mostrar mais/ }))
+    expect(screen.getByText('Recurso número 119')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Mostrar mais/ })).not.toBeInTheDocument()
+  })
+})
+
 describe('biblioteca de recursos', () => {
   it('lista recursos com verificação e tópicos associados', async () => {
     setup()
