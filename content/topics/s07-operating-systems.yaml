@@ -31,7 +31,7 @@
   resources:
     start: ostep-process-api
     deeper: [ostep-processes, ostep-limited-direct-execution, man-fork, man-execve, man-wait, man-strace, man-proc, akita-linux-boot]
-    videos: [cs162-lecture-2-four-fundamental-os-concepts, cs162-lecture-3-threads-processes, cmu-15213-f15-lecture-14-ecf-exceptions-processes, akitando-127-boot-linux-video]
+    videos: [cs162-lecture-2-four-fundamental-os-concepts-defining-processes, cs162-lecture-2-four-fundamental-os-concepts-system-calls-and-transitions, cs162-lecture-3-threads-processes-process-management, cmu-15213-f15-lecture-14-ecf-exceptions-processes, akitando-127-boot-linux-video-cap-6-daemons-systemd]
   exercise:
     id: ex-fork-exec-wait
     title: Um "run" mínimo com fork, exec e wait
@@ -125,7 +125,7 @@
   resources:
     start: man-pipe
     deeper: [man-dup, man-open, ostep-files-directories, man-proc]
-    videos: [cs162-lecture-4-files-io, cs162-lecture-5-ipc-pipes-sockets, cmu-15213-f15-lecture-16-system-level-io, sorber-pipe-system-call]
+    videos: [cs162-lecture-4-files-io-file-descriptors-process-state, cs162-lecture-5-ipc-pipes-sockets-unix-pipes, cmu-15213-f15-lecture-16-system-level-io, sorber-pipe-system-call]
   exercise:
     id: ex-redirect-pipe
     title: Implementar "> arquivo" e "a | b" à mão
@@ -317,7 +317,7 @@
   resources:
     start: ostep-files-directories
     deeper: [ostep-file-system-implementation, ostep-crash-consistency, man-inode, man-fsync, man-rename, akita-filesystems]
-    videos: [cs162-lecture-20-filesystems-2, cs162-lecture-21-filesystems-3, akitando-102-sistemas-de-arquivos-fat-video, akitando-103-sistemas-de-arquivos-video]
+    videos: [cs162-lecture-20-filesystems-2-components-of-file-systems, cs162-lecture-21-filesystems-3-buffer-cache-reliability, akitando-102-sistemas-de-arquivos-fat-video, akitando-103-sistemas-de-arquivos-video-journaling, akitando-103-sistemas-de-arquivos-video]
   exercise:
     id: ex-inodes-links-atomic-save
     title: Inodes, links e salvamento atômico de tarefas
@@ -413,8 +413,8 @@
       correction: A maioria é normal e resolvida pelo kernel (alocação preguiçosa, copy-on-write, leitura de arquivo). Só acessos inválidos viram SIGSEGV.
   resources:
     start: ostep-address-spaces
-    deeper: [ostep-paging, ostep-tlbs, ostep-swapping-mechanisms, man-mmap, man-proc-pid-maps, csapp, akita-memory-1]
-    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, cs162-lecture-15-demand-paging, cmu-15213-f15-lecture-17-vm-concepts, akitando-45-memoria-1-video, sorber-virtual-memory]
+    deeper: [ostep-paging, ostep-tlbs, ostep-swapping-mechanisms, man-mmap, man-proc-pid-maps, csapp-ch09-virtual-memory, akita-memory-1]
+    videos: [cs162-lecture-13-address-translation-introduction-to-paging, cs162-lecture-14-virtual-memory-tlbs-two-level-page-tables, cs162-lecture-15-demand-paging-demand-paging-concepts, cmu-15213-f15-lecture-17-vm-concepts, akitando-45-memoria-1-video, sorber-virtual-memory]
   exercise:
     id: ex-translate-and-touch
     title: Traduzir endereços à mão e tocar páginas

@@ -1,0 +1,281 @@
+# Recursos-trecho (minuto do vídeo / capítulo do livro) para os tópicos de S07 e S08.
+
+- id: cs162-lecture-2-four-fundamental-os-concepts-defining-processes
+  title: "CS162 Lecture 2: Four Fundamental OS Concepts — 56:15 Defining processes"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=4FpG1DcvHzc&t=3375s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Trecho que cobre o que é um processo (address space + threads) e por que ele isola programas (do minuto 56:15 até o próximo capítulo)."
+  section: "56:15 Defining processes"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-2-four-fundamental-os-concepts-system-calls-and-transitions
+  title: "CS162 Lecture 2: Four Fundamental OS Concepts — 1:11:20 System calls and transitions"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=4FpG1DcvHzc&t=4280s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Trecho que cobre syscalls e a transição entre modo usuário e modo kernel (do minuto 1:11:20 até o próximo capítulo)."
+  section: "1:11:20 System calls and transitions"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-3-threads-processes-process-management
+  title: "CS162 Lecture 3: Abstractions 1: Threads and Processes — 1:12:35 Process management"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=QSep-J6vtdc&t=4355s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Trecho que cobre gerência de processos (fork, exec, wait) a partir da interface de syscalls (do minuto 1:12:35 até o próximo capítulo)."
+  section: "1:12:35 Process management"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: akitando-127-boot-linux-video-cap-6-daemons-systemd
+  title: "Como Funciona o Boot de um Linux? | O que tem num LiveCD? — 31:26 CAP 6 - Depois do Linux: Daemons | Systemd"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=5F6BbhgvFOE&t=1886s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [processes-syscalls]
+  why: "Trecho que cobre o que roda depois do kernel: o init/systemd como primeiro processo e os daemons (do minuto 31:26 até o próximo capítulo)."
+  section: "31:26 CAP 6 - Depois do Linux: Daemons | Systemd"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais na descrição do vídeo." }
+
+- id: cs162-lecture-4-files-io-file-descriptors-process-state
+  title: "CS162 Lecture 4: Abstractions 2: Files and I/O — 59:04 File descriptors and process state"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=WHmmT_syaG8&t=3544s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "Trecho que cobre file descriptors como estado do processo no kernel (do minuto 59:04 até o próximo capítulo)."
+  section: "59:04 File descriptors and process state"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-5-ipc-pipes-sockets-unix-pipes
+  title: "CS162 Lecture 5: Abstractions 3: IPC, Pipes and Sockets — 27:51 Unix pipes explained"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=MKcSCaP0ZrQ&t=1671s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "Trecho que cobre pipes do Unix como par de file descriptors (do minuto 27:51 até o próximo capítulo)."
+  section: "27:51 Unix pipes explained"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-20-filesystems-2-components-of-file-systems
+  title: "CS162 Lecture 20: Filesystems 2: Filesystem Design (Con't), Filesystem Case Studies — 34:49 Components of file systems"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=9UQza7XNt6M&t=2089s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Trecho que cobre os componentes de um file system (diretórios, inodes/índices, blocos) (do minuto 34:49 até o próximo capítulo)."
+  section: "34:49 Components of file systems"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-21-filesystems-3-buffer-cache-reliability
+  title: "CS162 Lecture 21: Filesystems 3: Case Studies (Con't), Buffering, Reliability, and Transactions — 56:04 Buffer cache and reliability"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=NpM0n6xBbrA&t=3364s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Trecho que cobre buffer cache e confiabilidade do file system (do minuto 56:04 até o próximo capítulo)."
+  section: "56:04 Buffer cache and reliability"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: akitando-103-sistemas-de-arquivos-video-journaling
+  title: "Todos os Sistemas de Arquivos: de FAT a ZFS — 3:18 Journaling"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=71o6Tyh2MUk&t=198s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [filesystems]
+  why: "Trecho que cobre journaling e por que ele protege o file system de crashes (do minuto 3:18 até o próximo capítulo)."
+  section: "3:18 Journaling"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais na descrição do vídeo." }
+
+- id: cs162-lecture-13-address-translation-introduction-to-paging
+  title: "CS162 Lecture 13: Memory 1: Address Translation and Virtual Memory — 1:12:16 Introduction to paging"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=1SJeLcI8otk&t=4336s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Trecho que cobre introdução à paginação e page tables (do minuto 1:12:16 até o próximo capítulo)."
+  section: "1:12:16 Introduction to paging"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-14-virtual-memory-tlbs-two-level-page-tables
+  title: "CS162 Lecture 14: Memory 2: Virtual Memory (Con't), Caching and TLBs — 26:53 Two-level page tables"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=aaCeY4YCCmM&t=1613s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Trecho que cobre page tables de dois níveis para address spaces esparsos (do minuto 26:53 até o próximo capítulo)."
+  section: "26:53 Two-level page tables"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-15-demand-paging-demand-paging-concepts
+  title: "CS162 Lecture 15: Memory 3: Caching and TLBs (Con't), Demand Paging — 53:46 Demand paging concepts"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=IBgkKX6DUTM&t=3226s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Trecho que cobre demand paging e page faults (do minuto 53:46 até o próximo capítulo)."
+  section: "53:46 Demand paging concepts"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-3-threads-processes-thread-creation
+  title: "CS162 Lecture 3: Abstractions 1: Threads and Processes — 39:29 Thread creation"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=QSep-J6vtdc&t=2369s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: "Trecho que cobre criação de threads (do minuto 39:29 até o próximo capítulo)."
+  section: "39:29 Thread creation"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-6-synchronization-1-threads-within-processes
+  title: "CS162: Lecture 6: Synchronization 1: Concurrency and Mutual Exclusion — 21:16 Threads within processes"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=5uyGn147rr0&t=1276s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: "Trecho que cobre threads dentro de um processo (o que compartilham e o que é próprio) (do minuto 21:16 até o próximo capítulo)."
+  section: "21:16 Threads within processes"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-6-synchronization-1-race-conditions
+  title: "CS162: Lecture 6: Synchronization 1: Concurrency and Mutual Exclusion — 1:10:03 Race conditions"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=5uyGn147rr0&t=4203s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization]
+  why: "Trecho que cobre race conditions, atomicidade e locks/seções críticas (do minuto 1:10:03 até o próximo capítulo)."
+  section: "1:10:03 Race conditions"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-8-synchronization-3-atomic-hardware-instructions
+  title: "CS162 Lecture 8: Synchronization 3: Atomic Instructions (Con't), Monitors, Readers/Writers — 14:13 Atomic hardware instructions"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=yqsqjqLGMe4&t=853s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization]
+  why: "Trecho que cobre instruções atômicas de hardware usadas para construir locks (do minuto 14:13 até o próximo capítulo)."
+  section: "14:13 Atomic hardware instructions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-9-synchronization-4-monitors-overview
+  title: "CS162 Lecture 9: Synchronization 4: Monitors and Readers/Writers (Con't), Process Structure — 9:16 Monitors overview"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=snp580kqCto&t=556s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Trecho que cobre monitores (lock + condition variables) (do minuto 9:16 até o próximo capítulo)."
+  section: "9:16 Monitors overview"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-12-deadlock-introduction-to-deadlock
+  title: "CS162 Lecture 12: Scheduling 3: Deadlock — 37:47 Introduction to deadlock"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=FDwJ6EW4dCM&t=2267s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [deadlocks]
+  why: "Trecho que cobre deadlock: condições, detecção e estratégias (do minuto 37:47 até o próximo capítulo)."
+  section: "37:47 Introduction to deadlock"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: cs162-lecture-8-synchronization-3-bounded-buffer-semaphores
+  title: "CS162 Lecture 8: Synchronization 3: Atomic Instructions (Con't), Monitors, Readers/Writers — 55:14 Bounded buffer with semaphores"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=yqsqjqLGMe4&t=3314s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [bounded-queues]
+  why: "Trecho que cobre o bounded buffer (produtor/consumidor) com semáforos (do minuto 55:14 até o próximo capítulo)."
+  section: "55:14 Bounded buffer with semaphores"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
+
+- id: csapp-ch09-virtual-memory
+  title: "Computer Systems: A Programmer's Perspective (3ª edição) — Chapter 9: Virtual Memory"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Capítulo do CS:APP sobre memória virtual: endereçamento físico e virtual, address spaces, page tables, TLB, o sistema de VM do Linux e memory mapping (fork/execve revisitados). Livro pago."
+  section: "Chapter 9: Virtual Memory (p. 801)"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo e página conferidos no sumário oficial (preface3e.pdf no site do livro)." }

@@ -30,7 +30,7 @@
   resources:
     start: ostep-concurrency-intro
     deeper: [ostep-thread-api, man-pthreads-7, man-pthread-create, gdb-threads, akita-memory-2]
-    videos: [cs162-lecture-3-threads-processes, cs162-lecture-6-synchronization-1, akitando-43-concorrencia-1-video, akitando-46-memoria-2-video]
+    videos: [cs162-lecture-3-threads-processes-thread-creation, cs162-lecture-6-synchronization-1-threads-within-processes, akitando-43-concorrencia-1-video, akitando-46-memoria-2-video]
   exercise:
     id: ex-what-threads-share
     title: O que as threads compartilham
@@ -125,7 +125,7 @@
   resources:
     start: ostep-locks
     deeper: [ostep-thread-api, ostep-condition-variables, ostep-semaphores, ostep-lock-based-data-structures, man-pthread-mutex-lock, man-pthread-cond-wait, clang-threadsanitizer, valgrind-helgrind]
-    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3, cs162-lecture-9-synchronization-4, cmu-15213-f15-lecture-24-sync-basics, akitando-44-concorrencia-2-video]
+    videos: [cs162-lecture-6-synchronization-1-race-conditions, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3-atomic-hardware-instructions, cs162-lecture-9-synchronization-4-monitors-overview, cmu-15213-f15-lecture-24-sync-basics, akitando-44-concorrencia-2-video]
   exercise:
     id: ex-lost-updates
     title: Contador de tarefas concluídas com updates perdidos
@@ -222,7 +222,7 @@
   resources:
     start: ostep-concurrency-bugs
     deeper: [man-pthread-mutex-lock, valgrind-helgrind, gdb-threads]
-    videos: [cs162-lecture-12-deadlock, cmu-15213-f15-lecture-25-sync-advanced]
+    videos: [cs162-lecture-12-deadlock-introduction-to-deadlock, cmu-15213-f15-lecture-25-sync-advanced]
   exercise:
     id: ex-transfer-deadlock
     title: Mover tarefas entre listas e travar
@@ -312,7 +312,7 @@
   resources:
     start: ostep-condition-variables
     deeper: [ostep-semaphores, ostep-lock-based-data-structures, man-pthread-cond-wait, clang-threadsanitizer]
-    videos: [cs162-lecture-9-synchronization-4, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3, cmu-15213-f15-lecture-25-sync-advanced]
+    videos: [cs162-lecture-9-synchronization-4-monitors-overview, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3-bounded-buffer-semaphores, cmu-15213-f15-lecture-25-sync-advanced]
   exercise:
     id: ex-bounded-buffer
     title: Buffer circular limitado com duas variáveis de condição
