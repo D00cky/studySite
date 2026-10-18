@@ -64,6 +64,24 @@
     - Documento de requisitos reescritos com os originais ao lado.
     - Diagrama de módulos, saída do jdeps e o diff da mudança de requisito.
   firstAction: "Escreva em uma linha, no formato Given/When/Then, o requisito \"listar tarefas atrasadas\"."
+  essentials:
+    - "Todo requisito precisa de um exemplo que vire teste: Given (estado), When (ação), Then (resultado observável)."
+    - "Não funcional só conta com número: \"listar 20 tarefas em < 100 ms com 1 milhão de linhas\", nunca \"rápido\"."
+    - Esconda cada decisão que pode mudar (armazenamento, regra de atraso, formato de saída) dentro de um único módulo.
+    - O domínio não importa nada de infraestrutura; persistência e HTTP dependem do domínio, nunca o contrário.
+    - "Confira o grafo real com `jdeps` (ou o linker em C): ciclo de dependência é sinal de divisão errada."
+  deepDive:
+    - title: Regras de arquitetura como testes (ArchUnit)
+      why: Quando o time crescer e alguém começar a importar persistência no domínio sem perceber.
+      resource: archunit-user-guide
+    - title: Arquitetura hexagonal e ports and adapters
+      why: Quando o sistema tiver vários adaptadores (HTTP, CLI, fila) para o mesmo núcleo de domínio.
+      resource: engsoftmoderna-cap7-arquitetura
+    - title: Diagramas C4 de contexto, containers e componentes
+      why: Ao explicar a arquitetura para alguém novo ou documentar um sistema com vários serviços.
+      resource: c4-model
+    - title: Módulos Java (JPMS) e módulos Maven
+      why: Quando pacotes não bastarem para impedir acesso a classes internas entre partes do sistema.
 
 - id: interfaces-testing
   stage: s12-software-engineering
@@ -131,6 +149,25 @@
     - Saída do ./mvnw test com o teste vermelho pelo bug introduzido e depois verde.
     - Código do teste de integração e explicação da divergência encontrada no fake.
   firstAction: "Escreva um teste JUnit `assertEquals(2, 1 + 1)`, rode `./mvnw test` e depois mude para 3 para vê-lo falhar."
+  essentials:
+    - Veja todo teste falhar pelo menos uma vez; teste que nunca ficou vermelho pode não testar nada.
+    - "Injete dependências pelo construtor (`Clock`, `TaskRepository`); nada de `LocalDate.now()` ou JDBC escondidos no meio da regra."
+    - Particione as entradas e teste as fronteiras (ontem, hoje, amanhã, nulo, concluída) com `@ParameterizedTest`.
+    - Prefira fakes simples e asserções sobre o resultado; mocks que verificam a sequência de chamadas quebram em toda refatoração.
+    - Rode SQL contra PostgreSQL real (Testcontainers) em teste de integração; um fake ou banco em memória esconde constraints.
+  deepDive:
+    - title: Property-based testing
+      why: Quando houver regras com muitas combinações de entrada (parsers, datas, ordenação) que exemplos escritos à mão não cobrem.
+      resource: jqwik-user-guide
+    - title: Mutation testing
+      why: Quando a cobertura parecer alta e você quiser saber se os testes realmente detectam bugs.
+      resource: pitest
+    - title: Contract testing entre serviços
+      why: Quando frontend e backend, ou dois serviços, evoluírem em repositórios separados e quebrarem um ao outro.
+      resource: fowler-contract-test
+    - title: TDD como disciplina de design
+      why: Quando quiser usar os testes para guiar a interface antes da implementação, não só para verificar depois.
+      resource: ian-cooper-tdd-where-did-it-go-wrong
 
 - id: refactoring
   stage: s12-software-engineering
@@ -195,6 +232,23 @@
     - Saída de git log --oneline e um diff de um passo de refatoração representativo.
     - Saída completa do git bisect run com o commit identificado.
   firstAction: "Escolha um método longo do seu projeto, rode os testes e aplique só um Rename Variable seguido de commit."
+  essentials:
+    - Nunca misture refatoração e mudança de comportamento no mesmo commit.
+    - Passos pequenos e nomeados (Rename, Extract Function, Move Function), com `./mvnw test` verde depois de cada um.
+    - "Ficou vermelho? `git restore` e tente um passo menor, em vez de depurar no meio da refatoração."
+    - Código sem testes ganha testes de caracterização antes de qualquer mudança, registrando o que ele faz hoje.
+    - "Quebrou e não sabe onde: `git bisect run ./mvnw -q test` acha o commit sozinho."
+  deepDive:
+    - title: Código legado e pontos de costura (seams)
+      why: Quando precisar testar uma classe gigante cheia de dependências estáticas e construtores que fazem I/O.
+    - title: Strangler Fig para substituir sistemas inteiros
+      why: Quando a tentação for reescrever um módulo ou sistema legado do zero.
+      resource: fowler-strangler-fig
+    - title: Catálogo completo de refatorações
+      why: Quando reconhecer um code smell e quiser a receita segura para eliminá-lo.
+      resource: refactoring-com-catalog
+    - title: Refatorações automatizadas e em larga escala
+      why: Ao renomear APIs usadas em centenas de arquivos, com IDE ou ferramentas como OpenRewrite.
 
 - id: architecture-ci
   stage: s12-software-engineering
@@ -223,7 +277,7 @@
   resources:
     start: fowler-continuous-integration
     deeper: [engsoftmoderna-cap10-devops, nygard-documenting-architecture-decisions, engsoftmoderna-cap7-arquitetura, adr-github-io, github-actions-java-maven, github-actions-docs, fowler-practical-test-pyramid]
-    videos: [github-for-beginners-actions-video, techworld-nana-github-actions]
+    videos: [farley-top-10-rules-continuous-integration, ibm-what-is-continuous-integration, github-for-beginners-actions-video, techworld-nana-github-actions]
   exercise:
     id: ex-adr-and-pipeline-design
     title: Dois ADRs e o desenho do pipeline
@@ -260,3 +314,22 @@
     - Link para os ADRs e para o arquivo de workflow no repositório.
     - Capturas ou trechos do log da CI vermelha e verde com o passo que falhou destacado.
   firstAction: "Crie a pasta `docs/adr/` no projeto e escreva só o título e o contexto do ADR 0001."
+  essentials:
+    - "Integre no main pelo menos uma vez por dia com branches curtas; build vermelho se conserta antes de qualquer outra coisa."
+    - "Pipeline = sequência de processos; exit code ≠ 0 para tudo. Em scripts use `set -euo pipefail`."
+    - Ordene os passos do mais barato ao mais caro (compilar, unitários, integração, empacotar) e use cache de dependências.
+    - "Proteja o main (merge só com CI verde) e dê ao workflow `permissions: contents: read`, actions com versão fixa e segredos fora dos logs."
+    - "Decisão cara de mudar vira ADR curto em `docs/adr/` (contexto, decisão, status, consequências); mudou, escreva outro ADR."
+  deepDive:
+    - title: Trunk-based development e feature flags
+      why: Quando funcionalidades grandes demorarem dias e a tentação for manter uma branch longa.
+      resource: trunk-based-development
+    - title: Continuous delivery e deployment pipeline
+      why: Quando o objetivo passar de "o main compila" para "todo commit verde pode ir para produção".
+      resource: farley-ci-vs-feature-branch
+    - title: Segurança do pipeline e da cadeia de suprimentos
+      why: Ao usar actions de terceiros, publicar artefatos ou dar ao CI acesso a segredos de deploy.
+      resource: github-actions-secure-use
+    - title: SLSA e proveniência de build
+      why: Quando precisar provar que o artefato em produção foi gerado daquele commit, por aquele pipeline.
+      resource: slsa-dev
