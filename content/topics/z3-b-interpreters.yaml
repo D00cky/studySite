@@ -1,32 +1,206 @@
 # b-interpreters
+# Baseado em Crafting Interpreters (Robert Nystrom), parte jlox (capítulos 2–11).
 
 - id: tokenizing-parsing
   stage: b-interpreters
   title: Tokenização e parsing
-  status: planned
-  objective: Transformar texto em tokens e tokens em uma árvore sintática com um parser recursivo descendente.
-  whyItMatters: Compiladores, linters, formatadores e consultas SQL passam por essas etapas.
+  status: authored
+  objective: Transformar texto em tokens e tokens em uma árvore sintática com um parser recursivo descendente, respeitando precedência e associatividade e reportando erros com linha e coluna.
+  whyItMatters: Compiladores, linters, formatadores, consultas SQL, arquivos de configuração e até o JSON que a API recebe passam por essas etapas. Saber escrever um parser à mão tira o mistério das mensagens de erro de qualquer linguagem.
   prerequisites: [binary-search-trees, c-strings]
+  related: [compilation-pipeline, input-validation, stacks-queues]
+  mathThreads: [logic, sets, proofs]
+  explanation: |
+    O **scanner** (lexer) percorre os caracteres e agrupa **lexemas** em **tokens**: `NUMBER(12)`, `PLUS`, `IDENTIFIER(total)`, `LEFT_PAREN`. Ele descarta espaços e comentários e guarda a **posição** (linha, coluna) de cada token — é daí que vêm as mensagens "erro na linha 3". Alguns tokens exigem olhar um caractere adiante (*lookahead*): `=` versus `==`, `1` versus `1.5`.
+
+    Uma **gramática** descreve quais sequências de tokens são válidas, com regras como:
+    - `expression → term`
+    - `term → factor ( ("+" | "-") factor )*`
+    - `factor → unary ( ("*" | "/") unary )*`
+    - `unary → "-" unary | primary`
+    - `primary → NUMBER | "(" expression ")"`
+    A **precedência** fica codificada na estratificação: regras mais baixas "amarram" mais forte. O laço `( ... )*` produz associatividade à esquerda: `1 - 2 - 3` vira `(1 - 2) - 3`.
+
+    Num **parser recursivo descendente**, cada regra vira uma função que consome tokens e devolve um nó da **AST** (árvore sintática abstrata). `term()` chama `factor()`, que chama `unary()`, e assim por diante; a pilha de chamadas espelha a estrutura da árvore. Parênteses funcionam porque `primary()` volta a chamar `expression()`.
+
+    **Erros** fazem parte do design: o parser deve dizer o que esperava, o que encontrou e onde (`linha 1, coluna 7: esperava ')' depois da expressão`). Para reportar vários erros de uma vez, ele **sincroniza** — descarta tokens até um ponto seguro (ex.: `;`) e continua. Fuzzing com entradas aleatórias revela rapidamente parsers que entram em loop ou estouram a pilha.
+  misconceptions:
+    - claim: O parser trabalha diretamente sobre os caracteres do texto.
+      correction: Em geral o scanner primeiro produz tokens; o parser só vê tokens, o que separa responsabilidades e simplifica a gramática.
+    - claim: Precedência é resolvida com uma tabela de prioridades aplicada depois do parsing.
+      correction: Num parser recursivo descendente ela está na própria estrutura das regras; a árvore já sai com a precedência certa.
+    - claim: Parênteses aparecem como nós na AST.
+      correction: Normalmente só influenciam a forma da árvore; depois do parsing o agrupamento já está representado pela estrutura.
   resources:
-    start: crafting-interpreters
-    deeper: [akita-compiled-interpreted]
+    start: crafting-interpreters-scanning
+    deeper: [crafting-interpreters-map-of-territory, crafting-interpreters-representing-code, crafting-interpreters-parsing-expressions, composing-programs-interpreters-combination, crafting-interpreters, akita-compiled-interpreted]
+    videos: [akitando-117-compilada-interpretada-video, cs61a-interpreters-su25-playlist]
+  exercise:
+    id: ex-hand-parse
+    title: Parsing à mão antes do código
+    prediction: "Desenhe a AST de `1 + 2 * 3 - 4` e de `-(2 + 3) * 4`. Depois escreva a mensagem de erro ideal para `(1 + 2 * 3` e para `1 + * 2`."
+    steps:
+      - Liste à mão os tokens das duas expressões com linha e coluna.
+      - Simule as chamadas `expression → term → factor → unary → primary` no papel, anotando a pilha de chamadas em cada token.
+      - Implemente o scanner (em C ou Java) com testes para números, operadores, parênteses, espaços e caracteres inválidos.
+      - Implemente o parser e um impressor que mostra a AST com parênteses explícitos, ex. `(- (+ 1 (* 2 3)) 4)`.
+      - Faça as mensagens de erro da previsão aparecerem com posição exata.
+    checks:
+      - O impressor reproduz as árvores desenhadas à mão.
+      - Cada entrada inválida produz uma mensagem com o token esperado, o encontrado e a coluna.
+  experiment:
+    title: Quebrar o parser de propósito
+    steps:
+      - Troque o laço de `term` por recursão à direita (`factor ("+" term)?`) e veja `1 - 2 - 3` mudar de resultado.
+      - Escreva uma regra com recursão à esquerda direta (`term → term "+" factor`) e observe o estouro de pilha no gdb ou no stack trace.
+      - Gere 10.000 expressões aleatórias (válidas e inválidas) com um script e rode o parser em todas, procurando travamentos e crashes; em C use `-fsanitize=address`.
+      - Alimente uma expressão com 100.000 parênteses aninhados e meça a profundidade em que a pilha estoura.
+    observe:
+      - A árvore e o resultado diferentes com associatividade à direita.
+      - Quais entradas aleatórias quebraram o parser e por quê.
+  reflectionQuestions:
+    - Por que a ordem das regras na gramática define a precedência?
+    - Que vantagem há em um scanner separado do parser?
+    - Como um parser de JSON na sua API deveria se comportar com entrada maliciosa muito aninhada?
+  completionCriteria:
+    - Mostra o impressor de AST produzindo as árvores corretas para as expressões da previsão.
+    - Apresenta mensagens de erro com linha e coluna para ao menos cinco entradas inválidas diferentes.
+    - Demonstra o efeito de recursão à direita e o estouro com recursão à esquerda, com a saída observada.
+  evidencePrompts:
+    - Desenho da AST feito à mão ao lado da saída do impressor.
+    - Saída do fuzzing simples com as entradas que causaram problemas e as correções.
+  firstAction: "Escreva num papel a lista de tokens de `12 + (3 * 4)` com a coluna de início de cada um."
 
 - id: tree-walk-evaluation
   stage: b-interpreters
   title: Avaliação de expressões
-  status: planned
-  objective: Avaliar uma árvore sintática e produzir mensagens de erro úteis.
-  whyItMatters: Mostra como linguagens executam código e por que erros aparecem onde aparecem.
+  status: authored
+  objective: Avaliar uma árvore sintática percorrendo-a recursivamente, com tipos dinâmicos e erros de runtime que apontam a posição no código-fonte.
+  whyItMatters: Mostra como linguagens executam código e por que erros aparecem onde aparecem. A diferença entre erro de sintaxe e erro de runtime, e entre um bom e um mau stack trace, fica concreta quando você precisa produzi-los.
   prerequisites: [tokenizing-parsing]
+  related: [stack-heap-lifetime, javascript-browser]
+  mathThreads: [logic, proofs]
+  explanation: |
+    Um **tree-walk interpreter** executa a AST diretamente: para avaliar um nó, avalia seus filhos e combina os resultados. É uma travessia **pós-ordem** — em `(1 + 2) * 3`, a soma é avaliada antes da multiplicação porque está mais funda na árvore. A recursão do interpretador espelha a recursão da gramática.
+
+    Em linguagens dinâmicas, cada valor carrega seu **tipo em tempo de execução**. Em C isso vira uma *tagged union* (`struct Value { enum Type type; union { double number; bool boolean; } as; }`); em Java, `Object` com `instanceof`. Antes de aplicar `-` o avaliador confere se ambos os lados são números; se não, gera um **erro de runtime**. É uma escolha de design: JavaScript converteria (`"3" - 1 === 2`), Python lança `TypeError`.
+
+    Decisões semânticas aparecem em cada operador:
+    - divisão por zero: erro, infinito ou NaN?
+    - `==` entre tipos diferentes: falso ou conversão?
+    - **truthiness**: o que conta como verdadeiro num `if`?
+    - `and`/`or` com **curto-circuito**: o lado direito só é avaliado se necessário — o que importa se ele tiver efeitos.
+
+    Um bom erro de runtime precisa saber **onde** aconteceu. Por isso o nó da AST guarda o token do operador (com linha e coluna), e o erro é uma exceção (ou um código de retorno propagado em C) que sobe até o laço principal, que imprime a mensagem e continua o REPL sem morrer. Erros de sintaxe são detectados antes de executar qualquer coisa; erros de runtime só quando aquele caminho roda — por isso um bug pode ficar escondido num `if` raramente executado.
+  misconceptions:
+    - claim: O interpretador avalia a expressão da esquerda para a direita, como lemos.
+      correction: Avalia segundo a forma da árvore; a ordem de avaliação dos operandos é outra decisão de design que precisa ser documentada.
+    - claim: Erros de tipo sempre são detectados antes de o programa rodar.
+      correction: Em linguagens dinâmicas eles só aparecem quando o caminho com o erro é executado.
+    - claim: Interpretadores tree-walk são inúteis por serem lentos.
+      correction: São simples de escrever e depurar e bastam para linguagens de configuração, consultas e DSLs; otimizações vêm depois, com bytecode.
   resources:
-    start: crafting-interpreters
+    start: crafting-interpreters-evaluating-expressions
+    deeper: [crafting-interpreters-representing-code, composing-programs-interpreters-combination, crafting-interpreters]
+    videos: [cs61a-interpreters-su25-playlist, akitando-117-compilada-interpretada-video]
+  exercise:
+    id: ex-calculator-repl
+    title: REPL da calculadora com erros úteis
+    prediction: "Escreva o resultado ou o erro esperado para `1 + 2 * 3`, `10 / 0`, `-\"abc\"`, `true or (1 / 0)` e `1 + true` segundo as regras que você vai definir."
+    steps:
+      - Defina por escrito as regras semânticas (tipos, divisão por zero, truthiness, curto-circuito).
+      - Implemente o avaliador sobre a AST do tópico anterior, com valores tipados (tagged union em C ou classes em Java).
+      - Implemente um REPL que lê uma linha, faz scan, parse e avaliação, e continua após qualquer erro.
+      - "Faça os erros de runtime apontarem a coluna do operador: `linha 1, col 3: operando de '-' deve ser número`."
+      - Escreva testes de ponta a ponta (entrada → saída esperada), incluindo os casos de erro.
+    checks:
+      - Os resultados batem com a previsão e com as regras escritas.
+      - "`true or (1 / 0)` não gera erro, provando o curto-circuito."
+  experiment:
+    title: Observar a recursão do avaliador
+    project: small-interpreter
+    steps:
+      - Adicione um modo `--trace` que imprime cada nó visitado com indentação proporcional à profundidade.
+      - Avalie `((1 + 2) * (3 + 4))` e compare o trace com a AST desenhada.
+      - Em C, coloque um breakpoint no `eval` e use `bt` no gdb numa expressão aninhada para ver um frame por nível da árvore.
+      - Remova a checagem de tipo de `-` e veja o que acontece com `-true` (lixo, crash ou exceção) — e por que isso seria perigoso.
+    observe:
+      - A ordem de visita dos nós no trace e a profundidade máxima da pilha.
+      - O comportamento sem checagem de tipos em C e em Java.
+  reflectionQuestions:
+    - Por que a avaliação pós-ordem é natural para expressões?
+    - Que informação a AST precisa guardar para produzir bons erros de runtime?
+    - Compare as regras que você escolheu com as de JavaScript e de Python; qual o custo de cada escolha?
+  completionCriteria:
+    - Mostra o REPL avaliando expressões corretas e se recuperando de cinco tipos de erro diferentes.
+    - Apresenta o trace de avaliação coerente com a AST da mesma expressão.
+    - Entrega testes de ponta a ponta cobrindo regras semânticas e mensagens de erro com posição.
+  evidencePrompts:
+    - Sessão do REPL com sucessos e erros.
+    - Trace ou backtrace do gdb anotado ao lado da AST.
+  firstAction: Escreva, em uma frase cada, o que sua linguagem deve fazer com divisão por zero e com `1 + true`.
 
 - id: scope-environments
   stage: b-interpreters
   title: Escopo e ambientes
-  status: planned
-  objective: Implementar variáveis, blocos e escopo léxico, relacionando com closures em JavaScript.
-  whyItMatters: Escopo explica bugs de variáveis "fantasma" e o funcionamento de closures.
+  status: authored
+  objective: Implementar variáveis, blocos e escopo léxico com ambientes encadeados, e relacionar com closures em JavaScript.
+  whyItMatters: Escopo explica bugs de variáveis "fantasma", shadowing acidental, o clássico `var` dentro de laço com callbacks e o funcionamento de closures — que estão em todo código de frontend e em lambdas Java.
   prerequisites: [tree-walk-evaluation, stack-heap-lifetime]
+  related: [javascript-browser, hash-tables, linked-lists]
+  mathThreads: [graphs]
+  explanation: |
+    Um **ambiente** (*environment*) é um mapa de nomes para valores — uma tabela hash serve. Para ter **blocos**, cada `{ ... }` cria um ambiente novo que aponta para o **ambiente envolvente** (*enclosing*). Procurar uma variável é subir essa cadeia até achar o nome; se chegar ao global sem achar, é erro "variável não definida". Assim surgem naturalmente:
+    - **shadowing**: um `var x` interno esconde o externo enquanto o bloco existe;
+    - **lifetime**: ao sair do bloco, o ambiente interno deixa de ser referenciado.
+
+    É útil separar três operações: **declarar** (cria o nome no ambiente atual), **atribuir** (sobe a cadeia e altera onde o nome existe) e **ler**. Confundir declarar com atribuir é a origem de variáveis globais acidentais, como em JavaScript sem `let`.
+
+    **Escopo léxico** significa que o significado de um nome depende de onde ele está escrito no código, não de quem chamou a função. Quando funções entram na linguagem, cada função guarda o ambiente em que foi **definida**; ao ser chamada, cria um ambiente novo cujo pai é esse ambiente capturado. Isso é uma **closure**: a função "leva junto" as variáveis de fora. Como o ambiente pode sobreviver à chamada que o criou, ele não pode viver na stack — precisa ir para a heap (é o mesmo motivo de `return &local` ser bug em C).
+
+    Um interpretador ingênuo resolve nomes **dinamicamente** a cada acesso, o que permite um bug sutil: se uma variável com o mesmo nome for declarada depois da closure no mesmo bloco, a closure pode passar a enxergar a nova. Crafting Interpreters resolve isso com uma passada de **resolução** estática que calcula, antes de executar, a quantos ambientes de distância cada nome está.
+  misconceptions:
+    - claim: Escopo é decidido por quem chama a função.
+      correction: Isso é escopo dinâmico; JavaScript, Java e a maioria das linguagens usam escopo léxico, decidido pelo texto do programa.
+    - claim: Variáveis locais sempre morrem quando a função retorna.
+      correction: Se uma closure capturou o ambiente, ele continua vivo na heap enquanto a closure existir.
+    - claim: Atribuir a um nome inexistente deveria criar a variável automaticamente.
+      correction: É uma escolha de design que gera globais acidentais; separar declaração de atribuição pega erros de digitação.
   resources:
-    start: crafting-interpreters
+    start: crafting-interpreters-statements-and-state
+    deeper: [crafting-interpreters-functions, crafting-interpreters-resolving-and-binding, composing-programs-interpreters-abstraction, mdn-js-closures, crafting-interpreters]
+    videos: [cs61a-environments-su25-playlist]
+  exercise:
+    id: ex-environment-diagrams
+    title: Diagramas de ambiente e blocos no interpretador
+    prediction: "Para `var a = 1; { var a = 2; print a; } print a; { a = 3; } print a;`, escreva a saída e desenhe os ambientes em cada `print`."
+    steps:
+      - Desenhe os ambientes (caixas com nomes e setas para o pai) para o programa da previsão.
+      - Adicione ao interpretador `var`, atribuição, `print` e blocos com ambientes encadeados (tabela hash por ambiente).
+      - Faça ler ou atribuir uma variável não declarada gerar erro com nome e posição.
+      - "Em JavaScript, rode `for (var i = 0; i < 3; i++) setTimeout(() => console.log(i))` e depois com `let`; desenhe os ambientes de cada versão."
+    checks:
+      - A saída do interpretador bate com a previsão e com os diagramas.
+      - A explicação da diferença var/let cita quantos ambientes existem em cada versão.
+  experiment:
+    title: Closures e o bug de resolução dinâmica
+    steps:
+      - "Adicione funções (ou use JavaScript para observar) e implemente um contador com closure: `makeCounter()` devolve uma função que incrementa uma variável capturada."
+      - Imprima o endereço/identidade de cada ambiente criado e mostre que dois contadores têm ambientes distintos que sobrevivem à chamada.
+      - "Reproduza o caso do capítulo Resolving and Binding: uma closure que lê `a` global, seguida de `var a` no mesmo bloco; observe a saída mudar."
+      - No DevTools, pause dentro de uma closure em JavaScript e inspecione a seção Scope (Closure, Script, Global).
+    observe:
+      - Os ambientes vivos depois que makeCounter retornou.
+      - A saída incorreta causada pela resolução dinâmica e o que o painel Scope mostra em JavaScript.
+  reflectionQuestions:
+    - Por que ambientes capturados por closures não podem viver na stack?
+    - Qual a diferença entre declarar e atribuir, e que bugs surgem quando a linguagem não separa os dois?
+    - Como a passada de resolução estática melhora correção e desempenho?
+  completionCriteria:
+    - Mostra diagramas de ambiente que batem com a saída do interpretador para programas com blocos e shadowing.
+    - Demonstra dois contadores independentes com closure e explica onde vive cada ambiente.
+    - Reproduz o bug de resolução dinâmica e explica por que ele acontece.
+  evidencePrompts:
+    - Fotos ou desenhos dos ambientes ao lado da saída do programa.
+    - Captura do painel Scope do DevTools numa closure, com anotação.
+  firstAction: "Desenhe as caixas de ambiente para `var x = 1; { var y = 2; print x + y; }`."

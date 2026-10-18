@@ -1,17 +1,79 @@
 - id: small-interpreter
   title: Pequeno interpretador
-  status: planned
+  status: authored
   cumulative: false
   topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments]
   question: Como um texto vira uma árvore e a árvore vira um resultado — e de onde vêm as mensagens de erro?
   prerequisites: [binary-search-trees]
-  minimalVersion: Tokenizar, fazer parsing e avaliar expressões aritméticas com precedência e mensagens de erro com posição.
+  minimalVersion: |
+    Uma linguagem de consulta de tarefas, `tq`, com REPL e modo arquivo. A versão mínima tokeniza,
+    faz parsing com um parser recursivo descendente e avalia expressões aritméticas e lógicas com
+    precedência (`1 + 2 * 3`, `-(4 - 1)`, `not done and priority > 2`), sobre uma tarefa de exemplo
+    com campos `id`, `title`, `priority` e `done`. Todo erro (léxico, sintático ou de runtime) mostra
+    linha, coluna, o trecho da entrada com um `^` sob o ponto do erro, e o REPL continua após o erro.
+    Implementação em C ou em Java, sem geradores de parser.
+  extensions:
+    - "Variáveis e blocos com escopo léxico (`let limite = 3; { let limite = 5; ... }`), com ambientes encadeados."
+    - "Filtrar uma lista de tarefas carregada de um arquivo: `tasks where priority > limite and not done`."
+    - Funções definidas pelo usuário com closures e um teste do bug de resolução dinâmica do capítulo Resolving and Binding.
+    - Reportar vários erros de sintaxe numa só passada usando sincronização (panic mode).
+    - Passada de resolução estática que detecta variável usada antes da declaração.
+    - Fuzzing com entradas aleatórias e um corpus de casos que já quebraram o interpretador.
+  constraints:
+    - Scanner e parser escritos à mão; sem ANTLR, yacc, bibliotecas de parsing ou expressões regulares para o parsing.
+    - A gramática fica documentada no README em notação BNF e o código segue uma função por regra.
+    - Cada fase (scan, parse, eval) é testável isoladamente, com testes de ponta a ponta entrada → saída.
+    - Em C, compilar com `-Wall -Wextra -std=c17` e rodar os testes sob ASan; em Java, sem bibliotecas além do JDK e JUnit.
+    - Nenhuma entrada, por pior que seja, pode derrubar o processo; erros viram mensagens.
   milestones:
     - id: m1-tokens
       title: Tokenizador
+      description: Scanner que produz tokens com tipo, lexema, linha e coluna, com testes para números, identificadores, palavras-chave, operadores e caracteres inválidos.
+      minutes: 50
     - id: m2-parser
       title: Parser recursivo descendente
+      description: Gramática em BNF, uma função por regra, AST com impressor de parênteses explícitos e erros de sintaxe com posição e `^`.
+      minutes: 75
     - id: m3-eval
       title: Avaliação
+      description: Avaliador tree-walk com valores tipados, curto-circuito, regras de divisão por zero e erros de runtime apontando o operador; REPL que sobrevive a erros.
+      minutes: 75
     - id: m4-scope
       title: Variáveis e escopo
+      description: Declaração, atribuição e blocos com ambientes encadeados, shadowing e erro para variável indefinida; filtro sobre a lista de tarefas.
+      minutes: 75
+    - id: m5-robustness
+      title: Robustez e fuzzing
+      description: Gerador de entradas aleatórias, limite de profundidade de recursão e correção de todos os travamentos encontrados.
+      minutes: 50
+  edgeCases:
+    - Entrada vazia, só espaços ou só comentário.
+    - Número com dois pontos (`1.2.3`), número enorme e identificador começando com dígito.
+    - Parênteses desbalanceados em ambos os sentidos e operador sem operando (`1 + * 2`).
+    - Expressão com milhares de níveis de parênteses aninhados.
+    - Operações entre tipos incompatíveis (`"a" - 1`, `-true`) e divisão por zero.
+    - Variável usada antes de declarada, redeclarada no mesmo bloco e sombreada em bloco interno.
+    - Caracteres não ASCII em strings e em identificadores.
+  failureExperiments:
+    - Trocar o laço da regra de soma por recursão à direita e mostrar `1 - 2 - 3` dando o resultado errado.
+    - Introduzir recursão à esquerda direta numa regra e capturar o estouro de pilha com gdb ou o stack trace.
+    - Remover a checagem de tipo de um operador e observar o efeito em C (lixo ou crash) e em Java (exceção).
+    - Alimentar o parser com 100.000 parênteses aninhados antes e depois de adicionar o limite de profundidade.
+    - Reproduzir o bug de closure com resolução dinâmica e corrigir com a passada de resolução.
+  tools: [gcc, gdb, "-fsanitize=address,undefined", make, javac, jshell, JUnit, git]
+  acceptanceCriteria:
+    - O REPL avalia expressões com precedência e associatividade corretas, verificadas por testes.
+    - Todo erro léxico, sintático e de runtime mostra linha, coluna e o trecho com `^`, e o REPL continua.
+    - Todos os casos-limite listados têm comportamento definido e coberto por testes de ponta a ponta.
+    - Uma rodada de fuzzing com pelo menos 10.000 entradas termina sem crash, travamento ou erro de sanitizer.
+    - O README traz a gramática em BNF e uma seção explicando as escolhas semânticas (tipos, truthiness, divisão por zero).
+  evidence:
+    - Link do repositório com README, gramática e instruções para rodar os testes.
+    - Sessão gravada do REPL mostrando sucessos e cada categoria de erro.
+    - Saída do impressor de AST para expressões que mostram precedência e associatividade.
+    - Relatório curto do fuzzing com as entradas que quebraram o interpretador e as correções.
+  reviewQuestions:
+    - Onde na sua gramática a precedência entre `and`, `>` e `+` está codificada?
+    - Que informação cada nó da AST guarda para que os erros de runtime apontem o lugar certo?
+    - Por que o ambiente de uma closure precisa sobreviver à chamada que o criou?
+    - Qual erro foi mais difícil de reportar bem, e o que você mudou no design por causa dele?

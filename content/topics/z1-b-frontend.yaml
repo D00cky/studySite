@@ -1,50 +1,327 @@
 # b-frontend
+# Ramo opcional inspirado em https://roadmap.sh/frontend, com foco no navegador e na web.
+# Frameworks (React, Vue...) não são marcos obrigatórios: o objetivo é entender o modelo
+# do navegador que todos eles usam por baixo.
 
 - id: semantic-html-accessibility
   stage: b-frontend
   title: HTML semântico e acessibilidade
-  status: planned
-  objective: Estruturar páginas com HTML semântico e verificar navegação por teclado e leitor de tela.
-  whyItMatters: Acessibilidade é requisito, não acabamento; HTML semântico também melhora manutenção.
+  status: authored
+  objective: Estruturar páginas com HTML semântico e verificar, com teclado, leitor de tela e a accessibility tree do DevTools, o que uma tecnologia assistiva realmente recebe.
+  whyItMatters: Acessibilidade é requisito, não acabamento — e em muitos contextos é exigência legal. HTML semântico entrega teclado, foco e significado de graça; uma `div` clicável obriga você a reimplementar tudo isso, geralmente mal. Também melhora manutenção, SEO e testes.
   prerequisites: [terminal-shell]
+  related: [css-layout, javascript-browser, frontend-testing]
+  explanation: |
+    O navegador transforma o HTML em duas árvores: o **DOM**, que scripts manipulam, e a **accessibility tree**, derivada do DOM e entregue ao sistema operacional. Leitores de tela (Orca, NVDA, VoiceOver) não "veem" pixels: leem a accessibility tree, em que cada nó tem **role** (button, link, heading), **name** (o texto acessível) e **state** (checked, expanded, disabled).
+
+    Elementos nativos já vêm com tudo isso. Um `<button>` recebe foco com Tab, dispara com Enter e Espaço e é anunciado como "botão". Uma `<div onclick>` não é focável, não responde ao teclado e é anunciada como texto genérico. Da mesma forma, `<label for>` dá nome a um campo, `<h1>`–`<h6>` criam uma estrutura navegável e `<nav>`, `<main>`, `<header>` viram **landmarks** para pular direto ao conteúdo.
+
+    **ARIA** (`role`, `aria-label`, `aria-expanded`...) altera só a accessibility tree — não adiciona comportamento. Por isso a primeira regra de ARIA é: se existe elemento nativo, use-o. ARIA errado é pior do que nenhum, porque promete ao usuário algo que a página não cumpre.
+
+    As diretrizes **WCAG** organizam isso em critérios testáveis (perceptível, operável, compreensível, robusto). Na prática, três verificações pegam boa parte dos problemas:
+    - navegar a página inteira **só com teclado**, vendo sempre onde está o foco;
+    - inspecionar a **accessibility tree** e conferir role e name de cada controle;
+    - ouvir a página num **leitor de tela**.
+    Ferramentas automáticas (Lighthouse, axe) acham contraste e atributos ausentes, mas não dizem se o fluxo faz sentido.
+  misconceptions:
+    - claim: Acessibilidade é só para pessoas cegas.
+      correction: Inclui baixa visão, daltonismo, deficiências motoras (só teclado ou switch), cognitivas e auditivas, além de situações temporárias como braço quebrado ou sol na tela.
+    - claim: Adicionar ARIA torna qualquer componente acessível.
+      correction: ARIA só muda o que é anunciado; foco, teclado e comportamento continuam sendo responsabilidade sua. Elementos nativos já fazem isso corretamente.
+    - claim: Se o Lighthouse dá 100 em acessibilidade, a página é acessível.
+      correction: Testes automáticos detectam uma parte dos problemas. Ordem de foco, textos sem sentido e fluxos confusos só aparecem em teste manual.
   resources:
-    start: mdn-learn
-    deeper: [roadmap-frontend]
+    start: mdn-accessibility-guide
+    deeper: [mdn-html-accessibility, wai-accessibility-intro, wai-easy-checks, chrome-devtools-accessibility-reference, mdn-accessibility-tree, wai-aria-apg, wcag-22, web-dev-learn-accessibility, orca-screen-reader, mdn-learn, roadmap-frontend]
+    videos: [chrome-debugging-accessibility-devtools-video, akitando-39-historia-front-end-video]
+  exercise:
+    id: ex-div-vs-button
+    title: A div que finge ser botão
+    prediction: Antes de testar, escreva o que acontece ao apertar Tab e depois Enter numa `<div onclick>` e num `<button>`, e como cada um aparece na accessibility tree.
+    steps:
+      - "Crie numa pasta de laboratório um `index.html` com um formulário de nova tarefa: campo de texto, botão Adicionar e uma lista de tarefas."
+      - Faça duas versões do botão — `<div class="btn" onclick=...>` e `<button>` — e um campo com placeholder sem `<label>` e outro com `<label for>`.
+      - Navegue só com Tab, Shift+Tab, Enter e Espaço e anote o que recebe foco e o que dispara.
+      - No DevTools (Elements → Accessibility), anote role e computed name de cada elemento e ative a full-page accessibility tree.
+      - Corrija a versão ruim só com HTML nativo, sem ARIA, e repita a inspeção.
+    checks:
+      - A tabela antes/depois mostra role e name de cada controle coerentes com o que você ouviu ou viu.
+      - Toda ação da página funciona só com teclado e o foco é sempre visível.
+  experiment:
+    title: Ouvir a página com um leitor de tela
+    steps:
+      - Ative o Orca (Linux) ou o leitor de tela do seu sistema e abra a página do exercício.
+      - Navegue por headings e landmarks com os atalhos do leitor e liste o que é anunciado.
+      - Quebre de propósito — remova o `<label>`, troque `<h2>` por `<div class="title">`, coloque `aria-hidden="true"` no `<main>` — e ouça de novo.
+      - Rode o painel Lighthouse (categoria Accessibility) nas duas versões e compare com o que você percebeu ouvindo.
+    observe:
+      - O anúncio exato de cada controle antes e depois de cada quebra.
+      - Quais problemas o Lighthouse detectou e quais só o teste manual revelou.
+  reflectionQuestions:
+    - Por que a accessibility tree é derivada do DOM e não do que aparece na tela?
+    - Em que situação ARIA é a ferramenta certa, e por que ela não substitui um elemento nativo?
+    - Como você incluiria uma verificação de teclado no processo de revisão de código do time?
+  completionCriteria:
+    - Mostra uma tabela com role e name de cada controle da página, extraídos do painel Accessibility do DevTools.
+    - Demonstra (vídeo curto ou roteiro) o fluxo completo de adicionar uma tarefa usando só o teclado.
+    - Apresenta a lista de problemas encontrados pelo leitor de tela que o Lighthouse não apontou.
+  evidencePrompts:
+    - Capturas da accessibility tree antes e depois da correção, com o diff do HTML.
+    - Transcrição do que o leitor de tela anunciou na versão quebrada e na corrigida.
+  firstAction: Abra qualquer página que você usa todo dia, aperte Tab cinco vezes e anote se dá para ver onde o foco está.
 
 - id: css-layout
   stage: b-frontend
   title: CSS e layout
-  status: planned
-  objective: Construir layouts responsivos com fluxo normal, flexbox e grid, explicando a cascata e a especificidade.
-  whyItMatters: Entender a cascata evita o ciclo de "!important" e layouts frágeis.
+  status: authored
+  objective: Construir layouts responsivos com fluxo normal, flexbox e grid, explicando com a ferramenta Computed do DevTools por que uma regra venceu (cascata e especificidade).
+  whyItMatters: Entender a cascata evita o ciclo de `!important` e seletores cada vez mais longos. Entender o algoritmo de layout evita "números mágicos" que quebram em outra largura de tela, outro idioma ou com zoom.
   prerequisites: [semantic-html-accessibility]
+  related: [rendering-performance]
+  explanation: |
+    Para cada elemento e cada propriedade, o navegador precisa escolher **um** valor entre várias declarações concorrentes. A **cascata** decide nesta ordem: origem e importância (navegador, autor, `!important`), **cascade layers**, **especificidade** do seletor (ids > classes/atributos/pseudo-classes > elementos) e, por fim, ordem de aparição. Algumas propriedades (cor, fonte) são **herdadas** dos ancestrais quando nada as define. A aba **Computed** do DevTools mostra o valor final e quais declarações perderam.
+
+    Depois de resolver os estilos, o navegador faz o **layout**: calcula a caixa de cada elemento. Tudo começa no **fluxo normal** — blocos empilham verticalmente, inline flui como texto. O **box model** soma content, padding, border e margin (ou não, com `box-sizing: border-box`). Margens verticais entre blocos podem colapsar.
+
+    **Flexbox** distribui itens num eixo: o container calcula o espaço livre e o divide conforme `flex-grow`, `flex-shrink` e `flex-basis`. **Grid** trabalha em duas dimensões: você define trilhas (`grid-template-columns: 1fr 2fr`) e posiciona itens nelas. Regra prática: flexbox para componentes em linha, grid para a estrutura da página — mas o importante é saber qual algoritmo está calculando o tamanho de quem.
+
+    **Responsividade** vem de unidades relativas (`rem`, `%`, `fr`, `min()`/`clamp()`), de layouts intrínsecos que se adaptam ao conteúdo e de media/container queries. A ordem visual deve continuar coerente com a ordem no HTML, senão o foco do teclado "pula" pela tela.
+  misconceptions:
+    - claim: A última regra do arquivo sempre vence.
+      correction: Ordem de aparição é o último critério; antes vêm origem, importância, layers e especificidade.
+    - claim: "`!important` é o jeito de resolver conflito de CSS."
+      correction: Ele sobe a declaração para outra camada da cascata e cria uma nova guerra. Reduza a especificidade ou use layers.
+    - claim: "`order` e `grid-area` só mudam a aparência."
+      correction: Mudam a ordem visual mas não a do DOM; leitores de tela e o Tab seguem o HTML, o que pode desorientar usuários.
   resources:
-    start: web-dev-learn
+    start: mdn-css-layout
+    deeper: [mdn-css-handling-conflicts, web-dev-learn-css-cascade, mdn-css-flexbox, mdn-css-grid, web-dev-learn-css, web-dev-learn]
+    videos: [blinkon-life-of-a-pixel]
+  exercise:
+    id: ex-cascade-detective
+    title: Detetive da cascata e o quadro de tarefas
+    prediction: Dadas cinco regras concorrentes para a cor de um botão (elemento, classe, duas classes, id e uma inline), escreva qual vence e por quê antes de abrir o navegador.
+    steps:
+      - Monte o caso das cinco regras e confira a previsão na aba Computed e na lista de Styles riscadas.
+      - "Construa um quadro de tarefas com três colunas (A fazer, Fazendo, Feito) usando grid, e cartões de tarefa com flexbox."
+      - Faça o quadro virar uma coluna só abaixo de 600px sem mudar a ordem do HTML.
+      - "Remova `box-sizing: border-box` e explique, medindo no DevTools, por que as colunas estouram."
+    checks:
+      - A explicação de cada regra vencedora cita o critério da cascata que decidiu.
+      - O layout funciona de 320px a 1440px e com zoom de 200% sem rolagem horizontal.
+  experiment:
+    title: Ver o layout pelas ferramentas
+    steps:
+      - Ative os overlays de Grid e Flexbox no painel Elements e capture as trilhas e o espaço livre.
+      - Use o modo responsivo do DevTools para varrer larguras e encontrar o ponto exato em que algo quebra.
+      - "Coloque uma tarefa com uma palavra enorme sem espaços e veja como cada algoritmo reage; corrija com `min-width: 0` ou `overflow-wrap`."
+      - Use `order` para inverter os cartões e navegue com Tab para sentir o descompasso entre ordem visual e ordem de foco.
+    observe:
+      - Tamanho computado das trilhas e dos itens em cada largura.
+      - Onde o conteúdo longo estoura e qual propriedade resolveu.
+  reflectionQuestions:
+    - Por que a especificidade é comparada por categoria e não somando pontos?
+    - Quando um tamanho deveria vir do conteúdo e quando do container?
+    - Que convenção de CSS evitaria guerras de especificidade num time?
+  completionCriteria:
+    - Explica, com captura da aba Computed, qual declaração venceu em cada um dos cinco casos e por quê.
+    - Entrega o quadro de tarefas responsivo funcionando de 320px a 1440px e com zoom de 200%.
+    - Reproduz e corrige um estouro de layout causado por conteúdo longo.
+  evidencePrompts:
+    - Capturas dos overlays de grid e flexbox com as medidas anotadas.
+    - Link do código do quadro e um GIF ou capturas em três larguras.
+  firstAction: No DevTools de qualquer página, selecione um elemento e abra a aba Computed. Clique numa propriedade para ver de onde veio o valor.
 
 - id: javascript-browser
   stage: b-frontend
   title: JavaScript e o navegador
-  status: planned
-  objective: Manipular o DOM, tratar eventos e explicar o event loop e requisições assíncronas.
-  whyItMatters: Frameworks mudam; o modelo do navegador permanece.
+  status: authored
+  objective: Manipular o DOM, tratar eventos e fazer requisições com `fetch`, explicando e observando o event loop (tasks, microtasks e renderização).
+  whyItMatters: Frameworks mudam; o modelo do navegador permanece. Quem entende o event loop sabe por que a página congela, por que um `await` muda a ordem das coisas e por que uma resposta HTTP pode chegar depois que o usuário já saiu da tela.
   prerequisites: [semantic-html-accessibility, http-protocol]
+  related: [rendering-performance, scope-environments, threads-basics]
+  explanation: |
+    O JavaScript da página roda num **único thread principal**, que também cuida de estilo, layout e pintura. Há uma **call stack**: uma função roda até terminar, sem ser interrompida por outro código JavaScript (*run-to-completion*). Enquanto ela roda, nada mais acontece na página — nem clique, nem repaint.
+
+    Trabalho assíncrono (timers, rede, eventos do usuário) é feito pelo navegador fora da stack. Quando termina, ele enfileira um callback. O **event loop** repete: pega **uma task** da fila (um evento, um `setTimeout`), executa até a stack esvaziar, **drena toda a fila de microtasks** (continuações de promises, `await`, `queueMicrotask`) e, se for hora de um frame, roda callbacks de `requestAnimationFrame`, recalcula estilo e layout e pinta.
+
+    Consequências práticas:
+    - `setTimeout(f, 0)` não roda "agora": roda numa task futura, depois das microtasks e talvez depois de um frame.
+    - Um loop pesado de 2 segundos congela a página inteira; dividir o trabalho em tasks menores devolve o controle ao navegador.
+    - Uma cadeia infinita de microtasks também congela a página, porque o render só ocorre depois que elas acabam.
+
+    O **DOM** é a API para ler e alterar a árvore do documento. Eventos se propagam em fases (captura, alvo, **bubbling**), o que permite **event delegation**: um único listener na lista trata cliques de todos os itens, inclusive dos criados depois. `fetch` devolve uma promise; trate status HTTP de erro (fetch só rejeita em falha de rede), use `AbortController` para cancelar e nunca insira texto vindo do servidor com `innerHTML` — use `textContent` para evitar XSS.
+  misconceptions:
+    - claim: "`setTimeout(fn, 0)` executa fn imediatamente após a linha atual."
+      correction: Agenda uma task; antes dela rodam o resto da stack, todas as microtasks e possivelmente um render.
+    - claim: async/await cria threads e roda código em paralelo.
+      correction: Tudo continua no mesmo thread; await só divide a função em pedaços que voltam como microtasks.
+    - claim: fetch rejeita a promise quando o servidor responde 404 ou 500.
+      correction: Só rejeita em falha de rede ou cancelamento; você precisa checar `response.ok`.
   resources:
-    start: mdn-learn
+    start: mdn-js-execution-model
+    deeper: [jake-archibald-tasks-microtasks, mdn-async-js-introducing, mdn-microtask-in-depth, mdn-using-promises, mdn-learn, web-dev-inp, owasp-cheatsheets]
+    videos: [jsconf-jake-archibald-in-the-loop, jsconf-philip-roberts-event-loop]
+  exercise:
+    id: ex-predict-the-order
+    title: Preveja a ordem do event loop
+    prediction: "Para o código com `console.log('A')`, `setTimeout(() => log('B'), 0)`, `Promise.resolve().then(() => log('C'))`, `queueMicrotask(() => log('D'))` e `log('E')`, escreva a ordem de saída e justifique cada posição."
+    steps:
+      - Rode o trecho no console e compare com a previsão; ajuste o modelo mental se errou.
+      - Adicione um `requestAnimationFrame` e um `await` dentro de uma função async e preveja de novo.
+      - "Implemente a lista de tarefas sem framework: adicionar via formulário, marcar como feita com event delegation, buscar a lista inicial com `fetch` de um JSON local."
+      - "Trate erros de rede e de status (`response.ok`) e mostre uma mensagem acessível (`role=\"status\"`)."
+      - "Tente inserir uma tarefa com texto `<img src=x onerror=alert(1)>` usando `innerHTML` e depois `textContent`."
+    checks:
+      - As previsões erradas vêm acompanhadas da regra do event loop que você não tinha considerado.
+      - A versão com `textContent` exibe o texto literal e não executa nada.
+  experiment:
+    title: Congelar a página de propósito e ver no painel Performance
+    steps:
+      - Crie um botão que roda um loop síncrono de cerca de 2 segundos e uma animação CSS/rAF na mesma página.
+      - Grave no painel Performance clicando no botão; encontre a long task no main thread e o frame perdido.
+      - Repita com o trabalho dividido em pedaços via `setTimeout` e depois com uma cadeia infinita de microtasks (cuidado — feche a aba).
+      - Na aba Network, simule rede lenta e cancele um fetch em andamento com AbortController.
+    observe:
+      - Duração da long task e quantos frames deixaram de ser pintados.
+      - Diferença entre fatiar com tasks e com microtasks na responsividade da página.
+  reflectionQuestions:
+    - Por que o navegador não consegue pintar enquanto a call stack não está vazia?
+    - Em que tipo de trabalho um Web Worker ajudaria, e o que ele não pode acessar?
+    - Que bugs aparecem quando a resposta de uma requisição antiga chega depois de uma nova?
+  completionCriteria:
+    - Prevê corretamente a ordem de saída de um trecho com tasks, microtasks e rAF e explica cada passo.
+    - Mostra no painel Performance uma long task causada pelo próprio código e a versão corrigida.
+    - Entrega a lista de tarefas com event delegation, tratamento de erros de fetch e sem XSS via innerHTML.
+  evidencePrompts:
+    - Trecho de código, previsão escrita e saída real do console lado a lado.
+    - Captura do flame chart com a long task antes e depois.
+  firstAction: "Cole no console `setTimeout(() => console.log('timeout'), 0); Promise.resolve().then(() => console.log('promise')); console.log('sync');` e explique a ordem."
 
 - id: rendering-performance
   stage: b-frontend
   title: Renderização e desempenho no navegador
-  status: planned
-  objective: Explicar o pipeline de renderização e medir desempenho com as ferramentas do navegador.
-  whyItMatters: Páginas lentas perdem usuários; medir evita otimizações às cegas.
+  status: authored
+  objective: Explicar o pipeline de renderização (style, layout, paint, composite) e medir carregamento e responsividade com o painel Performance e métricas como LCP e INP.
+  whyItMatters: Páginas lentas perdem usuários, principalmente em celulares baratos e redes ruins. Medir antes de otimizar evita trocar código legível por "otimizações" que não mudam nada no que o usuário sente.
   prerequisites: [javascript-browser, css-layout]
+  related: [profiling-benchmarks, latency-percentiles-diagnosis]
+  explanation: |
+    Do byte ao pixel, o navegador percorre um pipeline: faz o parse do HTML no **DOM** e do CSS no **CSSOM**, calcula o **style** de cada elemento, faz o **layout** (geometria de cada caixa), **paint** (gera listas de desenho por camada) e **composite** (junta as camadas, frequentemente na GPU). Para 60 quadros por segundo, cada frame tem cerca de 16 ms — e o seu JavaScript divide esse orçamento com tudo isso.
+
+    Nem toda mudança custa o mesmo. Alterar `width` ou `top` exige layout, paint e composite; `background-color`, só paint e composite; `transform` e `opacity` muitas vezes só composite. Ler uma propriedade geométrica (`offsetHeight`, `getBoundingClientRect`) depois de escrever estilos força um **layout síncrono**; fazer isso num loop é o **layout thrashing**.
+
+    No carregamento, CSS bloqueia a renderização e scripts síncronos bloqueiam o parser — por isso `defer`, `async` e o tamanho dos recursos críticos importam. As **Core Web Vitals** dão nome ao que o usuário sente: **LCP** (quando o maior conteúdo aparece), **INP** (quanto uma interação demora até o próximo frame) e **CLS** (quanto a página "pula").
+
+    O método é o mesmo de qualquer perfilamento: reproduzir em condições realistas (throttling de CPU e rede), **gravar**, achar a fatia mais cara no flame chart, mudar uma coisa e medir de novo. Medição de laboratório (DevTools, Lighthouse) é diferente de medição de campo (usuários reais); ambas contam.
+  misconceptions:
+    - claim: O DOM é lento, então qualquer acesso ao DOM deve ser evitado.
+      correction: O caro é forçar style e layout repetidamente; agrupar leituras e escritas costuma resolver.
+    - claim: Se no meu notebook está rápido, está rápido.
+      correction: Usuários reais têm CPUs várias vezes mais lentas e redes piores; use throttling e métricas de campo.
+    - claim: Animar left/top ou transform dá no mesmo.
+      correction: left/top disparam layout a cada frame; transform geralmente fica só na composição.
   resources:
-    start: web-dev-learn
+    start: web-dev-rendering-performance
+    deeper: [mdn-critical-rendering-path, chrome-devtools-performance, web-dev-layout-thrashing, web-dev-inp, web-dev-learn-performance, web-dev-learn]
+    videos: [blinkon-life-of-a-pixel, jsconf-jake-archibald-in-the-loop]
+  exercise:
+    id: ex-layout-thrashing
+    title: Provocar e corrigir layout thrashing
+    prediction: Numa lista de 1.000 tarefas, um loop que lê `offsetHeight` e escreve `style.height` em cada item será quantas vezes mais lento que um loop que lê tudo antes e escreve depois? Dê um palpite de ordem de grandeza.
+    steps:
+      - Gere 1.000 itens de tarefa e implemente o loop intercalado (lê/escreve) e o loop em duas fases (lê tudo, escreve tudo).
+      - Meça cada um com `performance.now()` em 5 execuções e anote a mediana.
+      - Grave os dois no painel Performance e localize os blocos roxos de Layout e o aviso de forced reflow.
+      - Anime um cartão com `left` e depois com `transform` e compare no Performance com o Paint flashing ligado.
+    checks:
+      - As medições mostram mediana de várias execuções, não uma só.
+      - O flame chart da versão intercalada mostra layouts repetidos que somem na versão em duas fases.
+  experiment:
+    title: Auditoria de uma página real em condições ruins
+    steps:
+      - Escolha a sua página de tarefas (ou uma página pública) e grave o carregamento com CPU 4x mais lenta e rede "Fast 4G".
+      - Identifique LCP, long tasks e recursos que bloqueiam a renderização no painel Performance.
+      - Mude uma coisa só (adicionar `defer`, dimensionar uma imagem, remover CSS não usado) e grave de novo.
+      - Rode o Lighthouse antes e depois e compare com o que você viu na gravação.
+    observe:
+      - Valor de LCP e duração das long tasks antes e depois da mudança.
+      - Quais mudanças tiveram efeito mensurável e quais não.
+  reflectionQuestions:
+    - Por que transform e opacity costumam ser mais baratos de animar?
+    - Qual a diferença entre dados de laboratório e de campo, e por que eles discordam?
+    - Como você evitaria regressões de desempenho no CI?
+  completionCriteria:
+    - Mostra a mediana de tempo das duas versões do loop e o flame chart que explica a diferença.
+    - Identifica numa gravação real o LCP, ao menos uma long task e sua origem no código.
+    - Apresenta uma otimização com medição antes e depois nas mesmas condições de throttling.
+  evidencePrompts:
+    - Tabela de medições (5 execuções por versão) e capturas do Performance.
+    - Relatório curto da auditoria com a mudança feita e o efeito medido.
+  firstAction: Abra o painel Performance numa página qualquer, ative CPU throttling 4x, grave 5 segundos rolando a página e encontre um bloco roxo de Layout.
 
 - id: frontend-testing
   stage: b-frontend
   title: Testes de frontend
-  status: planned
-  objective: Testar componentes e fluxos pelo comportamento visível ao usuário, incluindo acessibilidade.
-  whyItMatters: Interfaces quebram silenciosamente sem testes de comportamento.
+  status: authored
+  objective: Testar componentes e fluxos pelo comportamento visível ao usuário — consultas por role e nome acessível, testes end-to-end num navegador real e verificações automáticas de acessibilidade.
+  whyItMatters: Interfaces quebram silenciosamente — um botão some, um formulário para de enviar — sem que nenhum teste de função pura perceba. Testes que encontram elementos como um usuário encontra também denunciam problemas de acessibilidade.
   prerequisites: [javascript-browser, interfaces-testing]
+  related: [semantic-html-accessibility, architecture-ci]
+  explanation: |
+    Um teste de interface deve falhar quando o **usuário** seria afetado e passar quando só a implementação mudou. Testes que procuram `.btn-primary > span:nth-child(2)` quebram a cada refatoração de CSS e continuam passando se o botão ficar inacessível.
+
+    A Testing Library formaliza isso com uma **prioridade de queries**: primeiro `getByRole('button', { name: 'Adicionar' })`, depois `getByLabelText`, depois texto; `data-testid` só em último caso. `getByRole` consulta a mesma informação da **accessibility tree** — se o teste não encontra o botão pelo nome, um leitor de tela provavelmente também não encontra.
+
+    Há camadas, cada uma com seu custo:
+    - **Unitários** (Vitest) para lógica pura: formatação, filtros, validação.
+    - **Componente/DOM** (Testing Library sobre jsdom ou happy-dom) para interação: digitar, clicar, ver a lista mudar. O DOM é simulado, sem layout real.
+    - **End-to-end** (Playwright) num navegador de verdade, contra o app rodando: fluxo completo, rede, foco, teclado.
+
+    Para coisas assíncronas, espere por um **estado observável** (`findByRole`, auto-wait do Playwright), nunca por `sleep` fixo — essa é a principal fonte de testes intermitentes (*flaky*). Para a rede, controle as respostas (mock de `fetch` ou interceptação de rotas no Playwright) para testar também erros 500 e lentidão. Verificações automáticas como axe complementam, mas não substituem, o teste de teclado.
+  misconceptions:
+    - claim: Cobertura alta de linhas garante que a interface funciona.
+      correction: Cobertura mede o que executou, não o que foi verificado; um teste sem asserções sobre o que o usuário vê cobre linhas e não protege nada.
+    - claim: Testes end-to-end são sempre instáveis, então não vale a pena.
+      correction: Instabilidade costuma vir de esperas fixas e dados compartilhados; com espera por estado e dados isolados, poucos E2E críticos são confiáveis.
+    - claim: data-testid em tudo é a forma mais robusta de selecionar elementos.
+      correction: É estável, mas ignora acessibilidade; prefira role e nome acessível e reserve test ids para o que não tem semântica.
+  resources:
+    start: testing-library-guiding-principles
+    deeper: [testing-library-queries, playwright-locators, playwright-accessibility-testing, vitest-guide, wai-easy-checks, mdn-accessibility-tree]
+    videos: [kent-c-dodds-write-tests-video, chrome-debugging-accessibility-devtools-video]
+  exercise:
+    id: ex-test-like-a-user
+    title: Testar a lista de tarefas como um usuário
+    prediction: Se você trocar o `<button>` Adicionar por uma `<div>` clicável, quais dos seus testes devem falhar? Escreva antes de rodar.
+    steps:
+      - Configure Vitest com Testing Library na pasta da lista de tarefas.
+      - Escreva testes que adicionam uma tarefa digitando no campo encontrado por label e clicando no botão encontrado por role e nome.
+      - Teste o caso de erro mockando `fetch` com status 500 e verificando a mensagem com `findByRole('status')`.
+      - Troque o botão por uma div clicável e confirme que os testes por role falham; depois volte ao botão.
+      - Introduza um bug de propósito (a tarefa não é adicionada) e veja a mensagem de falha.
+    checks:
+      - Nenhum teste usa seletores de CSS ou detalhes internos do componente.
+      - Os testes falham pelos motivos previstos quando a semântica ou o comportamento quebram.
+  experiment:
+    title: E2E com Playwright, teclado e rede controlada
+    steps:
+      - Escreva um teste Playwright que adiciona e conclui uma tarefa usando apenas `page.keyboard`.
+      - Intercepte a rota da API para responder 500 e depois com atraso de 3 segundos; verifique a mensagem e o estado de carregamento.
+      - Rode a verificação automática de acessibilidade (axe) e quebre o contraste ou um label para ver a falha.
+      - Substitua uma espera por estado por um `waitForTimeout` curto, rode 20 vezes e conte as falhas intermitentes.
+    observe:
+      - Quais falhas o axe detectou e quais só o teste de teclado detectou.
+      - Taxa de falhas intermitentes com espera fixa versus espera por estado.
+  reflectionQuestions:
+    - Por que um teste que usa getByRole também é uma verificação parcial de acessibilidade?
+    - Que fluxos merecem E2E e quais ficam bem cobertos por testes de componente?
+    - O que você faria ao encontrar um teste intermitente no CI do time?
+  completionCriteria:
+    - Mostra a suíte de testes de componente passando e falhando corretamente quando o botão vira div.
+    - Demonstra um teste E2E que cobre sucesso, erro 500 e lentidão com rede interceptada.
+    - Apresenta a contagem de falhas intermitentes com espera fixa e a correção com espera por estado.
+  evidencePrompts:
+    - Saída do runner com as falhas provocadas e as mensagens de erro.
+    - Link do repositório com os testes e o comando para rodá-los.
+  firstAction: Abra a documentação "About Queries" da Testing Library e anote a ordem de prioridade das queries.
