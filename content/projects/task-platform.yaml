@@ -25,6 +25,10 @@
     - Segredos vêm do ambiente; nada de credenciais no repositório, na imagem ou nos logs.
     - Histórico Git com commits pequenos e uma tag por marco concluído.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o guia oficial \"Accessing Relational Data using JDBC with Spring\" (e, para a fase de rede, o `server.c` do Beej). Evidência: commits incrementais, anotações sobre JdbcTemplate/consultas parametrizadas e um erro provocado (ex.: concatenar SQL e mostrar a injeção, ou derrubar o banco) registrado."
+      minutes: 75
     - id: m1-cli
       title: CLI em C com persistência em arquivo
       description: "Partir do c-task-cli: escrita atômica (temporário + rename), exit codes documentados e testes em shell. Demonstrar com strace a sequência open/write/fsync/rename e com kill -9 durante a gravação que o arquivo não corrompe. (processes-streams-exit-codes)"
@@ -92,8 +96,34 @@
     - Saídas de strace, tcpdump, psql/EXPLAIN, jstack e curl anexadas aos marcos correspondentes.
     - Relatório de diagnóstico de latência com histogramas antes e depois.
     - Linha do tempo do deploy quebrado e do rollback, com métricas.
+    - "Para cada fase iniciada, um trecho da referência daquela fase reescrito de memória e comparado com o original."
   reviewQuestions:
     - Qual mecanismo de cada marco você teria de reimplementar se trocasse PostgreSQL por outro banco? E Java por outra linguagem?
     - Onde no sistema uma mensagem ou requisição pode ser processada duas vezes, e o que impede efeito duplicado em cada ponto?
     - Que sinal de observabilidade teria encurtado mais o diagnóstico que você fez no marco 8?
     - Se o rollback falhasse agora, qual seria a causa mais provável e como você teria percebido antes?
+  practice:
+    guidance: >-
+      Cada fase começa com quilometragem em código de referência. Antes do m2, redigite à mão (sem colar)
+      o `server.c` do Beej (seção 6.1) se ainda não o fez no tcp-http-lab; antes do m3/m4, redigite o guia
+      oficial do Spring "Accessing Relational Data using JDBC with Spring" num diretório novo, anotando o
+      papel do `JdbcTemplate` e do `CommandLineRunner`. Quebre de propósito (SQL concatenado em vez de
+      parâmetro, tabela inexistente, banco fora do ar) e registre o erro; depois troque o domínio
+      `Customer` por tarefas e exponha-as com o guia "Building a RESTful Web Service". Dias depois,
+      reescreva de memória o repositório JDBC de tarefas antes de integrá-lo à plataforma.
+    references:
+      - title: "Accessing Relational Data using JDBC with Spring"
+        author: "Spring (VMware/Broadcom)"
+        url: https://spring.io/guides/gs/relational-data-access
+        language: Java
+        license: "Apache-2.0 (spring-guides/gs-relational-data-access)"
+      - title: "Building a RESTful Web Service"
+        author: "Spring (VMware/Broadcom)"
+        url: https://spring.io/guides/gs/rest-service
+        language: Java
+        license: "Apache-2.0 (spring-guides/gs-rest-service)"
+      - title: "Beej's Guide to Network Programming — 6.1 A Simple Stream Server"
+        author: "Brian \"Beej Jorgensen\" Hall"
+        url: https://beej.us/guide/bgnet/html/split/client-server-background.html
+        language: C
+        license: "Código em domínio público (declarado no guia)"

@@ -24,6 +24,10 @@
     - Nenhum descritor vaza para os comandos executados (conferido em /proc/pid/fd).
     - Experimentos apenas numa pasta de laboratório, nunca como shell de login.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o `lsh` (src/main.c, ~280 linhas) de Stephen Brennan e ler/anotar o `user/sh.c` do xv6. Evidência: commits incrementais, anotações em cada fork/exec/wait e um erro provocado (ex.: não chamar wait e observar o zumbi no ps) registrado."
+      minutes: 75
     - id: m1-exec
       title: Executar um comando
       description: Laço de leitura, separação em argumentos, fork/execvp/waitpid, builtins cd e exit, exit code 127 para comando inexistente.
@@ -68,8 +72,28 @@
     - Saída do script de testes comparando msh e /bin/sh.
     - Trecho do `strace -f` de um pipeline com clone, pipe2, dup2, close, execve e wait4 anotados.
     - Demonstração gravada ou transcrita de Ctrl+C durante `sleep 100` com o shell sobrevivendo.
+    - "Laço read–parse–fork–exec–wait da referência reescrito de memória, com o diff contra o original comentado."
   reviewQuestions:
     - Por que o redirecionamento precisa acontecer entre o fork e o exec, e não antes do fork?
     - Que descritores cada processo de `a | b` deve fechar, e o que quebra se um deles ficar aberto?
     - Por que cd precisa ser um builtin e não um programa externo?
     - Como o shell distingue um filho que saiu com código 130 de um filho morto por SIGINT?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, o `lsh` de Stephen Brennan
+      acompanhando o tutorial "Write a Shell in C". Anote cada chamada de `fork`, `execvp` e `waitpid`, e
+      quebre de propósito 2–3 pontos (sem `waitpid`, `exit` faltando após `execvp` falhar, `cd` como
+      programa externo), observando com `strace -f` e `ps`. Em seguida leia e anote o `user/sh.c` do xv6,
+      que já faz redirecionamento e pipes — redigite só `runcmd` e o trecho de `PIPE`. Modifique o lsh
+      para imprimir o exit status do último comando e, dias depois, reescreva o laço principal de memória.
+    references:
+      - title: "Tutorial - Write a Shell in C (lsh)"
+        author: "Stephen Brennan"
+        url: https://brennan.io/2015/01/16/write-a-shell-in-c/
+        language: C
+        license: "Unlicense (repositório brenns10/lsh)"
+      - title: "xv6-riscv user/sh.c"
+        author: "Frans Kaashoek, Robert Morris, Russ Cox (MIT PDOS)"
+        url: https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c
+        language: C
+        license: "MIT"

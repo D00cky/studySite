@@ -26,6 +26,10 @@
     - Em C, compilar com `-Wall -Wextra -std=c17` e rodar os testes sob ASan; em Java, sem bibliotecas além do JDK e JUnit.
     - Nenhuma entrada, por pior que seja, pode derrubar o processo; erros viram mensagens.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o jlox dos capítulos Scanning, Parsing Expressions e Evaluating Expressions (Token, TokenType, Scanner, Expr, Parser, Interpreter). Evidência: commits incrementais por capítulo, anotações por regra da gramática e um erro provocado (ex.: inverter a precedência de factor/term) registrado com a saída."
+      minutes: 75
     - id: m1-tokens
       title: Tokenizador
       description: Scanner que produz tokens com tipo, lexema, linha e coluna, com testes para números, identificadores, palavras-chave, operadores e caracteres inválidos.
@@ -72,8 +76,39 @@
     - Sessão gravada do REPL mostrando sucessos e cada categoria de erro.
     - Saída do impressor de AST para expressões que mostram precedência e associatividade.
     - Relatório curto do fuzzing com as entradas que quebraram o interpretador e as correções.
+    - "Parser recursivo descendente de expressões da referência reescrito de memória, com o diff contra `Parser.java` comentado."
   reviewQuestions:
     - Onde na sua gramática a precedência entre `and`, `>` e `+` está codificada?
     - Que informação cada nó da AST guarda para que os erros de runtime apontem o lugar certo?
     - Por que o ambiente de uma closure precisa sobreviver à chamada que o criou?
     - Qual erro foi mais difícil de reportar bem, e o que você mudou no design por causa dele?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, o jlox dos capítulos 4 Scanning, 6
+      Parsing Expressions e 7 Evaluating Expressions do Crafting Interpreters (Java; quem fará o projeto
+      em C redigita em Java e depois traduz). Anote em `Parser.java` qual regra da gramática cada método
+      implementa, e quebre de propósito: inverter a ordem de `term` e `factor`, tirar o `synchronize`,
+      remover a checagem de tipos de um operador — registrando a saída. Modifique para aceitar `and`/`not`
+      e campos de uma tarefa (`priority > 2`); dias depois, reescreva de memória o Scanner e o Parser de
+      expressões.
+    references:
+      - title: "Crafting Interpreters — 4 Scanning"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/scanning.html
+        language: Java
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 6 Parsing Expressions"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/parsing-expressions.html
+        language: Java
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "Crafting Interpreters — 7 Evaluating Expressions"
+        author: "Robert Nystrom"
+        url: https://craftinginterpreters.com/evaluating-expressions.html
+        language: Java
+        license: "Código MIT; texto CC BY-NC-ND 4.0"
+      - title: "craftinginterpreters: java/com/craftinginterpreters/lox"
+        author: "Robert Nystrom"
+        url: https://github.com/munificent/craftinginterpreters/tree/master/java/com/craftinginterpreters/lox
+        language: Java
+        license: "MIT (código)"

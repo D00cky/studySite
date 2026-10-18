@@ -23,6 +23,10 @@
     - Ordem global de locks documentada no código sempre que mais de um lock for adquirido.
     - Benchmarks com várias execuções, mediana e descrição da máquina (nproc, CPU).
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão `threads-intro/t1.c` e `threads-cv/pc.c` (produtor/consumidor) do ostep-code. Evidência: commits incrementais, anotações sobre cada lock/wait/signal e um erro provocado (ex.: rodar `pc_single_cv.c` ou trocar `while` por `if`) com a saída registrada."
+      minutes: 50
     - id: m1-race
       title: Reproduzir uma condição de corrida
       description: Versão ingênua com contador global de concluídas e fila sem lock; mostrar contagens erradas e o relatório do ThreadSanitizer.
@@ -68,8 +72,31 @@
     - Relatório do TSan da versão ingênua e saída limpa da versão final.
     - Saída de thread apply all bt do deadlock anotada e o grafo de espera.
     - Tabela ou gráfico de throughput por número de workers com nproc anotado.
+    - "Produtor/consumidor com dois condition variables reescrito de memória, com o diff contra `pc.c` comentado."
   reviewQuestions:
     - Que invariantes a fila mantém e em que pontos do código elas ficam temporariamente quebradas?
     - Por que o limite da fila é uma forma de backpressure, e o que acontece sem ele quando os produtores são mais rápidos?
     - Qual das quatro condições de deadlock sua correção quebra?
     - Por que o throughput para tarefas de CPU para de crescer, enquanto o de tarefas de espera continua?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, `threads-intro/t1.c` (contador
+      compartilhado sem lock) e `threads-cv/pc.c` (produtor/consumidor com buffer limitado) do repositório
+      de código do OSTEP, lendo junto o capítulo Condition Variables. Anote cada lock, `Cond_wait` e
+      `Cond_signal` (wrappers de pthread definidos em `include/common_threads.h`, que também deve ser redigitado), e quebre de propósito: trocar `while` por `if` no wait, usar um
+      único condition variable (compare com `pc_single_cv.c`), inserir `sleep()` para forçar o pior caso.
+      Modifique o buffer para guardar jobs de tarefa em vez de inteiros e, dias depois, reescreva o
+      produtor/consumidor de memória.
+    references:
+      - title: "ostep-code: threads-cv (pc.c, pc_single_cv.c)"
+        author: "Remzi Arpaci-Dusseau"
+        url: https://github.com/remzi-arpacidusseau/ostep-code/tree/master/threads-cv
+        language: C
+      - title: "ostep-code: threads-intro (t1.c)"
+        author: "Remzi Arpaci-Dusseau"
+        url: https://github.com/remzi-arpacidusseau/ostep-code/tree/master/threads-intro
+        language: C
+      - title: "Operating Systems: Three Easy Pieces — Condition Variables"
+        author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+        url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf
+        language: C

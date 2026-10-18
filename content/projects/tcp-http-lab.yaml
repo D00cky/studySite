@@ -25,6 +25,10 @@
     - Toda chamada de sistema tem o retorno verificado e erros são registrados em stderr com `strerror(errno)`.
     - Servidor escuta só em `127.0.0.1` durante o laboratório.
   milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão `server.c` e `client.c` da seção 6 do Beej's Guide to Network Programming. Evidência: commits incrementais, anotações em getaddrinfo/socket/bind/listen/accept/recv e um erro provocado (ex.: sem SO_REUSEADDR, reiniciar e ver \"Address already in use\") registrado."
+      minutes: 50
     - id: m1-echo
       title: Servidor de eco TCP
       description: socket/bind/listen/accept, eco de linhas com loop de leitura e send_all, tratamento de recv = 0 e -1; observar handshake e FIN no tcpdump.
@@ -71,8 +75,28 @@
     - Saída do script de testes cobrindo requisições válidas, malformadas e parciais com o status recebido em cada uma.
     - Captura do tcpdump (ou arquivo .pcap aberto no Wireshark) anotada com as fases da conexão.
     - Saída do ss mostrando estados de conexão antes e depois das correções de close e timeout.
+    - "Servidor TCP mínimo (getaddrinfo → bind → listen → accept) reescrito de memória, com o diff contra `server.c` comentado."
   reviewQuestions:
     - Onde exatamente seu servidor decide que uma requisição terminou, e o que acontece se o cliente mentir no Content-Length?
     - Que recurso um cliente parado consome no seu servidor, e qual mecanismo o libera?
     - Se você trocasse TCP por UDP, que partes do seu código deixariam de fazer sentido e quais problemas novos apareceriam?
     - Quais limites do seu parser previnem quais ataques de negação de serviço?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, o "A Simple Stream Server"
+      (`server.c`) e o "A Simple Stream Client" (`client.c`) do Beej's Guide to Network Programming. Anote
+      cada chamada de socket e o que ela faz no kernel, e quebre de propósito: remover `SO_REUSEADDR`, não
+      checar o retorno de `recv`, esquecer o `close` no filho — observando com `ss -tanp`, `strace` e
+      tcpdump. Modifique o servidor para responder uma linha HTTP/1.1 fixa e teste com `curl -v`; dias
+      depois, reescreva o servidor de memória antes de começar o eco do marco 1.
+    references:
+      - title: "Beej's Guide to Network Programming — 6 Client-Server Background (6.1 A Simple Stream Server, 6.2 A Simple Stream Client)"
+        author: "Brian \"Beej Jorgensen\" Hall"
+        url: https://beej.us/guide/bgnet/html/split/client-server-background.html
+        language: C
+        license: "Código em domínio público (declarado no guia)"
+      - title: "server.c"
+        author: "Brian \"Beej Jorgensen\" Hall"
+        url: https://beej.us/guide/bgnet/examples/server.c
+        language: C
+        license: "Código em domínio público (declarado no guia)"
