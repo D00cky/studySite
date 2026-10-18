@@ -4,6 +4,17 @@ Uma imagem só: a API Spring serve também a SPA compilada, na mesma origem (ses
 funcionam sem configuração extra). O PostgreSQL roda num container próprio, numa rede interna,
 e o HTTPS fica com um **Traefik que já existe na máquina** (o app só se pendura nele via labels).
 
+## Onde está no ar
+
+- **Endereço:** https://studysite.187-127-4-191.sslip.io (o sslip.io resolve nomes que contêm o IP;
+  para um nome sem IP é preciso um domínio próprio: troque `DOMAIN` no `deploy/.env` e rode `docker compose up -d`).
+- **VPS:** projeto em `/srv/studysite`, com `deploy/.env` só legível pelo root (senha do banco gerada na máquina).
+- **Traefik:** é o do projeto `fiscview-staging` (servidor de testes). A linha
+  `--providers.docker.constraints` de `/srv/fiscview-staging/docker-compose.staging.yml` foi estendida para
+  incluir o projeto `studysite` (original em `docker-compose.staging.yml.bak-antes-studysite`). Um deploy do
+  fiscview que sobrescreva esse arquivo tira o StudySite do ar: reaplique a linha e recrie só o Traefik com
+  `docker compose -p fiscview-staging --env-file .env.staging -f docker-compose.staging.yml up -d --no-deps traefik`.
+
 ## Primeira vez
 
 ```sh
