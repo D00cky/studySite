@@ -29,7 +29,7 @@
       correction: Sem jitter, clientes que falharam ao mesmo tempo continuam tentando ao mesmo tempo, só que em intervalos maiores. O sorteio é o que espalha a carga.
   resources:
     start: aws-builders-timeouts-retries
-    deeper: [sre-book-cascading-failures, aws-exponential-backoff-and-jitter, kleppmann-cambridge-dist-sys-notes, sre-book-handling-overload, sre-book, toxiproxy, tc-netem-man, mit-65840-distributed-systems]
+    deeper: [sre-book-cascading-failures, aws-exponential-backoff-and-jitter, kleppmann-notes-1-3-rpc, kleppmann-notes-2-3-system-models, sre-book-handling-overload, toxiproxy, tc-netem-man, mit-65840-notes-lec2-rpc]
     videos: [kleppmann-ds-1-3-rpc, kleppmann-ds-2-3-system-models, mit-6824-2020-lecture-2-rpc-threads]
   exercise:
     id: ex-backoff-jitter-sim
@@ -125,7 +125,7 @@
       correction: A chave precisa nascer no cliente, antes da primeira tentativa; se o servidor gera, um retry chega sem saber qual chave usar.
   resources:
     start: aws-idempotent-apis
-    deeper: [postgres-insert-on-conflict, brandur-idempotency-keys, kleppmann-cambridge-dist-sys-notes, postgres-constraints, toxiproxy]
+    deeper: [postgres-insert-on-conflict, brandur-idempotency-keys, kleppmann-notes-5-1-manipulating-remote-state, postgres-constraints, toxiproxy]
     videos: [kleppmann-ds-5-1-replication]
   exercise:
     id: ex-idempotency-key-table
@@ -216,8 +216,8 @@
     - claim: Dar ack logo no início evita trabalho duplicado sem custo.
       correction: Isso troca duplicatas por perdas — é at-most-once. Depende do que é pior para aquele job.
   resources:
-    start: kleppmann-cambridge-dist-sys-notes
-    deeper: [rabbitmq-reliability-guide, postgres-select-for-update-skip-locked, ddia, aws-idempotent-apis]
+    start: kleppmann-notes-5-1-manipulating-remote-state
+    deeper: [rabbitmq-reliability-guide, postgres-select-for-update-skip-locked, kleppmann-notes-4-2-broadcast-delivery-order, ddia-ch11-stream-processing, aws-idempotent-apis]
     videos: [kleppmann-ds-5-1-replication, kleppmann-ds-4-2-broadcast-ordering]
   exercise:
     id: ex-pg-queue-ack-order
@@ -282,7 +282,7 @@
       resource: aws-avoiding-queue-backlogs
     - title: Ordenação por partição e logs de eventos
       why: Quando eventos do mesmo objeto precisarem ser processados em ordem com vários consumidores.
-      resource: ddia
+      resource: ddia-ch11-stream-processing
 
 - id: consistency-models
   stage: s13-distributed-systems
@@ -313,8 +313,8 @@
       correction: Caches de aplicação, réplicas de leitura e CDNs reintroduzem leituras antigas mesmo com um único banco primário.
   resources:
     start: jepsen-consistency
-    deeper: [kleppmann-cambridge-dist-sys-notes, jepsen-read-your-writes, jepsen-linearizable, postgres-replication-config, ddia, mit-65840-distributed-systems]
-    videos: [kleppmann-ds-7-2-linearizability, kleppmann-ds-7-3-eventual-consistency, kleppmann-ds-5-2-quorums, mit-6824-2020-lecture-17-cops]
+    deeper: [kleppmann-notes-7-2-linearizability, kleppmann-notes-7-3-eventual-consistency, jepsen-read-your-writes, jepsen-linearizable, postgres-replication-config, ddia-ch9-consistency-and-consensus, mit-65840-notes-lec8-linearizability]
+    videos: [kleppmann-ds-7-2-linearizability, kleppmann-ds-7-3-eventual-consistency, kleppmann-ds-5-2-quorums, mit-6824-2020-lecture-17-cops-defining-causal-consistency]
   exercise:
     id: ex-consistency-histories
     title: Classificar histórias de leitura e escrita
@@ -369,7 +369,7 @@
       resource: raft-consensus
     - title: Relógios lógicos, vector clocks e causalidade
       why: Ao ordenar eventos entre máquinas sem confiar no relógio físico.
-      resource: kleppmann-ds-lecture-series
+      resource: kleppmann-ds-4-1-logical-time
     - title: CRDTs e sistemas offline-first
       why: Em edição colaborativa ou apps que escrevem offline e sincronizam depois.
       resource: crdt-tech

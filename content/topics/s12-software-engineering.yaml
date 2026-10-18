@@ -28,8 +28,8 @@
       correction: Desempenho, segurança e disponibilidade moldam a arquitetura; descobri-los tarde costuma exigir reescrever módulos.
   resources:
     start: engsoftmoderna-cap3-requisitos
-    deeper: [engsoftmoderna-cap5-principios-de-projeto, mit-6031-reading-specifications, fowler-given-when-then, engsoftmoderna-cap7-arquitetura, dev-java]
-    videos: [akitando-144-modelagem-de-software, akitando-106-design-emergente]
+    deeper: [engsoftmoderna-cap5-principios-de-projeto, mit-6031-reading-specifications, fowler-given-when-then, engsoftmoderna-cap7-arquitetura, dev-java-packages]
+    videos: [akitando-144-modelagem-de-software-cap-2-o-problema-dos-tutoriais, akitando-106-design-emergente-domain-driven-design]
   exercise:
     id: ex-verifiable-requirements
     title: Requisitos verificáveis e mapa de módulos do sistema de tarefas
@@ -80,7 +80,7 @@
   deepDive:
     - title: Regras de arquitetura como testes (ArchUnit)
       why: Quando o time crescer e alguém começar a importar persistência no domínio sem perceber.
-      resource: archunit-user-guide
+      resource: archunit-user-guide-layer-checks
     - title: Arquitetura hexagonal e ports and adapters
       why: Quando o sistema tiver vários adaptadores (HTTP, CLI, fila) para o mesmo núcleo de domínio.
       resource: engsoftmoderna-cap7-arquitetura
@@ -119,8 +119,8 @@
       correction: Mocks em excesso fixam a sequência de chamadas internas. Prefira fakes simples e verifique o resultado observável.
   resources:
     start: engsoftmoderna-cap8-testes
-    deeper: [akita-why-test, mit-6031-reading-testing, fowler-practical-test-pyramid, junit-user-guide, fowler-test-double, testcontainers-postgres-module]
-    videos: [ian-cooper-tdd-where-did-it-go-wrong, akitando-130-projetos-testes-estimativa]
+    deeper: [akita-why-test, mit-6031-reading-testing, fowler-practical-test-pyramid, junit-user-guide-parameterized-tests, fowler-test-double, testcontainers-postgres-module]
+    videos: [ian-cooper-tdd-where-did-it-go-wrong-testing-behavior-not-details, akitando-130-projetos-testes-estimativa-cap-03-programacao-orientada-a-testes]
   exercise:
     id: ex-testable-task-service
     title: TaskService testável com relógio injetado
@@ -172,7 +172,7 @@
   deepDive:
     - title: Property-based testing
       why: Quando houver regras com muitas combinações de entrada (parsers, datas, ordenação) que exemplos escritos à mão não cobrem.
-      resource: jqwik-user-guide
+      resource: jqwik-user-guide-creating-a-property
     - title: Mutation testing
       why: Quando a cobertura parecer alta e você quiser saber se os testes realmente detectam bugs.
       resource: pitest-mutation-testing
@@ -181,7 +181,7 @@
       resource: fowler-contract-test
     - title: TDD como disciplina de design
       why: Quando quiser usar os testes para guiar a interface antes da implementação, não só para verificar depois.
-      resource: ian-cooper-tdd-where-did-it-go-wrong
+      resource: ian-cooper-tdd-where-did-it-go-wrong-red-green-refactor-explained
 
 - id: refactoring
   stage: s12-software-engineering
@@ -209,8 +209,8 @@
       correction: Testes que verificam comportamento não deveriam quebrar. Se quebraram, ou o comportamento mudou (bug) ou os testes estavam acoplados à implementação — as duas coisas merecem atenção.
   resources:
     start: engsoftmoderna-cap9-refactoring
-    deeper: [refactoring-com, refactoring-com-catalog, pro-git-ptbr, fowler-test-double]
-    videos: [fowler-workflows-of-refactoring-oop2014, ian-cooper-tdd-where-did-it-go-wrong, akitando-106-design-emergente]
+    deeper: [refactoring-catalog-extract-function, refactoring-catalog-introduce-parameter-object, refactoring-catalog-replace-loop-with-pipeline, pro-git-ptbr-2-2-gravando-alteracoes, fowler-test-double]
+    videos: [fowler-workflows-of-refactoring-oop2014, ian-cooper-tdd-where-did-it-go-wrong-red-green-refactor-explained, akitando-106-design-emergente-refactoring]
   exercise:
     id: ex-refactor-task-import
     title: Refatorar um importador de tarefas em passos pequenos
@@ -297,8 +297,8 @@
       correction: Feedback lento faz as pessoas ignorarem a CI. Ordene os passos para falhar cedo, use cache de dependências e separe testes lentos, em vez de rodar menos.
   resources:
     start: fowler-continuous-integration
-    deeper: [engsoftmoderna-cap10-devops, nygard-documenting-architecture-decisions, engsoftmoderna-cap7-arquitetura, adr-github-io, github-actions-java-maven, github-actions-docs, fowler-practical-test-pyramid]
-    videos: [farley-top-10-rules-continuous-integration, ibm-what-is-continuous-integration, github-for-beginners-actions-video, techworld-nana-github-actions]
+    deeper: [engsoftmoderna-cap10-devops, nygard-documenting-architecture-decisions, engsoftmoderna-cap7-arquitetura, adr-github-io, github-actions-java-maven, github-actions-understanding, fowler-practical-test-pyramid]
+    videos: [farley-top-10-rules-continuous-integration, ibm-what-is-continuous-integration, github-for-beginners-actions-video, techworld-nana-github-actions-demo-create-ci-workflow]
   exercise:
     id: ex-adr-and-pipeline-design
     title: Dois ADRs e o desenho do pipeline
