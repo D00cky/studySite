@@ -27,7 +27,7 @@
   resources:
     start: beej-c-pointers
     deeper: [beej-c-pointers2, cs50-memory, gdb-sample-session]
-    videos: [cs50x-lecture-4-memory-pt-video, akitando-93-hello-world-video, cs61c-fa20-lecture-04-1-pointers-video]
+    videos: [cs50x-lecture-4-memory-pt-video-ponteiros, akitando-93-hello-world-video-ponteiros, cs61c-fa20-lecture-04-1-pointers-video]
   exercise:
     id: ex-swap-and-walk
     title: swap e percurso por ponteiro
@@ -114,8 +114,8 @@
       correction: Vivem na região de dados estáticos, durante toda a execução.
   resources:
     start: ostep-memory-api
-    deeper: [akita-memory-1, ostep-address-spaces, csapp]
-    videos: [akitando-45-memoria-1-video, cs61c-fa20-lecture-05-3-memory-locations-video, akitando-94-consertando-c-video]
+    deeper: [akita-memory-1, ostep-address-spaces, csapp-3-7-procedures]
+    videos: [akitando-45-memoria-1-video, cs61c-fa20-lecture-05-3-memory-locations-video, akitando-94-consertando-c-video-segmentos-memoria-virtual]
   exercise:
     id: ex-memory-map
     title: Mapa de endereços
@@ -168,7 +168,7 @@
       resource: ostep-address-spaces
     - title: ASLR, stack canaries e proteção contra exploits
       why: Ao estudar segurança de software ou entender por que endereços mudam a cada execução.
-      resource: mit-6858-lecture-1-threat-models
+      resource: mit-6858-lecture-1-threat-models-buffer-overflow-demonstration
     - title: "Como malloc obtém memória do kernel (`brk`, `mmap`)"
       why: Ao investigar consumo de memória de um processo ou implementar um alocador próprio.
       resource: man-mmap
@@ -205,7 +205,7 @@
       correction: Em processos de longa duração, como servidores, vazamentos se acumulam até esgotar a memória.
   resources:
     start: beej-c-malloc
-    deeper: [ostep-memory-api, akita-memory-2, man-malloc, valgrind-quickstart, cert-c]
+    deeper: [ostep-memory-api, akita-memory-2, man-malloc, valgrind-quickstart, cert-c-rules-memory-management-mem]
     videos: [cs61c-fa20-lecture-05-1-dynamic-allocation-video, akitando-46-memoria-2-video, cs61c-fa20-lecture-05-5-memory-goes-bad-video]
   exercise:
     id: ex-dynamic-array-core
@@ -264,7 +264,7 @@
       resource: valgrind-massif-manual
     - title: Ownership formalizado (RAII em C++, borrow checker em Rust)
       why: Ao comparar linguagens ou adotar Rust/C++ e querer entender que regras o compilador passa a verificar por você.
-      resource: akitando-136-python-java-rust-video
+      resource: akitando-136-python-java-rust-video-cap-7-rust
 
 - id: c-strings
   stage: s04-memory-runtime
@@ -291,8 +291,8 @@
       correction: Literais normalmente estão em memória somente leitura; alterar é comportamento indefinido.
   resources:
     start: beej-c-strings
-    deeper: [beej-c-strings-ii, cert-c, asan]
-    videos: [cs50x-lecture-2-arrays-pt-video, cs50x-lecture-4-memory-pt-video, akitando-94-consertando-c-video]
+    deeper: [beej-c-strings-ii, cert-c-rules-characters-and-strings-str, asan]
+    videos: [cs50x-lecture-2-arrays-pt-video-strings, cs50x-lecture-4-memory-pt-video-strings, akitando-94-consertando-c-video]
   exercise:
     id: ex-safe-strings
     title: Implementar strlen e uma cópia segura
@@ -351,7 +351,7 @@
       resource: llvm-libfuzzer
     - title: Regras do CERT C para strings
       why: Em revisão de código com foco em segurança ou ao escrever C que processa entrada externa.
-      resource: cert-c
+      resource: cert-c-rules-characters-and-strings-str
 
 - id: memory-debugging
   stage: s04-memory-runtime
@@ -388,7 +388,7 @@
   resources:
     start: gdb-sample-session
     deeper: [valgrind-quickstart, asan, missing-semester-debugging, akita-fixing-c]
-    videos: [sorber-valgrind-video, missing-semester-2026-lecture-4-debugging-profiling-video, sorber-address-sanitizer-video]
+    videos: [sorber-valgrind-video, missing-semester-2026-lecture-4-debugging-profiling-video-debugging, missing-semester-2026-lecture-4-debugging-profiling-video-sanitizers, missing-semester-2026-lecture-4-debugging-profiling-video-valgrind, sorber-address-sanitizer-video]
   exercise:
     id: ex-debug-journal
     title: Diário de depuração

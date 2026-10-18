@@ -26,8 +26,8 @@
       correction: Ele vira o exit code que o shell e os scripts usam para decidir sucesso ou falha.
   resources:
     start: beej-c-functions
-    deeper: [beej-c-variables, akita-hello-world, cs50-week1, cppreference-c]
-    videos: [akitando-93-hello-world-video, cs50x-lecture-1-c-pt-video, cs50x-lecture-1-c-video]
+    deeper: [beej-c-variables, akita-hello-world, cs50-week1, cppreference-c-arithmetic-types, cppreference-c-functions]
+    videos: [akitando-93-hello-world-video-inteiros, cs50x-lecture-1-c-pt-video-tipos, cs50x-lecture-1-c-pt-video-funcoes, cs50x-lecture-1-c-video-types, cs50x-lecture-1-c-video-functions]
   exercise:
     id: ex-c-functions
     title: Calculadora de linha de comando
@@ -107,8 +107,8 @@
       correction: Pode haver padding para alinhamento; a ordem dos campos muda o tamanho.
   resources:
     start: beej-c-arrays
-    deeper: [beej-c-structs, cs50-week2, asan, cppreference-c]
-    videos: [cs50x-lecture-2-arrays-pt-video, cs61c-fa20-lecture-04-3-arrays-video, sorber-struct-packing-video]
+    deeper: [beej-c-structs, cs50-week2, asan, cppreference-c-array, cppreference-c-struct]
+    videos: [cs50x-lecture-2-arrays-pt-video-vetores-arrays, cs61c-fa20-lecture-04-3-arrays-video, sorber-struct-packing-video]
   exercise:
     id: ex-struct-layout
     title: Medir o layout de uma struct
@@ -161,7 +161,7 @@
       resource: cppreference-c-objects-alignment
     - title: Layout de dados e cache (array of structs vs struct of arrays)
       why: Quando percorrer milhões de registros ficar lento e a localidade de memória começar a importar.
-      resource: mike-acton-data-oriented-design-cppcon-2014
+      resource: mike-acton-data-oriented-design-cppcon-2014-memory-access-and-performance
     - title: VLAs, flexible array members e arrays multidimensionais
       why: Ao ler código de kernel/bibliotecas que usa `struct { size_t n; int dados[]; }` ou matrizes passadas para funções.
       resource: beej-c-arrays
@@ -191,7 +191,7 @@
       correction: Vê a unidade de tradução já pré-processada, que pode ter milhares de linhas.
   resources:
     start: beej-c-preprocessor
-    deeper: [gcc-overall-options, cppreference-c]
+    deeper: [gcc-overall-options, cppreference-c-preprocessor]
     videos: [sorber-preprocessor-macros-video, sorber-header-guards-video]
   exercise:
     id: ex-preprocess-output
@@ -277,8 +277,8 @@
       correction: Só o programa final precisa de um main. Arquivos de biblioteca compilam com -c sem main.
   resources:
     start: gcc-overall-options
-    deeper: [akita-hello-world, beej-c-hello-world, akita-compiled-interpreted, godbolt, csapp]
-    videos: [cs61c-fa20-lecture-13-2-compiler-video, cs61c-fa20-lecture-13-3-assembler-video, akitando-117-compilada-interpretada-video]
+    deeper: [akita-hello-world, beej-c-hello-world, akita-compiled-interpreted, godbolt, csapp-1-2-programs-translated]
+    videos: [cs61c-fa20-lecture-13-2-compiler-video, cs61c-fa20-lecture-13-3-assembler-video, akitando-117-compilada-interpretada-video-fases-de-um-compilador]
   exercise:
     id: ex-pipeline-stages
     title: Parar em cada etapa
@@ -332,7 +332,7 @@
       resource: gcc-optimize-options
     - title: Ler assembly x86-64 e convenção de chamada
       why: Ao depurar crashes sem código-fonte, analisar desempenho fino ou estudar segurança (exploits).
-      resource: csapp
+      resource: csapp-3-machine-level-representation
     - title: Formato ELF, seções e ponto de entrada (`_start` antes de `main`)
       why: Ao estudar loaders, containers mínimos ou ferramentas como strace e gdb por dentro.
       resource: cs61c-fa20-lecture-13-5-loader-video
@@ -366,7 +366,7 @@
       correction: Com linking dinâmico, partes como a libc são carregadas de arquivos externos na execução.
   resources:
     start: beej-c-multifile
-    deeper: [gcc-overall-options, csapp]
+    deeper: [gcc-overall-options, csapp-7-linking]
     videos: [sorber-multiple-files-video, cs61c-fa20-lecture-13-4-linker-video, cs61c-fa20-lecture-13-5-loader-video]
   exercise:
     id: ex-multifile-build
