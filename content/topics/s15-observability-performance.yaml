@@ -3,28 +3,206 @@
 - id: logs-metrics-traces
   stage: s15-observability-performance
   title: Logs, métricas e traces
-  status: planned
+  status: authored
   objective: Instrumentar um serviço com logs estruturados, métricas e traces, e usar cada um para responder perguntas diferentes.
-  whyItMatters: Sem observabilidade, diagnosticar produção é adivinhação.
+  whyItMatters: Sem observabilidade, diagnosticar produção é adivinhação. Saber qual sinal responde qual pergunta evita tanto o serviço mudo quanto o serviço que gera gigabytes de log sem ajudar ninguém.
   prerequisites: [http-protocol, processes-streams-exit-codes]
+  related: [spring-web-backend, latency-percentiles-diagnosis, health-checks-rollback, partial-failure-retries]
+  explanation: |
+    Os três sinais respondem perguntas diferentes:
+
+    - **Logs**: *o que aconteceu neste evento específico?* Um registro por evento, com contexto. Em produção, prefira **logs estruturados** (uma linha JSON com campos como `level`, `msg`, `task_id`, `trace_id`, `duration_ms`) em vez de frases livres: assim dá para filtrar e agregar com `jq` ou um sistema de busca, e não com regex frágil.
+    - **Métricas**: *como o sistema está se comportando no agregado?* Números baratos agregados no próprio processo — contadores (`http_requests_total`), gauges (`queue_depth`) e histogramas (`http_request_duration_seconds`). Uma métrica custa o mesmo com 10 ou 10 milhões de requisições; por isso serve para alertas e dashboards, mas perde o detalhe de cada evento.
+    - **Traces**: *por onde esta requisição passou e onde gastou tempo?* Um trace é uma árvore de **spans** (operações com início, fim e atributos). O `trace_id` é propagado entre serviços (no HTTP, pelo cabeçalho `traceparent` do W3C Trace Context), e cada span filho aponta para o pai.
+
+    O mecanismo que une os três é o **contexto**: se o log de uma requisição carrega o mesmo `trace_id` do span, você salta do alerta (métrica) para os traces lentos e deles para os logs exatos. O **OpenTelemetry** padroniza API, SDK e formato de exportação (OTLP) para os três sinais, de modo que o código não fica preso a um fornecedor.
+
+    Cuidados de engenharia: **cardinalidade** (nunca use `task_id` ou `user_id` como label de métrica — cada valor vira uma série nova), **custo** (amostragem de traces) e **segurança** (logs não podem conter senhas, tokens ou dados pessoais desnecessários). Monitore primeiro os sintomas que o usuário sente — latência, tráfego, erros e saturação — e use o resto para chegar à causa.
+  misconceptions:
+    - claim: Quanto mais log, melhor a observabilidade.
+      correction: Volume sem estrutura e sem correlação só aumenta custo e ruído. Logs estruturados com campos de contexto e trace_id valem mais que muitas frases soltas.
+    - claim: Métricas e logs são intercambiáveis; dá para tirar métricas contando linhas de log.
+      correction: Dá, mas é caro e frágil. Métricas são agregadas no processo com custo constante; logs são por evento. Cada um tem seu papel.
+    - claim: Colocar o id do usuário como label de métrica ajuda a depurar.
+      correction: Labels de alta cardinalidade explodem o número de séries e derrubam o backend de métricas. Esse detalhe pertence a logs e traces.
   resources:
-    start: sre-book
+    start: otel-observability-primer
+    deeper: [sre-book-monitoring-distributed-systems, otel-signals, otel-java, otel-java-agent, sre-book]
+    videos: [missing-semester-2026-lecture-4-debugging-profiling-video]
+  exercise:
+    id: ex-instrument-task-service
+    title: Instrumentar o serviço de tarefas à mão
+    prediction: Antes de começar, escreva qual sinal (log, métrica ou trace) você usaria para responder a cada pergunta — "quantas tarefas foram criadas na última hora?", "por que a criação da tarefa 42 falhou?", "a criação está lenta no banco ou no handler?".
+    steps:
+      - "No serviço HTTP de tarefas (Java/Spring ou o servidor do projeto), troque os `println`/logs livres por logs estruturados em JSON com `level`, `msg`, `route`, `status`, `duration_ms` e `task_id`."
+      - "Adicione um filtro que gera um `request_id` por requisição (ou lê o `traceparent` recebido) e o inclui em todos os logs daquela requisição."
+      - "Exponha um contador `tasks_created_total` e um histograma de duração por rota (Micrometer ou a API de métricas do OpenTelemetry) e leia os valores com `curl` no endpoint de métricas."
+      - "Crie spans manuais para `handler`, `validação` e `INSERT no PostgreSQL` com o SDK do OpenTelemetry e exporte para o console (logging exporter) ou para um Jaeger local em container."
+      - "Provoque um erro (tarefa com título vazio, banco desligado) e responda às três perguntas da previsão usando só os sinais coletados."
+    checks:
+      - "Um `jq 'select(.request_id==\"...\")'` sobre o log devolve todas as linhas de uma única requisição."
+      - O contador e o histograma mudam de forma coerente após um laço de 100 requisições com curl.
+      - O trace mostra os três spans aninhados com durações que somam aproximadamente a duração total.
+  experiment:
+    title: Cardinalidade, vazamento de dados e propagação de contexto
+    project: task-platform
+    steps:
+      - "Num laboratório local, adicione de propósito o `task_id` como label do histograma, gere 5 000 tarefas e compare o tamanho da resposta do endpoint de métricas antes e depois."
+      - "Faça o serviço logar o corpo inteiro da requisição, envie um cabeçalho `Authorization` falso e procure o token no log com `grep`. Corrija com uma lista de campos permitidos."
+      - "Chame o serviço com `curl -H 'traceparent: 00-<32 hex>-<16 hex>-01'` e verifique se o trace_id recebido aparece nos logs e nos spans exportados."
+    observe:
+      - Número de séries e bytes no endpoint de métricas com e sem o label de alta cardinalidade.
+      - A linha de log que vazou o token e a versão corrigida.
+      - O mesmo trace_id no cabeçalho enviado, nos logs e no exporter.
+  reflectionQuestions:
+    - Que pergunta sobre o seu serviço nenhum dos três sinais consegue responder hoje?
+    - Por que alertar em sintomas (latência, erros) costuma ser melhor do que alertar em causas (CPU alta)?
+    - O que deveria acontecer com a requisição se o exporter de traces estiver fora do ar?
+  completionCriteria:
+    - Mostra logs JSON de uma requisição filtrados por request_id/trace_id com jq.
+    - Mostra um histograma de latência e um contador expostos pelo serviço, com valores coerentes com uma carga gerada.
+    - Mostra um trace com spans aninhados de handler e banco, e explica a diferença de cardinalidade entre labels de métrica e atributos de span.
+  evidencePrompts:
+    - Trecho do log estruturado, saída do endpoint de métricas e captura/saída do trace da mesma requisição.
+    - Antes e depois do experimento de cardinalidade e do vazamento de token, com a correção aplicada.
+  firstAction: Rode o serviço de tarefas, faça um `curl` de criação e copie a linha de log gerada. Liste quais campos faltam para você saber quem, o quê, quanto tempo e com que resultado.
 
 - id: profiling-benchmarks
   stage: s15-observability-performance
   title: Profiling e benchmarks
-  status: planned
+  status: authored
   objective: Medir onde o tempo é gasto com profilers e escrever benchmarks que resistem a ruído.
-  whyItMatters: Otimizar sem medir costuma piorar o código sem melhorar o desempenho.
+  whyItMatters: Otimizar sem medir costuma piorar o código sem melhorar o desempenho. Profilers mostram onde o tempo vai; benchmarks bem feitos dizem se a mudança realmente ajudou.
   prerequisites: [cpu-memory-caches, complexity-analysis]
+  related: [latency-percentiles-diagnosis, java-fundamentals, hash-tables, systems-io-performance]
+  explanation: |
+    **Profiling** responde *onde* o tempo é gasto. Um profiler por amostragem como o `perf` interrompe o programa centenas de vezes por segundo e anota a pilha de chamadas naquele instante. Funções que aparecem em muitas amostras consomem muita CPU. O custo é baixo e não exige mudar o código — mas precisa de símbolos (`-g`, frame pointers) para mostrar nomes legíveis.
+
+    Um **flame graph** empilha essas amostras: cada caixa é uma função, a largura é a proporção de amostras em que ela (ou algo que ela chamou) estava na pilha, e o eixo vertical é a profundidade da chamada. O eixo x **não** é tempo; é ordenado alfabeticamente para juntar pilhas iguais. Procure as "mesas largas" no topo: é ali que a CPU está de fato. Para Java, o JIT gera código em tempo de execução, então use um profiler que entende a JVM (async-profiler, JFR) ou o mapa de símbolos do perf.
+
+    **Benchmarks** respondem *quanto* algo custa e se uma mudança melhorou. Os erros clássicos:
+    - medir uma única execução (ruído de cache, frequência da CPU, outros processos);
+    - não aquecer: na JVM, as primeiras iterações rodam interpretadas antes do JIT compilar;
+    - **dead code elimination**: o compilador remove cálculos cujo resultado ninguém usa e você mede o nada;
+    - comparar médias sem olhar a variação.
+
+    O **JMH** existe para isso: separa warmup de medição, roda em forks da JVM, oferece `Blackhole` para consumir resultados e reporta erro estatístico. Em C, o equivalente manual é repetir muitas vezes, descartar as primeiras rodadas, usar `clock_gettime(CLOCK_MONOTONIC)` e reportar mediana e dispersão. Regra de ouro: **perfile para achar o gargalo, faça benchmark para confirmar a melhoria**, e ancore tudo na complexidade esperada — um O(n²) não vira O(n) com micro-otimizações.
+  misconceptions:
+    - claim: No flame graph, quanto mais à esquerda, mais cedo a função rodou.
+      correction: O eixo x não é tempo; as pilhas são ordenadas para agrupar iguais. Largura é proporção de amostras.
+    - claim: Medir um laço com System.nanoTime() em volta é um benchmark confiável em Java.
+      correction: Sem warmup, forks e consumo do resultado, você mede interpretação, JIT ou código eliminado. Use JMH.
+    - claim: Se a função é chamada muitas vezes, ela é o gargalo.
+      correction: Número de chamadas não é tempo. Um profiler por amostragem mostra onde a CPU realmente está; uma função chamada uma vez pode dominar.
   resources:
-    start: brendan-gregg-perf
+    start: brendan-gregg-flame-graphs
+    deeper: [openjdk-jmh, openjdk-jmh-samples, brendan-gregg-perf-examples, brendan-gregg-perf, missing-semester-debugging]
+    videos: [usenix-lisa13-flame-graphs, missing-semester-2026-lecture-4-debugging-profiling-video, brendan-gregg-linux-performance-tools-part-1]
+  exercise:
+    id: ex-flamegraph-and-jmh
+    title: Flame graph em C e benchmark JMH em Java
+    prediction: "Antes de medir, escreva qual parte vai dominar o tempo de `tasks search <termo>` sobre 1 milhão de tarefas: leitura do arquivo, parsing das linhas ou comparação de strings. E qual será mais rápida em Java para buscar por id: `ArrayList` com busca linear ou `HashMap`, com 10, 1 000 e 100 000 itens?"
+    steps:
+      - "Gere um arquivo de 1 milhão de tarefas para a CLI em C e implemente `tasks search` com `strstr`."
+      - "Compile com `-O2 -g -fno-omit-frame-pointer`, rode `perf record -g ./tasks search foo` e depois `perf report`; gere o flame graph com os scripts do FlameGraph (`stackcollapse-perf.pl` e `flamegraph.pl`)."
+      - "Identifique a caixa mais larga do topo, faça uma mudança (ex.: evitar `malloc` por linha, ler em blocos maiores) e gere o flame graph de novo."
+      - "Num projeto Maven separado, crie um benchmark JMH (`@Benchmark`, `@State`, `@Param({\"10\",\"1000\",\"100000\"})`) comparando busca por id em `ArrayList` e `HashMap`."
+      - "Escreva uma variante errada que não consome o resultado e compare com a versão que usa `Blackhole.consume`."
+    checks:
+      - Os dois flame graphs (antes/depois) mostram a mudança na caixa que você otimizou, e o tempo total medido com `perf stat` caiu.
+      - A tabela do JMH tem score e erro para cada tamanho, e você explica onde as curvas se cruzam.
+      - A variante sem Blackhole dá um resultado implausível (próximo de zero), e você explica por quê.
+  experiment:
+    title: Ruído, warmup e o custo do cache
+    steps:
+      - "Rode o mesmo benchmark C 30 vezes com `hyperfine` (ou um laço em shell com `/usr/bin/time`) e registre mínimo, mediana e máximo."
+      - "Repita enquanto outro processo pesado roda (`stress-ng --cpu` ou um laço infinito) e compare a dispersão."
+      - "No JMH, rode com `-wi 0 -i 10` (sem warmup) e com warmup padrão; compare as primeiras iterações."
+      - "Use `perf stat -e cache-misses,instructions,cycles` na busca linear sobre um array de structs versus uma lista encadeada com os mesmos dados."
+    observe:
+      - A diferença entre mediana e máximo com e sem carga concorrente.
+      - As iterações iniciais do JMH sem warmup comparadas com as estáveis.
+      - Instruções por ciclo e cache-misses no array versus na lista encadeada.
+  reflectionQuestions:
+    - Por que um profiler por amostragem pode não ver uma função muito curta, e quando isso importa?
+    - Como você decidiria se uma melhoria de 3% no benchmark é real ou ruído?
+    - Em que situação otimizar a constante é inútil porque o problema está na complexidade?
+  completionCriteria:
+    - Gera e interpreta um flame graph da CLI em C, apontando a função dominante.
+    - Apresenta um benchmark JMH com warmup, forks, parâmetros e erro estatístico, e uma variante que demonstra dead code elimination.
+    - Mostra a dispersão de 30 execuções com e sem ruído e justifica qual estatística reportar.
+  evidencePrompts:
+    - Flame graphs (SVG) antes e depois, com uma frase explicando a mudança.
+    - Saída do JMH com a tabela de resultados e o código do benchmark.
+  firstAction: Rode `perf stat ls -R /usr > /dev/null` e anote quantas instruções, ciclos e context switches aparecem.
 
 - id: latency-percentiles-diagnosis
   stage: s15-observability-performance
   title: Latência, p95/p99 e diagnóstico
-  status: planned
+  status: authored
   objective: Interpretar distribuições de latência e conduzir um diagnóstico de lentidão do sintoma à causa.
-  whyItMatters: Médias escondem os usuários que mais sofrem; p99 revela.
+  whyItMatters: Médias escondem os usuários que mais sofrem; p99 revela. E quando a latência sobe, um método de diagnóstico evita horas de tentativa e erro.
   prerequisites: [logs-metrics-traces, profiling-benchmarks, query-plans]
+  related: [indexes, bounded-queues, timeouts-caching, isolation-locks]
   mathThreads: [probability]
+  explanation: |
+    Latência não é um número, é uma **distribuição**. O **p99** é o valor abaixo do qual estão 99% das requisições: 1 em cada 100 é mais lenta que ele. Distribuições de latência costumam ter **cauda longa** — a maioria rápida, algumas muito lentas (GC, lock, cache frio, retry, disco). A média mistura tudo e não corresponde à experiência de ninguém; a mediana (p50) mostra o caso típico; p95/p99/máximo mostram a cauda.
+
+    A cauda importa mais do que parece. Se uma página faz 20 chamadas independentes ao serviço, a chance de pelo menos uma cair acima do p99 é `1 - 0,99^20 ≈ 18%`. O p99 do serviço vira a experiência comum do usuário. Por isso SLOs são escritos em percentis ("99% das requisições abaixo de 300 ms").
+
+    Medir também tem armadilhas:
+    - **Percentis não se somam nem se tiram média**: a média dos p99 de 10 servidores não é o p99 do conjunto. Agregue histogramas e calcule o percentil depois.
+    - **Coordinated omission**: um gerador de carga que espera a resposta antes de mandar a próxima requisição para de medir justamente quando o sistema trava, e esconde a cauda. Geradores de taxa constante (como `wrk2`) e registro em histogramas (HdrHistogram) evitam isso.
+    - Latência cresce de forma não linear com a **utilização**: perto de 100%, filas crescem e a cauda explode.
+
+    **Diagnóstico** vai do sintoma à causa por hipóteses testáveis: confirme o sintoma (qual percentil, qual rota, desde quando — compare com deploys), localize com traces (handler? banco? fila?), verifique recursos com o **USE method** (utilização, saturação e erros de CPU, memória, disco, rede, pool de conexões) e desça às ferramentas específicas — `EXPLAIN ANALYZE` para a query, `perf`/flame graph para CPU, `jstack` para threads bloqueadas. Cada passo elimina hipóteses; anote o que descartou e por quê.
+  misconceptions:
+    - claim: Se a latência média está boa, os usuários estão satisfeitos.
+      correction: A média esconde a cauda. Com muitas chamadas por página, quase todo usuário acaba sentindo o p99.
+    - claim: Dá para calcular o p99 global tirando a média dos p99 de cada instância.
+      correction: Percentis não são agregáveis assim. Some os histogramas e calcule o percentil do total.
+    - claim: Um teste de carga que manda uma requisição após a outra mede a latência real.
+      correction: Esse padrão sofre de coordinated omission; durante uma pausa ele simplesmente não envia requisições e a cauda some da medição.
+  resources:
+    start: brendan-gregg-use-method
+    deeper: [sre-book-monitoring-distributed-systems, sre-book-service-level-objectives, sre-book-effective-troubleshooting, hdrhistogram, postgres-explain]
+    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres]
+  exercise:
+    id: ex-percentiles-by-hand
+    title: Percentis a partir de dados medidos
+    prediction: "O serviço de tarefas tem um endpoint `GET /tasks?search=` sem índice. Antes de medir, chute p50, p99 e máximo com 10 000 tarefas sob 20 req/s, e diga qual vai mudar mais quando subir para 100 req/s."
+    steps:
+      - "Gere carga com taxa fixa (`wrk2 -R 20` ou um script com `curl` em paralelo que agenda requisições pelo relógio) e salve a latência de cada requisição num arquivo."
+      - "Calcule à mão (script de 15 linhas em Python, awk ou Java) média, p50, p90, p99 e máximo ordenando as amostras; não use biblioteca de percentil."
+      - "Desenhe um histograma em buckets logarítmicos e marque média e p99."
+      - "Repita a 100 req/s e compare as distribuições."
+      - "Calcule a probabilidade de uma página que faz 10 chamadas a esse endpoint encontrar ao menos uma acima do p99 medido."
+    checks:
+      - Seus percentis batem com os do wrk2 (ou do HdrHistogram) dentro de uma margem pequena, e você explica qualquer diferença.
+      - O histograma mostra a cauda, e média e p50 estão em lugares diferentes.
+      - O cálculo de probabilidade está correto e conectado à experiência do usuário.
+  experiment:
+    title: Diagnóstico do sintoma à causa
+    project: task-platform
+    steps:
+      - "Peça a um colega que introduza um problema escondido no laboratório (remover um índice, um `Thread.sleep` aleatório em 2% das requisições, pool de conexões com tamanho 1 ou um lock global)."
+      - "Comece pelo sintoma: qual percentil subiu, em qual rota, desde quando. Escreva a hipótese antes de cada passo."
+      - "Use traces para localizar a camada, o USE method para recursos (`vmstat 1`, `iostat -x 1`, métricas do pool) e a ferramenta específica (`EXPLAIN ANALYZE`, `jstack`, `perf`)."
+      - "Corrija, meça de novo a mesma carga e compare as distribuições."
+      - "Repita a medição com um gerador fechado (uma requisição por vez) e compare com o de taxa fixa para ver a coordinated omission."
+    observe:
+      - O caderno de hipóteses com o que cada evidência descartou.
+      - p50, p99 e máximo antes e depois da correção, sob a mesma carga.
+      - A diferença de p99 entre o gerador fechado e o de taxa fixa durante as pausas.
+  reflectionQuestions:
+    - Por que o p99 do seu serviço pode ser o p50 da experiência do usuário?
+    - Que evidência faria você abandonar a hipótese "o banco está lento"?
+    - Como você escreveria um SLO de latência para a criação de tarefas, e o que faria quando ele fosse violado?
+  completionCriteria:
+    - Calcula p50/p90/p99/máximo de amostras medidas com código próprio e confere com uma ferramenta.
+    - Mostra um histograma de latência com cauda e explica por que a média engana nele.
+    - Apresenta um diagnóstico escrito, do sintoma à causa, com hipóteses, ferramentas usadas e medição antes/depois.
+  evidencePrompts:
+    - Arquivo de amostras, script de percentis e histograma das duas cargas.
+    - Relatório de diagnóstico com saída de EXPLAIN ANALYZE, jstack ou perf que confirmou a causa.
+  firstAction: "Rode `for i in $(seq 50); do curl -s -o /dev/null -w '%{time_total}\\n' localhost:8080/tasks; done | sort -n` e leia o 25º e o 50º valores."
