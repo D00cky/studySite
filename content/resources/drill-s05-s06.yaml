@@ -14,20 +14,6 @@
   section: "2.3 Quicksort"
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: algs4-balanced-search-trees
-  title: "Algorithms, 4th Edition — 3.3 Balanced Search Trees"
-  author: Robert Sedgewick e Kevin Wayne
-  url: https://algs4.cs.princeton.edu/33balanced/
-  language: en
-  format: book
-  difficulty: intermediate
-  topics: [binary-search-trees]
-  why: Árvores 2-3 e rubro-negras (left-leaning) com rotações explicadas passo a passo e garantia de altura logarítmica.
-  access: free
-  priority: optional
-  section: "3.3 Balanced Search Trees"
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: algs4-tries
   title: "Algorithms, 4th Edition — 5.2 Tries"
   author: Robert Sedgewick e Kevin Wayne
