@@ -1,0 +1,728 @@
+# Recursos das etapas s13 (sistemas distribuídos) e s14 (segurança).
+# Todas as URLs foram abertas em 2026-10-18 (curl com HTTP 200 e título conferido;
+# vídeos e playlists do YouTube conferidos pelo endpoint oEmbed).
+
+# --- s13: falha parcial, retries, idempotência, filas, consistência -----------
+
+- id: aws-timeouts-retries-backoff-jitter
+  title: Timeouts, retries, and backoff with jitter
+  author: Marc Brooker (Amazon Builders' Library)
+  url: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Explica, com a experiência da Amazon, como escolher timeouts, quando retries amplificam carga e por que backoff exponencial precisa de jitter.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: aws-exponential-backoff-and-jitter
+  title: Exponential Backoff And Jitter
+  author: Marc Brooker (AWS Architecture Blog)
+  url: https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Compara por simulação backoff sem jitter, full jitter e decorrelated jitter, mostrando o efeito no número de chamadas e no tempo total.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book-cascading-failures
+  title: "Site Reliability Engineering — Chapter 22: Addressing Cascading Failures"
+  author: Google
+  url: https://sre.google/sre-book/addressing-cascading-failures/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Mostra como sobrecarga, retries e timeouts mal calibrados se propagam entre serviços, e como orçamentos de retry e deadlines contêm a falha.
+  section: "Chapter 22 - Addressing Cascading Failures"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book-handling-overload
+  title: "Site Reliability Engineering — Handling Overload"
+  author: Google
+  url: https://sre.google/sre-book/handling-overload/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Throttling do lado do cliente, criticidade de requisições e quando desistir de tentar de novo.
+  section: Handling Overload
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: tc-netem-man
+  title: tc-netem(8) - Linux manual page
+  author: man7.org (Linux man-pages)
+  url: https://man7.org/linux/man-pages/man8/tc-netem.8.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Referência do netem para adicionar latência, perda e duplicação de pacotes numa interface local (por exemplo, a de um container de laboratório).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: toxiproxy
+  title: "Toxiproxy: A TCP proxy to simulate network and system conditions"
+  author: Shopify
+  url: https://github.com/Shopify/toxiproxy
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [partial-failure-retries, idempotency]
+  why: Proxy TCP local que injeta latência, timeouts e cortes de conexão entre a aplicação e o PostgreSQL, sem precisar de privilégios de root.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: aws-idempotent-apis
+  title: Making retries safe with idempotent APIs
+  author: Malcolm Featonby (Amazon Builders' Library)
+  url: https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [idempotency]
+  why: Como um client request identifier transforma uma operação de criação em algo que pode ser repetido, e o que responder quando a mesma chave chega com parâmetros diferentes.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brandur-idempotency-keys
+  title: Implementing Stripe-like Idempotency Keys in Postgres
+  author: Brandur Leach
+  url: https://brandur.org/idempotency-keys
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [idempotency]
+  why: Implementação detalhada de chaves de idempotência em PostgreSQL, com recovery points e transações, para quem quer ir além da constraint UNIQUE.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-insert-on-conflict
+  title: "PostgreSQL Documentation: INSERT (ON CONFLICT)"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-insert.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [idempotency]
+  why: Semântica exata de INSERT ... ON CONFLICT DO NOTHING / DO UPDATE e RETURNING, base para registrar uma chave de idempotência de forma atômica.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-select-for-update-skip-locked
+  title: "PostgreSQL Documentation: SELECT (The Locking Clause)"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-select.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [queues-delivery-semantics]
+  why: FOR UPDATE SKIP LOCKED permite usar uma tabela como fila com vários workers sem que dois peguem o mesmo job.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rabbitmq-reliability-guide
+  title: Reliability Guide
+  author: RabbitMQ
+  url: https://www.rabbitmq.com/docs/reliability
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [queues-delivery-semantics]
+  why: Explica acknowledgements, publisher confirms e por que consumidores precisam lidar com mensagens reentregues — semântica de entrega vista por um broker real.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-cambridge-dist-sys-notes
+  title: "Distributed Systems (University of Cambridge, lecture notes 2021/22)"
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [partial-failure-retries, idempotency, queues-delivery-semantics, consistency-models]
+  why: Notas gratuitas e curtas que acompanham as aulas em vídeo; cobrem modelos de falha, idempotência e semânticas de entrega, quorums e read-after-write, linearizability e consistência eventual.
+  section: "1.3 Example: Remote Procedure Calls (RPC) · 2.3 Describing nodes and network behaviour · 5.1 Manipulating remote state · 5.2 Quorums · 7.2 Linearizability · 7.3 Eventual consistency"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jepsen-read-your-writes
+  title: Read Your Writes (Jepsen)
+  author: Jepsen
+  url: https://jepsen.io/consistency/models/read-your-writes
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [consistency-models]
+  why: Definição precisa de read-your-writes, o modelo que falta quando o usuário "não vê" o que acabou de salvar.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jepsen-linearizable
+  title: Linearizability (Jepsen)
+  author: Jepsen
+  url: https://jepsen.io/consistency/models/linearizable
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Definição de linearizability, o modelo mais forte para um único objeto, com o que ele garante e o que custa.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-replication-config
+  title: "PostgreSQL Documentation: 19.6. Replication"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/runtime-config-replication.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Parâmetros de replicação, incluindo recovery_min_apply_delay e synchronous_commit, usados para criar de propósito uma réplica atrasada no laboratório.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-65840-distributed-systems
+  title: "6.5840: Distributed Systems (Spring 2026)"
+  author: MIT PDOS
+  url: https://pdos.csail.mit.edu/6.824/schedule.html
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [partial-failure-retries, consistency-models]
+  why: Cronograma oficial do curso do MIT (antigo 6.824), com leituras e laboratórios em Go (MapReduce, Raft, key/value store) para aprofundar depois desta etapa.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-lecture-series
+  title: Distributed Systems lecture series
+  author: Martin Kleppmann
+  url: https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [partial-failure-retries, idempotency, queues-delivery-semantics, consistency-models]
+  why: Playlist completa das aulas de Cambridge; vídeos curtos (10–25 min) que seguem as notas de aula.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-1-3-rpc
+  title: "Distributed Systems 1.3: RPC (Remote Procedure Call)"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=S2osKiqQG9s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [partial-failure-retries]
+  why: Por que uma chamada remota não é uma chamada de função local — o que acontece quando a resposta não chega.
+  section: "Distributed Systems 1.3: RPC (Remote Procedure Call)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-2-3-system-models
+  title: "Distributed Systems 2.3: System models"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=y8f7ZG_UnGI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Modelos de rede, de nós e de sincronia; vocabulário para descrever exatamente que falhas um sistema tolera.
+  section: "Distributed Systems 2.3: System models"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-4-2-broadcast-ordering
+  title: "Distributed Systems 4.2: Broadcast ordering"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=A8oamrHf_cQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [queues-delivery-semantics, consistency-models]
+  why: Ordens de entrega FIFO, causal e total — o que uma fila garante (ou não) sobre a ordem das mensagens.
+  section: "Distributed Systems 4.2: Broadcast ordering"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-5-1-replication
+  title: "Distributed Systems 5.1: Replication"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=mBUCF1WGI_I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [idempotency, queues-delivery-semantics]
+  why: Retries de atualizações remotas, deduplicação, idempotência e as semânticas at-most-once, at-least-once e exactly-once (seção 5.1 das notas).
+  section: "Distributed Systems 5.1: Replication"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-5-2-quorums
+  title: "Distributed Systems 5.2: Quorums"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=uNxl3BFcKSA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [consistency-models]
+  why: Quorums de leitura e escrita e como eles garantem read-after-write consistency entre réplicas.
+  section: "Distributed Systems 5.2: Quorums"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-7-2-linearizability
+  title: "Distributed Systems 7.2: Linearizability"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=noUNH3jDLC0
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Definição visual de linearizability com diagramas de tempo de operações concorrentes.
+  section: "Distributed Systems 7.2: Linearizability"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kleppmann-ds-7-3-eventual-consistency
+  title: "Distributed Systems 7.3: Eventual consistency"
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=9uCP3qHNbWw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [consistency-models]
+  why: O que consistência eventual promete, o que não promete e como conflitos são resolvidos.
+  section: "Distributed Systems 7.3: Eventual consistency"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6824-2020-lecture-2-rpc-threads
+  title: "Lecture 2: RPC and Threads"
+  author: "MIT 6.824: Distributed Systems"
+  url: https://www.youtube.com/watch?v=gA4YXUJX7t8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Aula do MIT 6.824 (Spring 2020) sobre threads e RPC em Go, incluindo o que fazer quando uma chamada RPC falha.
+  section: "Lecture 2: RPC and Threads"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6824-2020-lecture-17-cops
+  title: "Lecture 17: COPS, Causal Consistency"
+  author: "MIT 6.824: Distributed Systems"
+  url: https://www.youtube.com/watch?v=fR_NB714EAI
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Aula do MIT 6.824 (Spring 2020) sobre consistência causal num key/value store geo-replicado.
+  section: "Lecture 17: COPS, Causal Consistency"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- s14: segurança --------------------------------------------------------------
+
+- id: owasp-password-storage-cheatsheet
+  title: Password Storage Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Quais algoritmos usar para senhas (Argon2id, scrypt, bcrypt, PBKDF2), com parâmetros mínimos, salt e pepper.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-session-management-cheatsheet
+  title: Session Management Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Geração de IDs de sessão, atributos de cookie (Secure, HttpOnly, SameSite), expiração e renovação do ID após o login.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-csrf-prevention-cheatsheet
+  title: Cross-Site Request Forgery Prevention Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Por que sessões em cookie exigem defesa contra CSRF e como SameSite e tokens se complementam.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-http-cookies
+  title: Using HTTP cookies
+  author: MDN Web Docs
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [authentication-sessions]
+  why: Como o navegador guarda e reenvia cookies, e o efeito de cada atributo de segurança.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-set-cookie
+  title: Set-Cookie header
+  author: MDN Web Docs
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [authentication-sessions]
+  why: Referência dos atributos HttpOnly, Secure, SameSite, Path, Domain, Max-Age e dos prefixos __Host- e __Secure-.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-authorization-cheatsheet
+  title: Authorization Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authorization]
+  why: Princípios práticos de autorização — negar por padrão, verificar em toda requisição, least privilege — e como testar a lógica de acesso.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-idor-prevention-cheatsheet
+  title: Insecure Direct Object Reference Prevention Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authorization]
+  why: O que é IDOR, por que IDs imprevisíveis não bastam e como amarrar cada consulta ao usuário autenticado.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-top-10-2025
+  title: OWASP Top 10:2025
+  author: OWASP
+  url: https://owasp.org/Top10/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [authorization, input-validation, secrets-threat-modeling]
+  why: Lista de consenso dos riscos mais críticos em aplicações web; útil para priorizar o que testar no app do time.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-sql-injection-prevention-cheatsheet
+  title: SQL Injection Prevention Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Consultas parametrizadas como defesa principal, e por que escaping manual e validação sozinhos não bastam.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-xss-prevention-cheatsheet
+  title: Cross Site Scripting Prevention Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Output encoding por contexto (HTML, atributo, JavaScript, URL), sinks perigosos e o papel de frameworks e CSP.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-input-validation-cheatsheet
+  title: Input Validation Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [input-validation]
+  why: Validação sintática e semântica na fronteira, allowlist vs denylist, e por que validação não substitui parametrização e escaping.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-secrets-management-cheatsheet
+  title: Secrets Management Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [secrets-threat-modeling]
+  why: Ciclo de vida de segredos — armazenamento, rotação, revogação, detecção em repositórios e em pipelines de CI.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-threat-modeling-cheatsheet
+  title: Threat Modeling Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [secrets-threat-modeling]
+  why: Roteiro para modelar ameaças — o que estamos construindo, o que pode dar errado, o que faremos, fizemos um bom trabalho — com STRIDE e diagramas de fluxo de dados.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: microsoft-threat-modeling-tool-threats
+  title: Threats - Microsoft Threat Modeling Tool
+  author: Microsoft Learn
+  url: https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [secrets-threat-modeling]
+  why: Tabela das seis categorias STRIDE com a propriedade de segurança violada por cada uma.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gitleaks
+  title: "Gitleaks: Find secrets with Gitleaks"
+  author: Gitleaks
+  url: https://github.com/gitleaks/gitleaks
+  language: en
+  format: tool
+  difficulty: intro
+  topics: [secrets-threat-modeling]
+  why: Scanner de segredos para o histórico Git e para hooks de pre-commit; mostra na prática que apagar o arquivo não apaga o segredo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: twelve-factor-config
+  title: "The Twelve-Factor App: III. Config"
+  author: Adam Wiggins
+  url: https://12factor.net/config
+  language: en
+  format: article
+  difficulty: intro
+  topics: [secrets-threat-modeling]
+  why: Por que configuração e credenciais ficam no ambiente, separadas do código.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-ocw-2014
+  title: "6.858 Computer Systems Security (Fall 2014)"
+  author: MIT OpenCourseWare
+  url: https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/
+  language: en
+  format: course
+  difficulty: advanced
+  topics: [authentication-sessions, input-validation, secrets-threat-modeling]
+  why: Curso completo do MIT com notas e vídeos de todas as aulas — modelos de ameaça, segurança web, autenticação.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-lecture-1-threat-models
+  title: "1. Introduction, Threat Models"
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=GqmQg-cszw4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [secrets-threat-modeling]
+  why: Abertura do MIT 6.858 — política, modelo de ameaça e mecanismo, e como sistemas falham quando o modelo de ameaça está errado.
+  section: "1. Introduction, Threat Models"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-lecture-4-privilege-separation
+  title: "4. Privilege Separation"
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=dNl22h1kW1k
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [authorization]
+  why: Least privilege na arquitetura — dividir um servidor web em partes com permissões mínimas para limitar o estrago de uma falha.
+  section: "4. Privilege Separation"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-lecture-8-web-security-model
+  title: "8. Web Security Model"
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=eRJ_r8WF1Y0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [authentication-sessions, authorization]
+  why: Same-origin policy, cookies e o que o navegador isola (ou não) entre sites.
+  section: "8. Web Security Model"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-lecture-9-securing-web-applications
+  title: "9. Securing Web Applications"
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=WlmKwIe9z1Q
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Falhas de sanitização de conteúdo e cross-site scripting (XSS), com exemplos e defesas (conferido nas notas da aula 9 no OCW).
+  section: "9. Securing Web Applications"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6858-lecture-17-user-authentication
+  title: "17. User Authentication"
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=MT7X17ZRo1U
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Senhas, armazenamento com hash e salt, e alternativas de autenticação discutidas no MIT 6.858.
+  section: "17. User Authentication"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akita-crypto-2
+  title: "[Akitando] #68 - Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2"
+  author: Fabio Akita
+  url: https://akitaonrails.com/2019/11/26/akitando-68-entendendo-conceitos-basicos-de-criptografia-parte-2-2/
+  language: pt-BR
+  format: article
+  difficulty: intro
+  topics: [authentication-sessions]
+  why: Post com o roteiro do episódio 68, que trata de hashing de senhas, salt, PBKDF2, bcrypt e Argon2 em português.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-67-criptografia-video
+  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [secrets-threat-modeling, authentication-sessions]
+  why: "Akitando #67: hashes, criptografia simétrica e assimétrica em português, base para entender onde e como segredos são protegidos."
+  section: "[Akitando] #67"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo extraído do embed no post akitaonrails.com do episódio #67." }
+
+- id: akitando-68-criptografia-video
+  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=HCHqtpipwu4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [authentication-sessions]
+  why: "Akitando #68: por que senhas não se guardam com MD5/SHA256 puro e como salt, PBKDF2, bcrypt e Argon2 resolvem."
+  section: "[Akitando] #68"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo extraído do embed no post akitaonrails.com do episódio #68." }
+
+- id: computerphile-how-not-to-store-passwords
+  title: "How NOT to Store Passwords! - Computerphile"
+  author: Computerphile
+  url: https://www.youtube.com/watch?v=8ZtInClXe1Q
+  language: en
+  format: video
+  difficulty: intro
+  topics: [authentication-sessions]
+  why: Intuição rápida sobre por que texto puro, cifra reversível e hash sem salt falham no armazenamento de senhas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-sql-injection
+  title: "Running an SQL Injection Attack - Computerphile"
+  author: Computerphile
+  url: https://www.youtube.com/watch?v=ciNHn38EyRc
+  language: en
+  format: video
+  difficulty: intro
+  topics: [input-validation]
+  why: Demonstração de SQL injection numa aplicação de laboratório, mostrando como a entrada vira parte da consulta.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: computerphile-xss
+  title: "Cracking Websites with Cross Site Scripting - Computerphile"
+  author: Computerphile
+  url: https://www.youtube.com/watch?v=L5l9lSnNMxg
+  language: en
+  format: video
+  difficulty: intro
+  topics: [input-validation]
+  why: Intuição visual de como um XSS armazenado executa no navegador de outro usuário.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
