@@ -70,12 +70,19 @@
     - Histogramas das três políticas lado a lado, com sua interpretação.
     - Trecho do log com tentativas e horários, mais a consulta mostrando as linhas duplicadas.
   firstAction: Escreva as três explicações possíveis para "minha requisição deu timeout" e, para cada uma, se repetir a requisição é seguro.
-  essentials:
-    - "Toda chamada remota tem timeout explícito, derivado do p99 observado da dependência, nunca o default infinito."
-    - Timeout não diz se a operação aconteceu; trate como "não sei" e só repita o que é seguro repetir.
-    - "Retry sempre com backoff exponencial, jitter, limite de tentativas e deadline total."
-    - Faça retry em uma camada só; retries em cascata multiplicam a carga (3 camadas × 3 tentativas = 27 chamadas).
-    - "Antes de colocar retry, teste a falha de verdade com Toxiproxy ou `tc netem` e conte as chamadas."
+  kit:
+    - term: "HttpRequest.newBuilder().timeout(Duration.ofSeconds(2))"
+      use: "Dar a toda chamada remota um timeout explícito, baseado no p99 da dependência, nunca o infinito."
+    - term: "Timeout = \"não sei se aconteceu\""
+      use: "Tratar timeout como resultado desconhecido e só repetir operações seguras de repetir."
+    - term: "sleep = random(0, base * 2^tentativa)"
+      use: "Fazer backoff exponencial com jitter para espaçar tentativas e espalhar os clientes."
+    - term: "maxAttempts + deadline total"
+      use: "Limitar quantas vezes e por quanto tempo repetir, em uma camada só, antes de devolver erro."
+    - term: "Toxiproxy (toxic de latency/timeout)"
+      use: "Injetar latência e falhas entre cliente e API no laboratório e contar as chamadas de verdade."
+    - term: "tc qdisc add dev <iface> root netem delay 800ms"
+      use: "Atrasar a rede de um container de laboratório quando não houver Toxiproxy (nunca na interface do host)."
   deepDive:
     - title: Circuit breaker
       why: Quando uma dependência ficar fora do ar por minutos e os retries só servirem para prender threads.
@@ -159,12 +166,17 @@
     - SQL da tabela de chaves e da função de criação, com a saída das contagens.
     - Trecho do log do PostgreSQL mostrando a colisão da segunda tentativa.
   firstAction: Escreva uma operação do app de tarefas que não é idempotente e reescreva-a de forma que seja.
-  essentials:
-    - "GET, PUT e DELETE devem ser idempotentes no seu código, não só na especificação; efeitos colaterais (e-mail) quebram isso."
-    - O cliente gera a chave de idempotência (UUID) antes da primeira tentativa e reenvia a mesma em todo retry.
-    - "Garanta unicidade com constraint `UNIQUE` (ou `ON CONFLICT DO NOTHING`) na mesma transação do efeito, nunca SELECT-depois-INSERT."
-    - Na repetição, devolva a resposta original guardada; mesma chave com corpo diferente é erro.
-    - Defina por quanto tempo as chaves ficam guardadas e limpe as antigas.
+  kit:
+    - term: "Idempotency-Key: <UUID>"
+      use: "Gerar a chave no cliente antes da primeira tentativa e reenviar a mesma em todo retry."
+    - term: "UNIQUE (idempotency_key)"
+      use: "Deixar o banco garantir que a operação só é aplicada uma vez, mesmo com requisições concorrentes."
+    - term: "INSERT ... ON CONFLICT DO NOTHING RETURNING id"
+      use: "Inserir de forma atômica e detectar repetição sem SELECT-depois-INSERT."
+    - term: "GET / PUT / DELETE idempotentes, POST não"
+      use: "Saber quais métodos HTTP podem ser repetidos com segurança e quais precisam de chave."
+    - term: "Guardar e devolver a resposta original"
+      use: "Responder ao retry com o mesmo status e corpo; mesma chave com corpo diferente vira erro."
   deepDive:
     - title: Idempotência em operações com várias etapas e chamadas externas
       why: Quando uma requisição criar a tarefa, cobrar um cartão e enviar e-mail, e falhar no meio.
@@ -245,12 +257,19 @@
     - Consultas de contagem e seus resultados para cada variante.
     - Log dos dois workers mostrando o job demorado executado duas vezes.
   firstAction: Escreva as duas linhas de pseudocódigo `process(job)` e `ack(job)` e marque onde um crash causa perda e onde causa duplicata.
-  essentials:
-    - "Ack depois de processar (at-least-once) e torne o processamento idempotente; isso cobre quase todo caso real."
-    - "\"Exactly-once\" na prática é at-least-once + deduplicação por id da mensagem (constraint UNIQUE)."
-    - "Fila em PostgreSQL: `SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1` e marque o job como feito na mesma transação do efeito."
-    - Lease/visibility timeout maior que o tempo de processamento no pior caso, senão surgem duplicatas sem falha nenhuma.
-    - Conte tentativas e mande poison messages para uma dead letter queue; não assuma ordem com vários consumidores.
+  kit:
+    - term: "SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1"
+      use: "Fazer vários workers pegarem jobs diferentes de uma tabela-fila sem bloquear um ao outro."
+    - term: "Ack depois de processar (at-least-once)"
+      use: "Não perder mensagem quando o worker morre, aceitando que ela pode ser repetida."
+    - term: "UNIQUE (message_id) na tabela do efeito"
+      use: "Descartar duplicatas e chegar, na prática, ao efeito exactly-once."
+    - term: "Lease / visibility timeout > pior tempo de processamento"
+      use: "Evitar que outro worker reprocesse um job que ainda está em andamento."
+    - term: "attempts + dead letter queue"
+      use: "Contar tentativas e tirar poison messages da fila depois de N falhas."
+    - term: "kill -9 <pid do worker>"
+      use: "Matar o worker no meio do processamento e contar mensagens perdidas e duplicadas."
   deepDive:
     - title: Brokers dedicados (RabbitMQ, Kafka, SQS)
       why: Quando a fila em tabela virar gargalo ou precisar de fan-out, retenção ou replay de mensagens.
@@ -333,12 +352,17 @@
     - Saída do script com tentativas de leitura e o momento em que a tarefa aparece.
     - Diagramas das histórias com a classificação final.
   firstAction: Descreva uma situação real em que você salvou algo num site, recarregou e não viu a mudança. Qual modelo de consistência faltou?
-  essentials:
-    - "Replicação assíncrona significa que réplicas e caches podem estar atrasados; assuma isso ao ler fora do primário."
-    - "Logo após o usuário escrever, leia do primário (ou espere a réplica alcançar o LSN) para garantir read-your-writes."
-    - "Linearizable = parece uma cópia só; eventual = converge um dia, sem prazo. Saiba qual o seu banco e cache entregam."
-    - Isolation (ACID) trata transações concorrentes num banco; consistência trata cópias. Não confunda os dois.
-    - Leia a documentação de garantias do banco antes de confiar; garantia anunciada nem sempre é garantia entregue.
+  kit:
+    - term: "pg_current_wal_lsn() / pg_last_wal_replay_lsn()"
+      use: "Comparar a posição do primário e da réplica para medir o atraso da replicação."
+    - term: "Read-your-writes: ler do primário após escrever"
+      use: "Garantir que o usuário veja a própria tarefa logo depois de criá-la (ou esperar a réplica alcançar o LSN)."
+    - term: "Linearizable vs eventual"
+      use: "Saber se o banco ou cache parece uma cópia só ou apenas converge algum dia, sem prazo."
+    - term: "Isolation (ACID) ≠ consistência entre réplicas"
+      use: "Separar o problema de transações concorrentes no mesmo banco do problema de cópias atrasadas."
+    - term: "Documentação de garantias do banco e do cache"
+      use: "Conferir o que o sistema realmente promete antes de confiar numa leitura fora do primário."
   deepDive:
     - title: Consenso e replicação linearizável (Raft)
       why: Quando precisar de líder único, locks distribuídos ou configuração consistente entre nós.

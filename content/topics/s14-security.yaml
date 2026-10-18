@@ -70,12 +70,19 @@
     - Tabela de medições e o cálculo do tempo de ataque offline.
     - Sessão do curl anotada (login, acesso, logout, reuso rejeitado) e consulta à tabela sessions.
   firstAction: Gere o hash bcrypt de uma senha de teste duas vezes (com `htpasswd -nbB teste senha` ou uma linha de Python) e compare as saídas.
-  essentials:
-    - "Senha só como hash lento com salt (Argon2id ou bcrypt com custo ajustado); nunca SHA-256 puro, nunca cifrada."
-    - ID de sessão de ≥128 bits de um CSPRNG, guardado no servidor com dono e expiração.
-    - "Cookie de sessão com `HttpOnly`, `Secure` e `SameSite=Lax` (ou `Strict`)."
-    - Gere novo ID no login, invalide no servidor no logout e use expiração por inatividade e absoluta.
-    - Mesma mensagem para "usuário não existe" e "senha errada"; limite tentativas de login.
+  kit:
+    - term: "BCryptPasswordEncoder / Argon2PasswordEncoder"
+      use: "Guardar senha como hash lento com salt e conferir com matches(), nunca com SHA-256 puro."
+    - term: "SecureRandom (32 bytes) para o ID de sessão"
+      use: "Gerar ID imprevisível, novo a cada login, guardado no servidor com dono e expiração."
+    - term: "Set-Cookie: sid=...; HttpOnly; Secure; SameSite=Lax"
+      use: "Impedir que JavaScript leia o cookie, que ele vá sem TLS e que acompanhe requisições cross-site."
+    - term: "curl -v -c jar.txt -b jar.txt URL"
+      use: "Ver os cabeçalhos Set-Cookie e testar login, acesso e logout pelo terminal."
+    - term: "DELETE FROM sessions WHERE id = $1"
+      use: "Invalidar a sessão no servidor no logout para que um cookie copiado pare de funcionar."
+    - term: "\"E-mail ou senha inválidos\" + limite de tentativas"
+      use: "Não revelar quais usuários existem e frear ataques de força bruta no login."
   deepDive:
     - title: MFA e TOTP
       why: Quando o app guardar dados sensíveis ou contas de administrador.
@@ -161,12 +168,17 @@
     - Matriz de acesso com as expressões lógicas de cada regra.
     - Saída do loop do curl antes e depois da correção.
   firstAction: Escolha uma rota do app de tarefas e escreva a consulta SQL que ela faz hoje. Ela filtra pelo dono?
-  essentials:
-    - "Amarre toda consulta ao usuário da sessão: `WHERE id = $1 AND owner_id = $2`; trocar o id na URL não pode funcionar."
-    - Negue por padrão; rota sem regra explícita responde 403/404.
-    - Verifique cada ação (ler, editar, apagar, listar) no servidor; esconder botão ou usar UUID não é autorização.
-    - "Centralize em `canAccess(user, action, task)` ou no repositório, para nenhuma rota esquecer a checagem."
-    - Para cada rota, três testes automáticos, com o dono (200), outro usuário (403/404) e sem sessão (401).
+  kit:
+    - term: "WHERE id = ? AND owner_id = ?"
+      use: "Amarrar toda consulta ao usuário da sessão para que trocar o id na URL não funcione."
+    - term: "canAccess(user, action, task)"
+      use: "Centralizar a regra num lugar só para nenhuma rota esquecer a checagem."
+    - term: "Deny by default (403/404)"
+      use: "Recusar toda rota ou ação sem regra explícita; esconder botão ou usar UUID não é autorização."
+    - term: "for i in $(seq 1 20); do curl -b jar.txt URL/tasks/$i; done"
+      use: "Procurar IDOR percorrendo ids logado como outro usuário."
+    - term: "Matriz rota × papel: 200 / 403-404 / 401"
+      use: "Escrever um teste automático (MockMvc ou supertest) por célula: dono, outro usuário, anônimo."
   deepDive:
     - title: Row Level Security no PostgreSQL
       why: Como defesa em profundidade, quando um bug no código não puder vazar linhas de outro usuário.
@@ -247,12 +259,19 @@
     - Diff da busca concatenada para a parametrizada, com os trechos do log.
     - Captura do HTML renderizado antes e depois do escaping e da violação de CSP.
   firstAction: Escreva num papel a consulta que o servidor montaria por concatenação para a busca `x' OR '1'='1` e circule onde termina o dado e começa o código.
-  essentials:
-    - "SQL sempre parametrizado (`PreparedStatement` com `?`); nunca concatene entrada do usuário no texto da consulta."
-    - "O que não pode ser parâmetro (coluna do `ORDER BY`, direção) vem de uma allowlist."
-    - "Escape na saída conforme o contexto; desconfie de `innerHTML`, `th:utext`, `dangerouslySetInnerHTML` e `v-html`."
-    - Valide na fronteira (tipo, tamanho, formato), mas lembre que um apóstrofo é válido; validação não substitui parametrizar e escapar.
-    - Teste com payloads clássicos (`' OR '1'='1`, `<img src=x onerror=alert(1)>`) e confira no log do banco e no DevTools.
+  kit:
+    - term: "PreparedStatement com ?"
+      use: "Enviar a entrada como parâmetro separado do SQL e eliminar SQL injection."
+    - term: "Allowlist para coluna do ORDER BY e direção"
+      use: "Aceitar só valores conhecidos onde o banco não permite parâmetro."
+    - term: "textContent / th:text (não innerHTML / th:utext)"
+      use: "Renderizar dados do usuário como texto, com escaping automático, para evitar XSS."
+    - term: "log_statement = 'all'"
+      use: "Ver no log do PostgreSQL exatamente o SQL que chegou ao banco."
+    - term: "' OR '1'='1 e <img src=x onerror=alert(1)>"
+      use: "Testar rapidamente se a busca e a renderização estão vulneráveis."
+    - term: "Validação na fronteira (tipo, tamanho, formato)"
+      use: "Rejeitar dados malformados cedo, sem bloquear valores legítimos como O'Brien."
   deepDive:
     - title: Content Security Policy
       why: Como segunda camada quando o app renderizar conteúdo de usuários e um XSS escapar.
@@ -335,12 +354,19 @@
     - Diagrama e tabela STRIDE da plataforma de tarefas.
     - Saída do git log -S, do gitleaks e do hook bloqueando o commit.
   firstAction: Rode `git log -p | grep -i -E 'password|secret|token' | head` num repositório seu e veja o que aparece.
-  essentials:
-    - "Segredo vazou no Git: revogue e rotacione primeiro; limpar o histórico vem depois e não basta."
-    - "Segredos vêm do ambiente (`.env` no `.gitignore`, Docker secrets, cofre); o repositório só tem `.env.example`."
-    - "Rode gitleaks no pre-commit e no CI; procure segredos também em logs, stack traces e imagens de container."
-    - "Threat model em 4 perguntas: o que construímos, o que pode dar errado (STRIDE por fronteira), o que faremos, fizemos bem?"
-    - Toda ameaça identificada sai com decisão (mitigar, aceitar, transferir, eliminar), dono e prazo.
+  kit:
+    - term: ".env no .gitignore + .env.example"
+      use: "Manter segredos fora do repositório e documentar quais variáveis o app precisa."
+    - term: "System.getenv(\"DB_PASSWORD\")"
+      use: "Ler segredos do ambiente em vez de deixá-los no código ou no application.yml."
+    - term: "gitleaks git . (pre-commit e CI)"
+      use: "Bloquear commits com segredo e varrer o histórico do repositório."
+    - term: "git log -p --all -S 'segredo'"
+      use: "Provar que o segredo apagado continua no histórico; por isso revogar e rotacionar vem primeiro."
+    - term: "STRIDE por fronteira do diagrama de fluxo"
+      use: "Listar o que pode dar errado em cada fronteira: spoofing, tampering, repudiation, disclosure, DoS, elevation."
+    - term: "Ameaça → decisão, dono e prazo"
+      use: "Fechar cada ameaça com mitigar, aceitar, transferir ou eliminar, e alguém responsável."
   deepDive:
     - title: Cofres de segredos e segredos dinâmicos
       why: Quando houver vários serviços e ambientes e a rotação manual de senhas virar risco.
