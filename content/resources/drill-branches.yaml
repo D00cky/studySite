@@ -351,7 +351,7 @@
   language: en
   format: tool
   difficulty: intermediate
-  topics: [backend-testing-java]
+  topics: [backend-testing-java, interfaces-testing]
   why: "Mede se os testes detectam mudanças no código (mutantes), algo que cobertura de linhas não mostra."
   access: free
   priority: optional
@@ -442,7 +442,7 @@
   language: en
   format: article
   difficulty: advanced
-  topics: [systems-io-performance]
+  topics: [systems-io-performance, profiling-benchmarks, latency-percentiles-diagnosis]
   why: "Ferramentas eBPF (biolatency, opensnoop, ext4slower...) para observar I/O em produção com baixo overhead, ao contrário do strace."
   access: free
   priority: optional

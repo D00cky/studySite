@@ -122,19 +122,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: brendan-gregg-ebpf-tools
-  title: Linux eBPF Tracing Tools
-  author: Brendan Gregg
-  url: https://www.brendangregg.com/ebpf.html
-  language: en
-  format: article
-  difficulty: advanced
-  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
-  why: Panorama das ferramentas eBPF (bcc, bpftrace) para medir latência de disco, rede e escalonador em produção com baixo custo.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: wrk2
   title: "wrk2: a constant throughput, correct latency recording variant of wrk"
   author: Gil Tene

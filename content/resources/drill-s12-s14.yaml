@@ -132,19 +132,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: pitest
-  title: PIT Mutation Testing
-  author: Henry Coles
-  url: https://pitest.org/
-  language: en
-  format: tool
-  difficulty: intermediate
-  topics: [interfaces-testing]
-  why: Mutation testing para Java/Maven, que mede se os testes detectam mudanças no código, não só se executam linhas.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: fowler-contract-test
   title: Contract Test
   author: Martin Fowler

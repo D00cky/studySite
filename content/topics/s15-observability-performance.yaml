@@ -172,7 +172,7 @@
       resource: brendan-gregg-perf-examples
     - title: Tracing com eBPF (bcc, bpftrace)
       why: Para medir latência de disco, rede ou escalonador em produção sem reiniciar nem instrumentar o processo.
-      resource: brendan-gregg-ebpf-tools
+      resource: brendan-gregg-ebpf
 
 - id: latency-percentiles-diagnosis
   stage: s15-observability-performance

@@ -161,7 +161,7 @@
       resource: jqwik-user-guide
     - title: Mutation testing
       why: Quando a cobertura parecer alta e você quiser saber se os testes realmente detectam bugs.
-      resource: pitest
+      resource: pitest-mutation-testing
     - title: Contract testing entre serviços
       why: Quando frontend e backend, ou dois serviços, evoluírem em repositórios separados e quebrarem um ao outro.
       resource: fowler-contract-test
