@@ -1,0 +1,155 @@
+- id: build-an-emulator
+  title: Construa um emulador (CHIP-8)
+  status: authored
+  cumulative: false
+  topics: [binary-hexadecimal, integer-representation-overflow, cpu-memory-caches, stack-heap-lifetime, c-arrays-structs, stacks-queues, compilation-pipeline]
+  question: O que uma CPU realmente faz a cada ciclo — e quanto de "computador" cabe num laço `while` que busca, decodifica e executa bytes?
+  prerequisites: [binary-hexadecimal, integer-representation-overflow, c-arrays-structs, pointers]
+  minimalVersion: |
+    Um interpretador ("emulador") de CHIP-8 em C que carrega uma ROM em `0x200`, mantém o estado da
+    máquina numa `struct` (4 KB de memória, 16 registradores `V0..VF`, `I`, `PC`, pilha de 16 níveis com
+    `SP`, delay e sound timers a 60 Hz, framebuffer 64×32 e 16 teclas) e executa o ciclo
+    **fetch-decode-execute**: lê 2 bytes big-endian, separa os nibbles (`X`, `Y`, `N`, `NN`, `NNN`) e
+    despacha com um `switch` sobre o primeiro nibble.
+
+    A versão mínima implementa todas as 35 instruções originais, desenha com XOR e flag de colisão em
+    `VF`, aceita teclado e roda as ROMs de teste públicas (Timendus chip8-test-suite) até a tela de
+    sucesso. O display pode ser o terminal (caracteres) ou SDL2. Um modo `--trace` imprime a cada
+    instrução `PC`, opcode, mnemônico e registradores; um modo `--step` avança uma instrução por tecla.
+    Domínio de tarefas, opcional: escreva (em Octo ou à mão, em hexadecimal) uma ROM pequena que mostra
+    um contador de "tarefas pendentes" e decrementa ao apertar uma tecla.
+  extensions:
+    - "Desmontador (`chip8dis rom.ch8`) que imprime endereço, bytes e mnemônico — a mesma tabela de decodificação usada pelo emulador."
+    - "Assembler mínimo (`chip8asm`) para um subconjunto de mnemônicos com labels resolvidos em duas passadas; montar e rodar a sua ROM de tarefas."
+    - "Quirks configuráveis (shift usando `VY` ou `VX`, `FX55/FX65` incrementando `I`, `BNNN` vs `BXNN`, clipping vs wrap) e o teste de quirks da suíte passando em cada perfil."
+    - "Save state: serializar a `struct` da máquina num arquivo e restaurar; voltar no tempo com um buffer circular de estados."
+    - "Depurador embutido: breakpoints por endereço, inspeção de memória em hexdump e watch de registradores."
+    - "Opcional, próximo nível: emulador de 6502 (registradores A, X, Y, SP, P com flags N V B D I Z C, modos de endereçamento, pilha na página `0x0100`), rodando os programas dos vídeos do Ben Eater."
+  constraints:
+    - "C17 com `-Wall -Wextra -Werror`; testes sob `-fsanitize=address,undefined`."
+    - "Todo o estado da máquina numa única `struct` passada por ponteiro; nada de globais escondidas."
+    - "A CPU não sabe nada de SDL/terminal: display, teclado e áudio entram por uma interface pequena (funções ou ponteiros de função)."
+    - "Decodificação por máscara e shift explícitos (`(op & 0x0F00) >> 8`), com tipos de tamanho fixo (`uint8_t`, `uint16_t`)."
+    - "Velocidade da CPU (instruções por segundo) separada da taxa dos timers (60 Hz), ambas configuráveis."
+    - "Nenhuma ROM, por pior que seja, derruba o processo: acesso fora da memória, pilha cheia/vazia e opcode inválido viram erro com `PC` e opcode."
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o emulador do post Building a CHIP-8 Emulator [C++] de Austin Morlan (classe Chip8, carga da ROM e da fonte, Cycle() e as funções OP_xxxx), traduzindo para C se preferir, e conferir cada instrução na Cowgod's Chip-8 Technical Reference. Evidência: commits incrementais (carga, ciclo, instruções aritméticas, desenho), anotações dizendo qual máscara extrai cada nibble, e um erro provocado (ex.: ler o opcode little-endian, ou esquecer o `PC += 2`) registrado com a saída do trace."
+      minutes: 75
+    - id: m1-estado-carga
+      title: Estado da máquina e carga da ROM
+      description: "`struct chip8` com memória, registradores, pilha e timers; carregar a fonte em `0x050` e a ROM em `0x200`, recusando ROMs maiores que a memória; `--dump` imprime um hexdump comparável com `xxd rom.ch8`."
+      minutes: 40
+    - id: m2-ciclo
+      title: Fetch-decode-execute e trace
+      description: "Laço fetch (2 bytes big-endian), decode (nibbles) e execute com `switch`; implementar `00E0`, `1NNN`, `6XNN`, `7XNN`, `ANNN` e `DXYN` e rodar a ROM do logo IBM com `--trace`."
+      minutes: 60
+    - id: m3-aritmetica
+      title: Aritmética, flags e saltos condicionais
+      description: "Família `8XYN` com carry/borrow em `VF` (overflow de `uint8_t` de propósito), `3XNN/4XNN/5XY0/9XY0`, `CXNN` e `FX33` (BCD); testes unitários por instrução e a ROM de flags da suíte passando."
+      minutes: 75
+    - id: m4-pilha
+      title: Pilha de chamadas
+      description: "`2NNN` e `00EE` com a pilha de 16 níveis; detectar overflow/underflow e mostrar no trace a pilha a cada call/return, relacionando com o call stack do próprio C visto no gdb."
+      minutes: 40
+    - id: m5-display-teclado-timers
+      title: Display, teclado e timers
+      description: "Framebuffer com XOR e colisão, frontend (terminal ou SDL2), mapeamento do teclado hexadecimal, `EX9E/EXA1/FX0A`, delay e sound timer decrementando a 60 Hz independentemente da velocidade da CPU."
+      minutes: 75
+    - id: m6-suite
+      title: Suíte de testes e quirks
+      description: "Rodar as ROMs da Timendus chip8-test-suite (corax+, flags, quirks, keypad), registrar cada falha, corrigir e deixar os quirks configuráveis."
+      minutes: 60
+    - id: m7-memoria
+      title: Reescrever de memória
+      description: "Sem olhar a referência, reescrever o ciclo fetch-decode-execute, a família 8XYN e o DXYN; comparar com o post e com a Cowgod e anotar no README o que errou."
+      minutes: 50
+    - id: m8-6502-opcional
+      title: "Opcional: primeiros passos no 6502"
+      description: "Depois de assistir às partes 2 e 5 da série 6502 do Ben Eater, emular o subconjunto LDA/STA/JMP/JSR/RTS/BNE com flags Z e N e rodar o primeiro programa dos vídeos; comparar a pilha do 6502 com a do CHIP-8."
+      minutes: 75
+  edgeCases:
+    - ROM vazia, ROM com tamanho ímpar e ROM maior que `4096 - 0x200` bytes.
+    - "`8XY4`/`8XY5` com `X = F` (o resultado e a flag disputam `VF`) e `7XNN` com overflow (não altera `VF`)."
+    - "`DXYN` desenhando na borda (clipping vs wrap) e sprite com `I` perto do fim da memória."
+    - "`2NNN` 17 vezes sem retorno (pilha cheia) e `00EE` com pilha vazia."
+    - "`FX0A` esperando tecla: a CPU bloqueia mas os timers continuam."
+    - Opcode desconhecido (`0x5XY1`, `0xFFFF`) e salto para endereço ímpar ou fora da memória.
+    - Velocidade da CPU muito alta ou muito baixa mudando a jogabilidade mas não os timers.
+  failureExperiments:
+    - "Ler o opcode como little-endian e mostrar no `--trace` a decodificação errada da ROM IBM."
+    - "Esquecer de mascarar o resultado de `8XY4` em 8 bits (usando `int`) e ver a ROM de flags falhar; observar no gdb com `p/x`."
+    - "Calcular a flag de carry depois de escrever o resultado em `VX` quando `X = F` e mostrar o teste de flags acusando."
+    - "Remover a checagem de limite da pilha e rodar uma ROM com recursão infinita sob ASan para capturar o stack-buffer-overflow."
+    - "Atrelar os timers ao número de instruções em vez do relógio e mostrar o jogo acelerando quando a CPU fica mais rápida."
+    - "Corromper bytes da ROM com `printf '\\xff' | dd of=rom.ch8 bs=1 seek=N conv=notrunc` e verificar que o emulador reporta opcode inválido sem travar."
+  tools: [gcc, make, gdb, "-fsanitize=address,undefined", xxd, hexdump, SDL2, valgrind, git]
+  acceptanceCriteria:
+    - "As ROMs IBM logo, corax+, flags e quirks da Timendus chip8-test-suite mostram sucesso (capturas de tela no README)."
+    - "`--trace` e `--step` mostram `PC`, opcode, mnemônico, registradores e pilha a cada instrução."
+    - "Todos os casos-limite listados têm comportamento definido e coberto por testes unitários ou ROMs de teste."
+    - "Testes unitários por instrução passam sob ASan/UBSan."
+    - "O README explica o ciclo fetch-decode-execute com um trecho de trace real comentado."
+  evidence:
+    - Repositório com README, instruções de build e a lista de instruções implementadas.
+    - Capturas ou gravações das ROMs de teste passando e de um jogo jogável.
+    - "Trace comentado de 20 instruções de uma ROM, incluindo um `2NNN`/`00EE` e um `DXYN`."
+    - Registro dos experimentos de falha com comando, saída e correção.
+    - "Diff comentado entre o ciclo reescrito de memória e a referência."
+  reviewQuestions:
+    - "Por que o opcode é lido como `memory[pc] << 8 | memory[pc + 1]` e o que acontece numa máquina little-endian se você fizer um `memcpy` para `uint16_t`?"
+    - "Como o carry de `8XY4` corresponde ao bit que \"sai\" de um somador de 8 bits?"
+    - Qual a diferença entre a pilha de chamadas do CHIP-8 e a pilha do processo que executa o seu emulador?
+    - Por que os timers precisam de um relógio independente do laço de instruções?
+    - O que um emulador de 6502 precisa ter que o CHIP-8 não tem (modos de endereçamento, flags, interrupções)?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, o emulador do post de Austin
+      Morlan (C++; quem quiser já traduz para C enquanto digita), conferindo cada opcode na referência
+      técnica da Cowgod. Anote em cada função qual máscara extrai X, Y, N, NN e NNN, e quebre de
+      propósito: ler o opcode na ordem errada, esquecer o `PC += 2`, calcular o carry depois de escrever
+      VF — sempre observando o trace. Modifique para ter um modo `--trace` e quirks configuráveis. Use o
+      guia de Tobias Langhoff (sem código, explica as armadilhas e as variantes) para validar as decisões,
+      e as ROMs da Timendus como testes. Dias depois, reescreva de memória o ciclo e a família 8XYN. Para
+      ir ao 6502, assista à série do Ben Eater e consulte a tabela de instruções da masswerk.
+    references:
+      - title: "Building a CHIP-8 Emulator [C++]"
+        author: "Austin Morlan"
+        url: https://austinmorlan.com/posts/chip8_emulator/
+        language: "C++"
+        license: "Não declarada (código no post; redigitar só para estudo pessoal, sem redistribuir)"
+      - title: "Cowgod's Chip-8 Technical Reference (cópia no Internet Archive; o original só responde em http://devernay.free.fr)"
+        author: "Thomas P. Greene (Cowgod)"
+        url: https://web.archive.org/web/20260103071216/http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+        language: "Especificação"
+      - title: "Guide to making a CHIP-8 emulator"
+        author: "Tobias V. I. Langhoff"
+        url: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+        language: "Pseudocódigo (sem código completo)"
+      - title: "chip8-test-suite"
+        author: "Timendus"
+        url: https://github.com/Timendus/chip8-test-suite
+        language: "ROMs CHIP-8 (Octo)"
+        license: "GPL-3.0"
+      - title: "Octo: A Chip8 IDE"
+        author: "John Earnest"
+        url: https://github.com/JohnEarnest/Octo
+        language: "JavaScript / Octo assembly"
+        license: MIT
+      - title: "Build a 6502 computer"
+        author: "Ben Eater"
+        url: https://eater.net/6502
+        language: "Assembly 6502"
+      - title: "How do CPUs read machine code? — 6502 part 2"
+        author: "Ben Eater"
+        url: https://www.youtube.com/watch?v=yl8vPW5hydQ
+        language: "Assembly 6502 (vídeo)"
+      - title: "What is a stack and how does it work? — 6502 part 5"
+        author: "Ben Eater"
+        url: https://www.youtube.com/watch?v=xBjQVxVxOxc
+        language: "Assembly 6502 (vídeo)"
+      - title: "6502 Instruction Set"
+        author: "mass:werk"
+        url: https://www.masswerk.at/6502/6502_instruction_set.html
+        language: "Especificação"
