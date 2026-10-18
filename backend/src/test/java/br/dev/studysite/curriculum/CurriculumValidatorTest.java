@@ -21,7 +21,7 @@ class CurriculumValidatorTest {
 
     static Topic planned(String id, List<String> prereqs) {
         return new Topic(id, "s1", "Título", "planned", "Objetivo", "Importância", prereqs, List.of(), List.of(),
-                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(), List.of(), List.of());
+                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(), List.of());
     }
 
     static Resource resource(Verification v) {
@@ -62,7 +62,7 @@ class CurriculumValidatorTest {
         Resource article = resource(new Verification("verified", "2026-10-18", null));
         Topic withVideo = new Topic("a", "s1", "T", "planned", "Obj", "Por quê", List.of(), List.of(), List.of(),
                 null, List.of(), new Model.TopicResources(null, List.of(), List.of("r1", "nao-existe")), null, null,
-                List.of(), List.of(), List.of(), null, List.of(), List.of(), List.of());
+                List.of(), List.of(), List.of(), null, List.of(), List.of());
         List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(withVideo), List.of(article),
                 List.of(), NO_POLICIES);
         assertThat(errors).anyMatch(e -> e.contains("r1") && e.contains("video"))
@@ -70,24 +70,22 @@ class CurriculumValidatorTest {
     }
 
     @Test
-    void essentialsAndDeepDiveAreValidated() {
+    void deepDiveIsValidated() {
         Resource article = resource(new Verification("verified", "2026-10-18", null));
         Topic topic = new Topic("a", "s1", "T", "planned", "Obj", "Por quê", List.of(), List.of(), List.of(),
                 null, List.of(), null, null, null, List.of(), List.of(), List.of(), null,
-                List.of("um só ponto"),
                 List.of(new Model.DeepDivePoint("Kahan summation", "Quando somar milhões de floats.", "nao-existe"),
                         new Model.DeepDivePoint("", "sem título", "r1")), List.of());
         List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(topic), List.of(article),
                 List.of(), NO_POLICIES);
-        assertThat(errors).anyMatch(e -> e.contains("essentials") && e.contains("3"))
-                .anyMatch(e -> e.contains("deepDive") && e.contains("nao-existe"))
+        assertThat(errors).anyMatch(e -> e.contains("deepDive") && e.contains("nao-existe"))
                 .anyMatch(e -> e.contains("deepDive") && e.contains("title"));
     }
 
     @Test
     void kitItemsNeedTermAndUse() {
         Topic topic = new Topic("a", "s1", "T", "planned", "Obj", "Por quê", List.of(), List.of(), List.of(),
-                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(), List.of(),
+                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(),
                 List.of(new Model.KitItem("git add", "prepara mudanças"), new Model.KitItem("", "sem termo")));
         List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(topic), List.of(), List.of(),
                 NO_POLICIES);
@@ -109,7 +107,7 @@ class CurriculumValidatorTest {
     @Test
     void authoredTopicNeedsFullPage() {
         Topic incomplete = new Topic("a", "s1", "T", "authored", "Obj", "Por quê", List.of(), List.of(), List.of(),
-                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(), List.of(), List.of());
+                null, List.of(), null, null, null, List.of(), List.of(), List.of(), null, List.of(), List.of());
         List<String> errors = CurriculumValidator.validate(List.of(stage("s1")), List.of(incomplete), List.of(),
                 List.of(), NO_POLICIES);
         assertThat(errors).anyMatch(e -> e.contains("explanation"))

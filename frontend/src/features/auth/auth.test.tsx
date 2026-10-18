@@ -87,6 +87,16 @@ describe('estrutura do app', () => {
     }
   })
 
+  it('usa tema escuro por padrão e permite alternar para o claro', async () => {
+    server.use(...signedIn())
+    const { user } = renderApp('/')
+    const toggle = await screen.findByRole('button', { name: 'Usar tema claro' })
+    expect(document.documentElement.dataset.theme).toBe('dark')
+    await user.click(toggle)
+    expect(document.documentElement.dataset.theme).toBe('light')
+    expect(screen.getByRole('button', { name: 'Usar tema escuro' })).toBeInTheDocument()
+  })
+
   it('mostra página de não encontrado para rotas desconhecidas', async () => {
     server.use(...signedIn())
     renderApp('/nao-existe')

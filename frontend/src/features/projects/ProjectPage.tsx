@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router'
-import { useProject } from '../../api/queries'
+import { usePolicies, useProject } from '../../api/queries'
 import type { Project } from '../../api/types'
 import { InlineMarkdown, Markdown } from '../../components/Markdown'
 import { ErrorMessage, Loading } from '../../components/Status'
@@ -40,6 +40,7 @@ export function ProjectPage() {
           ))}
         </p>
       )}
+      <PracticeSection project={p} />
       <MilestoneList project={p} />
       <ListDetails title="Restrições que preservam a habilidade" items={p.constraints} />
       <ListDetails title="Extensões" items={p.extensions} />
@@ -53,6 +54,57 @@ export function ProjectPage() {
         Para trabalhar em equipe, comece o projeto em <Link to="/time">Time</Link>.
       </p>
     </div>
+  )
+}
+
+/** Prática deliberada antes de construir: redigitar uma referência real (método inspirado no Akita). */
+function PracticeSection({ project }: { project: Project }) {
+  const { data: policies } = usePolicies()
+  if (!project.practice) return null
+  const method = policies?.practiceMethod
+  return (
+    <section className="terminal practice" aria-labelledby="practice-title">
+      <div className="terminal-bar" aria-hidden="true">
+        <span className="dot dot-red" />
+        <span className="dot dot-yellow" />
+        <span className="dot dot-green" />
+        <span className="terminal-title">pratica.md</span>
+      </div>
+      <div className="terminal-body">
+        <h2 id="practice-title">Prática antes de construir</h2>
+        <Markdown text={project.practice.guidance} />
+        <p className="terminal-comment"># referências para redigitar à mão (sem colar)</p>
+        <ul className="list-plain">
+          {project.practice.references.map((r) => (
+            <li key={r.url}>
+              <a href={r.url} target="_blank" rel="noopener noreferrer">
+                {r.title}
+                <span className="visually-hidden"> (abre em nova aba)</span>
+              </a>
+              <div className="muted small">
+                {r.author}
+                {r.language && <> · {r.language}</>}
+                {r.license && <> · licença {r.license}</>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        {method && (
+          <>
+            <ol className="method-steps">
+              {method.steps.map((s) => (
+                <li key={s.id}>
+                  <strong>{s.title}</strong>
+                </li>
+              ))}
+            </ol>
+            <p className="small">
+              <Link to="/como-estudamos#pratica">Ver o método completo e as fontes</Link>
+            </p>
+          </>
+        )}
+      </div>
+    </section>
   )
 }
 

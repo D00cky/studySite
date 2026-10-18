@@ -85,8 +85,14 @@ export interface Topic extends TopicSummary {
   evidencePrompts: string[]
   firstAction?: string
   /** Drill-down 80/20: o essencial e o aprofundamento para depois. */
-  essentials: string[]
   deepDive: DeepDivePoint[]
+  /** Kit mínimo 80/20: comando/conceito -> para que serve no dia a dia. */
+  kit: KitItem[]
+}
+
+export interface KitItem {
+  term: string
+  use: string
 }
 
 export interface DeepDivePoint {
@@ -146,6 +152,20 @@ export interface Project extends ProjectSummary {
   acceptanceCriteria: string[]
   evidence: string[]
   reviewQuestions: string[]
+  practice?: Practice
+}
+
+export interface PracticeReference {
+  title: string
+  author: string
+  url: string
+  language?: string
+  license?: string
+}
+
+export interface Practice {
+  guidance: string
+  references: PracticeReference[]
 }
 
 export interface TopicPage {
@@ -178,6 +198,13 @@ export interface Policies {
   sessionRoles: { id: string; title: string; description: string }[]
   selfAssessmentLevels: { level: number; title: string; description: string }[]
   recordKinds: string[]
+  practiceMethod?: {
+    title: string
+    summary: string
+    steps: { id: string; title: string; description: string }[]
+    sources: { title: string; url: string; quote: string }[]
+    caveats: string[]
+  }
 }
 
 // --- Registros pessoais -------------------------------------------------------------

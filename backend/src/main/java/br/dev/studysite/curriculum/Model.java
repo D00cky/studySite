@@ -56,11 +56,9 @@ public final class Model {
             List<String> completionCriteria,
             List<String> evidencePrompts,
             String firstAction,
-            List<String> essentials,
             List<DeepDivePoint> deepDive,
             List<KitItem> kit) {
         public Topic {
-            essentials = list(essentials);
             deepDive = list(deepDive);
             kit = list(kit);
             prerequisites = list(prerequisites);

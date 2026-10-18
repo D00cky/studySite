@@ -17,6 +17,10 @@ const project: Project = {
   ],
   edgeCases: ['Texto vazio.'], failureExperiments: ['Remover permissão de escrita.'], tools: ['gcc', 'strace'],
   acceptanceCriteria: ['Os dados persistem.'], evidence: ['Link do repositório.'], reviewQuestions: ['Por que stderr?'],
+  practice: {
+    guidance: 'Redigite o programa de referência à mão antes do marco 1.',
+    references: [{ title: 'Write a Shell in C', author: 'Stephen Brennan', url: 'https://brennan.io/2015/01/16/write-a-shell-in-c/', language: 'C', license: 'MIT' }],
+  },
 }
 
 const summaries = [
@@ -54,6 +58,21 @@ describe('projetos', () => {
     expect(within(milestones).getByText('Argumentos e exit codes')).toBeInTheDocument()
     expect(within(milestones).getByText(/25 min/)).toBeInTheDocument()
     expect(screen.getByText('Experimentos de falha', { selector: 'summary' })).toBeInTheDocument()
+  })
+})
+
+describe('projeto — prática antes de construir', () => {
+  it('mostra a referência para redigitar e os passos do método', async () => {
+    server.use(...signedIn())
+    server.use(http.get('/api/curriculum/projects/c-task-cli', () => HttpResponse.json(project)))
+    renderApp('/projetos/c-task-cli')
+    const region = await screen.findByRole('region', { name: 'Prática antes de construir' })
+    expect(within(region).getByText(/Redigite o programa de referência/)).toBeInTheDocument()
+    const ref = within(region).getByRole('link', { name: /Write a Shell in C/ })
+    expect(ref).toHaveAttribute('href', 'https://brennan.io/2015/01/16/write-a-shell-in-c/')
+    expect(within(region).getByText(/MIT/)).toBeInTheDocument()
+    expect(await within(region).findByText('Redigitar à mão')).toBeInTheDocument()
+    expect(within(region).getByRole('link', { name: /método completo/i })).toHaveAttribute('href', '/como-estudamos#pratica')
   })
 })
 

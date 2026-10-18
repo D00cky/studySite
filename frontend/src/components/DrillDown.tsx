@@ -1,23 +1,41 @@
-import type { DeepDivePoint, Resource } from '../api/types'
+import type { DeepDivePoint, KitItem, Resource } from '../api/types'
 import { InlineMarkdown } from './Markdown'
 
-/** Camada 1 do drill-down: os 20% que resolvem 80% dos casos. */
-export function Essentials({ items, compact = false }: { items: string[]; compact?: boolean }) {
+/**
+ * Kit mínimo 80/20 em forma de script de terminal: o comando/conceito e, como
+ * comentário, para que serve no dia a dia.
+ */
+export function Kit({ items, compact = false }: { items: KitItem[]; compact?: boolean }) {
   if (items.length === 0) return null
-  const Heading = compact ? 'h3' : 'h2'
+  const id = compact ? 'kit-drawer' : 'kit-title'
   return (
-    <section className={`essentials${compact ? ' essentials-compact' : ''}`} aria-labelledby={compact ? 'ess-drawer' : 'ess-title'}>
-      <Heading id={compact ? 'ess-drawer' : 'ess-title'}>
-        O essencial <span className="essentials-badge">20/80</span>
-      </Heading>
-      {!compact && <p className="hint">O que resolve a maioria dos casos. Domine isto antes de seguir; o resto pode esperar.</p>}
-      <ol>
-        {items.map((item) => (
-          <li key={item}>
-            <InlineMarkdown text={item} />
-          </li>
-        ))}
-      </ol>
+    <section className={`terminal kit${compact ? ' kit-compact' : ''}`} aria-labelledby={id}>
+      <div className="terminal-bar" aria-hidden="true">
+        <span className="dot dot-red" />
+        <span className="dot dot-yellow" />
+        <span className="dot dot-green" />
+        <span className="terminal-title">kit.sh</span>
+      </div>
+      <div className="terminal-body">
+        {compact ? (
+          <h3 id={id}>Kit mínimo</h3>
+        ) : (
+          <h2 id={id}>
+            Kit mínimo <span className="kit-badge">20% → 80%</span>
+          </h2>
+        )}
+        {!compact && (
+          <p className="terminal-comment"># com isto você já começa e resolve a maior parte do dia a dia; o resto vem com o tempo</p>
+        )}
+        <ul className="kit-list">
+          {items.map((k) => (
+            <li key={k.term}>
+              <code className="kit-term">{k.term}</code>
+              <span className="kit-use"># {k.use}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   )
 }

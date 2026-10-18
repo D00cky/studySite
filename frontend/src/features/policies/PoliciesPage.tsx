@@ -20,6 +20,37 @@ export function PoliciesPage() {
         </ol>
       </section>
 
+      {data.practiceMethod && (
+        <section id="pratica" aria-labelledby="practice-method-title">
+          <h2 id="practice-method-title">{data.practiceMethod.title}</h2>
+          <p>{data.practiceMethod.summary}</p>
+          <ol>
+            {data.practiceMethod.steps.map((s) => (
+              <li key={s.id}>
+                <strong>{s.title}</strong> — {s.description}
+              </li>
+            ))}
+          </ol>
+          <h3>De onde vem</h3>
+          <ul className="quote-list">
+            {data.practiceMethod.sources.map((src) => (
+              <li key={src.url}>
+                <blockquote>“{src.quote}”</blockquote>
+                <a href={src.url} target="_blank" rel="noopener noreferrer">
+                  {src.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <h3>Cuidados</h3>
+          <ul>
+            {data.practiceMethod.caveats.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section aria-labelledby="records-title">
         <h2 id="records-title">Registros separados</h2>
         <ul>

@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router'
 import { useRecordResourceEvent, useTopicPage, useTopicWorkspace } from '../../api/queries'
 import type { Resource } from '../../api/types'
-import { DeepDive, Essentials } from '../../components/DrillDown'
+import { DeepDive, Kit } from '../../components/DrillDown'
 import { InlineMarkdown, Markdown } from '../../components/Markdown'
 import { ProgressTag } from '../../components/ProgressTag'
 import { ResourceDetails } from '../../components/ResourceCard'
@@ -48,9 +48,14 @@ export function TopicPage() {
         {ws && <ProgressTag status={ws.progress.status} />}
       </div>
 
-      <p className="mobile-only small">
-        <a href="#trabalho">Ir para seu trabalho neste tópico (exercício, evidência, autoavaliação)</a>
-      </p>
+      <nav className="file-tabs" aria-label="Nesta lição">
+        <a href="#objective-title">{topic.id}.md</a>
+        {topic.kit.length > 0 && <a href="#kit-title">kit.sh</a>}
+        {startResource && <a href="#start-resource-title">comece</a>}
+        {videos.length > 0 && <a href="#videos-title">videos</a>}
+        <a href="#trabalho">pratica</a>
+        {books.length > 0 && <a href="#books-title">livros</a>}
+      </nav>
       <div className="two-col" style={{ marginTop: '1rem' }}>
         <article className="prose">
           <section aria-labelledby="objective-title">
@@ -70,7 +75,7 @@ export function TopicPage() {
             )}
           </section>
 
-          <Essentials items={topic.essentials} />
+          <Kit items={topic.kit} />
 
           {topic.status === 'planned' && (
             <p className="callout callout-warning">

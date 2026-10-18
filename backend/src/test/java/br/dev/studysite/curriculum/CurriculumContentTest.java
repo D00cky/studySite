@@ -45,9 +45,19 @@ class CurriculumContentTest {
     @Test
     void everyTopicHasTheTwoDrillDownLayers() {
         assertThat(curriculum.topics()).allSatisfy(t -> {
-            assertThat(t.essentials()).as("essencial de %s", t.id()).hasSizeBetween(3, 6);
+            assertThat(t.kit()).as("kit mínimo de %s", t.id()).hasSizeBetween(3, 7);
             assertThat(t.deepDive()).as("aprofundamento de %s", t.id()).hasSizeGreaterThanOrEqualTo(2);
         });
+    }
+
+    @Test
+    void everyProjectStartsWithDeliberatePractice() {
+        assertThat(curriculum.projects()).allSatisfy(p -> {
+            assertThat(p.practice()).as("prática de %s", p.id()).isNotNull();
+            assertThat(p.practice().references()).as("referências de %s", p.id()).isNotEmpty();
+            assertThat(p.milestones().getFirst().id()).as("primeiro marco de %s", p.id()).isEqualTo("m0-redigitar");
+        });
+        assertThat(curriculum.policies().practiceMethod()).isNotNull();
     }
 
     @Test

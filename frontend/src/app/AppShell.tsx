@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router'
 import { useLogout, useMe } from '../api/queries'
+import { useTheme } from '../lib/theme'
 
 const NAV = [
   { to: '/', label: 'Início', end: true },
@@ -15,6 +16,7 @@ export function AppShell() {
   const { data: me } = useMe()
   const logout = useLogout()
   const navigate = useNavigate()
+  const { theme, toggle } = useTheme()
 
   return (
     <>
@@ -41,6 +43,9 @@ export function AppShell() {
             </ul>
           </nav>
           <div className="account">
+            <button type="button" className="button-quiet theme-toggle" onClick={toggle}>
+              {theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}
+            </button>
             {me && <span className="muted">{me.displayName}</span>}
             <button
               type="button"

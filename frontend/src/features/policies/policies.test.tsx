@@ -20,4 +20,15 @@ describe('como estudamos', () => {
     expect(within(modes).getByText(/não conclui marcos/i)).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Papéis nas sessões do time' })).toHaveTextContent('Autor(a)')
   })
+
+  it('apresenta o método de prática com as fontes do Akita citadas', async () => {
+    server.use(...signedIn())
+    renderApp('/como-estudamos')
+    const region = await screen.findByRole('region', { name: /Prática deliberada/ })
+    expect(region).toHaveAttribute('id', 'pratica')
+    expect(within(region).getByText('Redigitar à mão')).toBeInTheDocument()
+    expect(within(region).getByText(/Crie um novo diretório e redigite tudo do zero de novo/)).toBeInTheDocument()
+    expect(within(region).getByRole('link', { name: '[Akitando] #69' })).toHaveAttribute('href', 'https://akitaonrails.com/2019/12/11/x/')
+    expect(within(region).getByText('Redigitar não é colar.')).toBeInTheDocument()
+  })
 })

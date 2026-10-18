@@ -90,10 +90,10 @@ export const topicPage: TopicPage = {
     completionCriteria: ['Gera e identifica os arquivos de todas as etapas.'],
     evidencePrompts: ['Comandos de cada etapa com a saída de file e nm.'],
     firstAction: 'Rode `gcc -c hello.c` e `file hello.o`.',
-    essentials: [
-      'Compilar não é executar: `gcc -c` gera um `.o`, só o linker exige `main`.',
-      'Erro com "undefined reference" é de linking, não de sintaxe.',
-      'Use `gcc -E`, `-S` e `-c` para parar em cada etapa quando algo não fizer sentido.',
+    kit: [
+      { term: 'gcc -Wall -Wextra -o prog prog.c', use: 'Compilar e linkar com avisos ligados.' },
+      { term: './prog; echo $?', use: 'Executar e ver o exit code.' },
+      { term: 'gcc -c arquivo.c', use: 'Compilar sem linkar, gerando um .o.' },
     ],
     deepDive: [
       { title: 'Link-time optimization (LTO)', why: 'Quando precisar otimizar entre arquivos em builds de produção.', resource: 'gcc-overall-options' },
@@ -155,6 +155,16 @@ export const policies: Policies = {
     { level: 4, title: 'Depuro e ensino', description: '' },
   ],
   recordKinds: ['Consumo de recurso: não demonstra domínio.'],
+  practiceMethod: {
+    title: 'Prática deliberada — copiar, quebrar, modificar, reescrever',
+    summary: 'Redigite código bom antes de inventar do zero.',
+    steps: [
+      { id: 'retype', title: 'Redigitar à mão', description: 'Sem colar.' },
+      { id: 'rewrite', title: 'Reescrever de memória', description: 'Dias depois.' },
+    ],
+    sources: [{ title: '[Akitando] #69', url: 'https://akitaonrails.com/2019/12/11/x/', quote: 'Crie um novo diretório e redigite tudo do zero de novo.' }],
+    caveats: ['Redigitar não é colar.'],
+  },
 }
 
 export const group: GroupDetail = {

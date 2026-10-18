@@ -45,6 +45,16 @@ describe('página de tópico — conteúdo', () => {
     expect(document.getElementById(hint)!.querySelector('code')).toHaveTextContent('-E')
   })
 
+  it('tem abas de navegação para as partes da lição', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    const tabs = await screen.findByRole('navigation', { name: 'Nesta lição' })
+    expect(within(tabs).getByRole('link', { name: 'kit.sh' })).toHaveAttribute('href', '#kit-title')
+    expect(within(tabs).getByRole('link', { name: 'pratica' })).toHaveAttribute('href', '#trabalho')
+    expect(document.getElementById('kit-title')).not.toBeNull()
+    expect(document.getElementById('trabalho')).not.toBeNull()
+  })
+
   it('orienta sobre pré-requisitos sem bloquear o acesso', async () => {
     setup()
     renderApp('/topicos/compilation-pipeline')
@@ -70,15 +80,16 @@ describe('página de tópico — conteúdo', () => {
 })
 
 describe('página de tópico — drill-down 80/20', () => {
-  it('mostra o essencial em destaque, antes do resto da lição', async () => {
+  it('mostra o kit mínimo como um script de terminal, antes do resto da lição', async () => {
     setup()
     renderApp('/topicos/compilation-pipeline')
-    const essentials = await screen.findByRole('region', { name: /O essencial/ })
-    const items = within(essentials).getAllByRole('listitem')
+    const kit = await screen.findByRole('region', { name: /Kit mínimo/ })
+    const items = within(kit).getAllByRole('listitem')
     expect(items).toHaveLength(3)
-    expect(within(essentials).getByText('gcc -c', { selector: 'code' })).toBeInTheDocument()
+    expect(within(items[0]!).getByText('gcc -Wall -Wextra -o prog prog.c', { selector: 'code' })).toBeInTheDocument()
+    expect(items[0]).toHaveTextContent('Compilar e linkar com avisos ligados.')
     const startResource = screen.getByRole('region', { name: 'Comece por aqui' })
-    expect(essentials.compareDocumentPosition(startResource) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(kit.compareDocumentPosition(startResource) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('mapeia o aprofundamento para depois, com quando usar e recurso', async () => {
