@@ -135,19 +135,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: dean-barroso-tail-at-scale
-  title: The Tail at Scale
-  author: Jeffrey Dean, Luiz André Barroso
-  url: https://research.google/pubs/the-tail-at-scale/
-  language: en
-  format: article
-  difficulty: advanced
-  topics: [latency-percentiles-diagnosis]
-  why: Artigo clássico sobre por que a cauda domina em sistemas com fan-out e técnicas como hedged requests para reduzi-la.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: wrk2
   title: "wrk2: a constant throughput, correct latency recording variant of wrk"
   author: Gil Tene
@@ -211,19 +198,6 @@
   difficulty: intermediate
   topics: [health-checks-rollback]
   why: Rolling update com maxSurge/maxUnavailable, histórico de revisões e kubectl rollout undo.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: fowler-feature-toggles
-  title: Feature Toggles (aka Feature Flags)
-  author: Pete Hodgson (martinfowler.com)
-  url: https://martinfowler.com/articles/feature-toggles.html
-  language: en
-  format: article
-  difficulty: intermediate
-  topics: [health-checks-rollback]
-  why: Separar deploy de release com flags — tipos de toggle, custo de manutenção e como desligar uma funcionalidade sem rollback.
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }

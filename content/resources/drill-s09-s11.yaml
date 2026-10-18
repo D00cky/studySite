@@ -152,7 +152,7 @@
   language: en
   format: documentation
   difficulty: intermediate
-  topics: [isolation-locks, transactions-basics]
+  topics: [isolation-locks, transactions-basics, consistency-models]
   why: Descrição oficial de cada nível de isolamento, das anomalias que permite e dos erros de serialização a repetir.
   access: free
   priority: optional

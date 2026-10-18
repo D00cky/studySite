@@ -253,7 +253,7 @@
   deepDive:
     - title: Tail at scale e hedged requests
       why: Quando seu serviço fizer fan-out para muitos backends e a cauda de um deles virar a latência típica do usuário.
-      resource: dean-barroso-tail-at-scale
+      resource: google-tail-at-scale
     - title: HdrHistogram e registro de latência sem perda
       why: Ao construir sua própria medição de latência com alta resolução e faixa grande de valores.
       resource: hdrhistogram

@@ -61,7 +61,7 @@
   language: en
   format: article
   difficulty: intermediate
-  topics: [architecture-ci]
+  topics: [architecture-ci, health-checks-rollback]
   why: Tipos de feature flag, custo de manter cada um e como permitem integrar código incompleto no main.
   access: free
   priority: optional
@@ -206,7 +206,7 @@
   language: en
   format: article
   difficulty: advanced
-  topics: [partial-failure-retries]
+  topics: [partial-failure-retries, latency-percentiles-diagnosis]
   why: Por que a cauda de latência domina em fan-out e técnicas como hedged requests.
   access: free
   priority: optional
@@ -273,19 +273,6 @@
   difficulty: advanced
   topics: [consistency-models]
   why: Relatórios de bancos reais violando as garantias que anunciam, com a metodologia de teste.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: postgres-transaction-isolation
-  title: "PostgreSQL — 13.2. Transaction Isolation"
-  author: PostgreSQL Global Development Group
-  url: https://www.postgresql.org/docs/current/transaction-iso.html
-  language: en
-  format: documentation
-  difficulty: intermediate
-  topics: [consistency-models]
-  why: Níveis de isolamento do PostgreSQL e as anomalias que cada um permite, para não confundir isolation com consistência entre réplicas.
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
