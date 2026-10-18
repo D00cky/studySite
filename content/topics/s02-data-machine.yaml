@@ -24,8 +24,8 @@
       correction: Os mesmos bytes viram números, texto ou instruções conforme a interpretação.
   resources:
     start: akita-binary-text
-    deeper: [cs50-memory, man-ascii, akita-intro-computing, csapp, nand2tetris]
-    videos: [akitando-91-binario-texto-video, cs61c-fa20-lecture-02-1-bits-video, cs61c-fa20-lecture-02-2-conversions-video]
+    deeper: [cs50x-2026-notes-4-hexadecimal, man-ascii, akita-intro-computing, csapp-2-1-information-storage, nand2tetris-project-02-boolean-arithmetic]
+    videos: [akitando-91-binario-texto-video-arquivos-binarios, cs61c-fa20-lecture-02-1-bits-video, cs61c-fa20-lecture-02-2-conversions-video]
   exercise:
     id: ex-bases-by-hand
     title: Conversões à mão, conferidas pela máquina
@@ -75,15 +75,15 @@
   deepDive:
     - title: Operações bitwise, máscaras e flags
       why: Quando for ler código de sistemas, protocolos de rede ou permissões que guardam várias opções num único inteiro.
-      resource: csapp
+      resource: csapp-2-1-7-bit-level-operations-in-c
     - title: Endianness (little vs big endian)
       why: Ao ler inteiros de multi-byte num dump de memória, num arquivo binário ou num pacote de rede.
-      resource: csapp
+      resource: csapp-2-1-3-addressing-and-byte-ordering
     - title: Base64 e outras codificações binário→texto
       why: Ao lidar com JWTs, anexos de e-mail, data URLs ou chaves em arquivos de configuração.
     - title: Do transistor à porta lógica
       why: Se quiser entender como os bits viram circuitos e uma CPU de verdade.
-      resource: nand2tetris
+      resource: nand2tetris-project-01-boolean-logic
 
 - id: integer-representation-overflow
   stage: s02-data-machine
@@ -109,8 +109,8 @@
       correction: Para signed em C isso depende de UB; o compilador pode remover o teste. Verifique os limites antes.
   resources:
     start: beej-c-types-ii
-    deeper: [beej-c-fixed-width, akita-640kb, cert-c, csapp]
-    videos: [cs61c-fa20-lecture-02-4-twos-complement-video, mit-6004-signed-integers-twos-complement-video, akitando-97-640kb-video]
+    deeper: [beej-c-fixed-width, akita-640kb, cert-c-rules-integers-int, csapp-2-2-integer-representations, csapp-2-3-integer-arithmetic]
+    videos: [cs61c-fa20-lecture-02-4-twos-complement-video, mit-6004-signed-integers-twos-complement-video, akitando-97-640kb-video-64-bits]
   exercise:
     id: ex-overflow-table
     title: Prever o odômetro
@@ -162,10 +162,10 @@
   deepDive:
     - title: Integer promotions e conversões aritméticas usuais em C
       why: Quando comparações entre signed e unsigned ou contas com `char` e `short` derem resultados inesperados.
-      resource: cppreference-c
+      resource: cppreference-c-usual-arithmetic-conversions
     - title: Integer overflow como vulnerabilidade
       why: Ao revisar código que calcula tamanhos de buffer, offsets ou quantidades vindas do usuário.
-      resource: cert-c
+      resource: cert-c-int32-c-signed-integer-overflow
     - title: Builtins de aritmética verificada (__builtin_mul_overflow)
       why: Quando precisar de checagem de overflow eficiente e portável em código C crítico.
     - title: Inteiros de precisão arbitrária (BigInteger, numeric)
@@ -198,7 +198,7 @@
   resources:
     start: joel-unicode
     deeper: [akita-binary-text, utf8-everywhere, man-utf8, man-ascii, beej-c-unicode]
-    videos: [computerphile-unicode-video, akitando-91-binario-texto-video]
+    videos: [computerphile-unicode-video, akitando-91-binario-texto-video-ascii]
   exercise:
     id: ex-utf8-bytes
     title: Contar bytes, code points e caracteres
@@ -287,7 +287,7 @@
       correction: NaN é diferente de todo valor, inclusive de si mesmo; use isnan().
   resources:
     start: floating-point-gui
-    deeper: [beej-c-types-ii, goldberg-fp, csapp]
+    deeper: [beej-c-types-ii, goldberg-fp, csapp-2-4-floating-point]
     videos: [computerphile-floating-point-video, cs61c-fa20-lecture-06-1-fixed-point-video, cs61c-fa20-lecture-06-2-floating-point-video]
   exercise:
     id: ex-float-sum
@@ -338,10 +338,10 @@
   deepDive:
     - title: Kahan summation e erro acumulado
       why: Quando somar milhões de valores (estatística, ML, simulação) e o erro acumulado importar.
-      resource: goldberg-fp
+      resource: goldberg-fp-errors-in-summation
     - title: Layout IEEE 754, denormais e modos de arredondamento
       why: Em código numérico de alto desempenho ou ao interpretar resultados estranhos perto de zero.
-      resource: goldberg-fp
+      resource: goldberg-fp-the-ieee-standard
     - title: ULPs e comparação robusta de floats
       why: Ao escrever testes automatizados de código numérico que precisam ser estáveis em várias plataformas.
       resource: floating-point-gui
@@ -372,9 +372,9 @@
     - claim: Otimizar cache é coisa de quem escreve sistemas operacionais.
       correction: Afeta estruturas de dados comuns, bancos de dados, jogos e qualquer laço sobre muitos dados.
   resources:
-    start: drepper-memory
-    deeper: [akita-von-neumann, akita-640kb, csapp, nand2tetris]
-    videos: [computerphile-cpu-memory-caches-video, mit-6004-locality-principle-video, akitando-86-turing-von-neumann-video]
+    start: drepper-memory-3-cpu-caches
+    deeper: [akita-von-neumann, akita-640kb, csapp-6-memory-hierarchy, nand2tetris-project-05-computer-architecture]
+    videos: [computerphile-cpu-memory-caches-video, mit-6004-locality-principle-video, akitando-86-turing-von-neumann-video-von-neumann]
   exercise:
     id: ex-row-vs-column
     title: Linhas contra colunas
@@ -424,7 +424,7 @@
   deepDive:
     - title: Medir cache misses com perf
       why: Quando precisar provar que um gargalo é de memória e não de CPU, em vez de adivinhar.
-      resource: brendan-gregg-perf
+      resource: brendan-gregg-perf-examples-hardware-events
     - title: False sharing e coerência de cache entre núcleos
       why: Ao escrever código multithread em que contadores vizinhos de threads diferentes derrubam o desempenho.
       resource: scott-meyers-cpu-caches-why-you-care
@@ -436,4 +436,4 @@
       resource: mike-acton-data-oriented-design-cppcon-2014
     - title: Pipeline, branch prediction e execução fora de ordem
       why: Quando quiser entender microbenchmarks que contrariam a intuição ou ler assembly otimizado.
-      resource: csapp
+      resource: csapp-5-7-understanding-modern-processors
