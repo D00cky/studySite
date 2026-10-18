@@ -55,8 +55,12 @@ public final class Model {
             List<String> reflectionQuestions,
             List<String> completionCriteria,
             List<String> evidencePrompts,
-            String firstAction) {
+            String firstAction,
+            List<String> essentials,
+            List<DeepDivePoint> deepDive) {
         public Topic {
+            essentials = list(essentials);
+            deepDive = list(deepDive);
             prerequisites = list(prerequisites);
             related = list(related);
             mathThreads = list(mathThreads);
@@ -68,6 +72,13 @@ public final class Model {
     }
 
     public record Misconception(String claim, String correction) {
+    }
+
+    /**
+     * Camada de aprofundamento da lição (drill-down): assuntos avançados para estudar
+     * depois do essencial. resource é opcional e aponta para a biblioteca.
+     */
+    public record DeepDivePoint(String title, String why, String resource) {
     }
 
     /** videos: recursos de formato "video" (aulas, Akitando, palestras) para contextualizar a lição. */

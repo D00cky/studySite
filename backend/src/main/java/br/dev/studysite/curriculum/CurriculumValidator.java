@@ -108,6 +108,19 @@ final class CurriculumValidator {
                 && !projectIds.contains(t.experiment().project())) {
             error(where + ": projeto inexistente '" + t.experiment().project() + "'");
         }
+        // Drill-down 80/20: o essencial (3–6 pontos) e o aprofundamento para depois.
+        if (!t.essentials().isEmpty() && (t.essentials().size() < 3 || t.essentials().size() > 6)) {
+            error(where + ": essentials deve ter de 3 a 6 pontos (tem " + t.essentials().size() + ")");
+        }
+        for (Model.DeepDivePoint d : t.deepDive()) {
+            if (d.title() == null || d.title().isBlank()) {
+                error(where + ": deepDive com title vazio");
+            }
+            required(where, "deepDive.why", d.why());
+            if (d.resource() != null && !resourceIds.contains(d.resource())) {
+                error(where + ": deepDive aponta para recurso inexistente '" + d.resource() + "'");
+            }
+        }
         if (!"authored".equals(t.status())) {
             return;
         }
