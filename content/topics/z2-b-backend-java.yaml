@@ -61,6 +61,23 @@
     - Sessão do jshell e saída do javap anotadas.
     - Tabela de tempos do experimento de boxing com as linhas de log do GC.
   firstAction: Abra o terminal, rode `jshell` e digite `record Task(long id, String title) {}` seguido de `new Task(1, "estudar")`.
+  essentials:
+    - "Compare objetos com `equals`, nunca `==` (Strings, Integer, Long); `==` compara referências."
+    - "Sobrescreveu `equals`? Sobrescreva `hashCode` junto e não use objetos mutáveis como chave de HashMap."
+    - "Use `record` para dados imutáveis e `List.of`/`Map.of` para coleções que não mudam."
+    - "Feche recursos com try-with-resources; não remova itens de uma coleção dentro do for-each (use `removeIf`)."
+    - "Na dúvida sobre o que a linguagem faz, teste no `jshell` e inspecione com `javap -c -p`."
+  deepDive:
+    - title: Generics, wildcards e type erasure
+      why: Ao escrever APIs genéricas ou entender erros como "unchecked cast" e por que não existe `new T()`.
+    - title: Virtual threads (Java 21)
+      why: Quando o backend fizer muito I/O bloqueante e você quiser milhares de requisições concorrentes sem pools enormes.
+      resource: openjdk-jep-444-virtual-threads
+    - title: JVM por dentro — JIT, class loading e garbage collectors
+      why: Ao ajustar memória e latência em produção ou interpretar logs de GC e heap dumps.
+      resource: dev-java-jvm
+    - title: Sealed types e pattern matching
+      why: "Para modelar estados fechados (ex.: resultado de sucesso ou erro) com o compilador conferindo todos os casos."
 
 - id: spring-web-backend
   stage: b-backend-java
@@ -90,7 +107,7 @@
   resources:
     start: spring-boot-docs
     deeper: [spring-dispatcher-servlet, spring-boot-auto-configuration, spring-ioc-container, roadmap-backend, owasp-cheatsheets]
-    videos: [akitando-124-sockets-web-video]
+    videos: [dan-vega-spring-boot-3-crash-course-video, spring-io-2025-demystifying-spring-boot-magic-video, akitando-124-sockets-web-video]
   exercise:
     id: ex-tasks-api-no-magic
     title: API de tarefas com e sem mágica
@@ -125,6 +142,25 @@
     - Transcrição do curl -v dos casos de sucesso e erro.
     - Trecho do relatório de condições e do jstack com anotações.
   firstAction: Gere um projeto em start.spring.io com Spring Web, rode-o e faça `curl -v localhost:8080/` para ver o 404 padrão e seus headers.
+  essentials:
+    - "Injete dependências pelo construtor; o container só monta o grafo de objetos que você poderia montar com `new`."
+    - "Responda com o status certo: 201 + `Location` ao criar, 400 com detalhes, 404 para inexistente; erros via `ProblemDetail`, nunca stack trace."
+    - "Valide entrada com Bean Validation (`@Valid` + `@NotBlank`/`@Size`); regra de negócio continua no seu código."
+    - "Bean não encontrado ou auto-configuração estranha: rode com `--debug` e leia o conditions evaluation report."
+    - "Teste a API com `curl -v` olhando status, headers (`Content-Type`, `Accept`) e corpo."
+  deepDive:
+    - title: Spring Security e a cadeia de filtros
+      why: Quando a API precisar de autenticação e autorização e você quiser saber onde cada decisão é tomada.
+      resource: spring-security-servlet-architecture
+    - title: Actuator, health checks e métricas
+      why: Ao colocar a API em produção atrás de um orquestrador que precisa de probes e métricas.
+      resource: spring-boot-actuator
+    - title: Virtual threads e o modelo de uma thread por requisição
+      why: Quando o pool de threads do Tomcat virar gargalo por esperas de I/O.
+      resource: openjdk-jep-444-virtual-threads
+    - title: Internals da auto-configuração
+      why: Ao criar seu próprio starter ou substituir beans auto-configurados com segurança.
+      resource: spring-boot-auto-configuration
 
 - id: jdbc-postgresql
   stage: b-backend-java
@@ -152,7 +188,7 @@
   resources:
     start: jdbc-tutorial-basics
     deeper: [jdbc-prepared-statements, jdbc-transactions, pgjdbc-docs, spring-jdbc-core, spring-declarative-transactions, spring-boot-data-initialization, flyway-docs, postgres-docs, postgres-explain]
-    videos: [akitando-118-servidor-sql-video]
+    videos: [vlad-mihalcea-high-performance-jdbc-video, dan-vega-jdbc-client-vs-spring-data-jdbc-video, akitando-118-servidor-sql-video]
   exercise:
     id: ex-jdbc-by-hand
     title: Repositório de tarefas com JDBC puro
@@ -188,6 +224,25 @@
     - Código do repositório e as duas consultas (vulnerável e corrigida) com seus resultados.
     - Saídas do pg_stat_activity e do log do Hikari anotadas.
   firstAction: "Suba um Postgres com `docker run --rm -e POSTGRES_PASSWORD=lab -p 5432:5432 postgres` e conecte com `psql -h localhost -U postgres`."
+  essentials:
+    - "Sempre `PreparedStatement` com parâmetros `?`; nunca concatene entrada do usuário no SQL."
+    - "Feche `Connection`, `PreparedStatement` e `ResultSet` com try-with-resources."
+    - "Operações que precisam ser atômicas: `setAutoCommit(false)`, `commit()` e `rollback()` no catch — ou `@Transactional` chamado de fora da classe."
+    - "Use o pool (HikariCP) com tamanho pequeno e timeout; investigue `pg_stat_activity` quando conexões esgotarem."
+    - "Mude o esquema só por migração versionada (Flyway `V<n>__descricao.sql`), nunca à mão no banco."
+  deepDive:
+    - title: Dimensionamento do pool de conexões
+      why: Quando a API escalar e você precisar justificar o tamanho do pool em vez de aumentá-lo no chute.
+      resource: hikaricp-about-pool-sizing
+    - title: Propagação e isolamento no @Transactional
+      why: Ao combinar serviços transacionais ou precisar de níveis de isolamento além do padrão.
+      resource: marcobehler-spring-transactional
+    - title: Batching e cargas em massa (executeBatch, COPY)
+      why: Quando precisar inserir ou importar milhares de linhas e INSERTs um a um ficarem lentos.
+      resource: postgres-sql-copy
+    - title: JPA/Hibernate e o problema N+1
+      why: Se o time adotar um ORM e as consultas geradas começarem a explodir em número.
+      resource: vlad-mihalcea-high-performance-jdbc-video
 
 - id: backend-testing-java
   stage: b-backend-java
@@ -215,7 +270,7 @@
   resources:
     start: testcontainers-java
     deeper: [testcontainers-postgres-module, testcontainers-getting-started-java, spring-boot-testing, spring-boot-testcontainers, spring-security-authorization, owasp-cheatsheets, docker-get-started]
-    videos: [akitando-149-docker-compose-postgres-video]
+    videos: [spring-io-selajev-testcontainers-spring-boot-video, dan-vega-spring-boot-testcontainers-video, spring-io-2026-riecks-testing-spring-boot-demystified-video]
   exercise:
     id: ex-testcontainers-authz-matrix
     title: Repositório real e matriz de autorização
@@ -251,3 +306,22 @@
     - Saída do runner de testes com tempos e a lista de casos da matriz.
     - Captura do docker ps durante os testes e o log do Testcontainers.
   firstAction: Abra a página do módulo Postgres do Testcontainers e copie o exemplo mínimo de teste para uma pasta de laboratório.
+  essentials:
+    - "Teste acesso a dados contra PostgreSQL real com Testcontainers (`@ServiceConnection`), aplicando as migrações Flyway reais; não use H2."
+    - "Cada teste prepara e isola seus dados; a suíte precisa passar em qualquer ordem."
+    - "Reutilize o container entre classes de teste para manter a suíte rápida."
+    - "Teste a API pela camada HTTP (MockMvc ou porta aleatória), conferindo status e corpo, não só o serviço."
+    - "Escreva a matriz de autorização com testes negativos: anônimo e outro usuário devem receber 401/403/404."
+  deepDive:
+    - title: Mutation testing
+      why: Quando a cobertura parecer alta mas bugs continuarem passando, e você quiser medir a força das asserções.
+      resource: pitest-mutation-testing
+    - title: Property-based testing
+      why: Para regras com muitas combinações de entrada (validação, parsing, cálculos) em que exemplos escolhidos à mão não bastam.
+      resource: jqwik-property-based-testing
+    - title: Extensões e recursos avançados do JUnit 5
+      why: Ao criar infraestrutura de teste reutilizável (extensions, testes parametrizados e dinâmicos).
+      resource: junit-user-guide
+    - title: Testes de carga contra o sistema completo
+      why: Antes de expor a API a tráfego real e para descobrir limites de pool, banco e threads.
+      resource: akitando-149-docker-compose-postgres-video

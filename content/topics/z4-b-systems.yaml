@@ -66,6 +66,25 @@
     - Saídas de strace -c e perf stat das quatro versões.
     - Código e resultados do experimento com fsync e kill -9.
   firstAction: "Rode `strace -c cat /etc/passwd > /dev/null` e anote quantos `read` e `write` aparecem."
+  essentials:
+    - "Cada read/write é uma syscall com custo fixo: leia e escreva em blocos (ex.: 64 KiB), nunca byte a byte."
+    - "stdio bufferiza: use `fflush` ou `setvbuf` quando a saída precisar aparecer já, e lembre que `kill -9` perde o buffer."
+    - "`write` retornou não significa disco; para durabilidade use `fsync` e agrupe vários registros por fsync."
+    - "`strace -c` para contar syscalls; `perf stat` ou `time` para medir tempo — strace distorce o tempo."
+    - "Rode o benchmark várias vezes e separe cache frio de quente; reporte a mediana."
+  deepDive:
+    - title: io_uring e I/O assíncrono
+      why: Em servidores ou bancos que fazem muito I/O concorrente e querem reduzir syscalls e cópias.
+      resource: lord-of-the-io-uring
+    - title: O_DIRECT, fdatasync e garantias de durabilidade
+      why: Ao escrever um log, banco ou formato de arquivo que precisa sobreviver a quedas de energia.
+      resource: man-fsync
+    - title: Observar I/O em produção com eBPF
+      why: Quando precisar medir latência de disco e syscalls num sistema real sem o overhead do strace.
+      resource: brendan-gregg-ebpf
+    - title: mmap, page faults e readahead
+      why: Ao processar arquivos grandes com acesso aleatório e decidir entre mmap e read.
+      resource: man-mmap
 
 - id: memory-allocators
   stage: b-systems
@@ -134,6 +153,25 @@
     - Saídas do dump_heap antes e depois do coalescing.
     - Tabela de fragmentação e trecho do strace com brk/mmap da glibc.
   firstAction: "Rode `strace -e trace=brk,mmap ./algum_programa_com_malloc` e conte quantas vezes a heap cresceu."
+  essentials:
+    - "malloc pede regiões grandes ao kernel (`brk`/`mmap`) e as subdivide; `free` geralmente devolve à free list, não ao kernel."
+    - "Cada bloco tem header com tamanho e bit livre/ocupado; `free(p)` acha o header logo antes de `p`."
+    - "Implemente splitting ao alocar e coalescing ao liberar, senão a fragmentação externa toma conta."
+    - "Alinhe blocos a 16 bytes; `malloc(10)` usa mais que 10 bytes (confira com `malloc_usable_size`)."
+    - "Teste seu alocador com ASan/Valgrind: estouro de um bloco corrompe o header do próximo."
+  deepDive:
+    - title: Classes de tamanho e caches por thread
+      why: Ao entender por que alocadores reais escalam com muitas threads e como ler o código de um deles.
+      resource: mimalloc
+    - title: Exploração de heap e mitigações
+      why: Ao estudar segurança e entender como heap overflow e double free viram execução de código.
+      resource: cert-c
+    - title: Arenas e alocadores especializados
+      why: Quando um programa aloca muitos objetos de mesmo tempo de vida (parser, requisição) e free individual vira custo.
+      resource: ostep-free-space
+    - title: Garbage collectors
+      why: Ao comparar gerenciamento manual com coleta automática em runtimes como JVM e interpretadores.
+      resource: crafting-interpreters-garbage-collection
 
 - id: low-level-concurrency
   stage: b-systems
@@ -200,3 +238,22 @@
     - Código do spinlock com comentários justificando cada memory order.
     - Saídas do perf stat e do strace de futex anotadas.
   firstAction: Escreva um programa com duas threads fazendo `counter++` um milhão de vezes cada e imprima o resultado três vezes.
+  essentials:
+    - "`counter++` não é atômico: use `_Atomic`/`atomic_fetch_add` ou um mutex; `volatile` não resolve."
+    - "Na dúvida, use seq_cst (padrão); acquire/release só quando souber qual escrita precisa ficar visível para qual leitura."
+    - "Prefira mutex a spinlock em código de aplicação; spinlock só para seções curtíssimas."
+    - "Rode o código concorrente com ThreadSanitizer (`-fsanitize=thread`) antes de confiar nele."
+    - "Evite false sharing: contadores por thread somados no fim ou alinhados a 64 bytes; confirme com `perf stat`."
+  deepDive:
+    - title: Estruturas lock-free e o problema ABA
+      why: Ao implementar filas ou pilhas sem lock em sistemas de baixa latência.
+      resource: preshing-lock-free-intro
+    - title: Barreiras de memória por arquitetura (x86 vs ARM)
+      why: Quando código que funciona no x86 falhar em ARM por reordenação mais agressiva.
+      resource: linux-kernel-memory-barriers
+    - title: Como mutexes dormem — futex
+      why: Ao implementar primitivas de sincronização próprias ou interpretar tempo gasto em syscalls futex.
+      resource: man-futex
+    - title: Modelo mental de acquire/release
+      why: Para revisar código que usa memory orders explícitos sem cair em suposições erradas.
+      resource: preshing-memory-barriers-source-control

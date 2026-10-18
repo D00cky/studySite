@@ -70,6 +70,21 @@
     - Desenho da AST feito à mão ao lado da saída do impressor.
     - Saída do fuzzing simples com as entradas que causaram problemas e as correções.
   firstAction: "Escreva num papel a lista de tokens de `12 + (3 * 4)` com a coluna de início de cada um."
+  essentials:
+    - "Separe as etapas: scanner gera tokens com linha e coluna; o parser só enxerga tokens."
+    - "Escreva a gramática primeiro; cada regra vira uma função do parser recursivo descendente."
+    - "Precedência vem da estratificação das regras; o laço `( ... )*` dá associatividade à esquerda."
+    - "Nunca escreva recursão à esquerda (`expr → expr + term`) num parser descendente: vira recursão infinita."
+    - "Erro de sintaxe bom diz o que esperava, o que encontrou e onde; sincronize para reportar mais de um."
+  deepDive:
+    - title: Pratt parsing (precedence climbing)
+      why: Quando a linguagem tiver muitos operadores e níveis de precedência e a cascata de funções ficar longa.
+      resource: matklad-pratt-parsing
+    - title: Geradores de parser e gramáticas formais (LL, LR)
+      why: Ao manter uma gramática grande ou usar ferramentas como ANTLR, yacc ou tree-sitter.
+      resource: crafting-interpreters-map-of-territory
+    - title: Fuzzing de parsers
+      why: Quando o parser processar entrada não confiável e você precisar achar loops, estouros de pilha e crashes.
 
 - id: tree-walk-evaluation
   stage: b-interpreters
@@ -139,6 +154,21 @@
     - Sessão do REPL com sucessos e erros.
     - Trace ou backtrace do gdb anotado ao lado da AST.
   firstAction: Escreva, em uma frase cada, o que sua linguagem deve fazer com divisão por zero e com `1 + true`.
+  essentials:
+    - "Avaliar é travessia pós-ordem: avalie os filhos, depois combine com o operador do nó."
+    - "Cada valor carrega seu tipo em runtime; confira tipos antes de aplicar o operador e gere erro claro."
+    - "Guarde o token do operador no nó da AST para que o erro de runtime informe linha e coluna."
+    - "Documente cada decisão semântica: divisão por zero, `==` entre tipos, truthiness, curto-circuito de `and`/`or`."
+    - "O REPL deve capturar o erro, imprimir e continuar; teste cada regra com testes de ponta a ponta."
+  deepDive:
+    - title: Compilar para bytecode e executar numa VM
+      why: Quando o tree-walk ficar lento demais para os programas que sua linguagem precisa rodar.
+      resource: crafting-interpreters-bytecode-vm
+    - title: Classes, instâncias e métodos
+      why: Ao estender a linguagem com objetos e entender como `this` e herança são resolvidos.
+      resource: crafting-interpreters-classes
+    - title: Checagem estática de tipos
+      why: Quando quiser detectar erros de tipo antes de executar, como TypeScript faz sobre JavaScript.
 
 - id: scope-environments
   stage: b-interpreters
@@ -204,3 +234,19 @@
     - Fotos ou desenhos dos ambientes ao lado da saída do programa.
     - Captura do painel Scope do DevTools numa closure, com anotação.
   firstAction: "Desenhe as caixas de ambiente para `var x = 1; { var y = 2; print x + y; }`."
+  essentials:
+    - "Ambiente = mapa nome→valor com ponteiro para o ambiente envolvente; buscar é subir a cadeia."
+    - "Separe declarar (cria no ambiente atual), atribuir (altera onde o nome existe) e ler."
+    - "Escopo léxico: a função guarda o ambiente onde foi definida, não onde é chamada."
+    - "Closures fazem ambientes sobreviverem à chamada: eles vivem na heap, não na stack."
+    - "Desenhe os ambientes em caixas para prever a saída antes de rodar."
+  deepDive:
+    - title: Resolução estática de nomes
+      why: Para corrigir o bug de closures que enxergam declarações posteriores e acelerar a busca de variáveis.
+      resource: crafting-interpreters-resolving-and-binding
+    - title: Garbage collection de ambientes e closures
+      why: Ao implementar o interpretador numa linguagem sem GC (como C) e precisar liberar ambientes inalcançáveis.
+      resource: crafting-interpreters-garbage-collection
+    - title: Upvalues e closures eficientes
+      why: Quando migrar para uma VM de bytecode e quiser closures sem alocar um ambiente por bloco.
+      resource: crafting-interpreters-bytecode-vm
