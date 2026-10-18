@@ -7,19 +7,27 @@ aprendizagem e revisões em equipe.
 Ciclo de aprendizagem: **pergunta → previsão → estudo focado → implementação manual → experimento →
 evidência → explicação → revisão.** Abrir um recurso nunca conta como domínio.
 
-> **Status:** backend e frontend implementados (MVP).
+> **Status:** MVP completo — backend, frontend e currículo inteiro escritos.
 
 ## O que existe hoje
 
 | Situação | O quê |
 |---|---|
-| ✅ Implementado | API REST em Spring Boot com autenticação por sessão, grupos com papéis mentor/aprendiz, registros individuais separados (consumo de recurso, tentativas, evidências, autoavaliação, revisão), pedidos de revisão com feedback, notas privadas/compartilhadas, sessões de estudo com nota de retomada, painel "continue de onde parou", progresso individual e do grupo, sessões do time com papéis rotativos, projetos do grupo com marcos, sinais de ajuda, sugestões de recursos com revisão do mentor. |
-| ✅ Conteúdo completo | Mapa com 16 etapas + 4 ramos e todas as dependências; **etapas 1–4 totalmente escritas** (19 tópicos com explicação, equívocos comuns, exercício, experimento, perguntas de reflexão, critérios de conclusão e evidências); projetos *CLI de tarefas em C* e *Vetor dinâmico e tabela hash* completos. |
-| 🟡 Visão geral (planned) | Etapas 5–16 e ramos: objetivo, importância e pré-requisitos de cada tópico; lições detalhadas ainda por escrever. Projetos mini shell, processador de jobs, laboratório TCP/HTTP, laboratório PostgreSQL, interpretador e plataforma cumulativa: pergunta, versão mínima e marcos. |
+| ✅ Currículo completo | 16 etapas + 4 ramos com dependências explícitas; **84 tópicos, todos escritos** (explicação, equívocos comuns, exercício, experimento, reflexão, critérios de conclusão, evidências, kit mínimo e aprofundamento). Inclui a lição de *detecção e correção de erros* (paridade, checksum da internet, CRC, Hamming). |
+| ✅ Biblioteca curada | **2.561 recursos**: 1.228 vídeos (Akitando, Ben Eater, Computerphile, 3Blue1Brown, aulas de Berkeley/MIT/CMU/Stanford recomendadas pelo Teach Yourself CS), 611 capítulos e livros clássicos (Tanenbaum, CLRS, Kurose, OSTEP, CS:APP… só links e capítulos, sem arquivos piratas), 508 em português. 1.541 apontam para o capítulo ou episódio exato e 331 vídeos abrem no minuto do assunto. Só 2 seguem `pending`. |
+| ✅ Projetos | **14 projetos completos**, todos começando por *redigitar uma referência* (o "sentar e copiar código" do Akita): 7 laboratórios por etapa (CLI de tarefas em C, tabela hash, mini shell, processador de jobs, TCP/HTTP, PostgreSQL, interpretador), o projeto cumulativo e **6 "construa o seu"**: compilador, banco de dados com B-tree, Git, alocador de memória (malloc), emulador CHIP-8 e key-value distribuído com Raft. |
+| ✅ Backend | API REST em Spring Boot com sessão, grupos com papéis mentor/aprendiz, registros individuais separados (consumo de recurso, tentativas, evidências, autoavaliação, revisão), revisões com feedback, notas, sessões de estudo com nota de retomada, painel "continue de onde parou", progresso individual e do grupo, sessões do time com papéis, projetos do grupo com marcos, sinais de ajuda e sugestões de recursos. |
+| ✅ Frontend | SPA em React com visual de editor/terminal (escuro por padrão, tema claro opcional): roadmap em trilha no estilo roadmap.sh, lista e grafo; página de tópico com abas, kit mínimo, vídeos embutidos no minuto certo, capítulos de livros e "mais para aprofundar"; editor markdown nas evidências e notas; projetos em cards; painel com progresso por etapa; menu compacto no celular. |
 | 🧪 Demonstração | Perfil `demo` cria `mentora@demo.local` e `aprendiz@demo.local` (senha `demo-senha-123`) num grupo. Só para uso local. |
-| 🔎 Verificação de recursos | 108 recursos; links verificados em 2026-10-18. Um recurso está como `pending` (tradução do Teach Yourself CS). Ressalvas registradas em cada item (ex.: PDF do TLCL não confirmado, man7 aberto via WebFetch). |
-| ✅ Frontend | SPA em React: login/cadastro, painel “continue de onde parou” com sessões de estudo e nota de retomada, roadmap em lista acessível e em grafo navegável por teclado, páginas de tópico com revelação progressiva e registros (recurso, tentativa, evidência, autoavaliação, pedido de revisão), revisões, espaço do time (sinais, fila de revisão, sessões com papéis rotativos, projetos do grupo, progresso compartilhado, sugestões), biblioteca com filtros, projetos, “meu registro” e “como estudamos”. |
-| ⏳ Planejado | Tutor de IA opcional, notificações, atribuição manual de papéis nas sessões (hoje: rotação sugerida). Nenhum código enviado é executado no servidor. |
+| ⏳ Planejado | Tutor de IA opcional e notificações. Nenhum código enviado é executado no servidor. |
+
+## Como uma lição é organizada
+
+- **Kit mínimo (80/20):** de 3 a 7 comandos ou conceitos que resolvem a maior parte dos casos do dia a dia — no espírito do "com `git status`, `add`, `commit`, `pull` e `push` você já resolve 80%". Cada item diz para que serve.
+- **Explicação, equívocos e exercício:** o mecanismo explicado com texto original, um exercício com previsão antes de rodar e um experimento que provoca falhas e observa com ferramentas (`strace`, `gdb`, `tcpdump`, `EXPLAIN`…).
+- **Assista e leia:** vídeos que abrem no minuto do assunto e capítulos específicos de livros, em vez do livro inteiro.
+- **Aprofundamento:** os outros 80% para depois, cada ponto com o motivo de estudá-lo e um recurso.
+- **Mais para aprofundar:** o restante da biblioteca ligado ao tópico, montado automaticamente (essenciais primeiro, português primeiro).
 
 ## Stack e por quê
 
@@ -29,7 +37,7 @@ evidência → explicação → revisão.** Abrir um recurso nunca conta como do
 - **Conteúdo em YAML** (`content/`) validado na inicialização — currículo separado da atividade das pessoas, com IDs estáveis.
 - **Testcontainers** — testes de integração contra um PostgreSQL real.
 - **mise** gerencia as versões de Java e Node (`mise.toml`).
-- **Frontend: Vite + React 19 + TypeScript**, React Router e TanStack Query. SPA separada do backend (sem SSR); no dev, o Vite faz proxy de `/api` para o Spring, então a sessão e o CSRF funcionam na mesma origem. CSS próprio com tokens, modo escuro, foco visível e `prefers-reduced-motion`.
+- **Frontend: Vite + React 19 + TypeScript**, React Router e TanStack Query. SPA separada do backend (sem SSR); no dev, o Vite faz proxy de `/api` para o Spring, então a sessão e o CSRF funcionam na mesma origem. CSS próprio com tokens (tema escuro de editor por padrão e tema claro), foco visível e `prefers-reduced-motion`; markdown com `react-markdown` (sem HTML cru) e vídeos do YouTube via `youtube-nocookie`. Páginas carregam sob demanda e as bibliotecas ficam em chunks próprios.
 - **Testes do frontend: Vitest + Testing Library + MSW** — consultas por papel e nome acessível, API simulada.
 
 ## Rodando localmente
@@ -66,7 +74,7 @@ cd backend
 mise exec -- ./mvnw test           # precisa do Docker (Testcontainers sobe um PostgreSQL próprio)
 ```
 
-Frontend (sem Docker):
+Frontend (sem Docker, inclui verificações de acessibilidade por papel e nome):
 
 ```fish
 cd frontend
@@ -74,7 +82,7 @@ mise exec -- npm test             # Vitest
 mise exec -- npm run typecheck && mise exec -- npm run lint && mise exec -- npm run build
 ```
 
-Os testes do backend cobrem: validação do conteúdo, fluxo completo de aprendizagem com duas pessoas no mesmo grupo,
+Todo recurso novo segue **TDD** (teste falhando primeiro; ver `CLAUDE.md`). Os testes do backend cobrem: validação do conteúdo (tópicos completos com kit e aprofundamento, projetos com prática deliberada, todo tópico com vídeo), fluxo completo de aprendizagem com duas pessoas no mesmo grupo,
 retomada em outro navegador, limites de autorização (registros privados, outro grupo, papéis),
 CSRF, rate limit de login e marcos de grupo que não concedem proficiência individual.
 
@@ -83,10 +91,12 @@ CSRF, rate limit de login e marcos de grupo que não concedem proficiência indi
 ```
 content/                 currículo (YAML) — editável sem mexer em código
   stages.yaml            etapas e ramos, com dependências
-  topics/*.yaml          tópicos (um arquivo por grupo de etapas)
-  resources.yaml         biblioteca curada, com status de verificação
-  projects.yaml          projetos
-  policies.yaml          ciclo de aprendizagem, política de IA, modos semanais, papéis, níveis
+  topics/*.yaml          tópicos, um arquivo por etapa (s01…s16) e por ramo (z1…z4)
+  resources.yaml         biblioteca base
+  resources/*.yaml       biblioteca por frente de curadoria (vídeos, livros, canais, cursos, pt-BR…)
+  projects.yaml          projetos iniciais
+  projects/*.yaml        demais projetos (laboratórios e "construa o seu")
+  policies.yaml          ciclo de aprendizagem, política de IA, modos semanais, papéis, níveis e método de prática
 frontend/src/
   api/                   cliente HTTP (CSRF), tipos espelhando a API, hooks do TanStack Query
   app/                   rotas, layout, guarda de autenticação
@@ -115,7 +125,9 @@ backend/
    datas de verificação inventadas.
 3. Para recursos: só marque `verified` com a data em que você abriu o link; caso contrário use
    `pending` sem data. Preencha `section` apenas com capítulos vistos no índice da fonte.
-4. Para promover um tópico de `planned` para `authored`, preencha a página completa (o validador lista o que falta).
+4. Tópicos `authored` precisam da página completa, incluindo `kit` (3–7 itens `term`/`use`) e `deepDive` (pelo menos 2 pontos). O validador e o `CurriculumContentTest` listam o que falta.
+5. Para vídeos, aponte o minuto com `?t=` na URL e o nome do episódio ou aula em `section`; para livros, prefira o capítulo (mesma URL com `section`) ao livro inteiro — a página do tópico troca o livro pelos capítulos automaticamente.
+6. Projetos `authored` começam pelo marco `m0-redigitar` e têm `practice` com referências verificadas (com licença quando declarada). Use `track: build` para projetos "construa o seu"; o padrão é `track: lab`.
 
 ## API (resumo)
 
