@@ -127,8 +127,8 @@ function ContributionForm({ detail }: { detail: GroupProjectDetail }) {
       {form.kind !== 'text' && (
         <TextField label="Link" type="url" required value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
       )}
-      <MarkdownEditor label="O que você fez e o que observou" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
-      <TextArea label="Assistência de IA (se houve)" rows={2} value={form.aiAssistance} onChange={(e) => setForm({ ...form, aiAssistance: e.target.value })} />
+      <MarkdownEditor label="O que você fez e o que observou" placeholder="O que você implementou, o que quebrou e a saída que comprova" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
+      <TextArea label="Assistência de IA (se houve)" placeholder="Ex.: pedi uma revisão do parser" rows={2} value={form.aiAssistance} onChange={(e) => setForm({ ...form, aiAssistance: e.target.value })} />
       <ErrorMessage error={create.error} />
       <button type="submit" disabled={create.isPending}>
         Registrar contribuição

@@ -143,7 +143,7 @@ function FeedbackForm({ thread, isRequester }: { thread: ReviewThread; isRequest
           <p className="hint">Examine raciocínio, invariantes e se a evidência sustenta as conclusões.</p>
         </fieldset>
       )}
-      <MarkdownEditor label="Seu feedback" required rows={5} value={body} onChange={setBody} />
+      <MarkdownEditor label="Seu feedback" placeholder="O que está bom, o que falta e uma pergunta para a pessoa pensar" required rows={5} value={body} onChange={setBody} />
       <ErrorMessage error={give.error} />
       <button type="submit" disabled={give.isPending}>
         {isRequester ? 'Responder' : 'Enviar feedback'}

@@ -1,4 +1,4 @@
-import { useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react'
+import { useId, useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react'
 
 interface FieldProps {
   label: string
@@ -36,12 +36,41 @@ export function TextField({ label, hint, prefix, ...input }: TextFieldProps & In
   )
 }
 
-export function TextArea({ label, hint, ...textarea }: FieldProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
+/** Linha de status do editor: linha atual (total) e caracteres, como no rodapé de uma IDE. */
+export function EditorStatus({ text, children }: { text: string; children?: ReactNode }) {
+  const lines = text.split('\n').length
+  const chars = text.length
+  return (
+    <div className="editor-status">
+      {children}
+      <span className="editor-count">
+        Ln {lines} · {chars} {chars === 1 ? 'caractere' : 'caracteres'}
+      </span>
+    </div>
+  )
+}
+
+/** Área de texto em "janela de editor": cresce com o conteúdo e mostra linhas e caracteres. */
+export function TextArea({ label, hint, onChange, ...textarea }: FieldProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const id = useId()
+  const [typed, setTyped] = useState(String(textarea.defaultValue ?? ''))
+  const text = textarea.value !== undefined ? String(textarea.value) : typed
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
-      <textarea id={id} rows={4} aria-describedby={hint ? `${id}-hint` : undefined} {...textarea} />
+      <div className="editor-frame">
+        <textarea
+          id={id}
+          rows={3}
+          aria-describedby={hint ? `${id}-hint` : undefined}
+          onChange={(e) => {
+            setTyped(e.target.value)
+            onChange?.(e)
+          }}
+          {...textarea}
+        />
+        <EditorStatus text={text} />
+      </div>
       {hint && (
         <p id={`${id}-hint`} className="hint">
           {hint}

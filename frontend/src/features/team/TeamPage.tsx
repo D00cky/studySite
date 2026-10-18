@@ -151,7 +151,7 @@ function TeamSessions({ groupId }: { groupId: string }) {
         <summary>Nova sessão</summary>
       <form onSubmit={submit} className="stack details-body">
         <TextField label="Título da sessão" required value={title} onChange={(e) => setTitle(e.target.value)} />
-        <TextArea label="Pauta (opcional)" rows={2} value={agenda} onChange={(e) => setAgenda(e.target.value)} />
+        <TextArea label="Pauta (opcional)" placeholder="Ex.: revisar as evidências de pipes" rows={2} value={agenda} onChange={(e) => setAgenda(e.target.value)} />
         <ErrorMessage error={create.error} />
         <button type="submit" className="button-secondary" disabled={create.isPending}>
           Criar sessão

@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react'
+import { EditorStatus } from './Field'
 import { Markdown } from './Markdown'
 
 interface Props {
@@ -17,30 +18,36 @@ export function MarkdownEditor({ label, value, onChange, hint, rows = 5, require
   const [tab, setTab] = useState<'write' | 'preview'>('write')
   return (
     <div className="field md-editor">
-      <div className="md-editor-head">
-        <label htmlFor={id}>{label}</label>
-        <div role="tablist" aria-label="Modo do editor" className="md-tabs">
-          <button type="button" role="tab" aria-selected={tab === 'write'} aria-controls={`${id}-write`} onClick={() => setTab('write')}>
-            Escrever
-          </button>
-          <button type="button" role="tab" aria-selected={tab === 'preview'} aria-controls={`${id}-preview`} onClick={() => setTab('preview')}>
-            Visualizar
-          </button>
+      <label htmlFor={id}>{label}</label>
+      <div className="editor-frame">
+        <div className="editor-bar">
+          <div role="tablist" aria-label="Modo do editor" className="md-tabs">
+            <button type="button" role="tab" aria-selected={tab === 'write'} aria-controls={`${id}-write`} onClick={() => setTab('write')}>
+              Escrever
+            </button>
+            <button type="button" role="tab" aria-selected={tab === 'preview'} aria-controls={`${id}-preview`} onClick={() => setTab('preview')}>
+              Visualizar
+            </button>
+          </div>
+          <span className="editor-lang" aria-hidden="true">
+            markdown
+          </span>
         </div>
-      </div>
-      <div id={`${id}-write`} role="tabpanel" hidden={tab !== 'write'}>
-        <textarea
-          id={id}
-          rows={rows}
-          required={required}
-          placeholder={placeholder}
-          value={value}
-          aria-describedby={`${id}-hint`}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </div>
-      <div id={`${id}-preview`} role="tabpanel" hidden={tab !== 'preview'} className="md-preview">
-        {value.trim() ? <Markdown text={value} /> : <p className="muted small">Nada para visualizar ainda.</p>}
+        <div id={`${id}-write`} role="tabpanel" hidden={tab !== 'write'}>
+          <textarea
+            id={id}
+            rows={rows}
+            required={required}
+            placeholder={placeholder}
+            value={value}
+            aria-describedby={`${id}-hint`}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        </div>
+        <div id={`${id}-preview`} role="tabpanel" hidden={tab !== 'preview'} className="md-preview">
+          {value.trim() ? <Markdown text={value} /> : <p className="muted small">Nada para visualizar ainda.</p>}
+        </div>
+        <EditorStatus text={value} />
       </div>
       <p id={`${id}-hint`} className="hint">
         {hint ? <>{hint} </> : null}

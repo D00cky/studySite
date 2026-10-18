@@ -69,6 +69,7 @@ function StartAttempt({ topic }: { topic: Topic }) {
       )}
       <TextArea
         label="Sua previsão"
+        placeholder="Eu espero que… porque…"
         rows={3}
         hint={topic.exercise ? <InlineMarkdown text={topic.exercise.prediction} /> : undefined}
         value={prediction}
@@ -104,9 +105,10 @@ function ActiveAttempt({ attempt }: { attempt: Attempt }) {
           <span className="muted">Sua previsão:</span> {attempt.prediction}
         </p>
       )}
-      <MarkdownEditor label="Anotações" rows={6} hint="O que aconteceu de fato? Onde a previsão errou?" value={notes} onChange={setNotes} />
+      <MarkdownEditor label="Anotações" placeholder="O que aconteceu de fato, com a saída real" rows={6} hint="O que aconteceu de fato? Onde a previsão errou?" value={notes} onChange={setNotes} />
       <TextArea
         label="Assistência de IA (se houve)"
+        placeholder="Ex.: pedi para explicar a mensagem de erro"
         rows={2}
         hint="Registre ajuda significativa: o que pediu e como validou."
         value={ai}

@@ -93,6 +93,7 @@ function ReviewRequestForm({ evidenceId, onCancel }: { evidenceId: string; onCan
       )}
       <TextArea
         label="O que você quer que revisem?"
+        placeholder="Ex.: minha explicação do linker está correta?"
         rows={2}
         hint="Pedir revisão compartilha esta evidência com o grupo."
         value={question}
@@ -151,6 +152,7 @@ function EvidenceForm({ topic, attemptId }: { topic: Topic; attemptId?: string }
       )}
       <MarkdownEditor
         label="O que a evidência mostra"
+        placeholder="Cole a saída real num bloco ``` e explique com suas palavras o que ela mostra"
         rows={5}
         hint="Cole saídas reais (em blocos ```) e explique com suas palavras. Código enviado nunca é executado."
         value={form.body}
@@ -158,6 +160,7 @@ function EvidenceForm({ topic, attemptId }: { topic: Topic; attemptId?: string }
       />
       <TextArea
         label="Assistência de IA (se houve)"
+        placeholder="Ex.: pedi uma dica sobre o erro, sem a solução"
         rows={2}
         value={form.aiAssistance}
         onChange={(e) => setForm({ ...form, aiAssistance: e.target.value })}

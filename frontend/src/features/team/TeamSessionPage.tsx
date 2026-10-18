@@ -207,15 +207,16 @@ function SessionRecord({ detail }: { detail: TeamSessionDetail }) {
   return (
     <form onSubmit={submit} className="panel stack" aria-labelledby="record-title" style={{ marginTop: '1rem' }}>
       <h2 id="record-title">Registro da sessão</h2>
-      <MarkdownEditor label="Pauta" rows={3} value={form.agenda} onChange={(agenda) => setForm({ ...form, agenda })} />
+      <MarkdownEditor label="Pauta" placeholder={"- tópico 1\n- dúvida do time"} rows={3} value={form.agenda} onChange={(agenda) => setForm({ ...form, agenda })} />
       <MarkdownEditor
         label="Achados"
+        placeholder="O que o time descobriu, com exemplos"
         rows={6}
         hint="O que a evidência mostrou? Que casos-limite quebraram algo?"
         value={form.findings}
         onChange={(findings) => setForm({ ...form, findings })}
       />
-      <MarkdownEditor label="Próximos passos" rows={3} value={form.nextSteps} onChange={(nextSteps) => setForm({ ...form, nextSteps })} />
+      <MarkdownEditor label="Próximos passos" placeholder="- [ ] quem faz o quê até a próxima sessão" rows={3} value={form.nextSteps} onChange={(nextSteps) => setForm({ ...form, nextSteps })} />
       <ErrorMessage error={update.error} />
       <button type="submit" disabled={update.isPending}>
         Salvar registro da sessão

@@ -79,9 +79,10 @@ function ActiveSession({ session }: { session: StudySession }) {
           ))}
         </ol>
       )}
-      <TextArea label="O que fiz" rows={2} value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
+      <TextArea label="O que fiz" placeholder="Ex.: li a seção 2 e rodei gcc -E hello.c" rows={2} value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
       <TextArea
         label="Nota de retomada"
+        placeholder="Ex.: parei no erro de linking; falta entender o undefined reference"
         rows={2}
         hint="O que você precisa lembrar quando voltar."
         value={form.restartNote}

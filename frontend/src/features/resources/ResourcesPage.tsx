@@ -141,7 +141,7 @@ function SuggestForm() {
           </option>
         ))}
       </Select>
-      <TextArea label="Por que usar" rows={3} value={form.rationale} onChange={(e) => setForm({ ...form, rationale: e.target.value })} />
+      <TextArea label="Por que usar" placeholder="Que lacuna do roadmap esse recurso cobre e em qual trecho" rows={3} value={form.rationale} onChange={(e) => setForm({ ...form, rationale: e.target.value })} />
       <ErrorMessage error={suggest.error} />
       <button type="submit" disabled={suggest.isPending}>
         Enviar sugestão

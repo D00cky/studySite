@@ -63,7 +63,7 @@ export function SignalsSection({ group }: { group: GroupDetail }) {
             </option>
           ))}
         </Select>
-        <TextArea label="Descreva" required rows={2} value={body} onChange={(e) => setBody(e.target.value)} />
+        <TextArea label="Descreva" placeholder="Ex.: travado no exercício de pipes; o filho não termina" required rows={2} value={body} onChange={(e) => setBody(e.target.value)} />
         <ErrorMessage error={add.error ?? resolve.error} />
         <button type="submit" className="button-secondary" disabled={add.isPending}>
           Enviar sinal

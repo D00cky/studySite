@@ -45,6 +45,13 @@ describe('página de tópico — conteúdo', () => {
     expect(document.getElementById(hint)!.querySelector('code')).toHaveTextContent('-E')
   })
 
+  it('as caixas de texto sugerem o que escrever', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    expect(await screen.findByLabelText('Sua previsão')).toHaveAttribute('placeholder', expect.stringMatching(/^Eu espero que/))
+    expect(screen.getByLabelText('O que a evidência mostra')).toHaveAttribute('placeholder', expect.stringContaining('saída'))
+  })
+
   it('tem abas de navegação para as partes da lição', async () => {
     setup()
     renderApp('/topicos/compilation-pipeline')

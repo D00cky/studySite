@@ -100,6 +100,7 @@ img { max-width: 100%; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -484,18 +485,13 @@ section[id], h2[id], aside[id] { scroll-margin-top: 6.5rem; }
 .md hr { margin: 1.2rem 0; }
 
 /* Editor markdown com abas */
-.md-editor-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.4rem; }
-.md-tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.md-tabs { display: inline-flex; align-self: stretch; }
 .md-tabs button {
   background: transparent; border: 0; border-radius: 0; color: var(--muted); font-weight: 600; font-size: 0.74rem;
   padding: 0.18rem 0.6rem; min-height: 0;
 }
-.md-tabs button + button { border-left: 1px solid var(--line); }
 .md-tabs button:hover:not(:disabled) { box-shadow: none; color: var(--text); }
 .md-tabs button[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
-.md-preview {
-  min-height: 5.5rem; padding: 0.65rem 0.8rem; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--bg);
-}
 .md-hint { font-family: var(--mono); font-size: 0.74rem; color: var(--comment); }
 
 /* Vídeo: trecho a partir de um minuto */
@@ -550,3 +546,99 @@ section[id], h2[id], aside[id] { scroll-margin-top: 6.5rem; }
 .terminal-line > span { color: var(--accent); }
 .error-line { color: var(--danger); margin-bottom: 1.2rem; }
 .not-found h1 { margin-top: 0; }
+
+/* Janela de editor (TextArea e MarkdownEditor). --------------------------------------
+   Barra de abas em cima, texto sem borda própria e linha de status embaixo; o foco
+   acende a janela inteira. O textarea cresce com o conteúdo onde o navegador suporta. */
+.editor-frame {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.editor-frame:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.editor-frame:focus-within { border-color: var(--accent); box-shadow: var(--glow); }
+.editor-frame textarea {
+  display: block; border: 0; border-radius: 0; box-shadow: none; outline: none;
+  background: transparent; background-image: none;
+  padding: 0.7rem 0.9rem 0.7rem 1.1rem; min-height: 6rem; max-height: 28rem;
+  field-sizing: content; resize: none; line-height: 1.6;
+  border-left: 2px solid var(--surface-3);
+  transition: border-color 0.15s ease;
+}
+.editor-frame textarea:focus-visible { box-shadow: none; outline: none; border-left-color: var(--accent); }
+.editor-frame textarea::placeholder { font-style: italic; }
+.editor-bar {
+  display: flex; align-items: stretch; justify-content: space-between; gap: 0.5rem;
+  background: var(--surface-2); border-bottom: 1px solid var(--border); min-height: 2rem;
+}
+.md-tabs button {
+  position: relative; padding: 0.35rem 0.85rem; border-right: 1px solid var(--border) !important;
+  font-family: var(--mono); font-size: 0.74rem; transition: color 0.15s ease, background-color 0.15s ease;
+}
+.md-tabs button[aria-selected="true"] { background: var(--bg); color: var(--accent); }
+.md-tabs button[aria-selected="true"]::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--accent);
+  animation: tab-in 0.2s ease;
+}
+@keyframes tab-in { from { transform: scaleX(0); } }
+.editor-lang { align-self: center; padding: 0 0.75rem; font-family: var(--mono); font-size: 0.7rem; color: var(--comment); }
+.editor-lang::before { content: "● " / ""; color: var(--accent-2); }
+.md-preview { min-height: 6rem; padding: 0.7rem 0.9rem; animation: fade-in 0.2s ease; }
+.editor-status {
+  display: flex; justify-content: flex-end; gap: 1rem; padding: 0.2rem 0.75rem;
+  background: var(--surface); border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 0.68rem; color: var(--comment);
+}
+.editor-frame:focus-within .editor-status { color: var(--muted); }
+.md-editor > .hint, .field > .editor-frame + .hint { margin-top: 0.1rem; }
+
+/* Animações. --------------------------------------------------------------------------
+   Curtas e discretas; todas zeradas por prefers-reduced-motion (regra no topo). */
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes slide-in-right { from { transform: translateX(100%); } }
+@keyframes grow-x { from { transform: scaleX(0); } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.96); } }
+
+/* Conteúdo da página entra subindo; ao trocar de rota os novos blocos repetem o efeito. */
+.page > * { animation: rise-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.page > *:nth-child(2) { animation-delay: 0.05s; }
+.page > *:nth-child(3) { animation-delay: 0.1s; }
+.page > *:nth-child(n + 4) { animation-delay: 0.15s; }
+
+/* Listas de cards e etapas aparecem em cascata. */
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > * {
+  animation: rise-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(2) { animation-delay: 0.04s; }
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(3) { animation-delay: 0.08s; }
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(4) { animation-delay: 0.12s; }
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(5) { animation-delay: 0.16s; }
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(6) { animation-delay: 0.2s; }
+:is(.card-grid, .video-grid, .book-list, .trail, .stage-progress, .stat-row, .kit-list) > :nth-child(n + 7) { animation-delay: 0.24s; }
+
+/* Barras de progresso enchem da esquerda. */
+.meter > span { transform-origin: left center; animation: grow-x 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+
+/* Cards levantam no hover. */
+.project-card, .video-card, .trail-topic { transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease; }
+.project-card:hover, .video-card:hover { transform: translateY(-2px); }
+.trail-topic:hover:not(:disabled) { transform: translateX(2px); }
+
+/* Gaveta do roadmap desliza; fundo escurece aos poucos. */
+.drawer { animation: slide-in-right 0.28s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.drawer-backdrop { animation: fade-in 0.2s ease; }
+
+/* Detalhes abrem com o conteúdo surgindo; menu compacto também. */
+details[open] > :not(summary) { animation: rise-in 0.25s ease both; }
+details > summary::before { display: inline-block; transition: transform 0.15s ease; }
+.site-nav.open { animation: rise-in 0.2s ease both; }
+
+/* Mensagens de sucesso e erro aparecem com um leve "pop". */
+.success, .error, [role="alert"] { animation: pop-in 0.2s ease both; }
+
+/* Botões: brilho no hover e afundam ao clicar (já existente) com transição suave. */
+button, .button { transition: box-shadow 0.15s ease, transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
+
+/* Troca de tema suave. */
+body { transition: background-color 0.25s ease, color 0.25s ease; }

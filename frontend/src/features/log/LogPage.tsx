@@ -252,7 +252,7 @@ function Notes() {
       )}
       <form onSubmit={submit} className="stack">
         <TextField label="Título da nota" required maxLength={200} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-        <MarkdownEditor label="Texto" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
+        <MarkdownEditor label="Texto" placeholder="Escreva em markdown" rows={5} value={form.body} onChange={(body) => setForm({ ...form, body })} />
         <ErrorMessage error={create.error ?? update.error} />
         <button type="submit" className="button-secondary" disabled={create.isPending}>
           Salvar nota
