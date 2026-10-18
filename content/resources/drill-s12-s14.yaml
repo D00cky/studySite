@@ -1,0 +1,449 @@
+# Recursos novos do drill-down 80/20 das etapas s12–s14 (verificados em 2026-10-18)
+
+# --- s12: engenharia de software ---
+
+- id: farley-top-10-rules-continuous-integration
+  title: Top 10 Rules For Continuous Integration
+  author: Modern Software Engineering (Dave Farley)
+  url: https://www.youtube.com/watch?v=Xl62gQpAl1w
+  language: en
+  format: video
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Dave Farley explica CI como prática de time (integrar várias vezes por dia, consertar o build na hora, build rápido) e como base do deployment pipeline.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ibm-what-is-continuous-integration
+  title: What is Continuous Integration?
+  author: IBM Technology
+  url: https://www.youtube.com/watch?v=1er2cjUq1UI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [architecture-ci]
+  why: Introdução de 6 minutos contrastando integração rara (merge hell) com integração contínua e build automatizado a cada commit.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: farley-ci-vs-feature-branch
+  title: Continuous Integration vs Feature Branch Workflow
+  author: Modern Software Engineering (Dave Farley)
+  url: https://www.youtube.com/watch?v=v4Ijkq6Myfc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [architecture-ci]
+  why: Por que branches longas e CI são quase mutuamente exclusivas, e técnicas para manter o software funcionando enquanto evolui no trunk.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: trunk-based-development
+  title: Trunk Based Development
+  author: Paul Hammant e colaboradores
+  url: https://trunkbaseddevelopment.com/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [architecture-ci]
+  why: Referência sobre integrar no trunk com branches curtas, feature flags e branch by abstraction.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-feature-toggles
+  title: Feature Toggles (aka Feature Flags)
+  author: Pete Hodgson (martinfowler.com)
+  url: https://martinfowler.com/articles/feature-toggles.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [architecture-ci]
+  why: Tipos de feature flag, custo de manter cada um e como permitem integrar código incompleto no main.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: github-actions-secure-use
+  title: Secure use reference - GitHub Docs
+  author: GitHub
+  url: https://docs.github.com/en/actions/reference/security/secure-use
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [architecture-ci, secrets-threat-modeling]
+  why: Hardening de workflows, permissões do GITHUB_TOKEN, actions fixadas por SHA e tratamento de segredos no CI.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: slsa-dev
+  title: SLSA — Supply-chain Levels for Software Artifacts
+  author: OpenSSF
+  url: https://slsa.dev/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [architecture-ci, secrets-threat-modeling]
+  why: Framework de níveis para proveniência e integridade de builds, contra ataques à cadeia de suprimentos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: c4-model
+  title: The C4 model for visualising software architecture
+  author: Simon Brown
+  url: https://c4model.com/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [architecture-ci, requirements-modularity]
+  why: Diagramas de arquitetura em quatro níveis de zoom (contexto, containers, componentes, código) com notação simples.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: archunit-user-guide
+  title: ArchUnit User Guide
+  author: TNG Technology Consulting
+  url: https://www.archunit.org/userguide/html/000_Index.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [requirements-modularity, architecture-ci]
+  why: Regras de dependência entre pacotes Java escritas como testes JUnit, para o grafo de módulos não regredir.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jqwik-user-guide
+  title: jqwik User Guide
+  author: Johannes Link
+  url: https://jqwik.net/docs/current/user-guide.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [interfaces-testing]
+  why: Property-based testing na JUnit Platform, com geração de entradas e shrinking de contraexemplos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pitest
+  title: PIT Mutation Testing
+  author: Henry Coles
+  url: https://pitest.org/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [interfaces-testing]
+  why: Mutation testing para Java/Maven, que mede se os testes detectam mudanças no código, não só se executam linhas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-contract-test
+  title: Contract Test
+  author: Martin Fowler
+  url: https://martinfowler.com/bliki/ContractTest.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [interfaces-testing]
+  why: Testes que verificam se um test double continua fiel ao serviço externo real.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pact-docs
+  title: Introduction | Pact Docs
+  author: Pact Foundation
+  url: https://docs.pact.io/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [interfaces-testing]
+  why: Contract testing orientado ao consumidor entre serviços que se comunicam por HTTP ou mensagens.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-strangler-fig
+  title: Strangler Fig
+  author: Martin Fowler
+  url: https://martinfowler.com/bliki/StranglerFigApplication.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [refactoring]
+  why: Substituir um sistema legado aos poucos, em vez de reescrever tudo de uma vez.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- s13: sistemas distribuídos ---
+
+- id: fowler-circuit-breaker
+  title: Circuit Breaker
+  author: Martin Fowler
+  url: https://martinfowler.com/bliki/CircuitBreaker.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [partial-failure-retries]
+  why: Parar de chamar uma dependência que está falhando e testar a recuperação aos poucos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: google-tail-at-scale
+  title: The Tail at Scale
+  author: Jeffrey Dean e Luiz André Barroso (Google Research)
+  url: https://research.google/pubs/the-tail-at-scale/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [partial-failure-retries]
+  why: Por que a cauda de latência domina em fan-out e técnicas como hedged requests.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: microservices-io-transactional-outbox
+  title: "Pattern: Transactional outbox"
+  author: Chris Richardson (microservices.io)
+  url: https://microservices.io/patterns/data/transactional-outbox.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [idempotency, queues-delivery-semantics]
+  why: Gravar a mudança e a mensagem a publicar na mesma transação, evitando o dual write entre banco e fila.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: aws-avoiding-queue-backlogs
+  title: Avoiding insurmountable queue backlogs
+  author: David Yanacek (Amazon Builders' Library)
+  url: https://builder.aws.com/content/3EuRcgkTP1MI0c7zM8W6HL3WIqA/avoiding-insurmountable-queue-backlogs
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [queues-delivery-semantics]
+  why: Como filas acumulam atraso sob sobrecarga e estratégias de isolamento, priorização e descarte.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: raft-consensus
+  title: Raft Consensus Algorithm
+  author: Diego Ongaro e John Ousterhout
+  url: https://raft.github.io/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Paper, visualização interativa e implementações do algoritmo de consenso usado para replicação linearizável.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crdt-tech
+  title: About CRDTs • Conflict-free Replicated Data Types
+  author: Martin Kleppmann e colaboradores
+  url: https://crdt.tech/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Estruturas de dados que convergem sem coordenação, base de apps colaborativos e offline-first.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jepsen-analyses
+  title: Analyses (Jepsen)
+  author: Kyle Kingsbury (Jepsen)
+  url: https://jepsen.io/analyses
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [consistency-models]
+  why: Relatórios de bancos reais violando as garantias que anunciam, com a metodologia de teste.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-transaction-isolation
+  title: "PostgreSQL — 13.2. Transaction Isolation"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/transaction-iso.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [consistency-models]
+  why: Níveis de isolamento do PostgreSQL e as anomalias que cada um permite, para não confundir isolation com consistência entre réplicas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- s14: segurança ---
+
+- id: owasp-mfa-cheatsheet
+  title: Multifactor Authentication Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Tipos de segundo fator (TOTP, WebAuthn, SMS), recuperação de conta e onde exigir MFA.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: passkeys-dev
+  title: passkeys.dev - Passkeys Developer Resources
+  author: W3C WebAuthn Community / FIDO Alliance
+  url: https://passkeys.dev/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Guia para implementar passkeys (WebAuthn) como login sem senha resistente a phishing.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-jwt-cheatsheet
+  title: JSON Web Token Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authentication-sessions]
+  why: Armadilhas de JWT (alg none, validação de assinatura, revogação, armazenamento no navegador).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9700-oauth-security-bcp
+  title: "RFC 9700: Best Current Practice for OAuth 2.0 Security"
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9700.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [authentication-sessions, authorization]
+  why: Práticas atuais de segurança para OAuth 2.0 (PKCE, redirect URIs exatos, sem implicit flow).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-row-security
+  title: "PostgreSQL — 5.9. Row Security Policies"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [authorization]
+  why: Row Level Security aplica o filtro por dono dentro do próprio banco, como defesa em profundidade contra IDOR.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: google-zanzibar
+  title: "Zanzibar: Google’s Consistent, Global Authorization System"
+  author: Google Research
+  url: https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [authorization]
+  why: Autorização baseada em relações (ReBAC) em escala, modelo que inspirou OpenFGA e SpiceDB.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-ssrf-prevention-cheatsheet
+  title: Server Side Request Forgery Prevention Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Quando o servidor busca URLs fornecidas pelo usuário (webhooks, preview de link) e pode ser levado à rede interna.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-os-command-injection-cheatsheet
+  title: OS Command Injection Defense Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Injeção em shell e como chamar processos sem passar por um interpretador.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-csp
+  title: Content Security Policy (CSP) - HTTP | MDN
+  author: MDN Web Docs
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [input-validation]
+  why: Diretivas de CSP, nonces e modo report-only como segunda camada contra XSS.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: hashicorp-vault-docs
+  title: Vault product documentation
+  author: HashiCorp
+  url: https://developer.hashicorp.com/vault/docs
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [secrets-threat-modeling]
+  why: Cofre de segredos com segredos dinâmicos, leases e rotação automática.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-asvs
+  title: OWASP Application Security Verification Standard (ASVS)
+  author: OWASP
+  url: https://owasp.org/projects/asvs
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [secrets-threat-modeling]
+  why: Lista verificável de requisitos de segurança por nível, útil para auditorias e checklists de release.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-supply-chain-cheatsheet
+  title: Software Supply Chain Security Cheat Sheet
+  author: OWASP
+  url: https://cheatsheetseries.owasp.org/cheatsheets/Software_Supply_Chain_Security_Cheat_Sheet.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [secrets-threat-modeling]
+  why: Riscos de dependências, builds e artefatos (typosquatting, dependências comprometidas) e mitigações.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

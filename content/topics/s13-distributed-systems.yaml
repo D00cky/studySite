@@ -70,6 +70,25 @@
     - Histogramas das três políticas lado a lado, com sua interpretação.
     - Trecho do log com tentativas e horários, mais a consulta mostrando as linhas duplicadas.
   firstAction: Escreva as três explicações possíveis para "minha requisição deu timeout" e, para cada uma, se repetir a requisição é seguro.
+  essentials:
+    - "Toda chamada remota tem timeout explícito, derivado do p99 observado da dependência, nunca o default infinito."
+    - Timeout não diz se a operação aconteceu; trate como "não sei" e só repita o que é seguro repetir.
+    - "Retry sempre com backoff exponencial, jitter, limite de tentativas e deadline total."
+    - Faça retry em uma camada só; retries em cascata multiplicam a carga (3 camadas × 3 tentativas = 27 chamadas).
+    - "Antes de colocar retry, teste a falha de verdade com Toxiproxy ou `tc netem` e conte as chamadas."
+  deepDive:
+    - title: Circuit breaker
+      why: Quando uma dependência ficar fora do ar por minutos e os retries só servirem para prender threads.
+      resource: fowler-circuit-breaker
+    - title: Retry budget, load shedding e backpressure
+      why: Quando o serviço estiver sobrecarregado e precisar recusar trabalho para não cair de vez.
+      resource: sre-book-handling-overload
+    - title: Latência de cauda e hedged requests
+      why: Em fan-out para muitos servidores, onde o mais lento define a latência de toda a requisição.
+      resource: google-tail-at-scale
+    - title: Propagação de deadline entre serviços
+      why: Quando uma requisição atravessar várias camadas e cada uma tiver seu próprio timeout desalinhado.
+      resource: sre-book-cascading-failures
 
 - id: idempotency
   stage: s13-distributed-systems
@@ -140,6 +159,22 @@
     - SQL da tabela de chaves e da função de criação, com a saída das contagens.
     - Trecho do log do PostgreSQL mostrando a colisão da segunda tentativa.
   firstAction: Escreva uma operação do app de tarefas que não é idempotente e reescreva-a de forma que seja.
+  essentials:
+    - "GET, PUT e DELETE devem ser idempotentes no seu código, não só na especificação; efeitos colaterais (e-mail) quebram isso."
+    - O cliente gera a chave de idempotência (UUID) antes da primeira tentativa e reenvia a mesma em todo retry.
+    - "Garanta unicidade com constraint `UNIQUE` (ou `ON CONFLICT DO NOTHING`) na mesma transação do efeito, nunca SELECT-depois-INSERT."
+    - Na repetição, devolva a resposta original guardada; mesma chave com corpo diferente é erro.
+    - Defina por quanto tempo as chaves ficam guardadas e limpe as antigas.
+  deepDive:
+    - title: Idempotência em operações com várias etapas e chamadas externas
+      why: Quando uma requisição criar a tarefa, cobrar um cartão e enviar e-mail, e falhar no meio.
+      resource: brandur-idempotency-keys
+    - title: Transactional outbox
+      why: Quando precisar gravar no banco e publicar uma mensagem sem perder nem duplicar nenhum dos dois.
+      resource: microservices-io-transactional-outbox
+    - title: Operações comutativas e CRDTs
+      why: Quando réplicas aplicarem as mesmas operações em ordens diferentes e precisarem convergir.
+      resource: crdt-tech
 
 - id: queues-delivery-semantics
   stage: s13-distributed-systems
@@ -210,6 +245,25 @@
     - Consultas de contagem e seus resultados para cada variante.
     - Log dos dois workers mostrando o job demorado executado duas vezes.
   firstAction: Escreva as duas linhas de pseudocódigo `process(job)` e `ack(job)` e marque onde um crash causa perda e onde causa duplicata.
+  essentials:
+    - "Ack depois de processar (at-least-once) e torne o processamento idempotente; isso cobre quase todo caso real."
+    - "\"Exactly-once\" na prática é at-least-once + deduplicação por id da mensagem (constraint UNIQUE)."
+    - "Fila em PostgreSQL: `SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1` e marque o job como feito na mesma transação do efeito."
+    - Lease/visibility timeout maior que o tempo de processamento no pior caso, senão surgem duplicatas sem falha nenhuma.
+    - Conte tentativas e mande poison messages para uma dead letter queue; não assuma ordem com vários consumidores.
+  deepDive:
+    - title: Brokers dedicados (RabbitMQ, Kafka, SQS)
+      why: Quando a fila em tabela virar gargalo ou precisar de fan-out, retenção ou replay de mensagens.
+      resource: rabbitmq-reliability-guide
+    - title: Transactional outbox e change data capture
+      why: Quando o serviço precisar publicar eventos de forma confiável sempre que o banco mudar.
+      resource: microservices-io-transactional-outbox
+    - title: Backlog, priorização e descarte sob sobrecarga
+      why: Quando a fila acumular horas de atraso e processar mensagens velhas deixar de fazer sentido.
+      resource: aws-avoiding-queue-backlogs
+    - title: Ordenação por partição e logs de eventos
+      why: Quando eventos do mesmo objeto precisarem ser processados em ordem com vários consumidores.
+      resource: ddia
 
 - id: consistency-models
   stage: s13-distributed-systems
@@ -279,3 +333,25 @@
     - Saída do script com tentativas de leitura e o momento em que a tarefa aparece.
     - Diagramas das histórias com a classificação final.
   firstAction: Descreva uma situação real em que você salvou algo num site, recarregou e não viu a mudança. Qual modelo de consistência faltou?
+  essentials:
+    - "Replicação assíncrona significa que réplicas e caches podem estar atrasados; assuma isso ao ler fora do primário."
+    - "Logo após o usuário escrever, leia do primário (ou espere a réplica alcançar o LSN) para garantir read-your-writes."
+    - "Linearizable = parece uma cópia só; eventual = converge um dia, sem prazo. Saiba qual o seu banco e cache entregam."
+    - Isolation (ACID) trata transações concorrentes num banco; consistência trata cópias. Não confunda os dois.
+    - Leia a documentação de garantias do banco antes de confiar; garantia anunciada nem sempre é garantia entregue.
+  deepDive:
+    - title: Consenso e replicação linearizável (Raft)
+      why: Quando precisar de líder único, locks distribuídos ou configuração consistente entre nós.
+      resource: raft-consensus
+    - title: Relógios lógicos, vector clocks e causalidade
+      why: Ao ordenar eventos entre máquinas sem confiar no relógio físico.
+      resource: kleppmann-ds-lecture-series
+    - title: CRDTs e sistemas offline-first
+      why: Em edição colaborativa ou apps que escrevem offline e sincronizam depois.
+      resource: crdt-tech
+    - title: Teorema CAP, PACELC e quóruns
+      why: Ao escolher um banco distribuído e entender o que ele sacrifica durante partições.
+      resource: kleppmann-ds-5-2-quorums
+    - title: Testar garantias com Jepsen
+      why: Quando um sistema crítico depender de garantias de um banco distribuído que ninguém verificou.
+      resource: jepsen-analyses

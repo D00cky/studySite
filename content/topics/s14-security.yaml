@@ -70,6 +70,25 @@
     - Tabela de medições e o cálculo do tempo de ataque offline.
     - Sessão do curl anotada (login, acesso, logout, reuso rejeitado) e consulta à tabela sessions.
   firstAction: Gere o hash bcrypt de uma senha de teste duas vezes (com `htpasswd -nbB teste senha` ou uma linha de Python) e compare as saídas.
+  essentials:
+    - "Senha só como hash lento com salt (Argon2id ou bcrypt com custo ajustado); nunca SHA-256 puro, nunca cifrada."
+    - ID de sessão de ≥128 bits de um CSPRNG, guardado no servidor com dono e expiração.
+    - "Cookie de sessão com `HttpOnly`, `Secure` e `SameSite=Lax` (ou `Strict`)."
+    - Gere novo ID no login, invalide no servidor no logout e use expiração por inatividade e absoluta.
+    - Mesma mensagem para "usuário não existe" e "senha errada"; limite tentativas de login.
+  deepDive:
+    - title: MFA e TOTP
+      why: Quando o app guardar dados sensíveis ou contas de administrador.
+      resource: owasp-mfa-cheatsheet
+    - title: Passkeys e WebAuthn
+      why: Quando quiser login sem senha e resistente a phishing.
+      resource: passkeys-dev
+    - title: JWT e suas armadilhas
+      why: Quando uma API for consumida por apps móveis ou outros serviços e sessão em cookie não servir.
+      resource: owasp-jwt-cheatsheet
+    - title: OAuth 2.0 e OpenID Connect
+      why: Ao oferecer "Entrar com Google/GitHub" ou dar acesso delegado a apps de terceiros.
+      resource: rfc-9700-oauth-security-bcp
 
 - id: authorization
   stage: s14-security
@@ -142,6 +161,25 @@
     - Matriz de acesso com as expressões lógicas de cada regra.
     - Saída do loop do curl antes e depois da correção.
   firstAction: Escolha uma rota do app de tarefas e escreva a consulta SQL que ela faz hoje. Ela filtra pelo dono?
+  essentials:
+    - "Amarre toda consulta ao usuário da sessão: `WHERE id = $1 AND owner_id = $2`; trocar o id na URL não pode funcionar."
+    - Negue por padrão; rota sem regra explícita responde 403/404.
+    - Verifique cada ação (ler, editar, apagar, listar) no servidor; esconder botão ou usar UUID não é autorização.
+    - "Centralize em `canAccess(user, action, task)` ou no repositório, para nenhuma rota esquecer a checagem."
+    - Para cada rota, três testes automáticos, com o dono (200), outro usuário (403/404) e sem sessão (401).
+  deepDive:
+    - title: Row Level Security no PostgreSQL
+      why: Como defesa em profundidade, quando um bug no código não puder vazar linhas de outro usuário.
+      resource: postgres-row-security
+    - title: RBAC e ABAC com papéis e atributos
+      why: Quando surgirem times, administradores e permissões por projeto, além de "dono da tarefa".
+      resource: owasp-authorization-cheatsheet
+    - title: Autorização baseada em relações (ReBAC, Zanzibar)
+      why: Quando o compartilhamento virar um grafo (pastas, grupos, convites) difícil de expressar com papéis.
+      resource: google-zanzibar
+    - title: Escopos e acesso delegado com OAuth
+      why: Quando apps de terceiros precisarem agir em nome do usuário com permissões limitadas.
+      resource: rfc-9700-oauth-security-bcp
 
 - id: input-validation
   stage: s14-security
@@ -209,6 +247,25 @@
     - Diff da busca concatenada para a parametrizada, com os trechos do log.
     - Captura do HTML renderizado antes e depois do escaping e da violação de CSP.
   firstAction: Escreva num papel a consulta que o servidor montaria por concatenação para a busca `x' OR '1'='1` e circule onde termina o dado e começa o código.
+  essentials:
+    - "SQL sempre parametrizado (`PreparedStatement` com `?`); nunca concatene entrada do usuário no texto da consulta."
+    - "O que não pode ser parâmetro (coluna do `ORDER BY`, direção) vem de uma allowlist."
+    - "Escape na saída conforme o contexto; desconfie de `innerHTML`, `th:utext`, `dangerouslySetInnerHTML` e `v-html`."
+    - Valide na fronteira (tipo, tamanho, formato), mas lembre que um apóstrofo é válido; validação não substitui parametrizar e escapar.
+    - Teste com payloads clássicos (`' OR '1'='1`, `<img src=x onerror=alert(1)>`) e confira no log do banco e no DevTools.
+  deepDive:
+    - title: Content Security Policy
+      why: Como segunda camada quando o app renderizar conteúdo de usuários e um XSS escapar.
+      resource: mdn-csp
+    - title: Server-Side Request Forgery (SSRF)
+      why: Quando o servidor buscar URLs informadas pelo usuário (webhooks, preview de links, import por URL).
+      resource: owasp-ssrf-prevention-cheatsheet
+    - title: Command injection
+      why: Quando o backend chamar programas externos (ffmpeg, git, scripts) com dados do usuário.
+      resource: owasp-os-command-injection-cheatsheet
+    - title: Desserialização insegura e upload de arquivos
+      why: Ao aceitar objetos serializados, XML ou arquivos enviados que serão processados pelo servidor.
+      resource: owasp-top-10-2025
 
 - id: secrets-threat-modeling
   stage: s14-security
@@ -278,3 +335,22 @@
     - Diagrama e tabela STRIDE da plataforma de tarefas.
     - Saída do git log -S, do gitleaks e do hook bloqueando o commit.
   firstAction: Rode `git log -p | grep -i -E 'password|secret|token' | head` num repositório seu e veja o que aparece.
+  essentials:
+    - "Segredo vazou no Git: revogue e rotacione primeiro; limpar o histórico vem depois e não basta."
+    - "Segredos vêm do ambiente (`.env` no `.gitignore`, Docker secrets, cofre); o repositório só tem `.env.example`."
+    - "Rode gitleaks no pre-commit e no CI; procure segredos também em logs, stack traces e imagens de container."
+    - "Threat model em 4 perguntas: o que construímos, o que pode dar errado (STRIDE por fronteira), o que faremos, fizemos bem?"
+    - Toda ameaça identificada sai com decisão (mitigar, aceitar, transferir, eliminar), dono e prazo.
+  deepDive:
+    - title: Cofres de segredos e segredos dinâmicos
+      why: Quando houver vários serviços e ambientes e a rotação manual de senhas virar risco.
+      resource: hashicorp-vault-docs
+    - title: Segurança da cadeia de suprimentos de software
+      why: Ao depender de muitas bibliotecas de terceiros e publicar artefatos usados por outras pessoas.
+      resource: owasp-supply-chain-cheatsheet
+    - title: ASVS como checklist de verificação
+      why: Antes de um lançamento importante ou auditoria, para revisar segurança de forma sistemática.
+      resource: owasp-asvs
+    - title: Segredos no CI e OIDC para deploy
+      why: Quando o pipeline precisar de credenciais de nuvem e você quiser evitar chaves de longa duração.
+      resource: github-actions-secure-use
