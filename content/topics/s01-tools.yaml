@@ -23,8 +23,8 @@
       correction: Há builtins (cd, export), funções e aliases. `type nome` revela o que o shell vai executar.
   resources:
     start: missing-semester-shell
-    deeper: [tlcl, bash-manual, missing-semester-pt]
-    videos: [ms-2026-lecture-1-shell-video, akitando-54-ubuntu-devs-video]
+    deeper: [tlcl-cap7-seeing-the-world-as-the-shell-sees-it, bash-manual-3-5-shell-expansions, missing-semester-pt-2020-course-shell]
+    videos: [ms-2026-lecture-1-shell-video-what-is-the-shell, akitando-54-ubuntu-devs-video-linux-conceitos-comandos-basicos]
   exercise:
     id: ex-shell-expansion
     title: O que o programa realmente recebe?
@@ -78,13 +78,13 @@
       resource: shellcheck
     - title: Ordem completa das expansões do bash
       why: Ao depurar scripts com brace expansion, substituição de comandos e word splitting que se comportam de forma inesperada.
-      resource: bash-manual
+      resource: bash-manual-3-5-shell-expansions
     - title: Job control, tmux e sessões remotas por SSH
       why: Quando começar a operar servidores e precisar manter processos rodando depois de fechar o terminal.
-      resource: missing-semester-cli-env
+      resource: missing-semester-cli-env-terminal-multiplexers
     - title: Dotfiles, aliases e customização do ambiente
       why: Depois que o básico estiver automático e você quiser acelerar tarefas repetidas e levar o ambiente para outras máquinas.
-      resource: missing-semester-cli-env
+      resource: missing-semester-cli-env-customizing-the-shell
 
 - id: filesystem-permissions
   stage: s01-tools
@@ -111,9 +111,9 @@
     - claim: chmod 777 resolve problemas de permissão.
       correction: Resolve o sintoma abrindo o arquivo para todos. Entenda qual usuário precisa de qual acesso e dê só isso.
   resources:
-    start: tlcl
-    deeper: [man-chmod, missing-semester-cli-env]
-    videos: [learnlinuxtv-file-permissions-video, akitando-54-ubuntu-devs-video]
+    start: tlcl-cap9-permissions
+    deeper: [man-chmod, missing-semester-cli-env-exercises-files-and-permissions]
+    videos: [learnlinuxtv-file-permissions-video, akitando-54-ubuntu-devs-video-linux-principais-diretorios]
   exercise:
     id: ex-permissions-matrix
     title: Matriz de permissões
@@ -166,7 +166,7 @@
   deepDive:
     - title: setuid, setgid e sticky bit
       why: Ao entender por que `passwd` altera arquivos do root ou por que todos escrevem em `/tmp` sem apagar arquivos alheios.
-      resource: man-chmod
+      resource: man-chmod-setuid-setgid-bits
     - title: ACLs POSIX (getfacl/setfacl)
       why: Quando o trio dono/grupo/outros não basta, por exemplo para dar acesso de leitura a um único usuário de serviço.
       resource: man-setfacl
@@ -202,9 +202,9 @@
     - claim: Se o programa imprimiu "erro", ele falhou.
       correction: Quem decide é o exit code. Há programas que imprimem erros e saem com 0, o que confunde scripts.
   resources:
-    start: bash-manual
-    deeper: [man-pipe, man-exit, beej-c-outside-env, missing-semester-cli-env]
-    videos: [ms-2026-lecture-2-cli-env-video, sorber-stderr-video]
+    start: bash-manual-3-6-redirections
+    deeper: [bash-manual-3-2-3-pipelines, bash-manual-3-7-5-exit-status, man-pipe, man-exit, beej-c-outside-env, missing-semester-cli-env-command-line-interface]
+    videos: [ms-2026-lecture-2-cli-env-video-streams, sorber-stderr-video]
   exercise:
     id: ex-streams-exit
     title: Para onde foi a saída?
@@ -293,7 +293,7 @@
     - claim: Depois de um reset, o commit sumiu para sempre.
       correction: Ele continua acessível pelo reflog por um bom tempo, até a coleta de lixo.
   resources:
-    start: pro-git-ptbr
+    start: pro-git-ptbr-cap2-fundamentos-do-git
     deeper: [akita-git, missing-semester-git]
     videos: [akitando-70-entendendo-git-video, ms-2026-lecture-5-git-video, akitando-71-usando-git-direito-video]
   exercise:
@@ -344,7 +344,7 @@
   deepDive:
     - title: Branches, diff e desfazer (switch, merge, diff, log --graph, revert, reflog)
       why: Logo depois do ciclo diário, ao trabalhar em paralelo num branch, revisar o que vai entrar ou recuperar um commit perdido.
-      resource: pro-git-ptbr
+      resource: pro-git-ptbr-cap3-ramificacao
     - title: Rebase interativo e reescrita de histórico
       why: Quando for limpar commits antes de abrir um pull request ou o time adotar histórico linear.
       resource: pro-git-ptbr-reescrevendo-historico

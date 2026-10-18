@@ -1,0 +1,583 @@
+# Trechos (capítulo/seção de livro ou documento, minuto de vídeo) para os tópicos das etapas s01 e s02.
+# Minutos de vídeo tirados só dos capítulos oficiais (descrição/marcadores do YouTube); nada estimado.
+# Verificação: 2026-10-18 (curl na página do vídeo, sumário ou âncora conferidos).
+
+# --- Vídeos: trechos com minuto ---------------------------------------------------------
+
+- id: ms-2026-lecture-1-shell-video-what-is-the-shell
+  title: "Lecture 1: Course Overview + Introduction to the Shell — 0:07:06 What is the shell?"
+  author: MIT CSAIL — Missing Semester
+  url: https://www.youtube.com/watch?v=MSgoeuMqUmU&t=426s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "Trecho que pula a logística do curso e começa no que é o shell, seguindo por navegação, programas disponíveis e a linguagem do bash (de 0:07:06 até a conclusão em 1:14:05)."
+  section: "0:07:06 - What is the shell?"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+- id: akitando-54-ubuntu-devs-video-linux-conceitos-comandos-basicos
+  title: "O Guia DEFINITIVO de UBUNTU para Devs Iniciantes — 00:18:19 Linux: Conceitos e comandos básicos"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=epiyExCyb2s&t=1099s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "Trecho com os conceitos e comandos básicos do terminal Linux (de 00:18:19 até o próximo capítulo, em 00:22:59)."
+  section: "00:18:19 - Linux: Conceitos e comandos básicos"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo (descrição)." }
+
+- id: akitando-54-ubuntu-devs-video-linux-principais-diretorios
+  title: "O Guia DEFINITIVO de UBUNTU para Devs Iniciantes — 00:22:59 Linux: Entendendo os principais diretórios do sistema"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=epiyExCyb2s&t=1379s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: "Trecho sobre a hierarquia de diretórios do Linux (de 00:22:59 até o próximo capítulo, em 00:28:41, sobre processos e manipulação de arquivos)."
+  section: "00:22:59 - Linux: Entendendo os principais diretórios do sistema"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo (descrição)." }
+
+- id: ms-2026-lecture-2-cli-env-video-streams
+  title: "Lecture 2: Command-line Environment — 0:10:26 Streams"
+  author: MIT CSAIL — Missing Semester
+  url: https://www.youtube.com/watch?v=ccBGsPedE9Q&t=626s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [processes-streams-exit-codes]
+  why: "Trecho que cobre streams, variáveis de ambiente, return codes e sinais (de 0:10:26 até o capítulo Remote Machines, em 0:31:59)."
+  section: "0:10:26 - Streams"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+- id: akitando-91-binario-texto-video-arquivos-binarios
+  title: "Qual a REAL diferença entre Arquivos Binário e Texto?? 🤔 — 04:59 arquivos binários"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=oSCVb4Ts-G4&t=299s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Trecho sobre arquivos binários, bytes e hexadecimal (de 04:59 até o capítulo sobre boot, em 06:13; na descrição o autor corrige: em 05:29 quis dizer \"10 em hexadecimal é A\")."
+  section: "04:59 - arquivos binários"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+- id: akitando-91-binario-texto-video-ascii
+  title: "Qual a REAL diferença entre Arquivos Binário e Texto?? 🤔 — 13:29 ASCII"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=oSCVb4Ts-G4&t=809s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [text-encoding]
+  why: "Trecho sobre ASCII e o ataque de homografia com caracteres parecidos (de 13:29 até o capítulo sobre executáveis ELF, em 19:21)."
+  section: "13:29 - ASCII"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+- id: akitando-97-640kb-video-64-bits
+  title: "Só Precisamos de 640 kB de Memória? | 16-bits até 64-bits! — 38:42 64-bits"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=cTVXKfYOYxo&t=2322s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [integer-representation-overflow]
+  why: "Trecho sobre a passagem para 64 bits e o que muda no limite de valores e endereços (de 38:42 até o capítulo NX Bit/DEP, em 41:26)."
+  section: "38:42 - 64-bits"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+- id: akitando-86-turing-von-neumann-video-von-neumann
+  title: "O Computador de Turing e Von Neumann | Por que calculadoras não são computadores? — 30:03 O maior gênio que já viveu: Von Neumann"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=G4MvFT8TGII&t=1803s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [cpu-memory-caches]
+  why: "Trecho sobre a arquitetura de Von Neumann, CPU e memória, e como ela vira o computador moderno (de 30:03 até o fim, incluindo 39:35 Turing + Von Neumann = Computador Moderno)."
+  section: "30:03 - O maior gênio que já viveu: Von Neumann"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais do vídeo." }
+
+# --- Livros: capítulos ------------------------------------------------------------------
+
+- id: tlcl-cap7-seeing-the-world-as-the-shell-sees-it
+  title: "The Linux Command Line — 7: Seeing the World as the Shell Sees It"
+  author: William Shotts
+  url: https://linuxcommand.org/tlcl.php
+  language: en
+  format: book
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "Capítulo sobre expansões (pathname, tilde, aritmética, chaves, parâmetros) e quoting: exatamente como o shell transforma a linha antes de chamar o programa."
+  section: "7 – Seeing the World as the Shell Sees It"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo conferido no sumário do PDF oficial (edição 25.12A) linkado na página do livro." }
+
+- id: tlcl-cap9-permissions
+  title: "The Linux Command Line — 9: Permissions"
+  author: William Shotts
+  url: https://linuxcommand.org/tlcl.php
+  language: en
+  format: book
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: "Capítulo sobre donos, grupos, bits rwx, chmod, umask e permissões especiais."
+  section: "9 – Permissions"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo conferido no sumário do PDF oficial (edição 25.12A) linkado na página do livro." }
+
+- id: pro-git-ptbr-cap2-fundamentos-do-git
+  title: "Pro Git — 2. Fundamentos do Git"
+  author: Scott Chacon e Ben Straub
+  url: https://git-scm.com/book/pt-br/v2/Fundamentos-do-Git-Obtendo-um-Reposit%C3%B3rio-Git
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: "Capítulo do ciclo diário: obter um repositório, gravar alterações (working tree, staging, commit), ver o histórico e desfazer coisas."
+  section: "2. Fundamentos do Git (2.1 Obtendo um Repositório Git · 2.2 Gravando Alterações no Repositório · 2.3 Visualizando o Histórico de Commits · 2.4 Desfazendo Coisas)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos conferidos no sumário oficial em git-scm.com/book/pt-br/v2." }
+
+- id: pro-git-ptbr-cap3-ramificacao
+  title: "Pro Git — 3. Ramificação (Branching) no Git"
+  author: Scott Chacon e Ben Straub
+  url: https://git-scm.com/book/pt-br/v2/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Branches-em-Poucas-Palavras
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics: [git-fundamentals]
+  why: "Capítulo sobre branches como ponteiros, merge, gerenciamento de branches e rebase."
+  section: "3. Ramificação (Branching) no Git"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no sumário oficial em git-scm.com/book/pt-br/v2." }
+
+- id: csapp-2-1-information-storage
+  title: "Computer Systems: A Programmer's Perspective — 2.1 Information Storage"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Seção sobre bytes, notação hexadecimal, tamanhos de dados, ordem dos bytes e operações em bits."
+  section: "2.1 Information Storage (2.1.1 Hexadecimal Notation · 2.1.2 Data Sizes)"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-2-1-3-addressing-and-byte-ordering
+  title: "Computer Systems: A Programmer's Perspective — 2.1.3 Addressing and Byte Ordering"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Subseção sobre endereçamento e little vs big endian."
+  section: "2.1.3 Addressing and Byte Ordering"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-2-1-7-bit-level-operations-in-c
+  title: "Computer Systems: A Programmer's Perspective — 2.1.7 Bit-Level Operations in C"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Subseções sobre operadores bitwise, lógicos e de deslocamento em C, base para máscaras e flags."
+  section: "2.1.7 Bit-Level Operations in C · 2.1.8 Logical Operations in C · 2.1.9 Shift Operations in C"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos conferidos no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-2-2-integer-representations
+  title: "Computer Systems: A Programmer's Perspective — 2.2 Integer Representations"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [integer-representation-overflow]
+  why: "Seção sobre inteiros sem sinal e em complemento de dois, e conversões entre signed e unsigned."
+  section: "2.2 Integer Representations"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-2-3-integer-arithmetic
+  title: "Computer Systems: A Programmer's Perspective — 2.3 Integer Arithmetic"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [integer-representation-overflow]
+  why: "Seção sobre adição, negação e multiplicação com overflow em inteiros sem sinal e em complemento de dois."
+  section: "2.3 Integer Arithmetic"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-2-4-floating-point
+  title: "Computer Systems: A Programmer's Perspective — 2.4 Floating Point"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [floating-point]
+  why: "Seção sobre o formato IEEE 754, arredondamento e ponto flutuante em C."
+  section: "2.4 Floating Point"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-5-7-understanding-modern-processors
+  title: "Computer Systems: A Programmer's Perspective — 5.7 Understanding Modern Processors"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Seção sobre execução fora de ordem, unidades funcionais e previsão de desvios do ponto de vista de quem otimiza código."
+  section: "5.7 Understanding Modern Processors"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título conferido no PDF oficial 'TOC and Preface' do site do livro." }
+
+- id: csapp-6-memory-hierarchy
+  title: "Computer Systems: A Programmer's Perspective — 6 The Memory Hierarchy"
+  author: Randal E. Bryant e David R. O'Hallaron
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Capítulo sobre localidade, hierarquia de memória, caches e como escrever código cache-friendly."
+  section: "6 The Memory Hierarchy (6.2 Locality · 6.3 The Memory Hierarchy · 6.4 Cache Memories · 6.5 Writing Cache-Friendly Code)"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos conferidos no PDF oficial 'TOC and Preface' do site do livro." }
+
+# --- Cursos e documentação: seções --------------------------------------------------------
+
+- id: missing-semester-pt-2020-course-shell
+  title: "O semestre que falta (tradução) — Visão geral do curso + o shell"
+  author: Tradução comunitária
+  url: https://missing-semester-pt.github.io/2020/course-shell/
+  language: pt-BR
+  format: course
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "A aula traduzida sobre o shell, em vez do site inteiro do curso."
+  section: "Visão geral do curso + o shell"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-cli-env-terminal-multiplexers
+  title: "Missing Semester 2026 — Command-line Environment: Terminal Multiplexers"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/command-line-environment/#terminal-multiplexers
+  language: en
+  format: course
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "Seção sobre tmux e sessões que sobrevivem ao fechamento do terminal (a seção anterior, Remote Machines, trata de SSH)."
+  section: "Terminal Multiplexers"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-cli-env-customizing-the-shell
+  title: "Missing Semester 2026 — Command-line Environment: Customizing the Shell"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/command-line-environment/#customizing-the-shell
+  language: en
+  format: course
+  difficulty: intro
+  topics: [terminal-shell]
+  why: "Seção sobre aliases, dotfiles e customização do shell."
+  section: "Customizing the Shell"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-cli-env-command-line-interface
+  title: "Missing Semester 2026 — Command-line Environment: The Command Line Interface"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/command-line-environment/#the-command-line-interface
+  language: en
+  format: course
+  difficulty: intro
+  topics: [processes-streams-exit-codes]
+  why: "Seção sobre argumentos, streams, variáveis de ambiente, return codes e sinais."
+  section: "The Command Line Interface (Arguments · Streams · Environment variables · Return codes · Signals)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-cli-env-exercises-files-and-permissions
+  title: "Missing Semester 2026 — Command-line Environment: Exercises — Files and Permissions"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/command-line-environment/#files-and-permissions
+  language: en
+  format: course
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: "Exercícios da aula focados em arquivos e permissões."
+  section: "Exercises — Files and Permissions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: bash-manual-3-5-shell-expansions
+  title: "Bash Reference Manual — 3.5 Shell Expansions"
+  author: GNU Project
+  url: https://www.gnu.org/software/bash/manual/bash.html#Shell-Expansions
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [terminal-shell]
+  why: "Seção oficial com todas as expansões do bash e a ordem em que acontecem (chaves, til, parâmetros, substituição de comandos, word splitting, globbing)."
+  section: "3.5 Shell Expansions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida no manual em página única." }
+
+- id: bash-manual-3-6-redirections
+  title: "Bash Reference Manual — 3.6 Redirections"
+  author: GNU Project
+  url: https://www.gnu.org/software/bash/manual/bash.html#Redirections
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-streams-exit-codes]
+  why: "Seção oficial sobre redirecionar stdin, stdout e stderr, duplicar descritores e here documents."
+  section: "3.6 Redirections"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida no manual em página única." }
+
+- id: bash-manual-3-2-3-pipelines
+  title: "Bash Reference Manual — 3.2.3 Pipelines"
+  author: GNU Project
+  url: https://www.gnu.org/software/bash/manual/bash.html#Pipelines
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-streams-exit-codes]
+  why: "Seção oficial sobre pipelines, incluindo o status de saída de um pipeline e pipefail."
+  section: "3.2.3 Pipelines"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida no manual em página única." }
+
+- id: bash-manual-3-7-5-exit-status
+  title: "Bash Reference Manual — 3.7.5 Exit Status"
+  author: GNU Project
+  url: https://www.gnu.org/software/bash/manual/bash.html#Exit-Status
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-streams-exit-codes]
+  why: "Seção oficial sobre o significado dos códigos de saída (0, 1–125, 126, 127, 128+n)."
+  section: "3.7.5 Exit Status"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida no manual em página única." }
+
+- id: man-chmod-setuid-setgid-bits
+  title: "chmod(1) — SETUID AND SETGID BITS"
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man1/chmod.1.html#SETUID_AND_SETGID_BITS
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [filesystem-permissions]
+  why: "Seção da man page sobre setuid e setgid; a seguinte, RESTRICTED DELETION FLAG OR STICKY BIT, cobre o sticky bit."
+  section: "SETUID AND SETGID BITS · RESTRICTED DELETION FLAG OR STICKY BIT"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida na página." }
+
+- id: cs50x-2026-notes-4-hexadecimal
+  title: "CS50x 2026 — Lecture 4 (notas): Hexadecimal"
+  author: David J. Malan (Harvard)
+  url: https://cs50.harvard.edu/x/notes/4/#hexadecimal
+  language: en
+  format: course
+  difficulty: intro
+  topics: [binary-hexadecimal]
+  why: "Seção das notas da aula 4 que introduz a base 16 e por que endereços aparecem em hexadecimal."
+  section: "Hexadecimal"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida nas notas da aula 4." }
+
+- id: nand2tetris-project-01-boolean-logic
+  title: "From Nand to Tetris — Project 1: Boolean Logic"
+  author: Noam Nisan e Shimon Schocken
+  url: https://www.nand2tetris.org/project01
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Projeto em que você constrói as portas lógicas (Not, And, Or, Xor, Mux...) a partir de Nand."
+  section: "Project 1: Boolean Logic"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-02-boolean-arithmetic
+  title: "From Nand to Tetris — Project 2: Boolean Arithmetic"
+  author: Noam Nisan e Shimon Schocken
+  url: https://www.nand2tetris.org/project02
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [binary-hexadecimal]
+  why: "Projeto que monta somadores e a ALU, mostrando a aritmética binária em hardware."
+  section: "Project 2: Boolean Arithmetic"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: nand2tetris-project-05-computer-architecture
+  title: "From Nand to Tetris — Project 5: Computer Architecture"
+  author: Noam Nisan e Shimon Schocken
+  url: https://www.nand2tetris.org/project05
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [cpu-memory-caches]
+  why: "Projeto que junta CPU e memória na plataforma Hack completa."
+  section: "Project 5: Computer Architecture"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cert-c-rules-integers-int
+  title: "SEI CERT C Coding Standard — Rule 04. Integers (INT)"
+  author: Software Engineering Institute (CMU)
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [integer-representation-overflow]
+  why: "As regras de inteiros do CERT C (wrap, conversões, overflow, divisão, shifts) em vez do padrão inteiro."
+  section: "Integers (INT)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cert-c-int32-c-signed-integer-overflow
+  title: "INT32-C. Ensure that operations on signed integers do not result in overflow"
+  author: Software Engineering Institute (CMU)
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int32-c
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [integer-representation-overflow]
+  why: "Regra sobre overflow de inteiros com sinal, com exemplos de código vulnerável e checagens corretas."
+  section: "INT32-C"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppreference-c-usual-arithmetic-conversions
+  title: "Implicit conversions — Usual arithmetic conversions (cppreference.com)"
+  author: cppreference.com
+  url: https://en.cppreference.com/w/c/language/conversion#Usual_arithmetic_conversions
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [integer-representation-overflow]
+  why: "Seção sobre as conversões aritméticas usuais; a mesma página traz Integer promotions e Integer conversions."
+  section: "Usual arithmetic conversions · Integer promotions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida na página." }
+
+- id: goldberg-fp-errors-in-summation
+  title: "What Every Computer Scientist Should Know About Floating-Point Arithmetic — Errors In Summation"
+  author: David Goldberg
+  url: https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html#1262
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [floating-point]
+  why: "Seção sobre erro acumulado em somas e a fórmula de soma de Kahan (Theorem 8)."
+  section: "Errors In Summation"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida na página." }
+
+- id: goldberg-fp-the-ieee-standard
+  title: "What Every Computer Scientist Should Know About Floating-Point Arithmetic — The IEEE Standard"
+  author: David Goldberg
+  url: https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html#799
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [floating-point]
+  why: "Seção sobre formatos IEEE 754, quantidades especiais, números denormalizados e modos de arredondamento."
+  section: "The IEEE Standard"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida na página." }
+
+- id: drepper-memory-3-cpu-caches
+  title: "What Every Programmer Should Know About Memory — 3 CPU Caches"
+  author: Ulrich Drepper
+  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [cpu-memory-caches]
+  why: "A seção que o próprio autor chama de essencial: como os caches da CPU funcionam e quanto custam os misses."
+  section: "3 CPU Caches"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no PDF (Document Structure e título da seção 3)." }
+
+- id: brendan-gregg-perf-examples-hardware-events
+  title: "Linux perf Examples — 5.2. Hardware Events (PMCs)"
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/perf.html#HardwareEvents
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [cpu-memory-caches]
+  why: "Seção sobre contadores de hardware (PMCs) no perf, usados para medir cache misses."
+  section: "5.2. Hardware Events (PMCs)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Âncora conferida na página." }
