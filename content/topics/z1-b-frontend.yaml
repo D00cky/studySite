@@ -32,7 +32,7 @@
       correction: Testes automáticos detectam uma parte dos problemas. Ordem de foco, textos sem sentido e fluxos confusos só aparecem em teste manual.
   resources:
     start: mdn-accessibility-guide
-    deeper: [mdn-html-accessibility, wai-accessibility-intro, wai-easy-checks, chrome-devtools-accessibility-reference, mdn-accessibility-tree, wai-aria-apg, wcag-22, web-dev-learn-accessibility, orca-screen-reader, mdn-learn, roadmap-frontend]
+    deeper: [mdn-html-accessibility, wai-accessibility-intro, wai-easy-checks, chrome-devtools-accessibility-reference, mdn-accessibility-tree, wai-aria-apg-patterns, wcag-22, web-dev-learn-accessibility-structure, orca-screen-reader, roadmap-frontend]
     videos: [chrome-debugging-accessibility-devtools-video, akitando-39-historia-front-end-video]
   exercise:
     id: ex-div-vs-button
@@ -85,7 +85,7 @@
   deepDive:
     - title: Padrões ARIA para widgets compostos (tabs, combobox, menu, dialog)
       why: Quando precisar de um componente que não existe em HTML nativo e tiver de implementar foco e teclado à mão.
-      resource: wai-aria-apg
+      resource: wai-aria-apg-patterns
     - title: Critérios WCAG 2.2 completos e auditoria formal
       why: Quando o produto tiver exigência legal ou contratual de conformidade (níveis A/AA).
       resource: wcag-22
@@ -121,7 +121,7 @@
       correction: Mudam a ordem visual mas não a do DOM; leitores de tela e o Tab seguem o HTML, o que pode desorientar usuários.
   resources:
     start: mdn-css-layout
-    deeper: [mdn-css-handling-conflicts, web-dev-learn-css-cascade, mdn-css-flexbox, mdn-css-grid, web-dev-learn-css, web-dev-learn]
+    deeper: [mdn-css-handling-conflicts, web-dev-learn-css-cascade, mdn-css-flexbox, mdn-css-grid, web-dev-learn-css-layout]
     videos: [kevin-powell-css-specificity-video, kevin-powell-flexbox-or-grid-video, layout-land-css-grid-big-picture-video]
   exercise:
     id: ex-cascade-detective
@@ -212,7 +212,7 @@
       correction: Só rejeita em falha de rede ou cancelamento; você precisa checar `response.ok`.
   resources:
     start: mdn-js-execution-model
-    deeper: [jake-archibald-tasks-microtasks, mdn-async-js-introducing, mdn-microtask-in-depth, mdn-using-promises, mdn-learn, web-dev-inp, owasp-cheatsheets]
+    deeper: [jake-archibald-tasks-microtasks, mdn-async-js-introducing, mdn-microtask-in-depth, mdn-using-promises, web-dev-inp, owasp-xss-prevention-cheatsheet]
     videos: [jsconf-jake-archibald-in-the-loop, jsconf-philip-roberts-event-loop]
   exercise:
     id: ex-predict-the-order
@@ -274,7 +274,7 @@
       resource: mdn-web-components
     - title: Content Security Policy e defesa em profundidade contra XSS
       why: Quando a aplicação precisar de uma barreira extra além de escapar saída corretamente.
-      resource: owasp-cheatsheets
+      resource: owasp-csp-cheatsheet
 
 - id: rendering-performance
   stage: b-frontend
@@ -301,8 +301,8 @@
       correction: left/top disparam layout a cada frame; transform geralmente fica só na composição.
   resources:
     start: web-dev-rendering-performance
-    deeper: [mdn-critical-rendering-path, chrome-devtools-performance, web-dev-layout-thrashing, web-dev-inp, web-dev-learn-performance, web-dev-learn]
-    videos: [blinkon-life-of-a-pixel, jsconf-jake-archibald-in-the-loop]
+    deeper: [mdn-critical-rendering-path, chrome-devtools-performance, web-dev-layout-thrashing, web-dev-inp, web-dev-learn-performance-critical-path]
+    videos: [blinkon-life-of-a-pixel, jsconf-jake-archibald-in-the-loop-rendering-and-task-blocking]
   exercise:
     id: ex-layout-thrashing
     title: Provocar e corrigir layout thrashing
@@ -362,7 +362,7 @@
       resource: web-dev-learn-performance
     - title: Camadas, raster e composição na GPU
       why: Ao investigar jank em animações complexas ou uso excessivo de memória de camadas.
-      resource: blinkon-life-of-a-pixel
+      resource: blinkon-life-of-a-pixel-rasterization
 
 - id: frontend-testing
   stage: b-frontend
@@ -393,7 +393,7 @@
   resources:
     start: testing-library-guiding-principles
     deeper: [testing-library-queries, playwright-locators, playwright-accessibility-testing, vitest-guide, wai-easy-checks, mdn-accessibility-tree]
-    videos: [kent-c-dodds-write-tests-video, chrome-debugging-accessibility-devtools-video]
+    videos: [kent-c-dodds-write-tests-video, chrome-debugging-accessibility-devtools-testing]
   exercise:
     id: ex-test-like-a-user
     title: Testar a lista de tarefas como um usuário

@@ -27,8 +27,8 @@
       correction: Labels de alta cardinalidade explodem o número de séries e derrubam o backend de métricas. Esse detalhe pertence a logs e traces.
   resources:
     start: otel-observability-primer
-    deeper: [sre-book-monitoring-distributed-systems, otel-signals, otel-java, otel-java-agent, sre-book]
-    videos: [missing-semester-2026-lecture-4-debugging-profiling-video]
+    deeper: [sre-book-monitoring-distributed-systems, otel-signals, otel-java, otel-java-agent]
+    videos: [missing-semester-2026-lecture-4-debugging-profiling-debugging]
   exercise:
     id: ex-instrument-task-service
     title: Instrumentar o serviço de tarefas à mão
@@ -123,7 +123,7 @@
   resources:
     start: brendan-gregg-flame-graphs
     deeper: [openjdk-jmh, openjdk-jmh-samples, brendan-gregg-perf-examples, brendan-gregg-perf, missing-semester-debugging]
-    videos: [usenix-lisa13-flame-graphs, missing-semester-2026-lecture-4-debugging-profiling-video, brendan-gregg-linux-performance-tools-1]
+    videos: [usenix-lisa13-flame-graphs, missing-semester-2026-lecture-4-debugging-profiling-profiling, brendan-gregg-linux-performance-tools-1-cpu-profile-method]
   exercise:
     id: ex-flamegraph-and-jmh
     title: Flame graph em C e benchmark JMH em Java
@@ -218,7 +218,7 @@
   resources:
     start: brendan-gregg-use-method
     deeper: [sre-book-monitoring-distributed-systems, sre-book-service-level-objectives, sre-book-effective-troubleshooting, hdrhistogram, postgres-explain]
-    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres-video]
+    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres-cap-07-testes-de-carga]
   exercise:
     id: ex-percentiles-by-hand
     title: Percentis a partir de dados medidos

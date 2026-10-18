@@ -30,7 +30,7 @@
   resources:
     start: ostep-io-devices
     deeper: [man-strace, man-setvbuf, man-mmap, man-readv, man-perf-stat, brendan-gregg-perf, beej-c-file-io, ostep-files-directories]
-    videos: [strange-loop-julia-evans-systems-swiss-army-knife, brendan-gregg-linux-performance-tools-1]
+    videos: [strange-loop-julia-evans-systems-swiss-army-knife, brendan-gregg-linux-performance-tools-1-observability-tools-basic]
   exercise:
     id: ex-copy-four-ways
     title: Copiar um arquivo de quatro jeitos
@@ -82,7 +82,7 @@
   deepDive:
     - title: io_uring e I/O assíncrono
       why: Em servidores ou bancos que fazem muito I/O concorrente e querem reduzir syscalls e cópias.
-      resource: lord-of-the-io-uring
+      resource: lord-of-the-io-uring-what-is-io-uring
     - title: O_DIRECT, fdatasync e garantias de durabilidade
       why: Ao escrever um log, banco ou formato de arquivo que precisa sobreviver a quedas de energia.
       resource: man-fsync
@@ -124,7 +124,7 @@
       correction: Há header e alinhamento; o bloco real costuma ter 24 ou 32 bytes, o que malloc_usable_size revela.
   resources:
     start: ostep-free-space
-    deeper: [man-brk, man-mmap, man-malloc, ostep-memory-api, csapp, asan, valgrind-quickstart]
+    deeper: [man-brk, man-mmap, man-malloc, ostep-memory-api, csapp-9-9-dynamic-memory-allocation, asan, valgrind-quickstart]
     videos: [akitando-45-memoria-1-video, akitando-46-memoria-2-video]
   exercise:
     id: ex-free-list-allocator
@@ -179,7 +179,7 @@
       resource: mimalloc
     - title: Exploração de heap e mitigações
       why: Ao estudar segurança e entender como heap overflow e double free viram execução de código.
-      resource: cert-c
+      resource: cert-c-memory-management-mem
     - title: Arenas e alocadores especializados
       why: Quando um programa aloca muitos objetos de mesmo tempo de vida (parser, requisição) e free individual vira custo.
       resource: ostep-free-space
@@ -215,8 +215,8 @@
       correction: Se estão na mesma linha de cache, escritas de núcleos diferentes disputam a linha (false sharing).
   resources:
     start: beej-c-atomics
-    deeper: [beej-c-multithreading, cppreference-c-memory-order, preshing-lock-free-intro, man-futex, man-perf-stat, ostep-locks, ostep-lock-based-data-structures, drepper-memory]
-    videos: [cppcon-2017-pikus-atomics, akitando-43-concorrencia-1-video, akitando-44-concorrencia-2-video]
+    deeper: [beej-c-multithreading, cppreference-c-memory-order, preshing-lock-free-intro, man-futex, man-perf-stat, ostep-locks, ostep-lock-based-data-structures, drepper-memory-6-4-multi-thread-optimizations]
+    videos: [cppcon-2017-pikus-atomics-compare-and-swap, cppcon-2017-pikus-atomics-memory-barriers, akitando-43-concorrencia-1-video, akitando-44-concorrencia-2-video]
   exercise:
     id: ex-spinlock-counter
     title: Contador com quatro sincronizações

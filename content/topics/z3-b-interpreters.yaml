@@ -33,8 +33,8 @@
       correction: Normalmente só influenciam a forma da árvore; depois do parsing o agrupamento já está representado pela estrutura.
   resources:
     start: crafting-interpreters-scanning
-    deeper: [crafting-interpreters-map-of-territory, crafting-interpreters-representing-code, crafting-interpreters-parsing-expressions, composing-programs-interpreters-combination, crafting-interpreters, akita-compiled-interpreted]
-    videos: [akitando-117-compilada-interpretada-video, cs61a-interpreters-su25-playlist]
+    deeper: [crafting-interpreters-map-of-territory, crafting-interpreters-representing-code, crafting-interpreters-parsing-expressions, composing-programs-interpreters-combination, akita-compiled-interpreted]
+    videos: [akitando-117-compilada-interpretada-analise-lexica, akitando-117-compilada-interpretada-analise-sintatica, cs61a-su25-parsing-video]
   exercise:
     id: ex-hand-parse
     title: Parsing à mão antes do código
@@ -123,8 +123,8 @@
       correction: São simples de escrever e depurar e bastam para linguagens de configuração, consultas e DSLs; otimizações vêm depois, com bytecode.
   resources:
     start: crafting-interpreters-evaluating-expressions
-    deeper: [crafting-interpreters-representing-code, composing-programs-interpreters-combination, crafting-interpreters]
-    videos: [cs61a-interpreters-su25-playlist, akitando-117-compilada-interpretada-video]
+    deeper: [crafting-interpreters-representing-code, composing-programs-interpreters-combination]
+    videos: [cs61a-su25-evaluation-video, akitando-117-compilada-interpretada-interpretadores-maquinas-virtuais]
   exercise:
     id: ex-calculator-repl
     title: REPL da calculadora com erros úteis
@@ -212,8 +212,8 @@
       correction: É uma escolha de design que gera globais acidentais; separar declaração de atribuição pega erros de digitação.
   resources:
     start: crafting-interpreters-statements-and-state
-    deeper: [crafting-interpreters-functions, crafting-interpreters-resolving-and-binding, composing-programs-interpreters-abstraction, mdn-js-closures, crafting-interpreters]
-    videos: [cs61a-environments-su25-playlist]
+    deeper: [crafting-interpreters-functions, crafting-interpreters-resolving-and-binding, composing-programs-interpreters-abstraction, mdn-js-closures]
+    videos: [cs61a-su25-environments-nested-definitions-video, cs61a-su25-dynamic-scope-video]
   exercise:
     id: ex-environment-diagrams
     title: Diagramas de ambiente e blocos no interpretador

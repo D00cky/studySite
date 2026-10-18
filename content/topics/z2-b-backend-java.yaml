@@ -24,9 +24,9 @@
     - claim: "`==` compara o conteúdo de Strings e Integers."
       correction: Compara referências; use equals. Caches internos fazem o erro aparecer só com alguns valores.
   resources:
-    start: dev-java
+    start: dev-java-first-steps
     deeper: [dev-java-records, dev-java-jshell, dev-java-javap, javap-man-21, dev-java-collections, dev-java-exceptions]
-    videos: [oracle-java-bytecode-crash-course, akitando-136-python-java-rust-video]
+    videos: [oracle-java-bytecode-crash-course, akitando-136-python-java-rust-cap-5-compilado-vs-interpretado]
   exercise:
     id: ex-jshell-javap-task
     title: O que o compilador gerou para o seu record
@@ -112,9 +112,9 @@
     - claim: Anotar o parâmetro com @Valid já valida tudo.
       correction: Só valida as restrições declaradas (@NotBlank, @Size...) e só se o starter de validação estiver presente; regras de negócio continuam no seu código.
   resources:
-    start: spring-boot-docs
-    deeper: [spring-dispatcher-servlet, spring-boot-auto-configuration, spring-ioc-container, roadmap-backend, owasp-cheatsheets]
-    videos: [dan-vega-spring-boot-3-crash-course-video, spring-io-2025-demystifying-spring-boot-magic-video, akitando-124-sockets-web-video]
+    start: spring-boot-servlet-web-applications
+    deeper: [spring-dispatcher-servlet, spring-boot-auto-configuration, spring-ioc-container, roadmap-backend, owasp-input-validation-cheatsheet]
+    videos: [dan-vega-spring-boot-3-crash-course-spring-core-concepts, dan-vega-spring-boot-3-crash-course-rest-api-spring-mvc, spring-io-2025-demystifying-spring-boot-magic-auto-configuration-mechanics, akitando-124-sockets-web-bsd-sockets]
   exercise:
     id: ex-tasks-api-no-magic
     title: API de tarefas com e sem mágica
@@ -201,8 +201,8 @@
       correction: O banco tem CPU e locks finitos; conexões demais aumentam contenção e trocas de contexto. O pool limita a concorrência de propósito.
   resources:
     start: jdbc-tutorial-basics
-    deeper: [jdbc-prepared-statements, jdbc-transactions, pgjdbc-docs, spring-jdbc-core, spring-declarative-transactions, spring-boot-data-initialization, flyway-docs, postgres-docs, postgres-explain]
-    videos: [vlad-mihalcea-high-performance-jdbc-video, dan-vega-jdbc-client-vs-spring-data-jdbc-video, akitando-118-servidor-sql-video]
+    deeper: [jdbc-prepared-statements, jdbc-transactions, pgjdbc-query, spring-jdbc-core, spring-declarative-transactions, spring-boot-data-initialization, flyway-migrations, postgres-tutorial-transactions, postgres-explain]
+    videos: [vlad-mihalcea-high-performance-jdbc-video, dan-vega-jdbc-client-vs-spring-data-jdbc-video, akitando-118-servidor-sql-transaction-log]
   exercise:
     id: ex-jdbc-by-hand
     title: Repositório de tarefas com JDBC puro
@@ -289,8 +289,8 @@
     - claim: Testar o caminho feliz de cada endpoint cobre a segurança.
       correction: Falhas de autorização só aparecem em testes negativos com outro usuário ou sem credenciais.
   resources:
-    start: testcontainers-java
-    deeper: [testcontainers-postgres-module, testcontainers-getting-started-java, spring-boot-testing, spring-boot-testcontainers, spring-security-authorization, owasp-cheatsheets, docker-get-started]
+    start: testcontainers-junit5-quickstart
+    deeper: [testcontainers-postgres-module, testcontainers-getting-started-java, spring-boot-testing, spring-boot-testcontainers, spring-security-authorization, owasp-authorization-cheatsheet, docker-get-started-what-is-a-container]
     videos: [spring-io-selajev-testcontainers-spring-boot-video, dan-vega-spring-boot-testcontainers-video, spring-io-2026-riecks-testing-spring-boot-demystified-video]
   exercise:
     id: ex-testcontainers-authz-matrix
@@ -349,7 +349,7 @@
       resource: jqwik-property-based-testing
     - title: Extensões e recursos avançados do JUnit 5
       why: Ao criar infraestrutura de teste reutilizável (extensions, testes parametrizados e dinâmicos).
-      resource: junit-user-guide
+      resource: junit-user-guide-extension-model
     - title: Testes de carga contra o sistema completo
       why: Antes de expor a API a tráfego real e para descobrir limites de pool, banco e threads.
-      resource: akitando-149-docker-compose-postgres-video
+      resource: akitando-149-docker-compose-postgres-cap-07-testes-de-carga
