@@ -131,3 +131,50 @@ selfAssessmentLevels:
   - level: 4
     title: Depuro e ensino
     description: Consigo diagnosticar falhas, prever casos-limite e ensinar a outra pessoa.
+
+# Método de prática: redigitar código de referência antes de construir do zero.
+# Inspirado no que Fabio Akita defende (fontes e citações literais abaixo, verificadas em 2026-10-18).
+# Os passos e o formato de evidência são adaptação nossa.
+practiceMethod:
+  title: Prática deliberada — copiar, quebrar, modificar, reescrever
+  summary: >-
+    Antes de inventar um projeto do zero, ganhe quilometragem redigitando código bom de outras pessoas.
+    Redigitar (não colar) cria memória muscular e mostra como código real é escrito; quebrar e modificar
+    obriga a entender; reescrever de memória prova que ficou. O projeto próprio vem depois, como teste.
+  steps:
+    - id: retype
+      title: Redigitar à mão
+      description: Abra a implementação de referência de um lado e o editor do outro. Crie um diretório novo e digite tudo — sem colar. Commit no início e quando rodar. Vai falhar mesmo copiando; é aí que se aprende.
+    - id: annotate-break
+      title: Anotar e quebrar
+      description: Comente cada bloco com "o que faz / por quê". Quebre de propósito em 2–3 pontos, preveja o erro e registre o que de fato aconteceu.
+    - id: modify
+      title: Modificar
+      description: Faça uma mudança de comportamento que só dá para fazer entendendo o código (novo parâmetro, outra estrutura de dados). Depois, uma ideia sua.
+    - id: rewrite
+      title: Reescrever de memória
+      description: Dias depois, reescreva sem olhar e compare com a referência. O que você não conseguiu lembrar é o que precisa treinar de novo.
+    - id: own
+      title: Projeto próprio
+      description: Agora sim, construa a versão do projeto do zero, do seu jeito, e leve a evidência para a revisão.
+  sources:
+    - title: "[Akitando] #65 - A Dor de Aprender | Que Cursos/Livros?"
+      url: https://akitaonrails.com/2019/10/23/akitando-65-a-dor-de-aprender-que-cursos-livros/
+      quote: "abre um código do GitHub de um lado, o editor do outro lado e vai copiando […] A intenção é ganhar memória muscular."
+    - title: "[Akitando] #69 - Respondendo suas Perguntas sobre Carreira | via Instagram"
+      url: https://akitaonrails.com/2019/12/11/akitando-69-respondendo-suas-perguntas-sobre-carreira-via-instagram/
+      quote: "Não só baixe o projeto e rode. Crie um novo diretório e redigite tudo do zero de novo. Você vai descobrir que mesmo copiando, seu código vai falhar."
+    - title: "[Akitando] #38 - Conhecimentos Básicos para Iniciantes em Programação | Série \"Começando aos 40\""
+      url: https://akitaonrails.com/2019/02/06/akitando-38-conhecimentos-basicos-para-iniciantes-em-programacao-serie-comecando-aos-40/
+      quote: "você não deve tentar aprender 100% de cada assunto de uma só vez. Aprenda no máximo 20%. Os primeiros 20% que vai te permitir resolver 80% dos problemas."
+    - title: "[Akitando] #76 - Guia DEFINITIVO de Aprendendo a Aprender | A maior BRONCA da sua vida [RATED R]"
+      url: https://akitaonrails.com/2020/04/01/akitando-76-guia-definitivo-de-aprendendo-a-aprender-a-maior-bronca-da-sua-vida-rated-r/
+      quote: "pra evoluir você precisa fazer o que Mozart fazia: copiar, testar, avaliar, corrigir e recomeçar, e recomeçar, e recomeçar, centenas de horas."
+    - title: "[Akitando] #119 - Rant: Aprendizado na Beira do Caos | Rated R"
+      url: https://akitaonrails.com/2022/05/30/akitando-119-rant-aprendizado-na-beira-do-caos-rated-r/
+      quote: "Programar não é só digitar código que nem um idiota. É jogar fora a maior parte do que digitar. Escreva e jogue fora."
+  caveats:
+    - "Redigitar não é colar: colar do StackOverflow ou de uma IA deixa código remendado que você não entende."
+    - "A fase de cópia é para ganhar quilometragem no começo de cada assunto, não um método permanente."
+    - "Respeite licenças e cite a fonte do código de referência no seu repositório."
+    - "Com IA, a evidência que vale é entender, testar e consertar — não só ter digitado."

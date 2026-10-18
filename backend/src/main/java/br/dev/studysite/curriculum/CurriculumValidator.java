@@ -121,6 +121,15 @@ final class CurriculumValidator {
                 error(where + ": deepDive aponta para recurso inexistente '" + d.resource() + "'");
             }
         }
+        if (!t.kit().isEmpty() && (t.kit().size() < 3 || t.kit().size() > 7)) {
+            error(where + ": kit deve ter de 3 a 7 itens (tem " + t.kit().size() + ")");
+        }
+        for (Model.KitItem k : t.kit()) {
+            if (k.term() == null || k.term().isBlank()) {
+                error(where + ": kit com term vazio");
+            }
+            required(where, "kit.use", k.use());
+        }
         if (!"authored".equals(t.status())) {
             return;
         }
@@ -208,6 +217,17 @@ final class CurriculumValidator {
             required(where, "milestone.title", m.title());
         }
         if ("authored".equals(p.status())) {
+            if (p.practice() != null) {
+                if (p.practice().references().isEmpty()) {
+                    error(where + ": practice precisa de ao menos uma referência para redigitar");
+                }
+                for (Model.PracticeReference r : p.practice().references()) {
+                    required(where, "practice.references.title", r.title());
+                    if (r.url() == null || !r.url().startsWith("https://")) {
+                        error(where + ": practice.references.url deve começar com https:// (" + r.url() + ")");
+                    }
+                }
+            }
             nonEmpty(where, "extensions", p.extensions());
             nonEmpty(where, "constraints", p.constraints());
             nonEmpty(where, "edgeCases", p.edgeCases());

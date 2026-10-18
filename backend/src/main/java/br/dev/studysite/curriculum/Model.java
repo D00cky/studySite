@@ -57,10 +57,12 @@ public final class Model {
             List<String> evidencePrompts,
             String firstAction,
             List<String> essentials,
-            List<DeepDivePoint> deepDive) {
+            List<DeepDivePoint> deepDive,
+            List<KitItem> kit) {
         public Topic {
             essentials = list(essentials);
             deepDive = list(deepDive);
+            kit = list(kit);
             prerequisites = list(prerequisites);
             related = list(related);
             mathThreads = list(mathThreads);
@@ -72,6 +74,13 @@ public final class Model {
     }
 
     public record Misconception(String claim, String correction) {
+    }
+
+    /**
+     * Kit mínimo (80/20): o comando, ferramenta ou conceito que resolve a maior parte do
+     * dia a dia, e para que ele serve. Ex.: term "git commit -m", use "grava um snapshot".
+     */
+    public record KitItem(String term, String use) {
     }
 
     /**
@@ -145,7 +154,8 @@ public final class Model {
             List<String> tools,
             List<String> acceptanceCriteria,
             List<String> evidence,
-            List<String> reviewQuestions) {
+            List<String> reviewQuestions,
+            Practice practice) {
         public Project {
             cumulative = Boolean.TRUE.equals(cumulative);
             topics = list(topics);
@@ -165,6 +175,20 @@ public final class Model {
     public record Milestone(String id, String title, String description, Integer minutes) {
     }
 
+    /**
+     * Prática deliberada antes de construir do zero (método defendido pelo Akita):
+     * redigitar uma implementação de referência real, anotar, quebrar, modificar e
+     * reescrever de memória.
+     */
+    public record Practice(String guidance, List<PracticeReference> references) {
+        public Practice {
+            references = list(references);
+        }
+    }
+
+    public record PracticeReference(String title, String author, String url, String language, String license) {
+    }
+
     public record Policies(
             List<LoopStep> learningLoop,
             List<AiPhase> aiPolicy,
@@ -172,7 +196,21 @@ public final class Model {
             List<SessionStep> sessionTemplate,
             List<SessionRole> sessionRoles,
             List<AssessmentLevel> selfAssessmentLevels,
-            List<String> recordKinds) {
+            List<String> recordKinds,
+            PracticeMethod practiceMethod) {
+    }
+
+    public record PracticeMethod(String title, String summary, List<LoopStep> steps, List<Source> sources,
+            List<String> caveats) {
+        public PracticeMethod {
+            steps = list(steps);
+            sources = list(sources);
+            caveats = list(caveats);
+        }
+    }
+
+    /** Fonte citada literalmente (url verificada; quote curta e exata). */
+    public record Source(String title, String url, String quote) {
     }
 
     public record LoopStep(String id, String title, String description) {
