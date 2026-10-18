@@ -69,6 +69,22 @@
     - Saídas de `dig +trace` e `traceroute` anotadas, com a previsão inicial ao lado.
     - Captura do tcpdump da consulta DNS e explicação do experimento com /etc/hosts.
   firstAction: Rode `dig example.com` e circule na saída o endereço IP, o TTL e a linha SERVER.
+  essentials:
+    - "Diagnostique em camadas: nome (`dig`), rota (`ip route get <ip>`), host (`ping`/`traceroute`), porta (`nc -zv`/`curl -v`)."
+    - "Leia no `dig` a seção ANSWER, o TTL e a linha SERVER; `dig @1.1.1.1` testa outro resolvedor e isola o cache local."
+    - "Lembre que `/etc/hosts` responde antes do DNS e que `dig` o ignora; compare com `getent hosts nome` quando algo só falha na sua máquina."
+    - Baixe o TTL do registro dias antes de uma migração; depois de mudar, resolvedores ainda servem o valor antigo até o TTL vencer.
+    - "Ping sem resposta não prova queda: muitas redes bloqueiam ICMP. Teste a porta do serviço."
+  deepDive:
+    - title: Roteamento entre redes e BGP
+      why: Quando precisar entender quedas regionais da Internet ou trabalhar com infraestrutura de rede e cloud.
+      resource: cs168-textbook-bgp
+    - title: IPv6, NAT e sub-redes em VPCs
+      why: Ao desenhar redes em cloud, Docker ou Kubernetes, ou depurar conectividade que funciona em IPv4 e falha em IPv6.
+      resource: cs168-textbook-addressing
+    - title: DNS em detalhe (DNSSEC, delegação, registros SRV)
+      why: Ao administrar domínios, configurar e-mail ou service discovery, ou investigar envenenamento de cache.
+      resource: rfc-1035-dns
 
 - id: tcp-udp-sockets
   stage: s09-networking
@@ -145,6 +161,25 @@
     - Código do loop de leitura com buffer e de send_all, com o teste de leitura parcial.
     - Captura do tcpdump e saída do ss anotadas.
   firstAction: Rode `ss -tlnp` e identifique quais processos estão escutando em quais portas na sua máquina.
+  essentials:
+    - "TCP é fluxo de bytes: defina framing (delimitador ou prefixo de tamanho) e leia em loop acumulando num buffer."
+    - "Trate os três retornos de `recv`: `>0` dados, `0` o outro lado fechou (EOF), `-1` erro em `errno`."
+    - "Escreva sempre um `send_all` em loop e evite morrer por `SIGPIPE` (`MSG_NOSIGNAL` ou ignorar o sinal)."
+    - "Use `ss -tanp`: muitos `CLOSE-WAIT` significam que o seu código esqueceu `close`; `TIME-WAIT` é normal em quem fecha primeiro."
+    - "Ative `SO_REUSEADDR` no servidor para reiniciar sem `Address already in use`."
+  deepDive:
+    - title: Controle de congestionamento e de fluxo
+      why: Ao investigar throughput baixo, latência alta sob carga ou tuning de rede em servidores.
+      resource: cs168-textbook-congestion-control
+    - title: I/O não bloqueante e multiplexação (poll, epoll)
+      why: Quando um servidor precisar atender milhares de conexões sem uma thread por cliente.
+      resource: beej-network
+    - title: QUIC e transporte sobre UDP
+      why: Ao lidar com HTTP/3, redes móveis instáveis ou protocolos de tempo real.
+      resource: rfc-9000-quic
+    - title: Nagle, delayed ACK e opções de socket
+      why: Quando mensagens pequenas sofrerem latência inexplicável ou você precisar de TCP_NODELAY e keepalive.
+      resource: man-tcp7
 
 - id: http-protocol
   stage: s09-networking
@@ -221,6 +256,21 @@
     - Transcrição do nc e do curl -v anotadas.
     - Lista de entradas malformadas testadas com a resposta do servidor para cada uma.
   firstAction: Rode `curl -v http://example.com/ -o /dev/null` e conte quantos cabeçalhos a resposta trouxe.
+  essentials:
+    - "Use `curl -v` para ver o que trafega: linhas `>` foram enviadas, `<` recebidas; os cabeçalhos terminam numa linha em branco (`\\r\\n\\r\\n`)."
+    - "O corpo é delimitado por `Content-Length` ou `Transfer-Encoding: chunked`; leia exatamente esse tamanho, nunca confie num único `recv`."
+    - "Respeite a semântica: GET seguro, PUT/DELETE idempotentes, POST não. Clientes e proxies fazem retry contando com isso."
+    - "Responda com o status certo (`400`, `404`, `409`, `5xx`) em vez de `200` com erro no corpo."
+    - Num parser, limite o tamanho da linha e dos cabeçalhos e rejeite Content-Length inválido com 400.
+  deepDive:
+    - title: HTTP/2 e HTTP/3 no fio
+      why: Ao otimizar latência de páginas com muitos recursos ou depurar proxies e load balancers modernos.
+      resource: rfc-9113-http2
+    - title: CORS e políticas de origem
+      why: Quando o frontend chamar uma API em outro domínio e o navegador bloquear a requisição.
+    - title: Request smuggling e ambiguidades de parsing
+      why: Ao colocar proxies na frente do seu servidor ou revisar a segurança de um parser HTTP.
+      resource: rfc-9112-http11
 
 - id: tls-concepts
   stage: s09-networking
@@ -289,6 +339,24 @@
     - Desenho da cadeia de certificados com os campos extraídos.
     - Tabela "erro → garantia protegida" com os comandos do experimento.
   firstAction: Abra um site com HTTPS no navegador, clique no cadeado e anote quem emitiu o certificado e até quando ele vale.
+  essentials:
+    - "Nunca desligue a verificação (`curl -k`, `verify=False`) fora de laboratório: sem ela você perde a autenticidade."
+    - "Inspecione com `openssl s_client -connect host:443 -servername host` e `openssl x509 -noout -subject -issuer -dates -ext subjectAltName`."
+    - "Num erro de certificado, confira três coisas: cadeia até uma CA confiável, nome no SAN e datas de validade."
+    - Use TLS 1.2 ou superior (prefira 1.3) e deixe a escolha de ciphers aos padrões atuais da biblioteca.
+    - Automatize a renovação de certificados e monitore a data de expiração.
+  deepDive:
+    - title: ACME e automação de certificados
+      why: Ao colocar um serviço em produção com HTTPS sem renovar certificados à mão.
+      resource: letsencrypt-how-it-works
+    - title: mTLS (autenticação de cliente por certificado)
+      why: Ao proteger a comunicação entre serviços internos ou exigir identidade forte de clientes.
+      resource: rfc-8446-tls13
+    - title: Criptografia por baixo (Diffie-Hellman, AEAD, assinaturas)
+      why: Quando precisar avaliar uma escolha criptográfica ou entender ataques a protocolos.
+      resource: akita-crypto-1
+    - title: Revogação, Certificate Transparency e pinning
+      why: Ao responder a um vazamento de chave privada ou auditar certificados emitidos para seu domínio.
 
 - id: timeouts-caching
   stage: s09-networking
@@ -363,3 +431,18 @@
     - Saídas de `time curl` nos cenários de timeout, com a explicação de qual fase travou.
     - Transcrição da revalidação 200 → 304 → 200 com os cabeçalhos relevantes.
   firstAction: Rode `curl -sI https://developer.mozilla.org/ | grep -iE 'cache-control|etag|age'` e anote o que cada cabeçalho promete.
+  essentials:
+    - "Configure sempre timeout de conexão, de leitura e um deadline total; no curl, `--connect-timeout` e `--max-time`."
+    - Escolha o timeout pela latência medida (p99 mais folga), não por chute.
+    - Faça poucos retries, com backoff exponencial e jitter, e só em operações idempotentes.
+    - "`no-cache` = guarde mas revalide; `no-store` = não guarde; `private` = nada de cache compartilhado para dados do usuário."
+    - "Use `ETag` com `If-None-Match` para revalidar e responda `304` sem corpo quando nada mudou."
+  deepDive:
+    - title: Circuit breakers, bulkheads e propagação de deadline
+      why: Quando um serviço depender de vários outros e uma dependência lenta não puder derrubar o sistema todo.
+      resource: aws-builders-timeouts-retries
+    - title: CDN, invalidação e stale-while-revalidate
+      why: Ao servir conteúdo para muitos usuários e precisar equilibrar frescor e carga na origem.
+      resource: rfc-9111-http-caching
+    - title: Cache de aplicação (Redis) e cache stampede
+      why: Quando o banco virar gargalo e você colocar um cache na frente dele.
