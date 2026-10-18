@@ -59,6 +59,24 @@
     - Conversões feitas à mão com a conferência na máquina.
     - Dump do experimento com cada leitura anotada.
   firstAction: Escreva 42 em binário à mão e confira com `echo 'obase=2; 42' | bc`.
+  essentials:
+    - "Cada dígito hex são exatamente 4 bits e um byte são 2 dígitos hex (`0xff` = 255): converta binário↔hex agrupando de 4 em 4."
+    - "Memorize potências de 2 até 2¹⁶ (256, 1024, 4096, 65536) e que n bits representam 2ⁿ valores, de 0 a 2ⁿ − 1."
+    - "Inspecione bytes com `xxd arquivo` ou `od -An -tx1`; converta no terminal com `printf '%x\\n' 255` e `echo 'obase=2; 42' | bc`."
+    - "Reconheça bytes comuns em dumps: `0a` = `\\n`, `20` = espaço, `30`–`39` = dígitos, `41`–`5a` = A–Z, `61`–`7a` = a–z."
+    - "Bits não têm significado próprio: antes de interpretar um dump, pergunte qual tipo, formato ou protocolo define aqueles bytes."
+  deepDive:
+    - title: Operações bitwise, máscaras e flags
+      why: Quando for ler código de sistemas, protocolos de rede ou permissões que guardam várias opções num único inteiro.
+      resource: csapp
+    - title: Endianness (little vs big endian)
+      why: Ao ler inteiros de multi-byte num dump de memória, num arquivo binário ou num pacote de rede.
+      resource: csapp
+    - title: Base64 e outras codificações binário→texto
+      why: Ao lidar com JWTs, anexos de e-mail, data URLs ou chaves em arquivos de configuração.
+    - title: Do transistor à porta lógica
+      why: Se quiser entender como os bits viram circuitos e uma CPU de verdade.
+      resource: nand2tetris
 
 - id: integer-representation-overflow
   stage: s02-data-machine
@@ -119,6 +137,24 @@
     - Programa e saída da tabela de overflow.
     - Função vulnerável, entradas que a quebram e a versão corrigida.
   firstAction: Escreva à mão o byte que representa −1 em complemento de dois.
+  essentials:
+    - "Com n bits: unsigned vai de 0 a 2ⁿ − 1; signed (complemento de dois) de −2ⁿ⁻¹ a 2ⁿ⁻¹ − 1. Saiba os limites de 32 bits (~2,1 bilhões)."
+    - "Em complemento de dois, −1 é todos os bits ligados; para negar, inverta os bits e some 1."
+    - "Verifique antes de calcular: `if (count > SIZE_MAX / size)` antes de `count * size`; em Java use `Math.addExact`/`multiplyExact`."
+    - "Em C, unsigned dá a volta (definido) e signed é undefined behavior; compile com `-Wall -Wextra -fsanitize=undefined` nos testes."
+    - "Use tipos de largura explícita (`int32_t`, `uint64_t`, `size_t` para tamanhos) e `bigint`/`long` para IDs e contadores que crescem."
+  deepDive:
+    - title: Integer promotions e conversões aritméticas usuais em C
+      why: Quando comparações entre signed e unsigned ou contas com `char` e `short` derem resultados inesperados.
+      resource: cppreference-c
+    - title: Integer overflow como vulnerabilidade
+      why: Ao revisar código que calcula tamanhos de buffer, offsets ou quantidades vindas do usuário.
+      resource: cert-c
+    - title: Builtins de aritmética verificada (__builtin_mul_overflow)
+      why: Quando precisar de checagem de overflow eficiente e portável em código C crítico.
+    - title: Inteiros de precisão arbitrária (BigInteger, numeric)
+      why: Em criptografia, finanças ou qualquer conta que não cabe em 64 bits.
+      resource: postgres-numeric-types
 
 - id: text-encoding
   stage: s02-data-machine
@@ -180,6 +216,25 @@
     - Dumps anotados de "ação" nas duas formas.
     - Passo a passo do mojibake e da correção.
   firstAction: Rode `printf 'ç' | xxd` e anote quantos bytes aparecem.
+  essentials:
+    - "Separe três coisas: caractere (o que se vê), code point (U+00E3) e bytes (`c3 a3` em UTF-8). Em C, `strlen` conta bytes."
+    - "Use UTF-8 em tudo e declare explicitamente: arquivos, `Content-Type: text/html; charset=utf-8`, banco (`ENCODING 'UTF8'`) e conexões."
+    - "Diagnostique com `xxd` ou `file -i`: `Ã£`, `Ã§` no lugar de ã e ç indica bytes UTF-8 lidos como Latin-1 (mojibake)."
+    - "Converta encodings com `iconv -f latin1 -t utf-8` só quando souber a origem; conversão dupla corrompe ainda mais."
+    - "Valide limites de tamanho dizendo o que conta (bytes, code points ou caracteres) e use a função certa da linguagem para isso."
+  deepDive:
+    - title: Normalização Unicode (NFC/NFD)
+      why: Quando comparar, buscar ou usar como chave textos que podem vir com acentos combinantes, como nomes de arquivo no macOS.
+      resource: unicode-uax15-normalization
+    - title: Grapheme clusters e emojis
+      why: Ao contar ou cortar texto para a interface (limites de caracteres, cursor), onde um emoji pode ter vários code points.
+      resource: unicode-uax29-text-segmentation
+    - title: UTF-16 e surrogate pairs em Java e JavaScript
+      why: Quando `length` de uma string em Java ou JS não bater com o número de caracteres visíveis.
+      resource: utf8-everywhere
+    - title: Riscos de segurança com Unicode (homoglyphs, validação de entrada)
+      why: Ao validar nomes de usuário, domínios ou entradas que passam por filtros de segurança.
+      resource: owasp-input-validation-cheatsheet
 
 - id: floating-point
   stage: s02-data-machine
@@ -242,6 +297,25 @@
     - Programa e saídas da soma de 0.1 com float e double.
     - Resultado do experimento de potências de 2 com explicação.
   firstAction: Abra `python3` ou `node` e rode `0.1 + 0.2`. Anote o resultado.
+  essentials:
+    - "0.1 não é exato em binário: nunca compare floats com `==`; use tolerância (`fabs(a - b) < eps`, relativa para valores grandes)."
+    - "Dinheiro e quantidades exatas: inteiros de centavos ou decimal (`numeric` no PostgreSQL, `BigDecimal` em Java), nunca `double`."
+    - "Use `double` por padrão em vez de `float`; precisão de ~15–17 dígitos é relativa ao tamanho do número."
+    - "Ao depurar contas que não fecham, imprima com precisão total (`%.17g` em C, `repr()` em Python)."
+    - "NaN é diferente de tudo, inclusive de si mesmo: teste com `isnan()`/`Double.isNaN()`; divisão por zero em float gera `inf`, não erro."
+  deepDive:
+    - title: Kahan summation e erro acumulado
+      why: Quando somar milhões de valores (estatística, ML, simulação) e o erro acumulado importar.
+      resource: goldberg-fp
+    - title: Layout IEEE 754, denormais e modos de arredondamento
+      why: Em código numérico de alto desempenho ou ao interpretar resultados estranhos perto de zero.
+      resource: goldberg-fp
+    - title: ULPs e comparação robusta de floats
+      why: Ao escrever testes automatizados de código numérico que precisam ser estáveis em várias plataformas.
+      resource: floating-point-gui
+    - title: Escolha de tipos numéricos no banco
+      why: Ao modelar tabelas com valores monetários, medições e escalas de precisão.
+      resource: postgres-numeric-types
 
 - id: cpu-memory-caches
   stage: s02-data-machine
@@ -302,3 +376,25 @@
     - Código, comandos de compilação e tabela de tempos.
     - Gráfico ou tabela do experimento de tamanhos com a saída de `lscpu`.
   firstAction: Rode `lscpu | grep -i cache` e anote os tamanhos de L1, L2 e L3.
+  essentials:
+    - "Acesso sequencial e contíguo é rápido; saltos pela memória são lentos. Prefira arrays a listas ligadas para percorrer muitos dados."
+    - "O cache traz blocos de 64 bytes (cache lines): use dados vizinhos (localidade espacial) e reuse dados recentes (localidade temporal)."
+    - "Matrizes em C são row-major: o laço interno deve variar o último índice (`m[i][j]` com `j` por dentro)."
+    - "Benchmark sério: compile com `-O2`, rode várias vezes, reporte mediana e variação, e confira que o compilador não eliminou o laço."
+    - "Ordens de grandeza para decidir: L1 ~1 ns, RAM ~100 ns, SSD ~100 µs, rede entre datacenters em ms. Consulte `lscpu` para os caches da sua máquina."
+  deepDive:
+    - title: Medir cache misses com perf
+      why: Quando precisar provar que um gargalo é de memória e não de CPU, em vez de adivinhar.
+      resource: brendan-gregg-perf
+    - title: False sharing e coerência de cache entre núcleos
+      why: Ao escrever código multithread em que contadores vizinhos de threads diferentes derrubam o desempenho.
+      resource: scott-meyers-cpu-caches-why-you-care
+    - title: TLB e memória virtual
+      why: Ao estudar memória virtual ou otimizar programas que tocam muita memória espalhada.
+      resource: ostep-tlbs
+    - title: Data-oriented design
+      why: Em jogos, motores de busca ou processamento de dados em que o layout das structs domina o tempo.
+      resource: mike-acton-data-oriented-design-cppcon-2014
+    - title: Pipeline, branch prediction e execução fora de ordem
+      why: Quando quiser entender microbenchmarks que contrariam a intuição ou ler assembly otimizado.
+      resource: csapp
