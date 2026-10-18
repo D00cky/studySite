@@ -68,12 +68,19 @@
     - Tabela n × ops × razão e a prova por indução da soma triangular.
     - Gráfico de tempo por elemento com anotações dos níveis de cache e a saída do perf stat.
   firstAction: Escreva no papel quantas vezes `for (i = 1; i < n; i *= 2)` executa para n = 16 e n = 1000.
-  essentials:
-    - "Ao ler um laço, pergunte quantas vezes o corpo roda em função de `n`: laços aninhados multiplicam, laço que divide por 2 dá `log n`."
-    - "Tenha a escala de bolso: `O(1)` < `O(log n)` < `O(n)` < `O(n log n)` < `O(n²)`; com n = 1e6, n² já são 1e12 operações, inviável."
-    - "Confirme a hipótese medindo: dobre `n`, repita, use a mediana e olhe `T(2n)/T(n)` (≈2 linear, ≈4 quadrático); um ponto só não mostra crescimento."
-    - "Cace o O(n²) escondido: busca linear ou `contains` dentro de laço, uma query por item (N+1) e concatenação de string em loop."
-    - "Em n real, constantes e cache contam: acesso sequencial vence saltos aleatórios mesmo com o mesmo O."
+  kit:
+    - term: "Big-O: O(1), O(log n), O(n), O(n log n), O(n²)"
+      use: "Comparar soluções e prever se ainda cabem com n = 1e6 (n² já são 1e12 operações)."
+    - term: "laços aninhados multiplicam; i *= 2 dá log n"
+      use: "Contar quantas vezes o corpo roda em função de n só lendo o código."
+    - term: "T(2n)/T(n)"
+      use: "Confirmar a ordem medindo vários tamanhos com mediana: razão ≈2 indica linear, ≈4 quadrático."
+    - term: "clock_gettime(CLOCK_MONOTONIC, &t)"
+      use: "Medir o tempo de um trecho em C sem sofrer com ajustes do relógio do sistema."
+    - term: "perf stat -e cache-misses,instructions,cycles ./prog"
+      use: "Descobrir se a diferença de tempo entre dois algoritmos de mesmo O vem de cache misses."
+    - term: "contains / query dentro de laço"
+      use: "Caçar o O(n²) escondido: busca linear, `contains` ou uma query por item (N+1) dentro de um laço."
   deepDive:
     - title: Recorrências e Master Theorem
       why: Quando precisar estimar algoritmos de divisão e conquista (merge sort, busca binária, árvores) sem depender só de medição.
@@ -157,12 +164,17 @@
     - Código da busca com o invariante e a saída do teste aleatório pegando o bug introduzido.
     - Tabela/gráfico da corrida de ordenações com uma frase explicando cada anomalia.
   firstAction: Escreva num comentário o invariante "se x existe, está em a[lo..hi)" e desenhe lo e hi num array de 5 elementos.
-  essentials:
-    - "No dia a dia, use a ordenação e a busca da biblioteca (`qsort`/`bsearch`, `Arrays.sort`, `Collections.binarySearch`); escreva a sua para aprender ou para variantes como `lower_bound`."
-    - "Ao escrever busca binária, fixe o intervalo semiaberto `[lo, hi)` e o invariante antes do código, e calcule `mid = lo + (hi - lo) / 2`."
-    - "Teste busca e ordenação contra uma versão ingênua (linear, insertion sort) com milhares de entradas aleatórias pequenas e com valores repetidos."
-    - "Ordenando por várias chaves, use ordenação estável (merge sort/Timsort, `List.sort` em Java) ou um comparador composto."
-    - "Busca binária só vale em dados ordenados; para uma busca única, a busca linear sai mais barata que ordenar antes."
+  kit:
+    - term: "qsort / bsearch, Arrays.sort / Collections.binarySearch"
+      use: "Ordenar e buscar no dia a dia com a biblioteca, que já é testada e otimizada."
+    - term: "lo = 0, hi = n; mid = lo + (hi - lo) / 2"
+      use: "Escrever busca binária no intervalo semiaberto [lo, hi) sem overflow nem laço infinito; pare quando lo == hi."
+    - term: "invariante: se x existe, está em a[lo..hi)"
+      use: "Fixar antes do código o que cada passo preserva; é isso que garante término e resposta certa."
+    - term: "teste aleatório contra busca linear / insertion sort"
+      use: "Comparar sua versão com uma ingênua em milhares de entradas pequenas com valores repetidos."
+    - term: "Comparator.comparing(a).thenComparing(b)"
+      use: "Ordenar por várias chaves num só passo; `List.sort` é estável e mantém empates na ordem original."
   deepDive:
     - title: Partição de 3 vias, pivô aleatório e introsort
       why: Quando os dados têm muitas chaves repetidas ou você precisa de garantia de pior caso numa ordenação própria.
@@ -247,12 +259,19 @@
     - Prova escrita do método do banqueiro e saída do contador de cópias.
     - Gráfico de latência por push e o relatório do ASan anotado.
   firstAction: Some à mão 1 + 2 + 4 + ... + 512 e compare com 1024; escreva o que isso diz sobre o total de cópias.
-  essentials:
-    - "Cresça multiplicando (×2 ou ×1,5), nunca somando uma constante; só o crescimento geométrico dá `push` O(1) amortizado."
-    - "Em C, faça `tmp = realloc(p, n)` e, se `tmp == NULL`, o bloco antigo ainda é seu; não guarde ponteiros para elementos através de um push que pode realocar."
-    - "Sabe o tamanho final? Pré-aloque (`new ArrayList<>(n)`, `ensureCapacity`) e evite cópias e picos de latência."
-    - "Amortizado não vale por operação: o push que dispara resize custa O(n); em caminhos com requisito de p99, pré-aloque."
-    - "Inserir ou remover no meio desloca elementos (O(n)); para remover sem manter ordem, troque com o último e faça pop."
+  kit:
+    - term: "struct vec { int *data; size_t len, cap; }"
+      use: "Guardar o essencial de um vetor: ponteiro para o bloco, quantos estão em uso e quantos cabem."
+    - term: "cap *= 2 (ou cap += cap / 2)"
+      use: "Crescer de forma geométrica para `push` ser O(1) amortizado; nunca some uma constante."
+    - term: "tmp = realloc(p, cap * sizeof *p); if (!tmp) ..."
+      use: "Crescer o bloco em C sem perder o original se falhar; o endereço pode mudar, então não guarde ponteiros antigos."
+    - term: "new ArrayList<>(n) / ensureCapacity(n)"
+      use: "Pré-alocar quando sabe o tamanho e evitar cópias e picos de latência no resize."
+    - term: "a[i] = a[--len]"
+      use: "Remover em O(1) quando a ordem não importa, trocando pelo último em vez de deslocar."
+    - term: "-fsanitize=address"
+      use: "Pegar o uso de ponteiro para um elemento depois de um realloc que moveu o bloco."
   deepDive:
     - title: Método do potencial
       why: Quando precisar provar custos amortizados de estruturas mais complexas que o vetor (tabelas que crescem e encolhem, filas com duas pilhas).
@@ -334,12 +353,19 @@
     - Código do verificador de invariantes e saída do teste aleatório.
     - Tabela/gráfico da comparação com o trecho do perf stat.
   firstAction: Desenhe três caixas ligadas por setas e escreva a ordem exata das atribuições para inserir uma quarta no meio sem perder nenhuma.
-  essentials:
-    - "Por padrão, use array dinâmico; escolha lista só quando já tem o ponteiro do nó e precisa inserir ou remover no meio em O(1) (LRU, listas intrusivas)."
-    - "Ao liberar, guarde `next` antes do `free(p)`; ao religar, ligue o nó novo antes de soltar os ponteiros antigos."
-    - "Use nó sentinela ou `node **pp` para eliminar os casos especiais de lista vazia e de inserção na cabeça."
-    - "Escreva um `check_invariants` (chega ao fim em `len` passos, `n->next->prev == n`) e rode os testes com ASan ou Valgrind."
-    - "Em Java, prefira `ArrayList` ou `ArrayDeque` a `LinkedList`: a lista ligada perde em memória e em cache em quase todo uso."
+  kit:
+    - term: "struct node { int val; struct node *next, *prev; }"
+      use: "Representar o nó; cada um é alocado à parte e ligado pelos ponteiros."
+    - term: "next = p->next; free(p); p = next;"
+      use: "Liberar a lista sem ler memória já liberada (use-after-free)."
+    - term: "node **pp = &head"
+      use: "Inserir ou remover sem caso especial para a cabeça; um nó sentinela resolve o mesmo."
+    - term: "check_invariants: fim em len passos, n->next->prev == n"
+      use: "Rodar após cada operação nos testes para pegar uma religação errada na hora."
+    - term: "valgrind --leak-check=full ./prog"
+      use: "Achar use-after-free e nós vazados com a linha exata do erro."
+    - term: "ArrayList / ArrayDeque em vez de LinkedList"
+      use: "Ficar com estruturas contíguas por padrão; lista só quando já tem o nó e precisa inserir ou remover no meio."
   deepDive:
     - title: Listas intrusivas e container_of
       why: Quando ler código do kernel Linux ou escrever alocadores e escalonadores que evitam uma alocação por elemento.
@@ -420,12 +446,19 @@
     - Tabela de head/tail prevista no papel ao lado da saída do programa.
     - Trecho do strace do pipe e a tabela da simulação de fila de jobs.
   firstAction: Desenhe um array de 4 posições em círculo e marque head e tail após três enqueues e um dequeue.
-  essentials:
-    - "Em Java, use `ArrayDeque` como pilha e como fila (não `Stack` nem `LinkedList`); em C, pilha sobre vetor e fila em buffer circular."
-    - "No buffer circular, distinga cheio de vazio com `count` (ou uma posição livre) e avance índices com `% cap`, ou `& (cap - 1)` se cap for potência de 2."
-    - "Toda fila entre produtor e consumidor precisa de limite e de política explícita quando enche: bloquear, descartar ou devolver erro (backpressure)."
-    - "Recursão com profundidade que depende da entrada (árvore degenerada, DFS) pode estourar a call stack; use pilha explícita."
-    - "Ao crescer um buffer circular, copie na ordem lógica a partir de `head`, nunca o bloco cru."
+  kit:
+    - term: "ArrayDeque: push/pop (pilha), offer/poll (fila)"
+      use: "Usar uma só classe em Java para pilha e fila, no lugar de `Stack` e `LinkedList`."
+    - term: "data[top++] = x;  x = data[--top];"
+      use: "Implementar pilha em C sobre um vetor dinâmico."
+    - term: "tail = (tail + 1) % cap"
+      use: "Avançar os índices do buffer circular; com cap potência de 2, use `& (cap - 1)`."
+    - term: "count == 0 (vazia) / count == cap (cheia)"
+      use: "Distinguir cheio de vazio no buffer circular, já que ambos têm head == tail."
+    - term: "fila limitada: bloquear, descartar ou erro"
+      use: "Definir o que acontece quando a fila enche (backpressure) em vez de crescer até faltar memória."
+    - term: "gdb: bt"
+      use: "Ver a call stack como pilha de frames e descobrir onde a recursão ficou profunda demais."
   deepDive:
     - title: Filas entre threads (mutex + condition variable)
       why: Na etapa de concorrência, quando produtor e consumidor rodarem em threads diferentes e a fila precisar bloquear com segurança.

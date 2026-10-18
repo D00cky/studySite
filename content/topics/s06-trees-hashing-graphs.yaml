@@ -69,12 +69,19 @@
     - Código do validador e a prova escrita do percurso em ordem.
     - Tabela de alturas e o backtrace do stack overflow anotado.
   firstAction: Desenhe a BST resultante de inserir 5, 3, 8, 1, 4 e depois a de inserir 1, 3, 4, 5, 8. Compare as alturas.
-  essentials:
-    - "Precisa de ordem (intervalo, min/max, sucessor, iteração ordenada)? Use árvore balanceada da biblioteca (`TreeMap`/`TreeSet`); só busca por chave exata? Use hash."
-    - "O custo é O(altura): uma BST ingênua com chaves sequenciais (IDs, timestamps) vira lista; em produção use sempre uma versão balanceada."
-    - "Valide uma BST passando limites min/max na recursão, não comparando só o pai com os filhos."
-    - "Na remoção com dois filhos, troque pela chave do sucessor (o menor da subárvore direita) e remova o sucessor."
-    - "Índices de banco são B-trees: servem `=`, `<`, `BETWEEN` e `ORDER BY` na ordem das colunas; pense em árvore ordenada ao criar um índice."
+  kit:
+    - term: "TreeMap / TreeSet"
+      use: "Guardar chaves ordenadas com busca, inserção e remoção em O(log n) garantido (árvore rubro-negra)."
+    - term: "subMap(a, b) / floorKey / ceilingKey / firstKey"
+      use: "Fazer consultas de intervalo, vizinho mais próximo e mínimo, que um HashMap não faz."
+    - term: "esquerda < nó < direita; custo O(altura)"
+      use: "Lembrar que chaves inseridas em ordem (IDs, timestamps) degeneram uma BST ingênua em lista."
+    - term: "is_bst(node, min, max)"
+      use: "Validar o invariante na subárvore inteira passando limites na recursão."
+    - term: "remover com dois filhos: sucessor = menor da direita"
+      use: "Trocar a chave pela do sucessor e remover o sucessor, que tem no máximo um filho."
+    - term: "CREATE INDEX ... ON tarefas (prazo)"
+      use: "Criar um índice B-tree que serve `=`, `<`, `BETWEEN` e `ORDER BY` nessa coluna."
   deepDive:
     - title: Árvores rubro-negras e AVL
       why: Quando ler a implementação de `TreeMap` ou do kernel, ou precisar implementar uma estrutura ordenada com garantia de O(log n).
@@ -161,12 +168,19 @@
     - Histogramas e a tabela simulação versus fórmula.
     - Gráfico de custo por α e saída do perf stat comparando as duas estratégias.
   firstAction: Calcule hash = soma dos bytes para "abc" e "cba" e explique o que isso significa para ids de tarefa.
-  essentials:
-    - "Use o mapa da linguagem (`HashMap`, `Map` em JS); implemente o seu para aprender ou por requisito muito específico."
-    - "Em Java, `equals` e `hashCode` andam juntos: chaves iguais precisam do mesmo hash, e nunca mude campos de uma chave já inserida."
-    - "Espere colisões cedo (paradoxo do aniversário): o custo depende do fator de carga e da qualidade do hash, não do tamanho da tabela."
-    - "Hash não guarda ordem: para intervalos e iteração ordenada use árvore; para ordem de inserção, `LinkedHashMap`."
-    - "Chaves controladas pelo usuário? Limite quantas chaves cada requisição cria e use hash com semente (SipHash) contra hash flooding."
+  kit:
+    - term: "HashMap / HashSet (Java), Map / Set (JS)"
+      use: "Buscar, inserir e remover por chave exata em O(1) esperado."
+    - term: "equals + hashCode (ou record)"
+      use: "Definir chaves próprias em Java: iguais precisam do mesmo hash; não mude campos de uma chave já inserida."
+    - term: "i = hash(chave) % m; α = n / m"
+      use: "Raciocinar sobre o custo: mais chaves por bucket (fator de carga) significa buscas mais lentas."
+    - term: "resize: dobrar m e reinserir tudo"
+      use: "Manter α abaixo de ~0,75; copiar os buckets sem reinserir deixa chaves no bucket errado."
+    - term: "FNV-1a / SipHash com semente"
+      use: "Espalhar bem as chaves; a semente aleatória protege contra hash flooding com chaves vindas do usuário."
+    - term: "LinkedHashMap / TreeMap"
+      use: "Iterar em ordem de inserção ou em ordem de chave, coisa que o HashMap não garante."
   deepDive:
     - title: Endereçamento aberto moderno (Swiss Tables, Robin Hood)
       why: Quando a tabela hash virar gargalo de CPU e a localidade de cache das sondagens fizer diferença.
@@ -249,12 +263,19 @@
     - Arrays previstos e impressos para a sequência de inserções e o contador de trocas.
     - Tabela do top-k e da comparação heapsort/merge sort/qsort com cache-misses.
   firstAction: Desenhe o array [1, 3, 2, 5, 9, 8] como árvore usando filhos 2i+1 e 2i+2 e confira a propriedade de heap.
-  essentials:
-    - "Para sempre pegar o próximo mais urgente (timers, jobs, top-k), use fila de prioridade: `PriorityQueue` em Java, heap em array em C."
-    - "No heap em array, filhos ficam em `2i+1` e `2i+2` e o pai em `(i-1)/2`; insert faz sift-up e extract faz sift-down, ambos O(log n)."
-    - "Heap não é ordenado nem estável: desempate com número de sequência na chave e não espere achar um elemento arbitrário rápido."
-    - "Top-k de um fluxo: mantenha um min-heap de tamanho k (O(n log k), memória O(k)) em vez de ordenar tudo."
-    - "Com todos os n elementos de uma vez, use heapify bottom-up (O(n)) em vez de n inserções."
+  kit:
+    - term: "new PriorityQueue<>(comparator); offer / poll"
+      use: "Pegar sempre o próximo mais urgente (jobs, timers) em Java, com O(log n) por operação."
+    - term: "filhos 2i+1 e 2i+2, pai (i-1)/2"
+      use: "Navegar o heap guardado num array, sem ponteiros."
+    - term: "sift-up no insert, sift-down no extract"
+      use: "Restaurar a propriedade de heap trocando com o pai ou com o menor filho."
+    - term: "chave (prioridade, seq)"
+      use: "Desempatar por ordem de chegada, já que heap não é estável."
+    - term: "top-k: min-heap de tamanho k"
+      use: "Achar os k maiores de um fluxo em O(n log k) com memória O(k), sem ordenar tudo."
+    - term: "heapify bottom-up"
+      use: "Construir o heap com n elementos de uma vez em O(n), em vez de n inserções."
   deepDive:
     - title: Fila de prioridade indexada e decrease-key
       why: Quando implementar Dijkstra ou A* e precisar atualizar a prioridade de um item que já está no heap.
@@ -337,12 +358,19 @@
     - Desenho do grafo com o traço à mão ao lado da saída do programa.
     - Saída da BFS no grafo de pacotes e o backtrace do stack overflow da DFS recursiva.
   firstAction: Desenhe um grafo com 5 vértices e 6 arestas e escreva suas listas de adjacência.
-  essentials:
-    - "Modele primeiro: o que são vértices, o que são arestas, se é dirigido e se tem peso; escreva isso antes do código."
-    - "Use listas de adjacência por padrão (com um mapa id → índice para ids textuais); matriz só para grafos pequenos e densos."
-    - "Marque visitado ao enfileirar ou empilhar; sem isso, um ciclo trava a travessia."
-    - "Menor número de arestas: BFS com fila e `parent[]` para reconstruir o caminho; com pesos não negativos, Dijkstra."
-    - "Alcançabilidade, componentes e ciclos: DFS, iterativa com pilha explícita quando o grafo pode ser profundo."
+  kit:
+    - term: "vértice? aresta? dirigido? peso?"
+      use: "Modelar o problema antes do código; a resposta decide representação e algoritmo."
+    - term: "List<List<Integer>> adj + Map<String, Integer> id"
+      use: "Representar grafo esparso com listas de adjacência e mapear ids textuais para índices."
+    - term: "BFS: fila + visited + dist[] + parent[]"
+      use: "Achar o caminho com menos arestas e reconstruí-lo seguindo parent."
+    - term: "DFS: pilha explícita + visited"
+      use: "Testar alcançabilidade, componentes e ciclos sem estourar a call stack em grafos profundos."
+    - term: "marcar visitado ao enfileirar/empilhar"
+      use: "Evitar laço infinito em ciclos e visitas repetidas."
+    - term: "Dijkstra (fila de prioridade)"
+      use: "Achar o caminho mínimo quando as arestas têm peso não negativo."
   deepDive:
     - title: Dijkstra, A* e Bellman-Ford
       why: Quando as arestas tiverem custo (rotas, latência de rede) ou houver pesos negativos.
@@ -425,12 +453,19 @@
     - Ordem gerada, ondas de paralelismo e o ciclo detectado.
     - Trechos de make -d e o Makefile com a dependência circular anotados.
   firstAction: Escreva em 5 linhas "X precisa de Y" para sua rotina de manhã e desenhe as setas.
-  essentials:
-    - "Modele \"A precisa de B\" como aresta `B → A`; ordem topológica só existe se o grafo for um DAG."
-    - "Use Kahn (graus de entrada + fila): ele dá a ordem, detecta ciclo (sobram vértices) e mostra ondas que podem rodar em paralelo."
-    - "Ao detectar ciclo, reporte os vértices envolvidos; só dizer que existe um ciclo não ajuda ninguém a corrigir."
-    - "Se o resultado muda conforme a ordem válida escolhida (ex.: `make -j`), há dependência não declarada: declare-a."
-    - "Valide qualquer ordem com um `check_order` que confere se toda aresta aponta para frente."
+  kit:
+    - term: "\"A precisa de B\" → aresta B → A"
+      use: "Modelar dependências como grafo dirigido; ordem topológica só existe se for um DAG."
+    - term: "Kahn: indegree[] + fila dos que têm grau 0"
+      use: "Gerar a ordem, ver as ondas paralelizáveis e detectar ciclo quando sobram vértices."
+    - term: "DFS de 3 cores (branco, cinza, preto)"
+      use: "Detectar ciclo pela aresta que volta a um vértice cinza e imprimir os vértices envolvidos."
+    - term: "check_order(ordem, arestas)"
+      use: "Validar que toda aresta aponta para frente na ordem gerada."
+    - term: "tsort pares.txt"
+      use: "Conferir uma ordem topológica, e a detecção de ciclo, direto na linha de comando."
+    - term: "make -n / make -d"
+      use: "Ver em que ordem o make considera e refaz alvos a partir do grafo do Makefile."
   deepDive:
     - title: Componentes fortemente conexos para quebrar ciclos
       why: Quando um grafo grande de módulos ou pacotes tiver vários ciclos e você precisar achar todos de uma vez.
