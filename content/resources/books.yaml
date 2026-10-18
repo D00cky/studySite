@@ -1,0 +1,1331 @@
+# Livros de referência (format: book) para consulta durante as lições.
+#
+# Regras seguidas:
+# - Só URLs oficiais: editora (internacional ou brasileira), site do autor, site oficial do livro
+#   ou versão gratuita publicada pelo próprio autor/editora. Nada de PDFs não autorizados.
+# - section só com o título de capítulo visto no sumário oficial (página da editora, do autor
+#   ou do companion site). Livros sem sumário verificado ficam sem section.
+# - Pagos: access paid. Consulte a disponibilidade na biblioteca da sua instituição.
+# - Já existem em content/resources.yaml (não duplicados aqui): csapp, ostep, open-data-structures,
+#   crafting-interpreters, pro-git-ptbr, ddia (1ª ed.), sre-book, engsoftmoderna-*, algs4-* (1.4, 2.4, 3.4, 4.1, 4.2).
+#
+# Verificação: 2026-10-18 (curl, HTTP 200 + título/sumário conferidos na página).
+
+# --- Redes: Kurose & Ross ---------------------------------------------------------
+
+- id: kurose-ross-computer-networking-9e
+  title: "Computer Networking: A Top-Down Approach (9ª edição)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://www.pearson.com/en-us/subject-catalog/p/computer-networking-a-top-down-approach/P200000013385/9780135415603
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts, timeouts-caching]
+  why: O livro-texto de redes mais usado em cursos introdutórios, organizado de cima para baixo (aplicação → transporte → rede → enlace). Leia o capítulo correspondente depois da lição para consolidar. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Pearson com sumário completo da 9ª edição (© 2026)." }
+
+- id: kurose-ross-redes-8ed-ptbr
+  title: "Redes de Computadores e a Internet: uma abordagem top-down (8ª edição)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://loja.grupoa.com.br/redes-de-computadores-e-a-internet-p1017629
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts, timeouts-caching]
+  why: Edição em português (coedição Bookman/Pearson, 2021, ISBN 9788582605585) do clássico de redes; capítulos 2 (Camada de aplicação), 3 (Camada de transporte) e 8 (Segurança em redes de computadores) cobrem a etapa de redes. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página do Grupo A com sumário (8 capítulos) e link para o site de apoio dos autores." }
+
+- id: kurose-ross-companion-site
+  title: "Computer Networking: a Top Down Approach — site dos autores (videoaulas, slides, problemas interativos, Wireshark labs)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://gaia.cs.umass.edu/kurose_ross/index.php
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts, timeouts-caching]
+  why: Material gratuito publicado pelos próprios autores para acompanhar o livro — videoaulas por seção, slides PowerPoint, knowledge checks, problemas interativos e Wireshark labs. Use mesmo sem ter o livro.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kurose-ross-cap2-camada-aplicacao
+  title: "Kurose & Ross — Capítulo 2: Application Layer (videoaulas e slides do capítulo)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://gaia.cs.umass.edu/kurose_ross/videos/2/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, http-protocol, tcp-udp-sockets, timeouts-caching]
+  section: "Chapter 2: Application Layer (2.2 The Web and HTTP; 2.4 DNS: The Internet’s Directory Service; 2.6 Socket Programming: Creating Network Applications)"
+  why: HTTP, caches Web, DNS e programação com sockets na visão de quem usa a rede. A página dos autores tem vídeo, slides e problemas por seção (grátis); o texto do capítulo está no livro (pago).
+  access: mixed
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos das seções conferidos no sumário da Pearson (9ª ed.); videoaulas foram gravadas com base na 8ª ed." }
+
+- id: kurose-ross-cap3-camada-transporte
+  title: "Kurose & Ross — Capítulo 3: Transport Layer (videoaulas e slides do capítulo)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://gaia.cs.umass.edu/kurose_ross/videos/3/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets, timeouts-caching]
+  section: "Chapter 3: Transport Layer (3.3 Connectionless Transport: UDP; 3.4 Principles of Reliable Data Transfer; 3.5 Connection-Oriented Transport: TCP)"
+  why: Explica por que o TCP precisa de números de sequência, ACKs e timeouts, e como UDP difere. Leia depois da lição de TCP/UDP para entender retransmissão e controle de congestionamento.
+  access: mixed
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos das seções conferidos no sumário da Pearson (9ª ed.)." }
+
+- id: kurose-ross-cap4-camada-rede-dados
+  title: "Kurose & Ross — Capítulo 4: The Network Layer: Data Plane (videoaulas e slides do capítulo)"
+  author: James F. Kurose e Keith W. Ross
+  url: https://gaia.cs.umass.edu/kurose_ross/videos/4/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip]
+  section: "Chapter 4: The Network Layer: Data Plane (4.3 The Internet Protocol (IP): IPv4, Addressing, IPv6, and More)"
+  why: Endereçamento IP, sub-redes, NAT e IPv6 — o que acontece abaixo do DNS quando um pacote sai da sua máquina.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Títulos conferidos no sumário da Pearson (9ª ed.)." }
+
+- id: kurose-ross-cap8-seguranca
+  title: "Kurose & Ross — Capítulo 8: Security in Computer Networks"
+  author: James F. Kurose e Keith W. Ross
+  url: https://www.pearson.com/en-us/subject-catalog/p/computer-networking-a-top-down-approach/P200000013385/9780135415603
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tls-concepts]
+  section: "8: Security in Computer Networks (8.2 Principles of Cryptography; 8.3 Message Integrity and Digital Signatures; 8.6 Securing TCP and HTTP Connections: TLS)"
+  why: Criptografia simétrica e de chave pública, assinaturas e o handshake TLS explicados passo a passo; bom complemento depois da lição de TLS. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário visto na página da Pearson." }
+
+# --- Redes: Peterson & Davie (gratuito) -------------------------------------------
+
+- id: peterson-davie-systems-approach
+  title: "Computer Networks: A Systems Approach (6ª edição, versão online aberta)"
+  author: Larry Peterson e Bruce Davie
+  url: https://book.systemsapproach.org/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts]
+  why: Livro completo de redes publicado gratuitamente pelos autores, com foco em por que os protocolos foram projetados assim. Alternativa gratuita ao Kurose para consolidar a etapa de redes.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: peterson-davie-cap3-internetworking
+  title: "Computer Networks: A Systems Approach — Chapter 3: Internetworking"
+  author: Larry Peterson e Bruce Davie
+  url: https://book.systemsapproach.org/internetworking.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip]
+  section: "Chapter 3: Internetworking (3.3 Internet (IP); 3.4 Routing)"
+  why: Como o IP interliga redes diferentes, endereçamento e encaminhamento; leia a seção 3.3 depois da lição de IP.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: peterson-davie-cap5-end-to-end
+  title: "Computer Networks: A Systems Approach — Chapter 5: End-to-End Protocols"
+  author: Larry Peterson e Bruce Davie
+  url: https://book.systemsapproach.org/e2e.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets, timeouts-caching]
+  section: "Chapter 5: End-to-End Protocols (5.1 Simple Demultiplexor (UDP); 5.2 Reliable Byte Stream (TCP))"
+  why: UDP e TCP do ponto de vista do projetista — conexão, janela deslizante e estimativa de timeout — grátis e direto.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: peterson-davie-cap8-security
+  title: "Computer Networks: A Systems Approach — Chapter 8: Network Security"
+  author: Larry Peterson e Bruce Davie
+  url: https://book.systemsapproach.org/security.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tls-concepts]
+  section: "Chapter 8: Network Security (8.2 Cryptographic Building Blocks; 8.4 Authentication Protocols; 8.5 Example Systems — 8.5.3 Transport Layer Security (TLS, SSL, HTTPS))"
+  why: Blocos criptográficos e uma descrição do TLS como sistema real; leitura gratuita para depois da lição de TLS.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: peterson-davie-cap9-applications
+  title: "Computer Networks: A Systems Approach — Chapter 9: Applications"
+  author: Larry Peterson e Bruce Davie
+  url: https://book.systemsapproach.org/applications.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [http-protocol, dns-ip]
+  section: "Chapter 9: Applications (9.1.2 World Wide Web (HTTP); 9.3.1 Name Service (DNS))"
+  why: HTTP e DNS como protocolos de aplicação, com o raciocínio de projeto por trás de cada um.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Redes: Tanenbaum -------------------------------------------------------------
+
+- id: tanenbaum-computer-networks-6e
+  title: "Computer Networks (6ª edição)"
+  author: Andrew S. Tanenbaum, Nick Feamster e David J. Wetherall
+  url: https://www.pearson.com/en-us/subject-catalog/p/computer-networks/P200000003188
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts]
+  why: Clássico de redes organizado de baixo para cima (camada física → aplicação); capítulos The Network Layer, The Transport Layer, The Application Layer e Security cobrem a etapa. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Pearson com sumário (© 2022)." }
+
+- id: tanenbaum-redes-de-computadores-6ed-ptbr
+  title: "Redes de Computadores (6ª edição)"
+  author: Andrew S. Tanenbaum, Nick Feamster e David J. Wetherall
+  url: https://loja.grupoa.com.br/redes-de-computadores-6ed-p1017627
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol, tls-concepts]
+  why: Edição em português (Bookman, 2021, ISBN 9788582605608); capítulos 5 (A camada de rede), 6 (A camada de transporte), 7 (A camada de aplicação) e 8 (Segurança de redes). Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário com 9 capítulos visto na página do Grupo A." }
+
+# --- Sistemas operacionais: Tanenbaum ---------------------------------------------
+
+- id: tanenbaum-modern-operating-systems-5e
+  title: "Modern Operating Systems (5ª edição)"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors, signals, filesystems, virtual-memory, threads-basics, race-conditions-synchronization, deadlocks]
+  why: Referência clássica e legível de sistemas operacionais, com estudos de caso de Linux e Windows 11. Leia o capítulo do tópico depois da lição para ver o mecanismo por outro ângulo. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Pearson, 14/10/2022, © 2023; sumário visto na página." }
+
+- id: tanenbaum-sistemas-operacionais-modernos-5ed-ptbr
+  title: "Sistemas Operacionais Modernos (5ª edição)"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://loja.grupoa.com.br/sistemas-operacionais-modernos-5ed-9788582606162-p1021691
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors, signals, filesystems, virtual-memory, threads-basics, race-conditions-synchronization, deadlocks]
+  why: Edição em português (Pearson/Bookman, 2024, ISBN 9788582606162) — boa referência de SO para quem prefere ler em português; capítulos 2 a 6 cobrem processos, memória, arquivos, E/S e impasses. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário com 13 capítulos visto na página do Grupo A." }
+
+- id: tanenbaum-mos-cap2-processes-threads
+  title: "Modern Operating Systems — Capítulo 2: Processes and Threads"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, threads-basics, race-conditions-synchronization]
+  section: "Processes and Threads (cap. 2)"
+  why: Processos, threads, comunicação entre processos e condições de corrida no mesmo capítulo — bom para ligar as etapas de SO e concorrência. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Pearson; número do capítulo conferido no sumário da edição brasileira." }
+
+- id: tanenbaum-mos-cap3-memory-management
+  title: "Modern Operating Systems — Capítulo 3: Memory Management"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  section: "Memory Management (cap. 3)"
+  why: Paginação, TLB, tabelas de páginas e algoritmos de substituição; leia depois da lição de memória virtual. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Pearson; número conferido na edição brasileira." }
+
+- id: tanenbaum-mos-cap4-file-systems
+  title: "Modern Operating Systems — Capítulo 4: File Systems"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [filesystems]
+  section: "File Systems (cap. 4)"
+  why: Arquivos, diretórios, implementação (i-nodes, alocação) e consistência de sistemas de arquivos. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Pearson; número conferido na edição brasileira." }
+
+- id: tanenbaum-mos-cap6-deadlocks
+  title: "Modern Operating Systems — Capítulo 6: Deadlocks"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [deadlocks]
+  section: "Deadlocks (cap. 6)"
+  why: Condições de deadlock, detecção, prevenção e o algoritmo do banqueiro; referência para depois da lição de deadlocks. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Pearson; número conferido na edição brasileira (Impasses)." }
+
+- id: tanenbaum-mos-cap10-unix-linux-android
+  title: "Modern Operating Systems — Capítulo 10: Case Study 1: Unix, Linux, and Android"
+  author: Andrew S. Tanenbaum e Herbert Bos
+  url: https://www.pearson.com/en-us/subject-catalog/p/modern-operating-systems/P200000003295
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors, signals]
+  section: "Case Study 1: Unix, Linux, and Android (cap. 10)"
+  why: Mostra como o Linux implementa processos, chamadas de sistema, sinais e E/S — liga os conceitos às syscalls que você observa com strace. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Pearson; número conferido na edição brasileira." }
+
+# --- Sistemas operacionais: Silberschatz, Galvin, Gagne ---------------------------
+
+- id: silberschatz-os-concepts-10e
+  title: "Operating System Concepts (10ª edição) — site oficial"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, threads-basics, race-conditions-synchronization, deadlocks, bounded-queues, virtual-memory, filesystems]
+  why: O "livro do dinossauro", referência ampla de SO. O site oficial tem sumário, slides, exercícios de prática com soluções e código-fonte grátis; o livro é pago (Wiley). Consulte a disponibilidade na biblioteca da sua instituição.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário em PDF no site oficial conferido." }
+
+- id: silberschatz-fundamentos-so-9ed-ptbr
+  title: "Fundamentos de Sistemas Operacionais (9ª edição)"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.grupogen.com.br/e-book-fundamentos-de-sistemas-operacionais-213186
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, threads-basics, race-conditions-synchronization, deadlocks, virtual-memory, filesystems]
+  why: Edição em português (LTC, 2015, ISBN 9788521630005) — corresponde à 9ª edição, uma atrás da original. Capítulos 3 (Processos), 4 (Threads), 5 (Sincronização de Processos), 7 (Deadlocks) e 9 (Memória Virtual). Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página do e-book no Grupo GEN com sumário." }
+
+- id: silberschatz-osc-cap3-processes
+  title: "Operating System Concepts — Chapter 3: Processes"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  section: Chapter 3 Processes
+  why: Ciclo de vida de processos, PCB, troca de contexto e fork/exec/wait; os slides do capítulo estão grátis no site oficial. Consulte a disponibilidade do livro na biblioteca da sua instituição.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: silberschatz-osc-cap4-threads
+  title: "Operating System Concepts — Chapter 4: Threads & Concurrency"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [threads-basics]
+  section: "Chapter 4 Threads & Concurrency"
+  why: Modelos de threads, Pthreads e Java threads, e problemas de threading — complemento da lição de threads.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: silberschatz-osc-cap6-7-synchronization
+  title: "Operating System Concepts — Chapters 6–7: Synchronization Tools / Synchronization Examples"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  section: "Chapter 6 Synchronization Tools; Chapter 7 Synchronization Examples"
+  why: Seção crítica, mutex, semáforos e monitores (cap. 6) e problemas clássicos como o bounded buffer (cap. 7) — exatamente o produtor-consumidor da etapa de concorrência.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulos vistos no sumário oficial (toc.pdf)." }
+
+- id: silberschatz-osc-cap8-deadlocks
+  title: "Operating System Concepts — Chapter 8: Deadlocks"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [deadlocks]
+  section: Chapter 8 Deadlocks
+  why: Grafo de alocação de recursos, prevenção, evitação e detecção de deadlocks.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: silberschatz-osc-cap10-virtual-memory
+  title: "Operating System Concepts — Chapter 10: Virtual Memory"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  section: Chapter 10 Virtual Memory
+  why: Paginação por demanda, copy-on-write, substituição de páginas e thrashing; leia depois da lição de memória virtual (o cap. 9, Main Memory, traz a base de paginação).
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: silberschatz-osc-cap13-14-file-systems
+  title: "Operating System Concepts — Chapters 13–14: File-System Interface / Implementation"
+  author: Abraham Silberschatz, Peter Baer Galvin e Greg Gagne
+  url: https://www.os-book.com/OS10/index.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [filesystems]
+  section: "Chapter 13 File-System Interface; Chapter 14 File-System Implementation"
+  why: Da interface (arquivos, diretórios, permissões) à implementação (alocação, espaço livre, recuperação).
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulos vistos no sumário oficial (toc.pdf)." }
+
+# --- Bancos de dados: Silberschatz, Korth, Sudarshan ------------------------------
+
+- id: silberschatz-db-concepts-7e
+  title: "Database System Concepts (7ª edição) — site oficial db-book.com"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics, indexes, query-plans, isolation-locks, jdbc-postgresql]
+  why: Referência completa de bancos de dados, do SQL à implementação (índices, otimização, controle de concorrência). O site oficial tem sumário, slides, soluções de exercícios, SQL no navegador e capítulos online grátis; o livro é pago (McGraw-Hill). Consulte a disponibilidade na biblioteca da sua instituição.
+  access: mixed
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário em PDF no site oficial conferido." }
+
+- id: silberschatz-sistema-banco-dados-7ed-ptbr
+  title: "Sistema de Banco de Dados (7ª edição)"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://www.grupogen.com.br/livro-sistema-de-banco-de-dados-abraham-silberschatz-henry-korth-e-s-sudarshan-9788595157330
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics, indexes, query-plans, isolation-locks]
+  why: Edição em português (GEN LTC, 2020, ISBN 9788595157330). Capítulos 3–4 (SQL), 7 (Projeto de banco de dados relacional), 14 (Indexação), 15–16 (Processamento e otimização da consulta), 17 (Transações) e 18 (Controle de concorrência). Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário visto na página do Grupo GEN." }
+
+- id: db-book-cap3-4-sql
+  title: "Database System Concepts — Chapters 3–4: Introduction to SQL / Intermediate SQL"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [joins-aggregation, relational-modeling-constraints]
+  section: "Chapter 3 Introduction to SQL; Chapter 4 Intermediate SQL"
+  why: Consultas, agregação, joins, views e constraints de integridade; o site tem slides e um ambiente para rodar SQL no navegador.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulos vistos no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap5-advanced-sql
+  title: "Database System Concepts — Chapter 5: Advanced SQL"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  section: Chapter 5 Advanced SQL
+  why: Acesso a SQL a partir de uma linguagem de programação (incluindo JDBC) — base conceitual para a lição de JDBC com PostgreSQL.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap6-7-database-design
+  title: "Database System Concepts — Chapters 6–7: E-R Model / Relational Database Design"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [relational-modeling-constraints]
+  section: "Chapter 6 Database Design Using the E-R Model; Chapter 7 Relational Database Design"
+  why: Modelagem E-R e normalização (dependências funcionais, formas normais) para justificar o esquema que você desenha na lição.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulos vistos no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap14-indexing
+  title: "Database System Concepts — Chapter 14: Indexing"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [indexes]
+  section: Chapter 14 Indexing
+  why: Índices ordenados, árvores B+ e hashing do ponto de vista de quem implementa o banco; leia depois da lição de índices.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap15-16-query-processing
+  title: "Database System Concepts — Chapters 15–16: Query Processing / Query Optimization"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [query-plans]
+  section: "Chapter 15 Query Processing; Chapter 16 Query Optimization"
+  why: Como o banco escolhe entre seq scan, index scan e algoritmos de join, e como estima custos — o que está por trás do EXPLAIN.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulos vistos no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap17-transactions
+  title: "Database System Concepts — Chapter 17: Transactions"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [transactions-basics]
+  section: Chapter 17 Transactions
+  why: ACID, escalonamentos, serializabilidade e níveis de isolamento definidos com precisão.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap18-concurrency-control
+  title: "Database System Concepts — Chapter 18: Concurrency Control"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [isolation-locks]
+  section: Chapter 18 Concurrency Control
+  why: Locks, two-phase locking, deadlocks em bancos e MVCC/snapshot isolation — o mecanismo por trás da lição de isolamento.
+  access: mixed
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo visto no sumário oficial (toc.pdf)." }
+
+- id: db-book-cap32-postgresql
+  title: "Database System Concepts — Chapter 32: PostgreSQL (capítulo online gratuito)"
+  author: Abraham Silberschatz, Henry F. Korth e S. Sudarshan
+  url: https://db-book.com/online-chapters-dir/32.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [jdbc-postgresql, query-plans, isolation-locks, indexes]
+  section: "Chapter 32: PostgreSQL"
+  why: Capítulo online publicado gratuitamente pelos autores, sobre como o PostgreSQL implementa armazenamento, índices, planejamento de consultas e controle de concorrência.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Listado na página de capítulos online do site oficial (atualizado em 27/09/2019)." }
+
+# --- Bancos de dados e distribuídos: Kleppmann ------------------------------------
+
+- id: ddia-2e
+  title: "Designing Data-Intensive Applications (2ª edição)"
+  author: Martin Kleppmann e Chris Riccomini
+  url: https://martin.kleppmann.com/2026/03/24/designing-data-intensive-applications-2e.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [indexes, transactions-basics, isolation-locks, consistency-models, queues-delivery-semantics, partial-failure-retries, idempotency]
+  why: Segunda edição (O'Reilly, março de 2026, ISBN 9781098119065) da referência sobre trade-offs de sistemas de dados — armazenamento, transações, replicação, consistência e streams. Leia depois das etapas de banco e distribuídos. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página do autor. Sumário da 2ª ed. não verificado (página da O'Reilly bloqueia robôs); a página oficial de traduções não lista edição em português." }
+
+# --- Algoritmos: CLRS ---------------------------------------------------------------
+
+- id: clrs-introduction-to-algorithms-4e
+  title: "Introduction to Algorithms (4ª edição)"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [complexity-analysis, searching-sorting, hash-tables, binary-search-trees, heaps-priority-queues, graphs-traversal, dependency-graphs]
+  why: Referência completa e rigorosa de algoritmos (CLRS), com provas e análise. Use como consulta depois da lição, não como primeira leitura. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: pending, note: "Página da MIT Press responde 403 a acessos automatizados; abrir manualmente para confirmar." }
+
+- id: clrs-algoritmos-4ed-ptbr
+  title: "Algoritmos: Teoria e Prática (4ª edição)"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [complexity-analysis, searching-sorting, dynamic-arrays, linked-lists, stacks-queues, hash-tables, binary-search-trees, heaps-priority-queues, graphs-traversal, dependency-graphs, indexes]
+  why: Edição em português do CLRS (GEN LTC, 2024, ISBN 9788595159907). Referência completa e rigorosa; leia o capítulo do tópico depois da lição para consolidar a análise. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário completo visto na página do Grupo GEN." }
+
+- id: clrs-cap2-dando-a-partida
+  title: "Algoritmos: Teoria e Prática — Capítulo 2: Dando a Partida"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [searching-sorting, complexity-analysis]
+  section: "2 Dando a Partida"
+  why: Ordenação por inserção e merge sort com invariantes de laço e primeira análise de tempo — a ponte entre "funciona" e "provo que funciona". Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap3-tempos-de-execucao
+  title: "Algoritmos: Teoria e Prática — Capítulo 3: Caracterização dos Tempos de Execução"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [complexity-analysis]
+  section: "3 Caracterização dos Tempos de Execução"
+  why: Definições formais de O, Ω e Θ e as funções-padrão; leia depois da lição de complexidade para fixar as definições. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap6-ordenacao-por-heap
+  title: "Algoritmos: Teoria e Prática — Capítulo 6: Ordenação por Heap"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [heaps-priority-queues, searching-sorting]
+  section: "6 Ordenação por Heap"
+  why: Heaps binários, heapsort e filas de prioridade, com análise de custo de cada operação. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap7-quicksort
+  title: "Algoritmos: Teoria e Prática — Capítulo 7: Quicksort"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [searching-sorting]
+  section: "7 Quicksort"
+  why: Particionamento, pior caso e versão aleatorizada do quicksort; explica por que a escolha do pivô importa. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap10-estruturas-elementares
+  title: "Algoritmos: Teoria e Prática — Capítulo 10: Estruturas de Dados Elementares"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [linked-lists, stacks-queues]
+  section: "10 Estruturas de Dados Elementares"
+  why: Pilhas, filas e listas ligadas descritas com precisão; bom para conferir sua implementação em C. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap11-tabelas-de-espalhamento
+  title: "Algoritmos: Teoria e Prática — Capítulo 11: Tabelas de Espalhamento"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [hash-tables]
+  section: "11 Tabelas de Espalhamento"
+  why: Encadeamento, endereçamento aberto, funções de hash e a análise do fator de carga. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap12-arvores-binarias-de-busca
+  title: "Algoritmos: Teoria e Prática — Capítulo 12: Árvores Binárias de Busca"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  section: "12 Árvores Binárias de Busca"
+  why: Busca, inserção, remoção e percursos em BSTs; o cap. 13 (Árvores Rubro-Negras) mostra como manter o balanceamento. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap16-analise-amortizada
+  title: "Algoritmos: Teoria e Prática — Capítulo 16: Análise Amortizada"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [dynamic-arrays, complexity-analysis]
+  section: "16 Análise Amortizada"
+  why: Por que dobrar a capacidade de um array dinâmico dá custo amortizado O(1) — com os métodos agregado, contábil e potencial. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap18-arvores-b
+  title: "Algoritmos: Teoria e Prática — Capítulo 18: Árvores B"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [indexes]
+  section: "18 Árvores B"
+  why: A estrutura por trás dos índices de bancos de dados, analisada em termos de acessos a disco. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+- id: clrs-cap20-algoritmos-elementares-grafos
+  title: "Algoritmos: Teoria e Prática — Capítulo 20: Algoritmos Elementares em Grafos"
+  author: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest e Clifford Stein
+  url: https://www.grupogen.com.br/livro-algoritmos-thomas-cormen-9788595159907
+  language: pt-BR
+  format: book
+  difficulty: advanced
+  topics: [graphs-traversal, dependency-graphs]
+  section: "20 Algoritmos Elementares em Grafos"
+  why: Representações de grafos, BFS, DFS e ordenação topológica com provas de corretude. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário do Grupo GEN." }
+
+# --- Algoritmos: Sedgewick & Wayne -----------------------------------------------
+
+- id: algs4-book
+  title: "Algorithms, 4th Edition — booksite oficial"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/home/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [complexity-analysis, searching-sorting, stacks-queues, linked-lists, dynamic-arrays, binary-search-trees, hash-tables, heaps-priority-queues, graphs-traversal, dependency-graphs]
+  why: Livro de algoritmos em Java, mais prático que o CLRS. O booksite de Princeton tem resumo de cada seção, código completo e exercícios grátis; o livro impresso é pago. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: mixed
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-stacks-and-queues
+  title: "Algorithms, 4th Edition — 1.3 Stacks and Queues"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/13stacks/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [stacks-queues, linked-lists, dynamic-arrays]
+  section: "1.3 Stacks and Queues"
+  why: Pilhas e filas implementadas com array redimensionável e com lista ligada, lado a lado — mostra o trade-off das duas representações.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário do booksite; a página se chama 'Bags, Queues, and Stacks'." }
+
+- id: algs4-sorting
+  title: "Algorithms, 4th Edition — 2. Sorting"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/20sorting/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [searching-sorting]
+  section: "2. Sorting (2.1 Elementary Sorts; 2.2 Mergesort; 2.3 Quicksort)"
+  why: Ordenações elementares, mergesort e quicksort com código Java e experimentos de tempo — complemento prático da lição de ordenação.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-binary-search-trees
+  title: "Algorithms, 4th Edition — 3.2 Binary Search Trees"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/32bst/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  section: "3.2 Binary Search Trees"
+  why: BST como tabela de símbolos ordenada, com análise de altura e operações de ordem (min, floor, rank).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-balanced-search-trees
+  title: "Algorithms, 4th Edition — 3.3 Balanced Search Trees"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/33balanced/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [binary-search-trees]
+  section: "3.3 Balanced Search Trees"
+  why: Árvores 2-3 e red-black, para entender como manter altura logarítmica no pior caso.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-b-trees
+  title: "Algorithms, 4th Edition — 6.2 B-trees"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/62btree/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [indexes]
+  section: "6.2 B-trees"
+  why: B-trees como estrutura para dados em memória externa — a base dos índices de banco de dados.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Algoritmos: Jeff Erickson (gratuito) -----------------------------------------
+
+- id: erickson-algorithms
+  title: "Algorithms (1ª edição, 2019)"
+  author: Jeff Erickson
+  url: https://jeffe.cs.illinois.edu/teaching/algorithms/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [searching-sorting, graphs-traversal, dependency-graphs, complexity-analysis]
+  why: Livro-texto da Universidade de Illinois publicado gratuitamente pelo autor (licença CC BY 4.0), com foco em recursão, grafos e prova de corretude. Bom segundo olhar, mais conversado que o CLRS.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: erickson-cap1-recursion
+  title: "Erickson, Algorithms — Chapter 1: Recursion"
+  author: Jeff Erickson
+  url: https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [searching-sorting]
+  section: "Recursion (cap. 1)"
+  why: Mergesort e quicksort derivados do pensamento recursivo, com análise por recorrências.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo listado na página do autor; PDF aberto (contém Mergesort e Quicksort)." }
+
+- id: erickson-cap5-basic-graph-algorithms
+  title: "Erickson, Algorithms — Chapter 5: Basic Graph Algorithms"
+  author: Jeff Erickson
+  url: https://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  section: "Basic Graph Algorithms (cap. 5)"
+  why: Representações de grafos e o esquema genérico de travessia (BFS e afins) explicado com cuidado.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Capítulo listado na página do autor." }
+
+- id: erickson-cap6-depth-first-search
+  title: "Erickson, Algorithms — Chapter 6: Depth-First Search"
+  author: Jeff Erickson
+  url: https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal, dependency-graphs]
+  section: "Depth-First Search (cap. 6)"
+  why: DFS, pré/pós-ordem e ordenação topológica de DAGs — o mecanismo por trás de resolvedores de dependência e sistemas de build.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "PDF aberto; contém a seção Topological Sort." }
+
+- id: erickson-notes-hashing
+  title: "Erickson, Algorithms (notas avançadas) — Lecture 5: Hash Tables"
+  author: Jeff Erickson
+  url: https://jeffe.cs.illinois.edu/teaching/algorithms/notes/05-hashing.pdf
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [hash-tables]
+  section: "Lecture 5: Hash Tables"
+  why: Notas complementares ao livro sobre hashing universal e análise probabilística de tabelas hash.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Listado como 'Hashing' na página do autor; título interno do PDF." }
+
+# --- Matemática para CS (gratuito) ------------------------------------------------
+
+- id: mcs-lehman-leighton-meyer
+  title: "Mathematics for Computer Science (revisão de 2018)"
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [complexity-analysis, graphs-traversal, dependency-graphs]
+  why: Livro-texto do MIT 6.042 publicado gratuitamente pelos autores (CC BY-SA 3.0) — provas, grafos, contagem, probabilidade e recorrências. Referência para os fios de matemática (proofs, graphs, combinatorics, probability) das lições.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "PDF aberto; licença e sumário vistos nas primeiras páginas." }
+
+- id: mcs-cap10-directed-graphs-partial-orders
+  title: "Mathematics for Computer Science — Chapter 10: Directed graphs & Partial Orders"
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dependency-graphs]
+  section: "10 Directed graphs & Partial Orders (p. 421)"
+  why: DAGs, ordens parciais e ordenação topológica com prova — a matemática da lição de grafos de dependência.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário do PDF." }
+
+- id: mcs-cap12-simple-graphs
+  title: "Mathematics for Computer Science — Chapter 12: Simple Graphs"
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  section: "12 Simple Graphs (p. 501)"
+  why: Definições e provas sobre grafos (graus, caminhos, conectividade, árvores) que sustentam os algoritmos de travessia.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário do PDF." }
+
+- id: mcs-cap14-sums-asymptotics
+  title: "Mathematics for Computer Science — Chapter 14: Sums and Asymptotics"
+  author: Eric Lehman, F. Thomson Leighton e Albert R. Meyer
+  url: https://courses.csail.mit.edu/6.042/spring18/mcs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [complexity-analysis]
+  section: "14 Sums and Asymptotics (p. 605)"
+  why: Somatórios, aproximações e notação assintótica com rigor — a base matemática da análise de complexidade.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário do PDF." }
+
+# --- Arquitetura: Patterson & Hennessy e Tanenbaum --------------------------------
+
+- id: patterson-hennessy-cod-riscv-2e
+  title: "Computer Organization and Design RISC-V Edition: The Hardware Software Interface (2ª edição)"
+  author: David A. Patterson e John L. Hennessy
+  url: https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal, integer-representation-overflow, floating-point, cpu-memory-caches, compilation-pipeline]
+  why: O livro de referência sobre a interface hardware/software — instruções, aritmética, pipeline e hierarquia de memória. Complementa o CS:APP do lado do hardware. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Elsevier, 11/12/2020, marcada como 'Latest edition'; sumário com 6 capítulos visto na página." }
+
+- id: patterson-hennessy-organizacao-projeto-5ed-ptbr
+  title: "Organização e Projeto de Computadores: a interface hardware/software (5ª edição)"
+  author: David A. Patterson e John L. Hennessy
+  url: https://shop.elsevier.com/books/organizacao-e-projeto-de-computadores/patterson/978-85-352-8793-6
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal, integer-representation-overflow, floating-point, cpu-memory-caches]
+  why: Edição em português (Elsevier, 2017; baseada na versão MIPS, não RISC-V) do clássico de organização de computadores. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Elsevier: idioma Portuguese, 5ª edição, 24/08/2017." }
+
+- id: patterson-hennessy-cap2-instructions
+  title: "Computer Organization and Design RISC-V — Chapter 2: Instructions: Language of the Computer"
+  author: David A. Patterson e John L. Hennessy
+  url: https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [compilation-pipeline, pointers]
+  section: "2. Instructions: Language of the Computer"
+  why: Como código de alto nível vira instruções — registradores, acesso à memória, chamadas de procedimento e a pilha. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário na página da Elsevier." }
+
+- id: patterson-hennessy-cap3-arithmetic
+  title: "Computer Organization and Design RISC-V — Chapter 3: Arithmetic for Computers"
+  author: David A. Patterson e John L. Hennessy
+  url: https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [integer-representation-overflow, floating-point]
+  section: "3. Arithmetic for Computers"
+  why: Soma, overflow, multiplicação e ponto flutuante IEEE 754 do ponto de vista do hardware. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário na página da Elsevier." }
+
+- id: patterson-hennessy-cap5-memory-hierarchy
+  title: "Computer Organization and Design RISC-V — Chapter 5: Large and Fast: Exploiting Memory Hierarchy"
+  author: David A. Patterson e John L. Hennessy
+  url: https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [cpu-memory-caches, virtual-memory]
+  section: "5. Large and Fast: Exploiting Memory Hierarchy"
+  why: Caches, localidade e memória virtual/TLB — explica por que dois algoritmos O(n) podem ter desempenhos muito diferentes. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Sumário na página da Elsevier." }
+
+- id: tanenbaum-structured-computer-organization-6e
+  title: "Structured Computer Organization (6ª edição)"
+  author: Andrew S. Tanenbaum e Todd Austin
+  url: https://www.pearson.com/en-us/subject-catalog/p/structured-computer-organization/P200000003183
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal, cpu-memory-caches, virtual-memory, linking-object-files]
+  why: O computador como pilha de níveis (lógica digital → microarquitetura → ISA → SO → assembly); seções 2.2 (memória primária), 6.1 (memória virtual) e 7.4 (linking e loading) conversam com o roadmap. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Pearson com sumário por seções (© 2022)." }
+
+- id: tanenbaum-organizacao-estruturada-6ed-ptbr
+  title: "Organização Estruturada de Computadores (6ª edição)"
+  author: Andrew S. Tanenbaum
+  url: https://loja.grupoa.com.br/organizacao-estruturada-de-computadores-6ed9788581435398-p1005386
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [binary-hexadecimal, cpu-memory-caches, virtual-memory, linking-object-files]
+  why: Edição em português (2013, ISBN 9788581435398) do clássico de arquitetura em níveis, com exemplos x86, ARM e AVR. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página do Grupo A (sem sumário por capítulo visível)." }
+
+# --- C: Kernighan & Ritchie --------------------------------------------------------
+
+- id: kr-c-programming-language-2e
+  title: "The C Programming Language (2ª edição)"
+  author: Brian W. Kernighan e Dennis M. Ritchie
+  url: https://www.pearson.com/en-us/subject-catalog/p/c-programming-language/P200000000368
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [c-types-functions, c-arrays-structs, c-preprocessor, pointers, c-strings, dynamic-allocation-ownership, file-descriptors]
+  why: O livro clássico de C (ANSI C), curto e denso, escrito pelos criadores da linguagem. Leia o capítulo do tópico depois da lição e faça os exercícios. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Pearson com sumário. Página do autor (cs.princeton.edu/~bwk/cbook.html) lista tradução 'C, a Linguagem de Programação: padrão ANSI' (Editora Campus), sem página de editora verificada." }
+
+- id: kr-cap4-functions-program-structure
+  title: "The C Programming Language — Chapter 4: Functions and Program Structure"
+  author: Brian W. Kernighan e Dennis M. Ritchie
+  url: https://www.pearson.com/en-us/subject-catalog/p/c-programming-language/P200000000368
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [c-types-functions, c-preprocessor, linking-object-files]
+  section: "4. Functions and Program Structure."
+  why: Funções, variáveis externas e static, escopo, programas em vários arquivos, headers e o pré-processador. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário da Pearson." }
+
+- id: kr-cap5-pointers-arrays
+  title: "The C Programming Language — Chapter 5: Pointers and Arrays"
+  author: Brian W. Kernighan e Dennis M. Ritchie
+  url: https://www.pearson.com/en-us/subject-catalog/p/c-programming-language/P200000000368
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [pointers, c-arrays-structs, c-strings]
+  section: "5. Pointers and Arrays."
+  why: A relação entre ponteiros, arrays e strings em C explicada pelos autores da linguagem; leia depois das lições de ponteiros e strings. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário da Pearson." }
+
+- id: kr-cap6-structures
+  title: "The C Programming Language — Chapter 6: Structures"
+  author: Brian W. Kernighan e Dennis M. Ritchie
+  url: https://www.pearson.com/en-us/subject-catalog/p/c-programming-language/P200000000368
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [c-arrays-structs, linked-lists]
+  section: "6. Structures."
+  why: Structs, ponteiros para structs e estruturas autorreferenciadas (árvores, listas) — ponte entre C e as estruturas de dados. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário da Pearson." }
+
+- id: kr-cap8-unix-system-interface
+  title: "The C Programming Language — Chapter 8: The UNIX System Interface"
+  author: Brian W. Kernighan e Dennis M. Ritchie
+  url: https://www.pearson.com/en-us/subject-catalog/p/c-programming-language/P200000000368
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [file-descriptors, memory-allocators, systems-io-performance]
+  section: "8. The UNIX System Interface."
+  why: Descritores de arquivo, read/write/open e um alocador de memória simples escrito pelos autores — curto e revelador. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título do capítulo no sumário da Pearson." }
+
+# --- Engenharia de software: Fowler ------------------------------------------------
+
+- id: fowler-refactoring-2e
+  title: "Refactoring: Improving the Design of Existing Code (2ª edição)"
+  author: Martin Fowler
+  url: https://martinfowler.com/books/refactoring.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [refactoring, interfaces-testing]
+  why: O catálogo de refatorações de referência, com exemplos em JavaScript. A página do autor oferece o capítulo inicial grátis; o livro (com web edition) é pago. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página do autor (2ª ed., fim de 2018)." }
+
+- id: fowler-refatoracao-2ed-ptbr
+  title: "Refatoração: aperfeiçoando o design de códigos existentes (2ª edição)"
+  author: Martin Fowler
+  url: https://novatec.com.br/livros/refatoracao/
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [refactoring, interfaces-testing]
+  why: Edição em português (Novatec, 2020, ISBN 978-85-7522-724-4); a página da editora tem um capítulo de exemplo grátis. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Novatec com sumário." }
+
+- id: fowler-refatoracao-cap2-principios
+  title: "Refatoração — Capítulo 2: Princípios da refatoração"
+  author: Martin Fowler
+  url: https://novatec.com.br/livros/refatoracao/
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [refactoring]
+  section: "Capítulo 2 ■ Princípios da refatoração"
+  why: O que é (e o que não é) refatorar, quando fazer e como encaixar no fluxo de trabalho com testes. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Novatec." }
+
+- id: fowler-refatoracao-cap3-maus-cheiros
+  title: "Refatoração — Capítulo 3: “Maus cheiros” no código"
+  author: Martin Fowler
+  url: https://novatec.com.br/livros/refatoracao/
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [refactoring]
+  section: "Capítulo 3 ■ “Maus cheiros” no código"
+  why: O vocabulário de code smells usado em code review para decidir o que refatorar. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Novatec." }
+
+- id: fowler-refatoracao-cap4-escrevendo-testes
+  title: "Refatoração — Capítulo 4: Escrevendo testes"
+  author: Martin Fowler
+  url: https://novatec.com.br/livros/refatoracao/
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [interfaces-testing, refactoring]
+  section: "Capítulo 4 ■ Escrevendo testes"
+  why: Por que testes automatizados são pré-requisito para refatorar com segurança, com um exemplo de suíte construída passo a passo. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da Novatec." }
+
+# --- Java: Bloch e Think Java -----------------------------------------------------
+
+- id: bloch-effective-java-3e
+  title: "Effective Java (3ª edição)"
+  author: Joshua Bloch
+  url: https://www.informit.com/store/effective-java-9780134685991
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [java-fundamentals, backend-testing-java]
+  why: Boas práticas de Java em itens curtos e independentes (cobre Java 7, 8 e 9, incluindo lambdas e streams). Leia os itens ligados ao que você está implementando. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da InformIT (Pearson) com sumário." }
+
+- id: bloch-java-efetivo-3ed-ptbr
+  title: "Java Efetivo: as melhores práticas para a plataforma Java (3ª edição)"
+  author: Joshua Bloch
+  url: https://altabooks.com.br/produto/java-efetivo/
+  language: pt-BR
+  format: book
+  difficulty: intermediate
+  topics: [java-fundamentals, backend-testing-java]
+  why: Edição em português (Alta Books, ISBN 9788550804620) da 3ª edição, que cobre Java 7, 8 e 9. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da Alta Books: '3ª edição'." }
+
+- id: bloch-effective-java-cap2-creating-destroying-objects
+  title: "Effective Java — Chapter 2: Creating and Destroying Objects"
+  author: Joshua Bloch
+  url: https://www.informit.com/store/effective-java-9780134685991
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [java-fundamentals]
+  section: "Chapter 2: Creating and Destroying Objects"
+  why: Static factories, builders, injeção de dependência, referências obsoletas e try-with-resources — decisões que aparecem em todo código Java de backend. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da InformIT." }
+
+- id: bloch-effective-java-cap3-methods-common-to-all-objects
+  title: "Effective Java — Chapter 3: Methods Common to All Objects"
+  author: Joshua Bloch
+  url: https://www.informit.com/store/effective-java-9780134685991
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [java-fundamentals, hash-tables]
+  section: "Chapter 3: Methods Common to All Objects"
+  why: O contrato de equals e hashCode (e por que quebrá-lo corrompe um HashMap), toString e compareTo. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da InformIT." }
+
+- id: bloch-effective-java-cap10-exceptions
+  title: "Effective Java — Chapter 10: Exceptions"
+  author: Joshua Bloch
+  url: https://www.informit.com/store/effective-java-9780134685991
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [java-fundamentals, spring-web-backend]
+  section: "Chapter 10: Exceptions"
+  why: Quando usar exceções checked e unchecked, e como não esconder falhas — útil ao desenhar o tratamento de erro de uma API. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da InformIT." }
+
+- id: bloch-effective-java-cap11-concurrency
+  title: "Effective Java — Chapter 11: Concurrency"
+  author: Joshua Bloch
+  url: https://www.informit.com/store/effective-java-9780134685991
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [race-conditions-synchronization, threads-basics, java-fundamentals]
+  section: "Chapter 11: Concurrency"
+  why: Sincronização de dados mutáveis compartilhados, executors e utilitários de concorrência em Java — a versão Java da etapa de concorrência. Consulte a disponibilidade na biblioteca da sua instituição.
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Título no sumário da InformIT." }
+
+- id: think-java-2e
+  title: "Think Java: How to Think Like a Computer Scientist (2ª edição)"
+  author: Allen B. Downey e Chris Mayfield
+  url: https://greenteapress.com/wp/think-java-2e/
+  language: en
+  format: book
+  difficulty: intro
+  topics: [java-fundamentals]
+  why: Introdução gratuita a Java publicada pelos autores (licença CC BY-NC-SA 4.0), com leitura online; boa para quem chega ao ramo de backend sem base em Java.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Interpretadores: SICP (gratuito) ----------------------------------------------
+
+- id: sicp
+  title: "Structure and Interpretation of Computer Programs (2ª edição, texto completo em HTML)"
+  author: Harold Abelson e Gerald Jay Sussman, com Julie Sussman
+  url: https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tree-walk-evaluation, scope-environments]
+  why: Clássico do MIT, publicado gratuitamente pela MIT Press (CC BY-SA 4.0). Os capítulos 3 e 4 explicam ambientes e a construção de um avaliador — a teoria do ramo de interpretadores.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Site da MIT Press para o SICP; licença vista na página inicial." }
+
+- id: sicp-3-2-environment-model
+  title: "SICP — 3.2 The Environment Model of Evaluation"
+  author: Harold Abelson e Gerald Jay Sussman, com Julie Sussman
+  url: https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-21.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [scope-environments]
+  section: "3.2 The Environment Model of Evaluation"
+  why: Frames, ambientes encadeados e closures descritos como modelo de execução — exatamente o que você implementa na lição de escopo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção vista no sumário do texto completo." }
+
+- id: sicp-4-1-metacircular-evaluator
+  title: "SICP — 4.1 The Metacircular Evaluator"
+  author: Harold Abelson e Gerald Jay Sussman, com Julie Sussman
+  url: https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-26.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [tree-walk-evaluation, scope-environments]
+  section: "4.1 The Metacircular Evaluator"
+  why: Um avaliador completo em poucas páginas (eval/apply), mostrando como avaliação de expressões e ambientes se combinam.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção vista no sumário do texto completo." }
