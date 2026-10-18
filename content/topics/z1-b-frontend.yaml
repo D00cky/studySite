@@ -69,12 +69,19 @@
     - Capturas da accessibility tree antes e depois da correção, com o diff do HTML.
     - Transcrição do que o leitor de tela anunciou na versão quebrada e na corrigida.
   firstAction: Abra qualquer página que você usa todo dia, aperte Tab cinco vezes e anote se dá para ver onde o foco está.
-  essentials:
-    - "Use o elemento nativo antes de qualquer ARIA: `<button>` para ações, `<a href>` para navegação, `<label for>` em todo campo."
-    - "Teste toda página só com Tab, Shift+Tab, Enter e Espaço: tudo precisa funcionar e o foco precisa estar sempre visível."
-    - "Confira role e computed name de cada controle no painel Accessibility do DevTools; botão sem nome é bug."
-    - "Estruture com headings em ordem (`h1`→`h2`→`h3`) e landmarks (`header`, `nav`, `main`) para permitir pular direto ao conteúdo."
-    - Lighthouse/axe pegam contraste e atributos faltando; fluxo, ordem de foco e textos confusos só aparecem no teste manual.
+  kit:
+    - term: "<button> / <a href>"
+      use: "Usar o elemento nativo para ações e navegação; vem com foco e teclado prontos."
+    - term: "<label for=\"id\">"
+      use: "Dar nome acessível a cada campo de formulário."
+    - term: "<header> <nav> <main> + h1→h2→h3"
+      use: "Criar landmarks e headings em ordem para navegar e pular direto ao conteúdo."
+    - term: "Tab / Shift+Tab / Enter / Espaço"
+      use: "Testar a página só com teclado e conferir que o foco está sempre visível."
+    - term: "DevTools → Elements → Accessibility"
+      use: "Ver role e computed name de cada controle como o leitor de tela recebe."
+    - term: "Lighthouse / axe DevTools"
+      use: "Achar automaticamente contraste ruim e atributos faltando."
   deepDive:
     - title: Padrões ARIA para widgets compostos (tabs, combobox, menu, dialog)
       why: Quando precisar de um componente que não existe em HTML nativo e tiver de implementar foco e teclado à mão.
@@ -150,12 +157,19 @@
     - Capturas dos overlays de grid e flexbox com as medidas anotadas.
     - Link do código do quadro e um GIF ou capturas em três larguras.
   firstAction: No DevTools de qualquer página, selecione um elemento e abra a aba Computed. Clique numa propriedade para ver de onde veio o valor.
-  essentials:
-    - "Conflito de estilo: abra a aba Computed e veja qual declaração venceu; a cascata decide por origem/importância, layers, especificidade e só então ordem."
-    - "Mantenha a especificidade baixa (classes simples) e não use `!important` para ganhar briga."
-    - "Comece todo projeto com `*, *::before, *::after { box-sizing: border-box; }`."
-    - "Flexbox para alinhar itens numa linha/coluna (componentes); grid para a estrutura em linhas e colunas da página."
-    - "Responsivo sem números mágicos: `rem`, `%`, `fr`, `minmax()`, `clamp()`; e `min-width: 0` ou `overflow-wrap` quando conteúdo longo estoura."
+  kit:
+    - term: "DevTools → aba Computed"
+      use: "Ver o valor final de uma propriedade e qual declaração venceu a cascata."
+    - term: "*, *::before, *::after { box-sizing: border-box; }"
+      use: "Fazer largura incluir padding e borda e evitar colunas estourando."
+    - term: "display: flex; gap; align-items"
+      use: "Alinhar itens de um componente numa linha ou coluna."
+    - term: "display: grid; grid-template-columns: repeat(3, 1fr)"
+      use: "Montar a estrutura da página em linhas e colunas."
+    - term: "@media (max-width: 600px)"
+      use: "Mudar o layout em telas pequenas sem mexer na ordem do HTML."
+    - term: "rem, %, fr, minmax(), clamp()"
+      use: "Usar tamanhos relativos que se adaptam em vez de números mágicos em px."
   deepDive:
     - title: Cascade layers (@layer)
       why: Quando o projeto misturar reset, biblioteca de componentes e estilos próprios e as guerras de especificidade começarem.
@@ -235,12 +249,19 @@
     - Trecho de código, previsão escrita e saída real do console lado a lado.
     - Captura do flame chart com a long task antes e depois.
   firstAction: "Cole no console `setTimeout(() => console.log('timeout'), 0); Promise.resolve().then(() => console.log('promise')); console.log('sync');` e explique a ordem."
-  essentials:
-    - "Uma task roda até o fim; depois todas as microtasks (promises, `await`); só então o navegador pode renderizar."
-    - "Loop síncrono longo congela a página: divida o trabalho em tasks menores ou mova para um Web Worker."
-    - "Com `fetch`, sempre verifique `response.ok`; a promise só rejeita em falha de rede ou cancelamento (`AbortController`)."
-    - "Use event delegation: um listener no container trata cliques de todos os itens, inclusive os criados depois."
-    - "Texto vindo de fora vai em `textContent`, nunca em `innerHTML` — é a regra básica contra XSS."
+  kit:
+    - term: "document.querySelector(sel)"
+      use: "Encontrar elementos do DOM para ler ou alterar."
+    - term: "el.addEventListener('click', fn)"
+      use: "Tratar eventos; num container pai, faz event delegation para itens criados depois."
+    - term: "el.textContent = texto"
+      use: "Inserir texto vindo de fora sem risco de XSS (nunca innerHTML)."
+    - term: "const r = await fetch(url); if (!r.ok) ..."
+      use: "Buscar dados e tratar status de erro; fetch só rejeita em falha de rede."
+    - term: "setTimeout vs Promise.then vs queueMicrotask"
+      use: "Prever a ordem: código síncrono, depois microtasks, depois a próxima task."
+    - term: "console.log + DevTools → Sources (breakpoint)"
+      use: "Ver valores e pausar o código para entender o fluxo."
   deepDive:
     - title: Web Workers e paralelismo no navegador
       why: Quando houver processamento pesado (parse de arquivo grande, compressão, cálculo) que não pode travar a interface.
@@ -316,12 +337,19 @@
     - Tabela de medições (5 execuções por versão) e capturas do Performance.
     - Relatório curto da auditoria com a mudança feita e o efeito medido.
   firstAction: Abra o painel Performance numa página qualquer, ative CPU throttling 4x, grave 5 segundos rolando a página e encontre um bloco roxo de Layout.
-  essentials:
-    - "Meça antes de otimizar: grave no painel Performance com CPU throttling 4x e rede lenta, ache a fatia mais cara, mude uma coisa e meça de novo."
-    - "Anime com `transform` e `opacity`; animar `width`, `top` ou `left` dispara layout a cada frame."
-    - "Agrupe leituras de geometria (`offsetHeight`) antes das escritas de estilo para evitar layout thrashing."
-    - "Use `defer` nos scripts e mantenha pequeno o CSS crítico: ambos bloqueiam a primeira renderização."
-    - "Acompanhe LCP, INP e CLS; dado de laboratório (Lighthouse) não substitui dado de usuários reais."
+  kit:
+    - term: "DevTools → Performance (CPU 4x throttling)"
+      use: "Gravar uma interação em condições realistas e achar a fatia mais cara."
+    - term: "performance.now()"
+      use: "Medir a duração de um trecho de código em várias execuções e pegar a mediana."
+    - term: "transform / opacity"
+      use: "Animar sem disparar layout e paint a cada frame."
+    - term: "ler offsetHeight antes, escrever style depois"
+      use: "Agrupar leituras e escritas para evitar layout thrashing."
+    - term: "<script defer>"
+      use: "Carregar scripts sem bloquear o parser e a primeira renderização."
+    - term: "Lighthouse: LCP, INP, CLS"
+      use: "Medir carregamento, resposta a interações e estabilidade visual da página."
   deepDive:
     - title: Otimização de LCP por fases
       why: Quando o LCP de uma página real estiver ruim e você precisar saber se o problema é servidor, descoberta do recurso ou render.
@@ -401,12 +429,19 @@
     - Saída do runner com as falhas provocadas e as mensagens de erro.
     - Link do repositório com os testes e o comando para rodá-los.
   firstAction: Abra a documentação "About Queries" da Testing Library e anote a ordem de prioridade das queries.
-  essentials:
-    - "Encontre elementos como o usuário: `getByRole` com nome, depois `getByLabelText`; `data-testid` só em último caso."
-    - "Espere por estado observável (`findByRole`, auto-wait do Playwright), nunca por `sleep` fixo."
-    - "Controle a rede no teste (mock de fetch ou interceptação de rotas) para cobrir erro 500 e lentidão."
-    - "Muitos testes de componente, poucos E2E só para os fluxos críticos."
-    - "Rode axe no CI, mas mantenha um teste de teclado: o automático não pega tudo."
+  kit:
+    - term: "getByRole('button', { name: 'Adicionar' })"
+      use: "Encontrar elementos como o usuário e o leitor de tela encontram."
+    - term: "getByLabelText('Título')"
+      use: "Achar campos de formulário pelo label."
+    - term: "await userEvent.type / userEvent.click"
+      use: "Simular digitação e cliques como um usuário real."
+    - term: "await findByRole('status')"
+      use: "Esperar um estado observável assíncrono em vez de sleep fixo."
+    - term: "vi.spyOn(globalThis, 'fetch')"
+      use: "Controlar a rede no teste para cobrir sucesso, erro 500 e lentidão."
+    - term: "npx playwright test"
+      use: "Rodar os poucos fluxos críticos de ponta a ponta num navegador real."
   deepDive:
     - title: Regressão visual por screenshot
       why: Quando mudanças de CSS quebrarem layouts sem que nenhum teste de comportamento perceba.
