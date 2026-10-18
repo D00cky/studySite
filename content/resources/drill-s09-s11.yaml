@@ -1,0 +1,237 @@
+# Recursos do drill-down 80/20 das etapas s09-s11
+
+- id: winand-pagination-done-the-right-way-video
+  title: "Markus Winand: Pagination Done the Right Way (@rubyslava #40)"
+  author: Markus Winand (canal Rubyslava)
+  url: https://www.youtube.com/watch?v=GzMaN-IX7wQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [pagination, indexes]
+  why: Palestra do autor do Use The Index, Luke! mostrando por que OFFSET degrada e como o seek method (keyset) usa o índice.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: planetscale-pagination-offset-vs-cursor-video
+  title: "Pagination in MySQL - offset vs. cursor"
+  author: PlanetScale
+  url: https://www.youtube.com/watch?v=zwDIN04lIpc
+  language: en
+  format: video
+  difficulty: intro
+  topics: [pagination]
+  why: Comparação didática de OFFSET e cursor, incluindo ordem determinística, registros que deslizam e ordenação por duas colunas; o exemplo é MySQL, mas o raciocínio vale para PostgreSQL.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-congestion-control
+  title: "Congestion Control Design | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/transport/cc-design.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: Como o TCP decide quanto enviar sem derrubar a rede (janela de congestionamento, AIMD).
+  section: Congestion Control Design
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-bgp
+  title: "Border Gateway Protocol (BGP) | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/routing/bgp.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [dns-ip]
+  why: Como redes de organizações diferentes trocam rotas na Internet e por que incidentes de BGP derrubam serviços inteiros.
+  section: Border Gateway Protocol (BGP)
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9000-quic
+  title: "RFC 9000: QUIC: A UDP-Based Multiplexed and Secure Transport"
+  author: IETF (J. Iyengar, M. Thomson)
+  url: https://www.rfc-editor.org/rfc/rfc9000
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [tcp-udp-sockets, http-protocol]
+  why: Especificação do transporte sobre UDP usado pelo HTTP/3, com streams independentes e TLS embutido.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9113-http2
+  title: "RFC 9113: HTTP/2"
+  author: IETF (M. Thomson, C. Benfield)
+  url: https://www.rfc-editor.org/rfc/rfc9113
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [http-protocol]
+  why: Formato binário, frames e multiplexação de streams do HTTP/2, mantendo a semântica do HTTP.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: letsencrypt-how-it-works
+  title: How It Works
+  author: Let's Encrypt
+  url: https://letsencrypt.org/how-it-works/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [tls-concepts]
+  why: Como o protocolo ACME prova controle de domínio e emite e renova certificados automaticamente.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-tutorial-window
+  title: "PostgreSQL Documentation: 3.5. Window Functions"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-window.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [joins-aggregation]
+  why: Tutorial oficial de funções de janela (ranking, totais acumulados) sem colapsar linhas como o GROUP BY.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-queries-with
+  title: "PostgreSQL Documentation: 7.8. WITH Queries (Common Table Expressions)"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/queries-with.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [joins-aggregation]
+  why: CTEs, inclusive recursivas (WITH RECURSIVE) para hierarquias e grafos, e CTEs que modificam dados.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-ddl-partitioning
+  title: "PostgreSQL Documentation: 5.12. Table Partitioning"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/ddl-partitioning.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [relational-modeling-constraints, indexes]
+  why: Particionamento declarativo por intervalo, lista ou hash para tabelas muito grandes.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-datatype-json
+  title: "PostgreSQL Documentation: 8.14. JSON Types"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/datatype-json.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [relational-modeling-constraints]
+  why: Quando e como guardar documentos em jsonb, operadores e indexação com GIN.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-transaction-iso
+  title: "PostgreSQL Documentation: 13.2. Transaction Isolation"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/transaction-iso.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [isolation-locks, transactions-basics]
+  why: Descrição oficial de cada nível de isolamento, das anomalias que permite e dos erros de serialização a repetir.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-wal-intro
+  title: "PostgreSQL Documentation: 28.3. Write-Ahead Logging (WAL)"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/wal-intro.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [transactions-basics]
+  why: Como o WAL garante durabilidade e recuperação após crash sem gravar cada página de dados no COMMIT.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-routine-vacuuming
+  title: "PostgreSQL Documentation: 24.1. Routine Vacuuming"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/routine-vacuuming.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [isolation-locks, query-plans]
+  why: VACUUM, autovacuum, bloat e wraparound de ids de transação — o custo operacional do MVCC.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-indexes-types
+  title: "PostgreSQL Documentation: 11.2. Index Types"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/indexes-types.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [indexes]
+  why: B-tree, Hash, GiST, SP-GiST, GIN e BRIN e que operadores cada um suporta.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-indexes-partial
+  title: "PostgreSQL Documentation: 11.8. Partial Indexes"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/indexes-partial.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [indexes]
+  why: Índices só sobre as linhas que interessam (por exemplo, tarefas abertas) e unicidade condicional.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-sql-createstatistics
+  title: "PostgreSQL Documentation: CREATE STATISTICS"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-createstatistics.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [query-plans]
+  why: Estatísticas estendidas para colunas correlacionadas, que corrigem estimativas quando a suposição de independência falha.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-auto-explain
+  title: "PostgreSQL Documentation: F.3. auto_explain — log execution plans of slow queries"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/auto-explain.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [query-plans]
+  why: Registra no log o plano de consultas lentas em produção, sem precisar reproduzi-las à mão.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

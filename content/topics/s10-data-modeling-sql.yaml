@@ -75,6 +75,25 @@
     - Lista "estado inválido → constraint → mensagem de erro" com os comandos usados.
     - Transcrição dos dois terminais no experimento de unicidade.
   firstAction: "Abra o psql numa base de laboratório e rode `SELECT NULL = NULL, NULL IS NULL;` — anote e explique o resultado."
+  essentials:
+    - Guarde cada fato num lugar só; FK no lado N de um 1:N e tabela de associação com PK composta para N:N.
+    - "Proteja invariantes no banco com `NOT NULL`, `UNIQUE`, `CHECK` e `FOREIGN KEY`, mesmo que a aplicação já valide."
+    - "Lembre a lógica de três valores: `CHECK` aceita NULL e `UNIQUE` aceita vários NULL; some `NOT NULL` quando o valor for obrigatório."
+    - Proteja a chave natural do fato com UNIQUE; um id gerado não impede duplicatas.
+    - "Dê nomes às constraints e escolha `ON DELETE` (RESTRICT ou CASCADE) de propósito, pensando no que deve sobrar."
+  deepDive:
+    - title: Formas normais e desnormalização consciente
+      why: Ao revisar um esquema com dados repetidos ou decidir duplicar dados para acelerar leituras.
+      resource: ddia
+    - title: Constraints avançadas (EXCLUDE, DEFERRABLE, índices únicos parciais)
+      why: Quando o invariante envolver intervalos de tempo, a ordem de verificação dentro da transação ou unicidade condicional.
+      resource: postgres-constraints
+    - title: Dados semiestruturados com jsonb
+      why: Quando parte dos atributos variar muito entre linhas e uma coluna por atributo não fizer sentido.
+      resource: postgres-datatype-json
+    - title: Migrações de esquema sem downtime
+      why: Ao alterar tabelas grandes em produção enquanto a aplicação continua rodando.
+      resource: flyway-docs
 
 - id: joins-aggregation
   stage: s10-data-modeling-sql
@@ -147,6 +166,25 @@
     - Arquivo .sql com as consultas, previsões em comentários e resultados.
     - Explicação curta do bug de fan-out com um exemplo numérico.
   firstAction: "Com 3 usuários e 5 tarefas, escreva num papel quantas linhas `users CROSS JOIN tasks` devolve, depois confirme no psql."
+  essentials:
+    - "Preveja a cardinalidade pelas chaves antes de rodar: join para o pai mantém as linhas; para filhos, repete; dois joins para filhos multiplicam."
+    - Agregue cada lado em subconsulta ou CTE antes de juntar quando houver dois relacionamentos 1:N (evita fan-out).
+    - "Num LEFT JOIN, filtros da tabela da direita vão no `ON`; no `WHERE` eles o transformam em INNER JOIN."
+    - "Use `count(coluna_da_direita)` para contar zero filhos; `count(*)` conta a linha preenchida com NULL como 1."
+    - WHERE filtra linhas antes do GROUP BY; HAVING filtra grupos depois.
+  deepDive:
+    - title: Funções de janela
+      why: Para ranking, totais acumulados e "último evento por usuário" sem perder as linhas individuais.
+      resource: postgres-tutorial-window
+    - title: CTEs recursivas
+      why: Ao consultar hierarquias (subtarefas, comentários aninhados) ou grafos guardados em tabelas.
+      resource: postgres-queries-with
+    - title: Algoritmos de join (nested loop, hash, merge)
+      why: Quando for otimizar consultas e precisar entender por que o planner escolheu um tipo de join.
+      resource: cmu-15445-f24-lecture-13-query-execution-1
+    - title: LATERAL, GROUPING SETS e subconsultas correlacionadas
+      why: Em relatórios com subtotais ou consultas de "top N por grupo".
+      resource: postgres-queries
 
 - id: transactions-basics
   stage: s10-data-modeling-sql
@@ -219,3 +257,19 @@
     - Transcrição dos dois terminais lado a lado, com horários ou numeração dos passos.
     - Consulta a pg_stat_activity mostrando a sessão em espera.
   firstAction: "Abra dois terminais psql na base de laboratório e rode `SELECT pg_backend_pid();` em cada um para identificar as sessões."
+  essentials:
+    - "Envolva operações de várias etapas em `BEGIN; ... COMMIT;`; sem BEGIN, cada comando é uma transação separada."
+    - "Depois de um erro, a transação fica abortada: dê `ROLLBACK` (ou `ROLLBACK TO SAVEPOINT`) antes de continuar."
+    - "Evite lost update com `UPDATE ... SET x = x + 1` atômico ou `SELECT ... FOR UPDATE`, nunca ler-calcular-gravar."
+    - Mantenha transações curtas e nunca espere chamada HTTP ou entrada do usuário com a transação aberta.
+    - "Investigue bloqueios com `pg_stat_activity` (`state`, `wait_event_type`, `query`)."
+  deepDive:
+    - title: WAL e durabilidade
+      why: Ao estudar recuperação após crash, replicação ou o custo de cada COMMIT.
+      resource: postgres-wal-intro
+    - title: Transações no Spring e JDBC
+      why: Quando o backend Java gerenciar transações com @Transactional e regras de propagação.
+      resource: spring-declarative-transactions
+    - title: Transações distribuídas e sagas
+      why: Quando uma operação atravessar vários serviços ou bancos e não couber numa transação local.
+      resource: ddia
