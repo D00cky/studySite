@@ -1,0 +1,660 @@
+# Recursos das etapas s05 (algoritmos básicos) e s06 (árvores, hashing e grafos).
+# Todas as URLs abaixo foram abertas em 2026-10-18 (YouTube via oEmbed).
+
+# ---------- Vídeos: MIT 6.006 Spring 2020 (OCW) ----------
+
+- id: mit-6006-lecture-1-algorithms-computation
+  title: "1. Algorithms and Computation"
+  author: Jason Ku (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=ZA-tUyM_y7s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [complexity-analysis]
+  why: Abre o 6.006 definindo problema, algoritmo, correção e eficiência, modelo de computação (word-RAM) e notação assintótica.
+  access: free
+  priority: core
+  section: "Lecture 1: Algorithms and Computation"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-2-data-structures-dynamic-arrays
+  title: "2. Data Structures and Dynamic Arrays"
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=CHhwJjR0mZA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dynamic-arrays, linked-lists, stacks-queues]
+  why: Compara as interfaces de sequência implementadas por array estático, lista ligada e array dinâmico, com a análise amortizada do redimensionamento.
+  access: free
+  priority: core
+  section: "Lecture 2: Data Structures and Dynamic Arrays"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-3-sets-sorting
+  title: "3. Sets and Sorting"
+  author: Justin Solomon (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=oS9aPzUNG-s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [searching-sorting]
+  why: Mostra por que um array ordenado acelera a busca e como construir um array ordenado de forma eficiente, argumentando correção e custo de algoritmos de ordenação.
+  access: free
+  priority: core
+  section: "Lecture 3: Sets and Sorting"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-4-hashing
+  title: "4. Hashing"
+  author: Jason Ku (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=Nu8YGneFCWE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [hash-tables]
+  why: Do limite inferior de busca por comparação (árvores de decisão) até funções de hash e tabelas hash para busca em tempo esperado constante.
+  access: free
+  priority: core
+  section: "Lecture 4: Hashing"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-6-binary-trees-1
+  title: "6. Binary Trees, Part 1"
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=76dhtgZt38A
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  why: Terminologia, navegação (sucessor/predecessor) e inserção/remoção em árvores binárias, com a altura como custo central.
+  access: free
+  priority: core
+  section: "Lecture 6: Binary Trees, Part 1"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-7-binary-trees-2-avl
+  title: "7. Binary Trees, Part 2: AVL"
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=U1JYwHcFfso
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [binary-search-trees]
+  why: Rotações, aumento de subárvore e balanceamento AVL; explica como manter a altura O(log n).
+  access: free
+  priority: optional
+  section: "Lecture 7: Binary Trees, Part 2: AVL"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-8-binary-heaps
+  title: "8. Binary Heaps"
+  author: Erik Demaine (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=Xnpo1atN-Iw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [heaps-priority-queues, searching-sorting]
+  why: Interface de fila de prioridade, heap binário guardado num array e heap sort, comparado a selection e insertion sort.
+  access: free
+  priority: core
+  section: "Lecture 8: Binary Heaps"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-9-bfs
+  title: "9. Breadth-First Search"
+  author: Justin Solomon (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=oFVYVzlvk9c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Definições de grafo, representações (listas e matriz de adjacência), caminhos, árvore de caminhos mínimos e BFS.
+  access: free
+  priority: core
+  section: "Lecture 9: Breadth-First Search"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6006-lecture-10-dfs
+  title: "10. Depth-First Search"
+  author: Justin Solomon (MIT OpenCourseWare)
+  url: https://www.youtube.com/watch?v=IBfWDYSffUU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [graphs-traversal, dependency-graphs]
+  why: DFS, full-BFS/full-DFS, ordenação topológica e detecção de ciclos.
+  access: free
+  priority: core
+  section: "Lecture 10: Depth-First Search"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Vídeos: Berkeley CS61B (Josh Hug, 2019) ----------
+
+- id: cs61b-2019-lecture-4-sllists
+  title: "61B 2019 Lecture 4 - SLLists, Nested Classes, Sentinel Nodes"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD4cp06tWA8i9m20pQLvcgE7
+  language: en
+  format: video
+  difficulty: intro
+  topics: [linked-lists]
+  why: Constrói uma lista simplesmente ligada em Java passo a passo e mostra por que o nó sentinela elimina casos especiais.
+  access: free
+  priority: core
+  section: "Lecture 4 - SLLists, Nested Classes, Sentinel Nodes"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-5-dllists-arrays
+  title: "61B 2019 Lecture 5 - DLLists, Arrays"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD5Gy1o06RRilCqv0So31lJt
+  language: en
+  format: video
+  difficulty: intro
+  topics: [linked-lists, stacks-queues]
+  why: Lista duplamente ligada com sentinela circular — a base de um deque — e a transição para arrays.
+  access: free
+  priority: optional
+  section: "Lecture 5 - DLLists, Arrays"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-6-alists
+  title: "61B 2019 Lecture 6 - ALists, Resizing, vs. SLists"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD4S8NCRyN3yQV2U2TpjWUhy
+  language: en
+  format: video
+  difficulty: intro
+  topics: [dynamic-arrays]
+  why: Mostra por que crescer por soma é quadrático e crescer por multiplicação é amortizado constante.
+  access: free
+  priority: core
+  section: "Lecture 6 - ALists, Resizing, vs. SLists"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-13-asymptotics-1
+  title: "61B 2019 Lecture 13 - Asymptotics 1"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD4oAdQOZ765z6aeqyKs2593
+  language: en
+  format: video
+  difficulty: intro
+  topics: [complexity-analysis]
+  why: Introdução intuitiva a contagem de operações, ordem de crescimento e notações Θ e O.
+  access: free
+  priority: core
+  section: "Lecture 13 - Asymptotics 1"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-16-bsts
+  title: "61B 2019 Lecture 16 - ADTs, Sets, Maps, Binary Search Trees"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD5JBcKwLbuUf6BAdotM4-1K
+  language: en
+  format: video
+  difficulty: intro
+  topics: [binary-search-trees]
+  why: Parte do problema de busca numa lista ligada ordenada e chega à BST, com inserção, busca e remoção (Hibbard).
+  access: free
+  priority: core
+  section: "Lecture 16 - ADTs, Sets, Maps, Binary Search Trees"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-17-b-trees
+  title: "61B 2019 Lecture 17 - B Trees"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD41EHkD7CgQuRw1jpH_Fv7-
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  why: Mostra a altura de BSTs no pior caso e como B-trees mantêm o balanceamento — a ponte para índices de bancos de dados.
+  access: free
+  priority: optional
+  section: "Lecture 17 - B Trees"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-19-hash-tables
+  title: "61B 2019 Lecture 19 - Hash Tables"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD67rFIKNVkDcucFwNjUq9-d
+  language: en
+  format: video
+  difficulty: intro
+  topics: [hash-tables]
+  why: Constrói a tabela hash a partir de um array indexado por dados, com encadeamento, fator de carga, redimensionamento e hashCode em Java.
+  access: free
+  priority: core
+  section: "Lecture 19 - Hash Tables"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-20-heaps-pqs
+  title: "DataStructures5: Priority Queues and Heaps"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/playlist?list=PL8FaHk7qbOD50LnOXTSpYgnVJQTIVFsmI
+  language: en
+  format: video
+  difficulty: intro
+  topics: [heaps-priority-queues]
+  why: Playlist ligada à aula 20 (Heaps and PQs) do CS61B Spring 2019; heap binário em array, swim/sink e comparação com BSTs.
+  access: free
+  priority: core
+  section: "Lecture 20 - Heaps and PQs"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-24-graph-implementations
+  title: "Lecture 24 - BST and Graph Algorithm Implementations"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/watch?v=0fV6z8BX5U0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Representações de grafo e implementação de DFS/BFS em Java, com o custo de cada escolha de representação.
+  access: free
+  priority: core
+  section: "Lecture 24 - Graph Traversals and Implementations"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-27-reductions-decomposition
+  title: "Lecture 27 - Reductions and Decomposition"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/watch?v=VDXFc0sar80
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [dependency-graphs]
+  why: Usa ordenação topológica via DFS (pós-ordem invertida) como exemplo de problema em que DFS serve melhor que BFS, e discute reduções.
+  access: free
+  priority: core
+  section: "Lecture 27 - Reductions and Decomposition"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs61b-2019-lecture-29-basic-sorts
+  title: "Lecture 29 - Basic Sorts"
+  author: Josh Hug (UC Berkeley CS61B)
+  url: https://www.youtube.com/watch?v=AEAmgbls8TM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [searching-sorting]
+  why: Selection, heap, merge e insertion sort com invariantes, inversões e custo de cada um.
+  access: free
+  priority: core
+  section: "Lecture 29 - Basic Sorts"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Vídeos: Akitando ----------
+
+- id: akitando-95-arvores-video
+  title: "Árvores: O Começo de TUDO | Estruturas de Dados e Algoritmos"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=9GdesxWtOgs
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [binary-search-trees, heaps-priority-queues]
+  why: "Episódio #95 do Akitando (embutido no post akita-trees): intuição em português sobre árvores e por que elas aparecem em todo lugar."
+  access: free
+  priority: core
+  section: "Akitando #95"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-140-grafos-video
+  title: "Desbloqueando o \"Algoritmo\" do Twitter - Introdução a Grafos"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=uIflMYQnp8A
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [graphs-traversal, dependency-graphs]
+  why: "Episódio #140 do Akitando (embutido no post akita-graphs): introdução a grafos em português usando um sistema real como exemplo."
+  access: free
+  priority: core
+  section: "Akitando #140"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Livros e textos ----------
+
+- id: ods-introduction
+  title: "Open Data Structures (Java) — 1. Introduction"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/1_Introduction.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [complexity-analysis, hash-tables]
+  why: Interfaces, modelo de computação, notação assintótica, análise amortizada e o básico de probabilidade usado nos capítulos seguintes.
+  access: free
+  priority: core
+  section: "1. Introduction"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-array-based-lists
+  title: "Open Data Structures (Java) — 2. Array-Based Lists"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dynamic-arrays, stacks-queues]
+  why: ArrayStack, ArrayQueue (buffer circular) e ArrayDeque com prova do custo amortizado de resize.
+  access: free
+  priority: core
+  section: "2. Array-Based Lists"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-linked-lists
+  title: "Open Data Structures (Java) — 3. Linked Lists"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/3_Linked_Lists.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [linked-lists, stacks-queues]
+  why: Listas simples e duplamente ligadas (com nó dummy) e a variante que guarda blocos para melhorar localidade.
+  access: free
+  priority: core
+  section: "3. Linked Lists"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-hash-tables
+  title: "Open Data Structures (Java) — 5. Hash Tables"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/5_Hash_Tables.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [hash-tables]
+  why: Encadeamento e linear probing com análise probabilística do tamanho esperado das listas e das sondagens; hash codes para tipos compostos.
+  access: free
+  priority: core
+  section: "5. Hash Tables"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-binary-trees
+  title: "Open Data Structures (Java) — 6. Binary Trees"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/6_Binary_Trees.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  why: Árvore binária, travessias recursivas e não recursivas e a BST não balanceada com busca, inserção e remoção.
+  access: free
+  priority: core
+  section: "6. Binary Trees"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-heaps
+  title: "Open Data Structures (Java) — 10. Heaps"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/10_Heaps.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [heaps-priority-queues]
+  why: Heap binário implícito em array (BinaryHeap) e heap meldable aleatorizado.
+  access: free
+  priority: core
+  section: "10. Heaps"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-sorting-algorithms
+  title: "Open Data Structures (Java) — 11. Sorting Algorithms"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [searching-sorting]
+  why: Merge sort, quicksort e heap sort com análise, limite inferior de ordenação por comparação e counting/radix sort.
+  access: free
+  priority: optional
+  section: "11. Sorting Algorithms"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ods-graphs
+  title: "Open Data Structures (Java) — 12. Graphs"
+  author: Pat Morin
+  url: https://opendatastructures.org/ods-java/12_Graphs.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Matriz e listas de adjacência com custos de cada operação, BFS e DFS.
+  access: free
+  priority: core
+  section: "12. Graphs"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-analysis-of-algorithms
+  title: "Algorithms, 4th Edition — 1.4 Analysis of Algorithms"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/14analysis/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [complexity-analysis]
+  why: Aplica o método científico ao desempenho — medir, ajustar em gráfico log-log, formular hipótese e prever — exatamente o que o experimento pede.
+  access: free
+  priority: core
+  section: "1.4 Analysis of Algorithms"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-priority-queues
+  title: "Algorithms, 4th Edition — 2.4 Priority Queues"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/24pq/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [heaps-priority-queues]
+  why: API de fila de prioridade, heap binário com swim/sink, heapsort e fila de prioridade indexada.
+  access: free
+  priority: optional
+  section: "2.4 Priority Queues"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-hash-tables
+  title: "Algorithms, 4th Edition — 3.4 Hash Tables"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/34hash/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [hash-tables]
+  why: Funções de hash, encadeamento separado, linear probing e redimensionamento, com hipóteses de hashing uniforme explícitas.
+  access: free
+  priority: optional
+  section: "3.4 Hash Tables"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-undirected-graphs
+  title: "Algorithms, 4th Edition — 4.1 Undirected Graphs"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/41graph/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Representação por listas de adjacência, DFS, BFS, componentes conexas e caminhos, com código Java completo.
+  access: free
+  priority: optional
+  section: "4.1 Undirected Graphs"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-directed-graphs
+  title: "Algorithms, 4th Edition — 4.2 Directed Graphs"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/42digraph/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [dependency-graphs]
+  why: Dígrafos, detecção de ciclo dirigido, ordem de pós-ordem e ordenação topológica, com o exemplo de escalonamento por precedência.
+  access: free
+  priority: core
+  section: "4.2 Directed Graphs"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6042j-spring-2015
+  title: "MIT 6.042J Mathematics for Computer Science (Spring 2015)"
+  author: Albert R. Meyer e Adam Chlipala (MIT OpenCourseWare)
+  url: https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [complexity-analysis, searching-sorting, hash-tables, graphs-traversal, dependency-graphs]
+  why: Matemática discreta para CS — indução e invariantes, contagem, probabilidade e grafos dirigidos/ordens parciais — com o livro-texto MCS.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Documentação ----------
+
+- id: linux-kernel-circular-buffers
+  title: Circular Buffers — The Linux Kernel documentation
+  author: Linux kernel developers
+  url: https://www.kernel.org/doc/html/latest/core-api/circular-buffers.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [stacks-queues]
+  why: Como o kernel implementa buffers circulares com tamanho potência de 2, índices head/tail e barreiras de memória entre produtor e consumidor.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: linux-kernel-rbtree
+  title: Red-black Trees (rbtree) in Linux — The Linux Kernel documentation
+  author: Linux kernel developers
+  url: https://www.kernel.org/doc/html/latest/core-api/rbtree.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [binary-search-trees]
+  why: Árvore de busca balanceada usada de verdade no kernel (escalonador, áreas de memória), com a API intrusiva em C.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-tsort
+  title: tsort(1) - Linux manual page
+  author: GNU coreutils / Michael Kerrisk (man7.org)
+  url: https://man7.org/linux/man-pages/man1/tsort.1.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [dependency-graphs]
+  why: Ordenação topológica pronta no terminal — ótima para conferir a saída da sua implementação e ver como ela reporta ciclos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-bsearch
+  title: bsearch(3) - Linux manual page
+  author: Michael Kerrisk (man7.org)
+  url: https://man7.org/linux/man-pages/man3/bsearch.3.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [searching-sorting]
+  why: A busca binária da libc e o contrato da função de comparação — base para comparar com a sua implementação.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-qsort
+  title: qsort(3) - Linux manual page
+  author: Michael Kerrisk (man7.org)
+  url: https://man7.org/linux/man-pages/man3/qsort.3.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [searching-sorting]
+  why: Ordenação genérica da libc com ponteiros para função de comparação; útil como linha de base em benchmarks.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-arraylist-21
+  title: ArrayList (Java SE 21 & JDK 21)
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [dynamic-arrays]
+  why: Documenta capacidade, ensureCapacity, trimToSize e o custo amortizado de add — o array dinâmico que o time usa no backend.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-arraydeque-21
+  title: ArrayDeque (Java SE 21 & JDK 21)
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [stacks-queues]
+  why: Deque redimensionável baseado em array circular, recomendado no lugar de Stack e LinkedList como pilha e fila.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-hashmap-21
+  title: HashMap (Java SE 21 & JDK 21)
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [hash-tables]
+  why: Capacidade inicial, load factor padrão de 0.75 e rehash — os mesmos parâmetros que você implementa à mão em C.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-priorityqueue-21
+  title: PriorityQueue (Java SE 21 & JDK 21)
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/PriorityQueue.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [heaps-priority-queues]
+  why: Fila de prioridade baseada em heap binário, com os custos de offer/poll/remove documentados.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Palestras ----------
+
+- id: scott-meyers-cpu-caches-why-you-care
+  title: "code::dive conference 2014 - Scott Meyers: Cpu Caches and Why You Care"
+  author: Scott Meyers (code::dive 2014)
+  url: https://www.youtube.com/watch?v=WDIkqP4JbkE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [complexity-analysis, linked-lists]
+  why: Palestra clássica sobre como caches de CPU fazem acesso contíguo vencer estruturas cheias de ponteiros, mesmo com a mesma complexidade assintótica.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mike-acton-data-oriented-design-cppcon-2014
+  title: "CppCon 2014: Mike Acton \"Data-Oriented Design and C++\""
+  author: Mike Acton (CppCon)
+  url: https://www.youtube.com/watch?v=rX0ItVEVjHc
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [linked-lists, dynamic-arrays]
+  why: Defende organizar os dados pelo padrão de acesso real ao hardware — o argumento por trás de preferir arrays a listas e de medir em vez de supor.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

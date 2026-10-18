@@ -3,48 +3,346 @@
 - id: complexity-analysis
   stage: s05-algorithms-basics
   title: Análise de complexidade
-  status: planned
+  status: authored
   objective: Estimar como tempo e memória crescem com a entrada usando notação O, e confirmar a estimativa com medições.
-  whyItMatters: Permite prever se uma solução aguenta 10x mais dados antes de descobrir em produção.
+  whyItMatters: Permite prever se uma solução aguenta 10x mais dados antes de descobrir em produção. É também a linguagem comum para discutir trade-offs em code review, em índices de banco e em escolhas de estrutura de dados no backend.
   prerequisites: [dynamic-allocation-ownership, cpu-memory-caches]
+  related: [searching-sorting, dynamic-arrays, profiling-benchmarks]
   mathThreads: [proofs, combinatorics]
+  explanation: |
+    Análise de complexidade responde: **quando a entrada dobra, o que acontece com o custo?** Em vez de cronometrar uma máquina específica, contamos operações básicas (comparações, acessos à memória, iterações) em função do tamanho `n` e olhamos só o termo que domina quando `n` cresce.
+
+    A notação formaliza isso. `f(n) = O(g(n))` quer dizer que existem constantes `c` e `n0` tais que `f(n) <= c·g(n)` para todo `n >= n0` — um **limite superior**. `Ω` é o limite inferior e `Θ` é os dois ao mesmo tempo. Dois laços aninhados de `0` a `n` fazem `n·n` iterações; um laço que divide o intervalo pela metade a cada passo faz cerca de `log2 n`. Contar é **combinatória**: somas como `1 + 2 + ... + n = n(n+1)/2` explicam por que "para cada i, percorra até i" ainda é quadrático.
+
+    Três cuidados separam análise útil de decoreba:
+
+    - **Qual caso?** Pior caso, caso médio (com que distribuição de entrada?) e custo **amortizado** (média ao longo de uma sequência de operações) são perguntas diferentes.
+    - **Constantes importam em `n` real.** O modelo RAM supõe que todo acesso à memória custa igual, mas um *cache miss* custa ~100x um acerto. Dois algoritmos `O(n)` podem diferir 10x por localidade.
+    - **Memória também é custo**: espaço auxiliar, alocações e quantas páginas o programa toca.
+
+    A forma honesta de usar a teoria é como **hipótese**: preveja a curva, meça com tamanhos crescentes (dobrando `n`) e compare a razão `T(2n)/T(n)` — perto de 2 sugere linear, perto de 4 sugere quadrático. Quando a medição discorda da previsão, há algo no mecanismo (cache, alocação, branch prediction) que o modelo ignorou.
+  misconceptions:
+    - claim: O(n) é sempre mais rápido que O(n²).
+      correction: A notação esconde constantes e vale para n grande. Para n pequeno, um algoritmo quadrático com bom acesso à memória (insertion sort) costuma vencer; por isso bibliotecas misturam algoritmos.
+    - claim: O descreve o pior caso e Θ o caso médio.
+      correction: O, Ω e Θ são limites sobre uma função; pior caso, caso médio e amortizado escolhem qual função está sendo limitada. Dá para falar do pior caso em Θ.
+    - claim: Se o tempo medido de uma execução foi baixo, o algoritmo escala bem.
+      correction: Um ponto não mostra crescimento. É preciso medir vários tamanhos, repetir e olhar a razão entre tamanhos consecutivos.
   resources:
-    start: mit-6006
-    deeper: [teach-yourself-cs]
+    start: algs4-analysis-of-algorithms
+    deeper: [mit-6006, ods-introduction, mit-6042j-spring-2015, drepper-memory]
+    videos: [mit-6006-lecture-1-algorithms-computation, cs61b-2019-lecture-13-asymptotics-1, scott-meyers-cpu-caches-why-you-care]
+  exercise:
+    id: ex-count-operations
+    title: Contar operações à mão e provar a soma
+    prediction: Para três funções em C (um laço simples, dois laços aninhados com `j < i`, e um laço que faz `i *= 2`), escreva quantas vezes a linha mais interna executa para n = 8, 16 e 1024, e a ordem de crescimento.
+    steps:
+      - Escreva as três funções com um contador global `ops` incrementado na linha interna.
+      - "Calcule à mão a fórmula fechada de cada uma (ex.: `n(n-1)/2` para o laço triangular) e prove a soma por indução."
+      - Rode para n = 8, 16, 32, ..., 2^20 e imprima `ops` e a razão `ops(2n)/ops(n)`.
+      - Compare a contagem com a sua fórmula e com a previsão; explique qualquer diferença (off-by-one, arredondamento de log).
+    checks:
+      - A contagem impressa bate exatamente com a fórmula fechada para todos os n testados.
+      - A prova por indução tem caso base e passo indutivo escritos.
+      - As razões tendem a 2, 4 e ~1 (logarítmico) e você explica por quê.
+  experiment:
+    title: Quando a medição desmente o modelo RAM
+    steps:
+      - "Numa pasta de laboratório, escreva `sum.c` que soma um array de `int` de tamanho n de duas formas: sequencial (`i = 0..n-1`) e com saltos (`i = (i + 4099) % n`, visitando todos os índices quando n é potência de 2)."
+      - "Compile com `-O2 -g`, meça com `clock_gettime(CLOCK_MONOTONIC)` para n de 2^10 a 2^26, repetindo 5 vezes e guardando a mediana em CSV."
+      - Calcule o tempo por elemento (ns/elemento) e plote contra n em escala log.
+      - "Rode `perf stat -e cache-misses,cache-references,instructions,cycles ./sum` para um n pequeno (cabe no L1/L2) e um grande (maior que o L3) nos dois modos."
+      - Escreva uma hipótese sobre onde a curva muda de patamar a partir dos tamanhos de cache vistos em `lscpu`.
+    observe:
+      - Os dois modos são O(n), mas o tempo por elemento do modo com saltos sobe em degraus perto dos tamanhos de L1, L2 e L3.
+      - A diferença de cache-misses entre os modos no n grande, e o IPC (instructions/cycles) caindo.
+  reflectionQuestions:
+    - Por que dobrar n e olhar a razão é mais informativo do que medir um único tamanho grande?
+    - Que suposição do modelo RAM o seu experimento quebrou, e quando ela ainda é uma boa aproximação?
+    - Num endpoint do backend que lista tarefas, onde um custo O(n²) poderia se esconder sem ninguém perceber até a base crescer?
+  completionCriteria:
+    - Mostra contagem de operações impressa que coincide com a fórmula fechada derivada à mão para três laços.
+    - Apresenta CSV e gráfico de ns/elemento por n com degraus associados aos tamanhos de cache do `lscpu`.
+    - Mostra a saída de `perf stat` comparando cache-misses entre acesso sequencial e com saltos.
+  evidencePrompts:
+    - Tabela n × ops × razão e a prova por indução da soma triangular.
+    - Gráfico de tempo por elemento com anotações dos níveis de cache e a saída do perf stat.
+  firstAction: Escreva no papel quantas vezes `for (i = 1; i < n; i *= 2)` executa para n = 16 e n = 1000.
 
 - id: searching-sorting
   stage: s05-algorithms-basics
   title: Busca e ordenação
-  status: planned
+  status: authored
   objective: Implementar busca linear e binária e algoritmos de ordenação, comparando invariantes, estabilidade e desempenho medido.
-  whyItMatters: Ordenar e buscar estão por trás de índices, paginação e quase toda manipulação de dados.
+  whyItMatters: Ordenar e buscar estão por trás de índices, paginação e quase toda manipulação de dados. Saber o invariante de uma busca binária evita os off-by-one que derrubam implementações "simples" há décadas.
   prerequisites: [complexity-analysis]
-  mathThreads: [proofs]
+  related: [binary-search-trees, heaps-priority-queues, indexes]
+  mathThreads: [proofs, combinatorics]
+  explanation: |
+    **Busca linear** olha cada elemento: `O(n)`, funciona em qualquer ordem. **Busca binária** exige um array ordenado e descarta metade do intervalo por comparação: `O(log n)`. O difícil não é a ideia, é a fronteira. A técnica que evita erros é escrever o **invariante de laço**: "se o alvo existe, ele está em `a[lo..hi)`". Cada passo precisa (1) manter o invariante e (2) encolher o intervalo; quando `lo == hi`, o invariante diz a resposta. Isso é uma prova: inicialização, manutenção e término.
+
+    Ordenações por comparação também se explicam por invariantes:
+
+    - **Insertion sort**: `a[0..i)` está ordenado; insere `a[i]` deslocando os maiores. `O(n²)` no pior caso, mas linear quase ordenado e muito amigo do cache.
+    - **Merge sort**: divide, ordena as metades e intercala; `O(n log n)` sempre, precisa de `O(n)` de memória extra, é **estável** (iguais mantêm a ordem original).
+    - **Quicksort**: particiona em torno de um pivô; `O(n log n)` esperado, `O(n²)` com pivô ruim (array já ordenado e pivô no extremo).
+
+    Existe um limite: qualquer ordenação **só por comparação** precisa de `Ω(n log n)` comparações no pior caso, porque há `n!` ordens possíveis e cada comparação no máximo divide as possibilidades ao meio (`log2(n!) ≈ n log2 n`). Counting sort e radix sort escapam disso porque não comparam — olham os dígitos da chave.
+
+    **Estabilidade** importa quando se ordena por várias chaves: ordenar tarefas por prazo e depois, de forma estável, por prioridade deixa tarefas de mesma prioridade ainda ordenadas por prazo. Na prática, bibliotecas usam híbridos (introsort, Timsort) que trocam de algoritmo conforme o tamanho e o padrão dos dados.
+  misconceptions:
+    - claim: Busca binária é trivial de implementar.
+      correction: Variações em `mid`, `<` vs `<=` e `hi = mid` vs `hi = mid - 1` geram laços infinitos e acessos fora do array. Sem um invariante explícito, é fácil errar; `(lo + hi) / 2` ainda pode estourar int com arrays enormes.
+    - claim: Quicksort é sempre o mais rápido.
+      correction: É rápido em média, mas degrada para O(n²) com pivô ruim e não é estável. Para entradas quase ordenadas, insertion sort ou Timsort vencem.
+    - claim: Nenhum algoritmo de ordenação pode ser melhor que O(n log n).
+      correction: O limite vale para ordenação baseada em comparações. Counting e radix sort são lineares quando as chaves têm faixa ou tamanho limitado.
   resources:
     start: mit-6006
+    deeper: [ods-sorting-algorithms, man-bsearch, man-qsort, mit-6042j-spring-2015]
+    videos: [mit-6006-lecture-3-sets-sorting, cs61b-2019-lecture-29-basic-sorts]
+  exercise:
+    id: ex-binary-search-invariant
+    title: Busca binária com invariante provado
+    prediction: Para `a = {1, 3, 3, 3, 7}` e alvo 3, que índice a sua busca devolve? E para alvo 4 e alvo 8? Escreva antes de implementar.
+    steps:
+      - "Escreva em C `size_t lower_bound(const int *a, size_t n, int x)` que devolve o primeiro índice com `a[i] >= x`, usando o intervalo semiaberto `[lo, hi)`."
+      - Escreva o invariante como comentário e prove inicialização, manutenção e término (por que o laço sempre encolhe?).
+      - Teste contra uma busca linear em 100 mil arrays aleatórios pequenos (tamanhos 0 a 20, valores repetidos) e compare as respostas.
+      - Introduza de propósito um bug (`hi = mid - 1`) e veja o teste aleatório encontrar o contraexemplo mínimo.
+      - Implemente insertion sort e merge sort e verifique estabilidade ordenando structs `{chave, posicao_original}`.
+    checks:
+      - O teste aleatório passa em 100 mil casos e falha com o bug introduzido, mostrando a entrada que quebrou.
+      - O comentário do invariante cobre os três passos da prova.
+      - A verificação de estabilidade mostra merge sort estável e uma variante instável (ex. selection sort) falhando.
+  experiment:
+    title: Corrida de ordenações com entradas adversárias
+    steps:
+      - "Numa pasta de laboratório, gere entradas de n = 1e3 a 1e7 em quatro formatos: aleatória, já ordenada, invertida e com poucos valores distintos."
+      - Meça insertion sort (até 1e5), merge sort, um quicksort com pivô no último elemento e `qsort` da libc, guardando a mediana de 5 execuções.
+      - Conte comparações com um contador global além do tempo, e compare com `n log2 n`.
+      - "Rode o quicksort ingênuo no array já ordenado com n grande e observe o tempo e a profundidade de recursão (ou o crash por stack overflow com `ulimit -s`)."
+      - Troque para pivô aleatório ou mediana-de-três e repita.
+    observe:
+      - O quicksort ingênuo em entrada ordenada vira quadrático (e pode estourar a stack), enquanto o pivô aleatório volta a n log n.
+      - Insertion sort vence em n pequeno e em entrada já ordenada; a contagem de comparações acompanha a teoria.
+  reflectionQuestions:
+    - Por que um invariante escrito antes do código torna a busca binária mais fácil de acertar do que testar "na mão"?
+    - Onde a estabilidade de ordenação aparece numa listagem paginada de tarefas ordenada por duas colunas?
+    - O que o argumento das n! permutações diz sobre qualquer algoritmo que você ainda vá inventar?
+  completionCriteria:
+    - Mostra `lower_bound` com invariante comentado passando em 100 mil testes aleatórios contra busca linear.
+    - Apresenta tabela de tempo e comparações por algoritmo e formato de entrada, incluindo o caso quadrático do quicksort ingênuo.
+    - Demonstra com saída de teste qual ordenação é estável e qual não é.
+  evidencePrompts:
+    - Código da busca com o invariante e a saída do teste aleatório pegando o bug introduzido.
+    - Tabela/gráfico da corrida de ordenações com uma frase explicando cada anomalia.
+  firstAction: Escreva num comentário o invariante "se x existe, está em a[lo..hi)" e desenhe lo e hi num array de 5 elementos.
 
 - id: dynamic-arrays
   stage: s05-algorithms-basics
   title: Arrays dinâmicos
-  status: planned
+  status: authored
   objective: Analisar o custo amortizado do redimensionamento e comparar estratégias de crescimento.
-  whyItMatters: ArrayList em Java, arrays em JavaScript e vetores em geral funcionam assim.
+  whyItMatters: ArrayList em Java, arrays em JavaScript e vetores em geral funcionam assim. Entender o redimensionamento explica picos de latência, uso de memória inesperado e por que ponteiros para dentro de um vetor podem ficar inválidos.
   prerequisites: [complexity-analysis, dynamic-allocation-ownership]
+  related: [hash-tables, stacks-queues, memory-allocators]
+  mathThreads: [proofs, combinatorics]
+  explanation: |
+    Um **array dinâmico** guarda três coisas: um ponteiro para um bloco contíguo, o `len` (quantos elementos estão em uso) e a `cap` (quantos cabem). `push` escreve em `data[len++]` enquanto `len < cap`. Quando enche, aloca um bloco maior, copia tudo e libera o antigo — em C, `realloc` faz isso e **pode mover o bloco**, invalidando qualquer ponteiro para elementos antigos.
+
+    A estratégia de crescimento decide tudo:
+
+    - **Crescer somando** uma constante `k`: a cada `k` pushes há uma cópia de tudo. O total copiado é `k + 2k + 3k + ... ≈ n²/(2k)` — quadrático.
+    - **Crescer multiplicando** por um fator `r > 1` (2 ou 1,5): as cópias somam `1 + 2 + 4 + ... + n < 2n`. Dividindo pelos `n` pushes, cada um custa `O(1)` **amortizado**, mesmo que um push isolado custe `O(n)`.
+
+    A prova clássica é o **método do banqueiro**: cobre 3 "moedas" por push — 1 paga a escrita e 2 ficam guardadas. Quando a capacidade dobra de `c` para `2c`, os `c/2` elementos inseridos desde a última cópia guardaram `c` moedas, exatamente o necessário para copiar os `c` elementos. O saldo nunca fica negativo, então o custo total é no máximo `3n`.
+
+    Encolher exige cuidado: se o array encolher pela metade quando ficar meio cheio, alternar push/pop na fronteira causa cópias a cada operação (*thrashing*). A solução é encolher só quando chegar a 1/4. O fator também é um trade-off: 2 desperdiça até metade da memória; 1,5 desperdiça menos e, com alguns alocadores, permite reaproveitar blocos liberados.
+  misconceptions:
+    - claim: Amortizado O(1) significa que todo push é rápido.
+      correction: Um push que dispara o resize custa O(n) e pode causar um pico de latência. Amortizado é a média ao longo da sequência, não uma garantia por operação.
+    - claim: Depois de realloc, o ponteiro antigo continua válido se o tamanho só aumentou.
+      correction: realloc pode mover o bloco; o ponteiro antigo e qualquer ponteiro para elementos ficam pendurados. Sempre use o valor devolvido (e trate NULL sem perder o original).
+    - claim: Crescer de 1000 em 1000 elementos é tão bom quanto dobrar.
+      correction: Crescimento aditivo torna o total de cópias quadrático em n; só o crescimento geométrico dá custo amortizado constante.
   resources:
-    start: open-data-structures
+    start: ods-array-based-lists
+    deeper: [open-data-structures, java-arraylist-21, man-malloc, beej-c-malloc]
+    videos: [mit-6006-lecture-2-data-structures-dynamic-arrays, cs61b-2019-lecture-6-alists]
+  exercise:
+    id: ex-vec-amortized
+    title: Vetor dinâmico com contador de cópias
+    prediction: Quantos elementos no total serão copiados ao fazer 1 milhão de pushes começando com cap = 1, dobrando? E crescendo de 1000 em 1000? Faça a conta antes.
+    steps:
+      - "Implemente em C `struct vec { int *data; size_t len, cap; }` com `vec_push`, `vec_get`, `vec_pop` e `vec_free`, documentando ownership no header."
+      - "Trate falha de `realloc` sem vazar o bloco antigo (`tmp = realloc(...); if (!tmp) ...`)."
+      - Adicione um contador global de elementos copiados e rode 1 milhão de pushes com fator 2, fator 1,5 e incremento fixo de 1000.
+      - Escreva a prova do método do banqueiro para o fator 2 e compare o bound 3n com o contador.
+      - "Implemente encolhimento e provoque thrashing de propósito (encolher a 1/2), depois corrija (encolher a 1/4)."
+    checks:
+      - O contador de cópias com fator 2 fica abaixo de 2n e o aditivo cresce perto de n²/2000.
+      - A suíte roda limpa com `-fsanitize=address` e com Valgrind.
+      - A sequência push/pop na fronteira mostra o número de cópias explodindo na versão ingênua e não na corrigida.
+  experiment:
+    title: Picos de latência e ponteiros inválidos no resize
+    project: dynamic-array-hash-table
+    steps:
+      - No projeto, meça o tempo de cada push individual (clock_gettime) para 10 milhões de pushes e grave em arquivo.
+      - Plote latência por push; marque onde a capacidade dobrou.
+      - "Guarde `int *p = &v.data[0]`, faça pushes até disparar um resize e leia `*p` com ASan ligado."
+      - "Use `ltrace -e realloc` (ou um contador) para listar as chamadas de realloc e os endereços devolvidos."
+      - Compare a memória máxima (`/usr/bin/time -v`, campo Maximum resident set size) com fator 2 e fator 1,5.
+    observe:
+      - Picos isolados de latência exatamente nas potências de 2, com a maioria dos pushes na faixa de nanossegundos.
+      - O relatório heap-use-after-free do ASan ao ler pelo ponteiro antigo, e o endereço mudando entre reallocs.
+  reflectionQuestions:
+    - Por que dar a todo push o mesmo "preço" de 3 moedas é uma prova válida, mesmo que o trabalho real seja irregular?
+    - Num servidor com requisito de latência p99, quando você pré-alocaria capacidade (ensureCapacity em Java) em vez de confiar no amortizado?
+    - Que tipo de bug em C aparece quando uma função guarda ponteiro para um elemento de um vetor que outra função faz crescer?
+  completionCriteria:
+    - Mostra o contador de cópias para 1 milhão de pushes com fator 2, 1,5 e aditivo, comparado com as contas feitas antes.
+    - Apresenta gráfico de latência por push com picos nas potências de 2.
+    - Reproduz e explica o relatório do ASan de uso de ponteiro antigo após realloc.
+  evidencePrompts:
+    - Prova escrita do método do banqueiro e saída do contador de cópias.
+    - Gráfico de latência por push e o relatório do ASan anotado.
+  firstAction: Some à mão 1 + 2 + 4 + ... + 512 e compare com 1024; escreva o que isso diz sobre o total de cópias.
 
 - id: linked-lists
   stage: s05-algorithms-basics
   title: Listas ligadas
-  status: planned
+  status: authored
   objective: Implementar listas simples e duplamente ligadas e comparar seu desempenho real com arrays.
-  whyItMatters: Mostra na prática o custo de ponteiros e de má localidade de cache.
+  whyItMatters: Mostra na prática o custo de ponteiros e de má localidade de cache. Listas intrusivas aparecem no kernel Linux e em alocadores; e saber quando NÃO usar lista é tão importante quanto implementá-la.
   prerequisites: [pointers, complexity-analysis]
+  related: [dynamic-arrays, stacks-queues, cpu-memory-caches, memory-debugging]
+  mathThreads: [proofs]
+  explanation: |
+    Uma **lista ligada** é uma sequência de nós alocados separadamente, cada um com um valor e um ponteiro para o próximo (`next`); na **duplamente ligada**, também para o anterior (`prev`). Inserir ou remover num ponto **que você já tem em mãos** custa `O(1)`: só religa ponteiros, sem deslocar nada. Mas chegar à posição `i` custa `O(i)`, porque é preciso seguir os ponteiros um a um.
+
+    O custo escondido é a **localidade**. Num array, o próximo elemento está nos bytes seguintes — o hardware traz linhas de 64 bytes e o *prefetcher* adivinha o padrão. Numa lista, cada `p = p->next` é uma **dependência de carga**: o processador só sabe o próximo endereço depois que o atual chegou da memória. Se os nós estão espalhados pela heap, cada passo pode ser um *cache miss* de ~100 ns. Por isso percorrer uma lista de 10 milhões de nós pode ser 10–50x mais lento que um array do mesmo tamanho, apesar de ambos serem `O(n)`.
+
+    Truques que simplificam e protegem o código:
+
+    - **Nó sentinela** (dummy): um nó fixo antes do primeiro elimina os casos especiais de lista vazia e de inserção na cabeça.
+    - **Ponteiro para ponteiro** (`node **pp`): remove sem tratar a cabeça separadamente.
+    - **Listas intrusivas**: o nó fica dentro da struct do dado (como `struct list_head` no kernel), evitando uma alocação extra por elemento.
+
+    Os bugs típicos são de memória: usar `p->next` depois de `free(p)`, perder o resto da lista ao religar na ordem errada, ou criar um ciclo sem querer. Um invariante ajuda a testar: "seguindo `next` a partir da cabeça chego a NULL em exatamente `len` passos, e para todo nó `n->next->prev == n`".
+  misconceptions:
+    - claim: Inserir no meio de uma lista ligada é O(1), então ela é melhor que array para inserções.
+      correction: É O(1) só se você já tem o ponteiro para a posição. Encontrar a posição é O(n) com cache misses; na prática, deslocar elementos de um array costuma ser mais rápido até tamanhos bem grandes.
+    - claim: Listas e arrays com o mesmo O(n) de percurso têm desempenho parecido.
+      correction: O percurso da lista é limitado pela latência da memória (dependência entre cargas), enquanto o do array aproveita linhas de cache e prefetch. A diferença real pode ser de uma ordem de grandeza.
+    - claim: Liberar a lista com `for (p = head; p; p = p->next) free(p);` é correto.
+      correction: Lê `p->next` depois de `free(p)` — use-after-free. Guarde o próximo antes de liberar.
+  resources:
+    start: ods-linked-lists
+    deeper: [open-data-structures, beej-c-structs, drepper-memory, valgrind-quickstart]
+    videos: [cs61b-2019-lecture-4-sllists, cs61b-2019-lecture-5-dllists-arrays, mit-6006-lecture-2-data-structures-dynamic-arrays, scott-meyers-cpu-caches-why-you-care, mike-acton-data-oriented-design-cppcon-2014]
+  exercise:
+    id: ex-dlist-invariants
+    title: Lista duplamente ligada com verificador de invariantes
+    prediction: Desenhe os ponteiros de uma lista com sentinela circular contendo 2 elementos. Quantos ponteiros mudam ao remover o primeiro?
+    steps:
+      - "Implemente em C uma lista duplamente ligada com sentinela circular: `push_front`, `push_back`, `remove_node`, `find` e `free_all`."
+      - "Escreva `check_invariants(list)` que verifica: percorrer `next` volta à sentinela em `len` passos, e `n->next->prev == n` para todo nó."
+      - Chame o verificador após cada operação num teste com 100 mil operações aleatórias comparando com um array de referência.
+      - "Introduza de propósito o bug de liberar com `p = p->next` depois do `free` e rode com Valgrind e ASan."
+      - Desenhe (caixas e setas) o estado antes e depois de cada operação de um caso pequeno.
+    checks:
+      - O teste aleatório termina sem violar invariantes e com conteúdo igual ao array de referência.
+      - Valgrind/ASan apontam a linha do use-after-free introduzido; após a correção, zero erros e zero leaks.
+      - Os desenhos batem com os endereços impressos no gdb para o caso pequeno.
+  experiment:
+    title: Lista contra array — o custo de seguir ponteiros
+    steps:
+      - "Numa pasta de laboratório, crie n inteiros como array contíguo e como lista ligada com nós alocados em ordem, e outra lista com nós embaralhados (aloque todos, embaralhe a ordem de ligação)."
+      - Some todos os elementos nas três estruturas para n de 1e3 a 1e7 e registre ns/elemento (mediana de 5).
+      - "Rode `perf stat -e cache-misses,cycles,instructions` nas três versões com n = 1e7."
+      - "Compare inserção no meio: array com `memmove` versus lista com busca linear até a posição, para n = 1e4 e 1e5."
+    observe:
+      - A lista embaralhada fica muito mais lenta por elemento que a lista em ordem, que por sua vez perde para o array.
+      - Os cache-misses da lista embaralhada e o IPC baixo; a inserção no array com memmove vencendo a lista mesmo sendo O(n).
+  reflectionQuestions:
+    - Por que o mesmo código de percurso fica mais lento só porque os nós foram ligados em outra ordem?
+    - Quando uma lista ligada é a escolha certa num sistema real (pense em LRU, listas intrusivas do kernel, filas de espera)?
+    - Como o nó sentinela muda a prova de correção da remoção?
+  completionCriteria:
+    - Mostra a lista duplamente ligada passando 100 mil operações aleatórias com o verificador de invariantes ativo.
+    - Apresenta relatório do Valgrind ou ASan para o use-after-free introduzido e a execução limpa após a correção.
+    - Mostra tabela de ns/elemento e cache-misses para array, lista em ordem e lista embaralhada.
+  evidencePrompts:
+    - Código do verificador de invariantes e saída do teste aleatório.
+    - Tabela/gráfico da comparação com o trecho do perf stat.
+  firstAction: Desenhe três caixas ligadas por setas e escreva a ordem exata das atribuições para inserir uma quarta no meio sem perder nenhuma.
 
 - id: stacks-queues
   stage: s05-algorithms-basics
   title: Pilhas e filas
-  status: planned
+  status: authored
   objective: Implementar pilhas e filas (inclusive buffer circular) e reconhecê-las em sistemas reais.
-  whyItMatters: Chamadas de função, desfazer/refazer, filas de jobs e buffers de rede são pilhas e filas.
+  whyItMatters: Chamadas de função, desfazer/refazer, filas de jobs e buffers de rede são pilhas e filas. O buffer circular é a estrutura por trás de pipes, sockets e filas entre threads.
   prerequisites: [dynamic-arrays, linked-lists]
+  related: [bounded-queues, graphs-traversal, stack-heap-lifetime, tokenizing-parsing]
+  mathThreads: [proofs]
+  explanation: |
+    **Pilha** e **fila** são interfaces definidas pela ordem de saída. A pilha é **LIFO** (o último a entrar é o primeiro a sair: `push`/`pop`); a fila é **FIFO** (`enqueue`/`dequeue`). Ambas prometem `O(1)` por operação; a pergunta é com qual estrutura cumprir isso.
+
+    A **pilha** sobre array dinâmico é natural: `push` escreve em `data[top++]`, `pop` lê `data[--top]`. A **call stack** do processo é exatamente isso, com frames em vez de inteiros; recursão profunda demais esgota a área reservada. Pilhas também aparecem em desfazer/refazer, avaliação de expressões, verificação de parênteses e DFS iterativa.
+
+    A **fila** sobre array tem um problema: remover do início deslocando tudo custa `O(n)`. O **buffer circular** resolve com dois índices, `head` (próximo a sair) e `tail` (próximo a entrar), que avançam módulo a capacidade: `tail = (tail + 1) % cap`. Ninguém se desloca; os índices dão a volta. Detalhes que pegam:
+
+    - Distinguir **cheio** de **vazio** (ambos têm `head == tail`): guarde `count` ou deixe uma posição sempre livre.
+    - Com `cap` potência de 2, `% cap` vira `& (cap - 1)`, o truque usado no kernel.
+    - Ao crescer, copie os elementos **na ordem lógica** (de `head` dando a volta), não o bloco cru.
+
+    Filas **limitadas** (capacidade fixa) são uma decisão de projeto: quando enchem, o produtor espera, descarta ou recebe erro — isso é *backpressure*. Uma fila ilimitada só esconde o problema até a memória acabar. Esse é o ponto de partida para as filas entre threads da etapa de concorrência.
+  misconceptions:
+    - claim: Uma fila precisa de lista ligada para ter dequeue O(1).
+      correction: Um buffer circular sobre array dá O(1) sem uma alocação por elemento e com melhor localidade; é o que ArrayDeque e o kernel usam.
+    - claim: head == tail significa fila vazia.
+      correction: No buffer circular, também pode significar cheia. É preciso um contador ou sacrificar uma posição para distinguir.
+    - claim: Uma fila sem limite de tamanho é mais robusta.
+      correction: Se o produtor é mais rápido que o consumidor, ela cresce até esgotar a memória e a latência explode. Limitar e definir o que fazer quando enche (backpressure) é mais robusto.
+  resources:
+    start: ods-array-based-lists
+    deeper: [ods-linked-lists, linux-kernel-circular-buffers, java-arraydeque-21]
+    videos: [mit-6006-lecture-2-data-structures-dynamic-arrays, cs61b-2019-lecture-5-dllists-arrays]
+  exercise:
+    id: ex-ring-buffer
+    title: Buffer circular com testes de fronteira
+    prediction: Numa fila circular de capacidade 4, faça enqueue de 1,2,3, dequeue de 2 elementos e enqueue de 4,5,6. Escreva os valores de head, tail e o conteúdo do array em cada passo.
+    steps:
+      - "Implemente em C `struct ring { int *buf; size_t head, tail, count, cap; }` com `ring_push`, `ring_pop`, `ring_full`, `ring_empty`, devolvendo erro (não abortando) quando cheia."
+      - Escreva testes que dão várias voltas no array e conferem a ordem FIFO contra uma fila de referência simples.
+      - "Implemente uma pilha sobre o seu vetor dinâmico e use-a para verificar parênteses balanceados em `(a[b]{c})`."
+      - Adicione a versão que cresce, copiando na ordem lógica; crie um teste que falha se você copiar o bloco cru.
+      - Troque `% cap` por `& (cap - 1)` exigindo cap potência de 2 e verifique com `assert`.
+    checks:
+      - O estado de head/tail/conteúdo impresso bate com a previsão feita no papel.
+      - Os testes de várias voltas e de crescimento passam, e o teste de cópia crua falha quando o bug é introduzido.
+      - O verificador de parênteses rejeita `(]` e `((` e aceita expressões balanceadas.
+  experiment:
+    title: Filas e pilhas reais no Linux
+    steps:
+      - "Numa pasta de laboratório, rode `yes | pv -L 1k > /dev/null` ou um produtor rápido e um consumidor lento ligados por pipe, e use `strace -e write` no produtor para ver o write bloquear quando o buffer do pipe enche."
+      - "Descubra a capacidade do pipe com `fcntl(fd, F_GETPIPE_SZ)` num pequeno programa em C."
+      - "Num programa recursivo, use o gdb (`bt`) para ver a call stack como pilha de frames, e reduza `ulimit -s` até provocar stack overflow."
+      - Simule uma fila de jobs com seu buffer circular limitado e um produtor 2x mais rápido; compare descartar, bloquear (espera ativa simulada) e crescer sem limite, medindo memória e itens perdidos.
+    observe:
+      - O write do produtor parando quando o pipe enche (backpressure do kernel) e o tamanho do buffer devolvido por F_GETPIPE_SZ.
+      - O backtrace mostrando os frames empilhados e a profundidade em que o stack overflow acontece.
+  reflectionQuestions:
+    - Por que pipes e sockets usam buffers de tamanho fixo em vez de crescerem sem limite?
+    - Que estrutura você usaria para desfazer/refazer num editor e por quê duas pilhas resolvem?
+    - Que decisão de produto está escondida em "o que fazer quando a fila de jobs enche"?
+  completionCriteria:
+    - Mostra o buffer circular passando testes que dão várias voltas e cobrem cheio, vazio e crescimento.
+    - Apresenta saída do strace mostrando o produtor bloqueado num pipe cheio e o valor de F_GETPIPE_SZ.
+    - Mostra a comparação de políticas de fila cheia com memória usada e itens descartados.
+  evidencePrompts:
+    - Tabela de head/tail prevista no papel ao lado da saída do programa.
+    - Trecho do strace do pipe e a tabela da simulação de fila de jobs.
+  firstAction: Desenhe um array de 4 posições em círculo e marque head e tail após três enqueues e um dequeue.

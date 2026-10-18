@@ -3,52 +3,346 @@
 - id: binary-search-trees
   stage: s06-trees-hashing-graphs
   title: Árvores de busca
-  status: planned
+  status: authored
   objective: Implementar uma árvore binária de busca e explicar por que o balanceamento importa.
-  whyItMatters: Base para entender os índices B-tree dos bancos de dados.
+  whyItMatters: Base para entender os índices B-tree dos bancos de dados. TreeMap em Java, o escalonador e o gerenciamento de memória do Linux usam árvores balanceadas para manter buscas e intervalos em O(log n).
   prerequisites: [searching-sorting, linked-lists]
-  resources:
-    start: open-data-structures
-    deeper: [akita-trees]
+  related: [heaps-priority-queues, hash-tables, indexes]
   mathThreads: [graphs, proofs]
+  explanation: |
+    Uma **árvore binária de busca** (BST) é feita de nós com uma chave e dois filhos, com um **invariante**: toda chave na subárvore esquerda é menor que a do nó, e toda chave na direita é maior. Buscar é descer comparando — a cada nível, metade das possibilidades (numa árvore boa) some, como na busca binária, mas agora com inserção e remoção baratas.
+
+    O custo de busca, inserção e remoção é `O(h)`, onde `h` é a **altura**. E aí está a armadilha: a altura depende da **ordem de inserção**. Inserir chaves aleatórias dá altura esperada `O(log n)`; inserir `1, 2, 3, ..., n` cria uma "árvore" que é uma lista ligada torta, com `h = n`. Uma árvore binária de altura `h` tem no máximo `2^(h+1) - 1` nós — prova simples por indução —, então `log2 n` é o melhor possível.
+
+    Operações que vale entender pelo mecanismo:
+
+    - **Percurso em ordem** (esquerda, nó, direita) lista as chaves ordenadas — consequência direta do invariante, provável por indução na estrutura.
+    - **Remoção** com dois filhos: troque a chave pelo **sucessor** (o menor da subárvore direita) e remova o sucessor, que tem no máximo um filho.
+    - **Consultas de intervalo** (`todas as tarefas com prazo entre X e Y`) visitam só os ramos que podem conter respostas — algo que tabelas hash não fazem.
+
+    **Árvores balanceadas** (AVL, rubro-negra) mantêm `h = O(log n)` fazendo **rotações** locais após inserções e remoções — a rotação preserva o invariante de ordem e muda só alguns ponteiros. Bancos de dados usam **B-trees**: nós com centenas de chaves, para que cada nível seja uma página de disco lida de uma vez e a árvore fique com 3 ou 4 níveis mesmo com bilhões de linhas.
+  misconceptions:
+    - claim: Busca em BST é sempre O(log n).
+      correction: É O(h). Sem balanceamento, inserir chaves já ordenadas gera altura n e busca linear — o caso comum de IDs sequenciais e timestamps.
+    - claim: Basta verificar que cada nó é maior que o filho esquerdo e menor que o direito.
+      correction: O invariante vale para a subárvore inteira. Um neto à esquerda pode ser maior que o avô e passar no teste local; verifique passando limites mínimo e máximo na recursão.
+    - claim: Tabela hash sempre substitui uma árvore de busca.
+      correction: Hash não mantém ordem. Consultas de intervalo, mínimo/máximo, sucessor e iteração ordenada precisam de uma estrutura ordenada.
+  resources:
+    start: ods-binary-trees
+    deeper: [akita-trees, open-data-structures, linux-kernel-rbtree, mit-6042j-spring-2015]
+    videos: [akitando-95-arvores-video, mit-6006-lecture-6-binary-trees-1, cs61b-2019-lecture-16-bsts, mit-6006-lecture-7-binary-trees-2-avl, cs61b-2019-lecture-17-b-trees]
+  exercise:
+    id: ex-bst-validate-height
+    title: BST com validador e medição de altura
+    prediction: Qual a altura da BST ao inserir 1..1000 em ordem? E em ordem aleatória? Estime antes de rodar (compare com log2 1000 ≈ 10).
+    steps:
+      - "Implemente em C uma BST de `int` com `insert`, `contains`, `remove` (incluindo dois filhos via sucessor), `height` e `free_tree` (pós-ordem)."
+      - "Escreva `is_bst(node, min, max)` e chame após cada operação num teste com 100 mil operações aleatórias comparando com um array ordenado de referência."
+      - Prove por indução que o percurso em ordem de uma BST válida imprime as chaves em ordem crescente.
+      - Meça a altura para n = 1e3, 1e4, 1e5 inserindo em ordem crescente e em ordem aleatória (embaralhamento Fisher–Yates).
+      - "Introduza de propósito um bug em remove (esquecer de religar o filho) e mostre o validador e o ASan pegando."
+    checks:
+      - O teste aleatório passa com o validador ativo e falha com o bug introduzido.
+      - A tabela de alturas mostra ~n para a entrada ordenada e um valor próximo de um múltiplo pequeno de log2 n para a aleatória.
+      - A prova do percurso em ordem tem caso base (árvore vazia) e passo indutivo.
+  experiment:
+    title: Árvore degenerada, recursão e o que índices de banco fazem diferente
+    steps:
+      - "Numa pasta de laboratório, insira 1e5 chaves em ordem crescente na sua BST e busque a maior; meça o tempo e compare com chaves embaralhadas."
+      - "Com a versão recursiva de insert e `ulimit -s` reduzido (ex. 1024), aumente n até provocar stack overflow; confirme com `bt` no gdb a profundidade."
+      - Reescreva insert de forma iterativa e repita.
+      - "Opcional: implemente rotações (AVL ou treap) e mostre a altura caindo para O(log n) com a mesma entrada ordenada."
+      - "Em Java, compare `TreeMap` e `HashMap` numa consulta de intervalo (`subMap`) sobre 1e6 prazos de tarefas."
+    observe:
+      - A busca na árvore degenerada ficando linear (e lenta) e o stack overflow da versão recursiva com entrada ordenada.
+      - A altura da versão balanceada e a vantagem do TreeMap em consultas de intervalo.
+  reflectionQuestions:
+    - Por que IDs sequenciais são o pior caso para uma BST ingênua e por que isso não derruba um índice B-tree?
+    - O que uma rotação preserva e o que ela muda? Desenhe para justificar.
+    - Quando você escolheria TreeMap em vez de HashMap no backend de tarefas?
+  completionCriteria:
+    - Mostra a BST passando 100 mil operações aleatórias com o validador min/max ativo.
+    - Apresenta tabela de alturas para entrada ordenada e aleatória em três tamanhos, comparada com log2 n.
+    - Reproduz o stack overflow da inserção recursiva em árvore degenerada e mostra a versão iterativa funcionando.
+  evidencePrompts:
+    - Código do validador e a prova escrita do percurso em ordem.
+    - Tabela de alturas e o backtrace do stack overflow anotado.
+  firstAction: Desenhe a BST resultante de inserir 5, 3, 8, 1, 4 e depois a de inserir 1, 3, 4, 5, 8. Compare as alturas.
 
 - id: hash-tables
   stage: s06-trees-hashing-graphs
   title: Tabelas hash
-  status: planned
+  status: authored
   objective: Implementar uma tabela hash com tratamento de colisões e redimensionamento, medindo o fator de carga.
-  whyItMatters: HashMap, objetos JavaScript, caches e índices hash dependem disso.
+  whyItMatters: HashMap, objetos JavaScript, caches e índices hash dependem disso. Entender colisões explica desde lentidões misteriosas até ataques de negação de serviço por hash flooding.
   prerequisites: [dynamic-arrays, linked-lists]
+  related: [dynamic-arrays, binary-search-trees, indexes, timeouts-caching]
+  mathThreads: [probability, combinatorics]
+  explanation: |
+    Uma **tabela hash** transforma a chave num índice de array: `i = hash(chave) % m`, onde `m` é o número de **buckets**. Se a função espalha bem as chaves, cada bucket recebe poucas e a busca custa `O(1)` em média. Como há muito mais chaves possíveis do que buckets, **colisões** são inevitáveis (princípio da casa dos pombos), e a questão é tratá-las barato.
+
+    Duas estratégias principais:
+
+    - **Encadeamento separado**: cada bucket guarda uma lista. Com `n` chaves e `m` buckets, o **fator de carga** é `α = n/m`; supondo hashing uniforme, o tamanho esperado de uma lista é `α`, então busca custa `O(1 + α)`.
+    - **Endereçamento aberto** (ex.: *linear probing*): tudo fica no próprio array; na colisão, tenta `i+1, i+2, ...`. Excelente localidade de cache, mas as colisões formam **aglomerados** e o custo explode quando `α` passa de ~0,7. Remoção exige marcadores (*tombstones*) para não quebrar as sequências de sondagem.
+
+    A **probabilidade** explica por que colisões chegam cedo: pelo **paradoxo do aniversário**, com `m` buckets a primeira colisão é esperada após cerca de `√(πm/2)` inserções — com 1 milhão de buckets, por volta de 1.250 chaves. O número esperado de pares colidindo é `C(n,2)/m`.
+
+    Para manter `α` limitado, a tabela **redimensiona**: ao passar de um limite (0,75 no HashMap do Java), aloca o dobro de buckets e **reinsere** tudo, porque `hash % m` muda com `m`. Como no array dinâmico, crescer geometricamente dá custo amortizado `O(1)`. A função de hash é a outra metade: `hash = soma dos bytes` faz anagramas colidirem; funções como FNV-1a ou SipHash misturam os bits. Se um atacante conhece a função, pode mandar milhares de chaves que caem no mesmo bucket (*hash flooding*), transformando cada operação em `O(n)` — por isso linguagens usam hash com semente aleatória.
+  misconceptions:
+    - claim: Tabela hash tem busca O(1) sempre.
+      correction: É O(1) esperado, sob boa distribuição e fator de carga limitado. Com função ruim ou entrada adversária, todas as chaves caem no mesmo bucket e a busca vira O(n).
+    - claim: Ao redimensionar, basta copiar o array de buckets para um maior.
+      correction: O índice depende de m (hash % m). Cada chave precisa ser reinserida com o novo m, senão as buscas procuram no bucket errado.
+    - claim: Colisões só acontecem quando a tabela está quase cheia.
+      correction: Pelo paradoxo do aniversário, colisões aparecem com cerca de √m chaves — muito antes de encher. O projeto precisa tratá-las desde o início.
   resources:
-    start: open-data-structures
-  mathThreads: [probability]
+    start: ods-hash-tables
+    deeper: [algs4-hash-tables, java-hashmap-21, ods-introduction, mit-6042j-spring-2015]
+    videos: [mit-6006-lecture-4-hashing, cs61b-2019-lecture-19-hash-tables]
+  exercise:
+    id: ex-hash-collisions
+    title: Colisões, fator de carga e o paradoxo do aniversário
+    prediction: Com m = 1024 buckets e 100 chaves aleatórias, quantos pares colidindo você espera (C(100,2)/1024)? Com que número de chaves a primeira colisão costuma aparecer?
+    steps:
+      - "Implemente em C duas funções de hash para strings: soma dos bytes e FNV-1a de 64 bits."
+      - Insira 100 mil ids de tarefa (`task-000001`...) numa tabela com encadeamento e m fixo; imprima o histograma do tamanho dos buckets para cada função.
+      - "Simule 10 mil vezes: insira chaves aleatórias em m = 1024 buckets até a primeira colisão; compare a média com √(πm/2)."
+      - Conte pares colidindo para n = 100 e compare com C(n,2)/m.
+      - Adicione redimensionamento ao passar de α = 0,75, com reinserção, e mostre um teste que falha se você copiar os buckets sem reinserir.
+    checks:
+      - O histograma mostra a soma de bytes concentrando ids parecidos em poucos buckets e o FNV-1a próximo de uniforme.
+      - A média simulada da primeira colisão fica perto de 40 para m = 1024 e a contagem de pares bate com C(n,2)/m.
+      - O teste de redimensionamento sem reinserção falha e a versão correta passa sob ASan.
+  experiment:
+    title: Encadeamento contra linear probing, cache e hash flooding
+    project: dynamic-array-hash-table
+    steps:
+      - No projeto, meça tempo médio de get com sucesso e sem sucesso para α de 0,25 a 0,95 nas versões com encadeamento e com linear probing (1e6 chaves).
+      - "Rode `perf stat -e cache-misses,cycles` nas duas versões com α = 0,5."
+      - Registre o comprimento médio e máximo das sondagens/listas por α e plote.
+      - Gere de propósito 50 mil chaves que colidem no mesmo bucket para a sua função (busca por força bruta) e meça o tempo de inserção contra chaves aleatórias.
+      - "Em Java, rode o mesmo ataque contra um HashMap com chaves que têm hashCode igual e observe (o HashMap converte buckets grandes em árvore)."
+    observe:
+      - Linear probing mais rápido com α baixo por localidade, e o custo explodindo perto de α = 0,9; encadeamento degradando de forma mais suave.
+      - A inserção com chaves colidentes ficando quadrática no total na sua tabela, e bem menos grave no HashMap do Java.
+  reflectionQuestions:
+    - Por que o paradoxo do aniversário torna o tratamento de colisões obrigatório mesmo com tabelas enormes?
+    - O que muda no custo de redimensionamento se a tabela guarda o hash já calculado de cada chave?
+    - Que endpoint do backend de tarefas seria vulnerável a hash flooding, e como semente aleatória ou limite de tamanho ajudam?
+  completionCriteria:
+    - Mostra histogramas de buckets das duas funções de hash para 100 mil ids de tarefa.
+    - Apresenta a simulação da primeira colisão e a contagem de pares comparadas com as fórmulas de probabilidade.
+    - Mostra gráfico de custo por fator de carga para encadeamento e linear probing, incluindo o efeito das chaves colidentes.
+  evidencePrompts:
+    - Histogramas e a tabela simulação versus fórmula.
+    - Gráfico de custo por α e saída do perf stat comparando as duas estratégias.
+  firstAction: Calcule hash = soma dos bytes para "abc" e "cba" e explique o que isso significa para ids de tarefa.
 
 - id: heaps-priority-queues
   stage: s06-trees-hashing-graphs
   title: Heaps e filas de prioridade
-  status: planned
+  status: authored
   objective: Implementar um heap binário e usá-lo como fila de prioridade.
-  whyItMatters: Escalonadores, timers e algoritmos de caminho mínimo usam filas de prioridade.
+  whyItMatters: Escalonadores, timers e algoritmos de caminho mínimo usam filas de prioridade. Quando um job "urgente" fica preso atrás de mil jobs comuns, é uma fila de prioridade que faltou.
   prerequisites: [binary-search-trees, dynamic-arrays]
+  related: [stacks-queues, searching-sorting, graphs-traversal]
+  mathThreads: [proofs, graphs]
+  explanation: |
+    Uma **fila de prioridade** oferece `insert` e `extract_min` (ou max): sempre sai o elemento de maior prioridade, não o mais antigo. Um array ordenado dá `extract` barato e `insert` caro; um não ordenado, o contrário. O **heap binário** equilibra os dois em `O(log n)`.
+
+    O heap é uma árvore binária **completa** (todos os níveis cheios, exceto o último, preenchido da esquerda) com a **propriedade de heap**: cada pai é menor ou igual aos filhos. Isso garante que o mínimo está na raiz, mas não ordena irmãos — é uma ordem muito mais fraca que a da BST, e por isso mais barata de manter. Por ser completa, a árvore cabe num **array sem ponteiros**: o nó `i` tem filhos `2i+1` e `2i+2` e pai `(i-1)/2`. Altura `⌊log2 n⌋`, boa localidade, nenhuma alocação por nó.
+
+    As duas operações restauram o invariante localmente:
+
+    - **Insert** (*sift-up*/*swim*): coloca no fim e troca com o pai enquanto for menor.
+    - **Extract-min** (*sift-down*/*sink*): move o último para a raiz e troca com o menor filho enquanto for maior.
+
+    **Construir** um heap a partir de `n` elementos aplicando sift-down de baixo para cima custa `O(n)`, não `O(n log n)`: metade dos nós são folhas e não descem nada, um quarto desce no máximo 1 nível etc.; a soma `Σ h·n/2^(h+1)` converge para `O(n)`. Daí sai o **heapsort**: build + `n` extrações, `O(n log n)` sem memória extra. Na prática, filas de prioridade aparecem em timers (o próximo a expirar), escalonamento de jobs por prioridade, top-k de um fluxo e no algoritmo de Dijkstra.
+  misconceptions:
+    - claim: Um heap é uma árvore de busca ordenada.
+      correction: Só garante pai menor que filhos; irmãos e primos não têm ordem. Buscar um elemento arbitrário é O(n).
+    - claim: Construir um heap com n elementos custa O(n log n).
+      correction: Inserindo um por um, sim; com heapify de baixo para cima, O(n), porque a maioria dos nós está perto das folhas.
+    - claim: Fila de prioridade preserva a ordem de chegada entre itens de mesma prioridade.
+      correction: Heaps não são estáveis. Para FIFO entre empates, inclua um número de sequência na chave de comparação.
+  resources:
+    start: ods-heaps
+    deeper: [algs4-priority-queues, java-priorityqueue-21, open-data-structures]
+    videos: [mit-6006-lecture-8-binary-heaps, cs61b-2019-lecture-20-heaps-pqs, akitando-95-arvores-video]
+  exercise:
+    id: ex-binary-heap
+    title: Heap binário em array com verificação do invariante
+    prediction: Insira 5, 3, 8, 1, 9, 2 num min-heap vazio. Escreva o array após cada inserção e depois de um extract_min.
+    steps:
+      - "Implemente em C um min-heap sobre o seu vetor dinâmico com `heap_push`, `heap_pop`, `heap_peek` e `heapify` (build bottom-up)."
+      - Escreva `is_heap(a, n)` e chame após cada operação num teste aleatório que compara a sequência de pops com a ordenação do mesmo conjunto.
+      - "Adicione um contador de trocas e compare build por inserções sucessivas versus heapify para n = 1e6; relacione com a soma Σ h·n/2^(h+1)."
+      - "Use o heap como fila de prioridade de tarefas `{prioridade, seq, titulo}` desempatando por `seq` para manter FIFO entre iguais."
+    checks:
+      - Os arrays impressos batem com a previsão no papel.
+      - O teste aleatório passa com is_heap ativo e a fila de tarefas respeita FIFO entre prioridades iguais.
+      - O heapify faz menos de 2n trocas, enquanto inserções sucessivas crescem como n log n no pior caso (entrada decrescente).
+  experiment:
+    title: Top-k de um fluxo e heapsort contra qsort
+    steps:
+      - "Numa pasta de laboratório, gere um arquivo com 1e7 latências aleatórias e encontre as 100 maiores com um min-heap de tamanho 100, comparando com ordenar tudo."
+      - Meça tempo e memória máxima (`/usr/bin/time -v`) das duas abordagens.
+      - Implemente heapsort e compare com seu merge sort e com qsort para 1e7 inteiros, olhando `perf stat -e cache-misses`.
+      - "Em Java, use `PriorityQueue` para agendar 1e5 lembretes por horário e verifique a ordem de saída."
+    observe:
+      - O top-k com heap usando memória constante e tempo perto de n log k, contra n log n e memória n de ordenar tudo.
+      - O heapsort com mais cache-misses que o merge sort em n grande, porque os saltos 2i+1 se afastam na memória.
+  reflectionQuestions:
+    - Por que a propriedade de heap, mais fraca que a da BST, é suficiente para uma fila de prioridade?
+    - Como você evitaria que tarefas de baixa prioridade nunca sejam executadas (starvation)?
+    - Por que o heapsort, sendo O(n log n) e in-place, costuma perder para merge sort ou quicksort na prática?
+  completionCriteria:
+    - Mostra o heap passando teste aleatório com is_heap ativo e pops em ordem crescente.
+    - Apresenta contagem de trocas de heapify versus inserções sucessivas para n = 1e6.
+    - Mostra o top-k de 1e7 valores com heap e a comparação de tempo e memória contra ordenar tudo.
+  evidencePrompts:
+    - Arrays previstos e impressos para a sequência de inserções e o contador de trocas.
+    - Tabela do top-k e da comparação heapsort/merge sort/qsort com cache-misses.
+  firstAction: Desenhe o array [1, 3, 2, 5, 9, 8] como árvore usando filhos 2i+1 e 2i+2 e confira a propriedade de heap.
 
 - id: graphs-traversal
   stage: s06-trees-hashing-graphs
   title: Grafos e travessias
-  status: planned
+  status: authored
   objective: Representar grafos e implementar BFS e DFS, explicando quando usar cada uma.
-  whyItMatters: Redes, dependências, rotas e permissões são grafos.
+  whyItMatters: Redes, dependências, rotas e permissões são grafos. Seguidores numa rede social, alcance entre roteadores e "quem pode acessar este recurso" são perguntas de travessia.
   prerequisites: [stacks-queues, hash-tables]
+  related: [dependency-graphs, heaps-priority-queues, binary-search-trees]
+  mathThreads: [graphs, proofs]
+  explanation: |
+    Um **grafo** `G = (V, E)` é um conjunto de vértices e arestas entre eles; pode ser **dirigido** (`a → b` não implica `b → a`) ou não, com ou sem pesos. Árvores e listas ligadas são casos particulares. A modelagem é metade do trabalho: "tarefas com subtarefas", "usuários que seguem usuários", "páginas que linkam páginas".
+
+    A **representação** decide o custo:
+
+    - **Matriz de adjacência** `V×V`: testar se existe a aresta `(u,v)` é `O(1)`, mas ocupa `O(V²)` e listar vizinhos custa `O(V)` — bom para grafos densos e pequenos.
+    - **Listas de adjacência**: cada vértice guarda seus vizinhos (array dinâmico ou lista); `O(V + E)` de espaço. É a escolha padrão para grafos esparsos, que é o caso de quase todo grafo real. Com ids textuais, um **hash** mapeia nome → índice.
+
+    As duas travessias diferem só na estrutura de "a visitar":
+
+    - **BFS** usa **fila**: explora em camadas (distância 1, depois 2...). Em grafo sem pesos, a primeira vez que alcança um vértice é pelo **caminho com menos arestas** — o invariante é que a fila contém vértices em ordem não decrescente de distância, com diferença máxima de 1.
+    - **DFS** usa **pilha** (ou recursão): vai fundo antes de voltar. Serve para alcançabilidade, componentes, detecção de ciclos e ordenação topológica; os tempos de entrada/saída de cada vértice revelam a estrutura.
+
+    Ambas são `O(V + E)` com listas, **desde que marquem visitados** — sem isso, um ciclo faz a travessia rodar para sempre. DFS recursiva em grafo grande pode estourar a stack; a versão com pilha explícita evita isso. Para caminhos com **pesos**, troque a fila por uma fila de prioridade e chega-se ao Dijkstra.
+  misconceptions:
+    - claim: DFS encontra o caminho mais curto.
+      correction: DFS encontra algum caminho. Em grafos sem pesos, é BFS que garante o menor número de arestas; com pesos não negativos, Dijkstra.
+    - claim: Matriz de adjacência é sempre mais simples e rápida.
+      correction: Com V = 1 milhão, a matriz teria 10^12 células. Grafos reais são esparsos e listas de adjacência usam O(V + E).
+    - claim: Travessia sem conjunto de visitados funciona se o grafo for pequeno.
+      correction: Basta um ciclo para entrar em laço infinito, e mesmo sem ciclos vértices são revisitados exponencialmente em grafos com muitos caminhos.
   resources:
-    start: akita-graphs
-    deeper: [open-data-structures]
-  mathThreads: [graphs]
+    start: ods-graphs
+    deeper: [akita-graphs, algs4-undirected-graphs, mit-6042j-spring-2015, open-data-structures]
+    videos: [akitando-140-grafos-video, mit-6006-lecture-9-bfs, mit-6006-lecture-10-dfs, cs61b-2019-lecture-24-graph-implementations]
+  exercise:
+    id: ex-bfs-dfs-trace
+    title: Rastrear BFS e DFS à mão e em código
+    prediction: Num grafo de 7 vértices que você desenhar (com um ciclo), escreva a ordem de visita de BFS e de DFS a partir do vértice 0, e a distância BFS de cada um.
+    steps:
+      - "Implemente em C listas de adjacência sobre o seu vetor dinâmico, lendo arestas `u v` de um arquivo texto."
+      - BFS com o seu buffer circular devolvendo `dist[]` e `parent[]`; reconstrua o caminho até um destino seguindo `parent`.
+      - DFS recursiva e iterativa com pilha explícita, registrando tempos de entrada e saída.
+      - Compare a saída com o traço feito à mão; remova a marcação de visitados de propósito e observe o laço infinito.
+      - Teste a afirmação de BFS gerando grafos aleatórios pequenos e comparando dist[] com uma busca por força bruta de todos os caminhos.
+    checks:
+      - As ordens e distâncias impressas batem com o traço à mão.
+      - O teste aleatório confirma que dist[] da BFS é igual ao menor caminho por força bruta em todos os casos.
+      - A versão sem visitados entra em laço (interrompida por limite de passos) num grafo com ciclo.
+  experiment:
+    title: Grafos de verdade — dependências de pacotes e limite da stack
+    steps:
+      - "Numa pasta de laboratório, extraia um grafo real: no Arch, `pacman -Qi` (campo Depends On) ou no Debian `apt-cache depends`; converta para pares `pacote dependencia`."
+      - Rode BFS a partir de um pacote para listar tudo de que ele depende por camadas e conte vértices e arestas alcançados.
+      - "Gere um grafo caminho com 1e6 vértices e rode a DFS recursiva com `ulimit -s` padrão; observe o crash no gdb e rode a versão iterativa."
+      - Compare memória e tempo da matriz de adjacência e das listas para V = 2e4 com 1e5 arestas.
+    observe:
+      - O número de dependências transitivas por camada, bem maior que as diretas.
+      - O stack overflow da DFS recursiva no grafo caminho e a matriz ocupando ~400 MB (com 1 byte por célula) contra poucos MB das listas.
+  reflectionQuestions:
+    - Por que trocar a fila por uma pilha transforma BFS em (uma forma de) DFS?
+    - Que invariante da fila garante que a BFS acha o menor número de arestas? Como você o provaria?
+    - Que pergunta de produto sobre tarefas e usuários do time poderia ser respondida com uma BFS?
+  completionCriteria:
+    - Mostra BFS e DFS cuja saída coincide com o traço à mão num grafo com ciclo.
+    - Apresenta teste aleatório comparando dist[] da BFS com força bruta, sem divergências.
+    - Mostra a BFS sobre um grafo real de dependências de pacotes com contagem por camada.
+  evidencePrompts:
+    - Desenho do grafo com o traço à mão ao lado da saída do programa.
+    - Saída da BFS no grafo de pacotes e o backtrace do stack overflow da DFS recursiva.
+  firstAction: Desenhe um grafo com 5 vértices e 6 arestas e escreva suas listas de adjacência.
 
 - id: dependency-graphs
   stage: s06-trees-hashing-graphs
   title: Grafos de dependência e ordenação topológica
-  status: planned
+  status: authored
   objective: Modelar dependências como grafo dirigido, detectar ciclos e produzir uma ordem válida de execução.
-  whyItMatters: Make, gerenciadores de pacotes, migrations e este próprio roadmap usam essa ideia.
+  whyItMatters: Make, gerenciadores de pacotes, migrations e este próprio roadmap usam essa ideia. Um ciclo de dependência não detectado vira build que nunca termina, deadlock de inicialização ou import circular.
   prerequisites: [graphs-traversal]
-  related: [linking-object-files]
+  related: [linking-object-files, deadlocks, architecture-ci]
   mathThreads: [graphs, proofs]
+  explanation: |
+    Uma relação "A precisa de B antes" vira uma aresta dirigida `B → A`. Uma **ordem topológica** é uma sequência de todos os vértices em que toda aresta aponta "para frente". Ela existe **se e somente se** o grafo é um **DAG** (dirigido e acíclico): se houver ciclo `A → B → C → A`, nenhum dos três pode vir primeiro. Em termos de matemática discreta, a relação "precisa vir antes" é uma **ordem parcial**, e a ordenação topológica a estende a uma ordem total.
+
+    Dois algoritmos clássicos, ambos `O(V + E)`:
+
+    - **Kahn** (por graus de entrada): conte quantas dependências cada vértice tem; coloque numa fila os que têm zero; ao remover um, decremente o grau dos dependentes e enfileire os que zeraram. Se no fim sobraram vértices não emitidos, eles estão em ciclos — a detecção vem de graça. Os itens que estão na fila ao mesmo tempo são independentes e **podem rodar em paralelo** (é assim que `make -j` pensa).
+    - **DFS**: ao terminar um vértice (pós-ordem), empilhe-o; a ordem inversa de término é topológica. Para detectar ciclo, use três cores — branco (não visto), cinza (na pilha de recursão), preto (terminado): encontrar uma aresta para um vértice **cinza** é uma *back edge*, e ela fecha um ciclo.
+
+    A correção do método DFS tem uma prova curta: para qualquer aresta `u → v` num DAG, `v` termina antes de `u` (se `v` estivesse cinza haveria ciclo; se branco, ele é visitado e terminado dentro da visita de `u`; se preto, já terminou). Logo, inverter a ordem de término põe `u` antes de `v`.
+
+    A ordem topológica geralmente **não é única** — qualquer escolha entre itens prontos serve. Isso importa para builds reprodutíveis: se o resultado depende de qual ordem válida saiu, há uma dependência não declarada. Make, Maven/Gradle, `systemd`, migrations de banco e o pré-requisito entre tópicos deste roadmap são todos grafos de dependência.
+  misconceptions:
+    - claim: Qualquer grafo dirigido tem uma ordem topológica.
+      correction: Só DAGs. Um único ciclo torna impossível ordenar os vértices envolvidos; o algoritmo precisa detectar e reportar isso.
+    - claim: A ordem topológica é única, então dois builds sempre fazem tudo na mesma sequência.
+      correction: Em geral há muitas ordens válidas. Se o resultado muda conforme a ordem escolhida, existe uma dependência real que não foi declarada.
+    - claim: Ordem de visita da DFS (pré-ordem) já é uma ordem topológica.
+      correction: É a ordem inversa de término (pós-ordem invertida) que funciona. A pré-ordem pode colocar um vértice antes de uma de suas dependências.
+  resources:
+    start: algs4-directed-graphs
+    deeper: [man-tsort, akita-graphs, mit-6042j-spring-2015, ods-graphs]
+    videos: [mit-6006-lecture-10-dfs, cs61b-2019-lecture-27-reductions-decomposition, akitando-140-grafos-video]
+  exercise:
+    id: ex-toposort-roadmap
+    title: Ordenar o próprio roadmap e encontrar ciclos
+    prediction: Para os tópicos desta etapa e da anterior, escreva à mão uma ordem válida de estudo e diga se existe mais de uma.
+    steps:
+      - "Extraia pares `pre-requisito topico` dos arquivos `content/topics/*.yaml` (um script com grep/awk ou yq basta) para um arquivo texto."
+      - Implemente em C o algoritmo de Kahn usando um hash de nome → índice, listas de adjacência e o seu buffer circular; imprima uma ordem e as "ondas" de tópicos que podem ser estudados em paralelo.
+      - Implemente a versão DFS com três cores e confira que ambas as ordens respeitam todas as arestas com um verificador `check_order`.
+      - Introduza de propósito um ciclo no arquivo de pares (A precisa de B, B precisa de A) e faça o programa imprimir os vértices do ciclo.
+      - "Compare a saída com `tsort pares.txt` e com o comportamento do tsort diante do ciclo."
+    checks:
+      - check_order confirma que toda aresta aponta para frente nas duas ordens.
+      - O ciclo introduzido é reportado com os nomes dos tópicos envolvidos, e o tsort também o acusa.
+      - As ondas de paralelismo têm sentido (ex. tópicos sem pré-requisito entre si aparecem na mesma onda).
+  experiment:
+    title: Make como grafo de dependências
+    steps:
+      - "Numa pasta de laboratório com um pequeno projeto C de 4–5 arquivos, escreva um Makefile com regras de objeto e link."
+      - "Rode `make -n` e `make -d | grep 'Considering target'` e compare a ordem com uma ordenação topológica feita à mão."
+      - "Toque (`touch`) um header e veja quais alvos são refeitos — só os alcançáveis a partir dele no grafo."
+      - "Crie uma dependência circular (a.o depende de b.o e vice-versa) e observe a mensagem `Circular ... dependency dropped`."
+      - Remova uma dependência de header do Makefile de propósito, altere o header e mostre o build incorreto que resulta; rode `make -j4` várias vezes procurando ordens diferentes.
+    observe:
+      - A ordem em que make considera os alvos e os alvos refeitos após o touch, coerentes com o grafo.
+      - A mensagem de dependência circular e o build desatualizado causado pela aresta faltando.
+  reflectionQuestions:
+    - Por que a prova da DFS precisa considerar as três cores possíveis de v ao seguir a aresta u → v?
+    - O que uma dependência não declarada tem a ver com builds que "às vezes" quebram com make -j?
+    - Como você usaria ordenação topológica para aplicar migrations de banco ou subir serviços na ordem certa?
+  completionCriteria:
+    - Mostra a ordem topológica dos tópicos do roadmap gerada pelo seu programa e validada por check_order.
+    - Demonstra a detecção de um ciclo introduzido, com os vértices do ciclo impressos e a saída do tsort para comparação.
+    - Apresenta a saída do make mostrando alvos refeitos após touch e a mensagem de dependência circular.
+  evidencePrompts:
+    - Ordem gerada, ondas de paralelismo e o ciclo detectado.
+    - Trechos de make -d e o Makefile com a dependência circular anotados.
+  firstAction: Escreva em 5 linhas "X precisa de Y" para sua rotina de manhã e desenhe as setas.
