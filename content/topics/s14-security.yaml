@@ -1,39 +1,280 @@
 # s14-security
+#
+# Todos os experimentos desta etapa são feitos apenas no próprio laboratório
+# (app de tarefas do time rodando localmente). Nunca teste sistemas de terceiros.
 
 - id: authentication-sessions
   stage: s14-security
   title: Autenticação e sessões
-  status: planned
+  status: authored
   objective: Implementar login com hash de senha adequado e sessões seguras (cookies HttpOnly, Secure, SameSite).
-  whyItMatters: É a porta de entrada de qualquer sistema; erros aqui expõem todas as contas.
+  whyItMatters: É a porta de entrada de qualquer sistema; erros aqui expõem todas as contas. Vazamentos de bancos de senhas acontecem com frequência, e o algoritmo de hash decide se o vazamento vira catástrofe.
   prerequisites: [http-protocol, relational-modeling-constraints]
+  related: [tls-concepts, authorization, secrets-threat-modeling]
+  explanation: |
+    **Autenticação** responde "quem é você?". Com senhas, o servidor nunca deve guardar a senha, nem cifrada: guarda um **hash lento com salt**. O salt (aleatório, por usuário, guardado junto do hash) faz duas pessoas com a mesma senha terem hashes diferentes e inviabiliza tabelas pré-computadas. A lentidão importa porque, após um vazamento, o atacante testa bilhões de senhas candidatas offline: SHA-256 é rápido de propósito (milhões por segundo numa GPU); **Argon2id**, **scrypt** e **bcrypt** são caros de propósito e têm um *work factor* ajustável. O formato armazenado (`$2b$12$...`, `$argon2id$v=19$m=...`) já carrega algoritmo, custo e salt.
+
+    HTTP não tem estado, então depois do login o servidor precisa reconhecer o usuário nas próximas requisições. Numa **sessão** clássica, o servidor gera um ID aleatório e imprevisível (≥128 bits de um CSPRNG), guarda no banco "sessão X pertence ao usuário 7, expira em T" e envia o ID num cookie. Quem tem o ID *é* o usuário, por isso os atributos do cookie importam:
+    - `HttpOnly`: JavaScript da página não lê o cookie, o que limita o roubo via XSS.
+    - `Secure`: só é enviado por HTTPS.
+    - `SameSite=Lax` ou `Strict`: não é enviado em requisições disparadas por outros sites, o que reduz CSRF.
+
+    Além disso: **gere um novo ID de sessão no login** (evita *session fixation*), invalide a sessão no servidor no logout (apagar o cookie não basta), use expiração por inatividade e absoluta, e devolva a mesma mensagem para "usuário não existe" e "senha errada". Tokens assinados (JWT) são uma alternativa sem estado no servidor, mas trocam revogação fácil por complexidade — para um app web com servidor próprio, sessão em cookie costuma ser a escolha mais simples de acertar.
+  misconceptions:
+    - claim: SHA-256 com salt é suficiente para guardar senhas.
+      correction: Salt impede tabelas pré-computadas, mas SHA-256 é rápido demais; um atacante com GPU testa bilhões de candidatas. Use Argon2id, scrypt ou bcrypt com custo calibrado.
+    - claim: Apagar o cookie no navegador encerra a sessão.
+      correction: Se o servidor não invalidar o registro, quem copiou o ID continua autenticado. O logout precisa apagar ou revogar a sessão no servidor.
+    - claim: HttpOnly impede XSS.
+      correction: HttpOnly só impede que o script leia o cookie. Um script injetado ainda pode fazer requisições autenticadas em nome do usuário a partir da própria página.
   resources:
-    start: owasp-cheatsheets
+    start: owasp-password-storage-cheatsheet
+    deeper: [owasp-session-management-cheatsheet, mdn-http-cookies, mdn-set-cookie, owasp-csrf-prevention-cheatsheet, akita-crypto-2, owasp-cheatsheets, mit-6858-ocw-2014]
+    videos: [akitando-68-criptografia-video, mit-6858-lecture-17-user-authentication, computerphile-how-not-to-store-passwords, mit-6858-lecture-8-web-security-model]
+  exercise:
+    id: ex-password-hash-cost
+    title: Medir o custo de hashes de senha
+    prediction: Estime quantos hashes por segundo um notebook calcula com SHA-256 e com bcrypt custo 12. Qual a razão entre os dois?
+    steps:
+      - Em Java (Spring Security `BCryptPasswordEncoder` e `Argon2PasswordEncoder`) ou Python (`bcrypt`, `argon2-cffi`), meça quantos hashes por segundo saem com SHA-256, bcrypt custos 10/12/14 e Argon2id com parâmetros padrão.
+      - Gere o hash da mesma senha duas vezes com bcrypt e explique por que os resultados diferem; identifique algoritmo, custo e salt na string.
+      - Calcule quanto tempo levaria testar uma lista de 10 milhões de senhas comuns contra um único hash em cada algoritmo, com base nas suas medições.
+      - Escolha o custo do bcrypt para que um login leve entre 100 e 300 ms na sua máquina e justifique.
+    checks:
+      - A tabela de hashes por segundo tem pelo menos 5 configurações medidas.
+      - Você aponta os campos de algoritmo, custo e salt num hash real.
+      - O cálculo de tempo para 10 milhões de tentativas está correto em ordem de grandeza.
+  experiment:
+    title: Login com sessão em cookie no app de tarefas
+    project: task-platform
+    steps:
+      - No app de tarefas local, crie a tabela `users(id, email UNIQUE, password_hash)` e a tabela `sessions(id text PRIMARY KEY, user_id, expires_at)`.
+      - Implemente login que verifica o hash, gera um ID de sessão com `SecureRandom` (Java) ou `crypto.randomBytes` (Node) e responde com `Set-Cookie` com `HttpOnly; Secure; SameSite=Lax; Path=/`.
+      - Use `curl -v -c jar.txt -b jar.txt` para logar, acessar `/tasks` e fazer logout; confira o cabeçalho `Set-Cookie` e a tabela `sessions` a cada passo.
+      - Copie o cookie antes do logout e tente reutilizá-lo depois; corrija o código até o servidor rejeitar.
+      - No navegador, abra o DevTools (Application → Cookies) e tente `document.cookie` no console com e sem `HttpOnly`.
+      - Verifique que o ID de sessão muda entre antes e depois do login.
+    observe:
+      - Os atributos do cookie no cabeçalho e no DevTools.
+      - O registro da sessão sendo criado e apagado no banco.
+      - A resposta 401 ao reutilizar um cookie de sessão revogada.
+  reflectionQuestions:
+    - O que um atacante consegue fazer com o dump da tabela users se você usou SHA-256, e se usou Argon2id?
+    - Por que gerar um novo ID de sessão no login impede session fixation?
+    - Quando você escolheria um token sem estado (JWT) em vez de sessão no servidor, e que problema de revogação teria de resolver?
+  completionCriteria:
+    - Mostra a tabela de hashes por segundo medida e o custo de bcrypt escolhido com justificativa.
+    - Apresenta a saída do `curl -v` com `Set-Cookie` contendo HttpOnly, Secure e SameSite.
+    - Demonstra que um cookie copiado antes do logout recebe 401 depois do logout.
+  evidencePrompts:
+    - Tabela de medições e o cálculo do tempo de ataque offline.
+    - Sessão do curl anotada (login, acesso, logout, reuso rejeitado) e consulta à tabela sessions.
+  firstAction: Gere o hash bcrypt de uma senha de teste duas vezes (com `htpasswd -nbB teste senha` ou uma linha de Python) e compare as saídas.
 
 - id: authorization
   stage: s14-security
   title: Autorização
-  status: planned
+  status: authored
   objective: Aplicar verificações de autorização no servidor para cada recurso e testar os limites de acesso.
-  whyItMatters: Acesso indevido a dados de outros usuários está entre as falhas mais comuns em aplicações web.
+  whyItMatters: Acesso indevido a dados de outros usuários está entre as falhas mais comuns em aplicações web. Broken access control é o primeiro item do OWASP Top 10.
   prerequisites: [authentication-sessions]
+  related: [backend-testing-java, interfaces-testing, filesystem-permissions]
+  mathThreads: [logic, sets]
+  explanation: |
+    **Autorização** responde "você pode fazer *isto* com *este* recurso?". Autenticar diz quem é; autorizar decide, a cada requisição, se aquela identidade tem direito àquela ação sobre aquele objeto. As duas falham de jeitos diferentes: um sistema com login perfeito ainda pode deixar qualquer usuário logado ler qualquer tarefa.
+
+    A falha mais comum é **IDOR** (Insecure Direct Object Reference): a rota `GET /tasks/42` busca `SELECT * FROM tasks WHERE id = 42` e devolve, sem perguntar de quem é a tarefa 42. Basta trocar o número na URL. A correção é amarrar a consulta ao usuário da sessão — `WHERE id = $1 AND owner_id = $2` — ou checar a posse antes de agir. Esconder o botão no frontend ou usar UUIDs no lugar de inteiros não corrige: o servidor é o único lugar onde a regra é aplicada de verdade.
+
+    Princípios que evitam a maioria dos erros:
+    - **Negar por padrão**: uma rota nova sem regra explícita deve responder 403/404, não 200.
+    - **Verificar em toda requisição e em toda ação**: ler, editar, apagar e listar são verificações separadas; a listagem também precisa filtrar.
+    - **Centralizar**: uma função `canAccess(user, action, task)` ou a camada de repositório que sempre inclui o dono evita esquecer a checagem numa rota.
+    - **Least privilege**: o usuário do banco que o app usa não precisa ser superuser.
+
+    Modelos como **RBAC** (papéis: admin, membro) e verificações por posse/atributo se combinam. E autorização é testável: para cada rota, um teste com o dono (200), outro usuário (403 ou 404) e sem sessão (401).
+  misconceptions:
+    - claim: Se o botão não aparece na interface, o usuário não consegue executar a ação.
+      correction: Qualquer um pode montar a requisição com curl ou DevTools. A verificação precisa estar no servidor.
+    - claim: Trocar IDs sequenciais por UUIDs resolve IDOR.
+      correction: Dificulta adivinhar, mas IDs vazam em URLs, logs e compartilhamentos. A consulta precisa verificar o dono de qualquer jeito.
+    - claim: Se o usuário está logado, ele está autorizado.
+      correction: Login estabelece identidade, não permissão. Cada recurso e cada ação precisam da sua própria verificação.
   resources:
-    start: owasp-cheatsheets
+    start: owasp-authorization-cheatsheet
+    deeper: [owasp-idor-prevention-cheatsheet, owasp-top-10-2025, owasp-cheatsheets]
+    videos: [mit-6858-lecture-4-privilege-separation, mit-6858-lecture-8-web-security-model]
+  exercise:
+    id: ex-authz-matrix
+    title: Matriz de acesso e testes de autorização
+    prediction: Liste quais rotas do app de tarefas você acha que hoje vazariam dados se um usuário trocasse o id na URL.
+    steps:
+      - Monte uma matriz com as rotas do app (linhas) e os papéis dono, outro usuário, admin e anônimo (colunas), preenchendo o resultado esperado (200, 403/404, 401).
+      - Escreva a regra de cada célula como expressão lógica (ex.:`autenticado ∧ (dono ∨ admin)`).
+      - Implemente testes automatizados (JUnit + MockMvc, ou supertest) para cada célula da matriz.
+      - Rode os testes contra a versão atual e anote as falhas antes de corrigir.
+    checks:
+      - A matriz cobre todas as rotas, incluindo listagem e exclusão.
+      - Existe pelo menos um teste por célula e todos passam após a correção.
+      - Pelo menos uma falha real (ou introduzida de propósito) foi detectada por um teste antes da correção.
+  experiment:
+    title: Explorar e corrigir um IDOR no próprio app
+    project: task-platform
+    steps:
+      - No app de tarefas local, crie os usuários alice e bob, cada um com tarefas.
+      - Introduza de propósito numa branch a versão vulnerável de `GET /tasks/{id}` e `DELETE /tasks/{id}` (sem filtro por dono).
+      - Logado como bob (cookie no curl), percorra `GET /tasks/1` até `/tasks/20` com um loop no shell e registre quais tarefas da alice aparecem.
+      - Corrija com `WHERE id = ? AND owner_id = ?` e retorne 404 para tarefas de outros; repita o loop.
+      - Ative o log de consultas e confira que toda consulta a tasks inclui o filtro por dono.
+      - Faça commit da correção junto com o teste que falhava antes.
+    observe:
+      - As respostas 200 com dados da alice na versão vulnerável.
+      - As respostas 404 após a correção e as consultas SQL com owner_id no log.
+      - O teste que falha na versão vulnerável e passa na corrigida.
+  reflectionQuestions:
+    - Por que responder 404 em vez de 403 para recursos de outros usuários pode ser preferível?
+    - Onde centralizar a checagem de posse no seu backend para que uma rota nova não a esqueça?
+    - Como o princípio de least privilege se aplica ao usuário do PostgreSQL que o app usa?
+  completionCriteria:
+    - Mostra a saída do loop com curl expondo o IDOR na versão vulnerável e bloqueado na corrigida.
+    - Apresenta a matriz de acesso com um teste automatizado por célula, todos passando.
+    - Mostra o diff do commit com a correção e o teste de regressão.
+  evidencePrompts:
+    - Matriz de acesso com as expressões lógicas de cada regra.
+    - Saída do loop do curl antes e depois da correção.
+  firstAction: Escolha uma rota do app de tarefas e escreva a consulta SQL que ela faz hoje. Ela filtra pelo dono?
 
 - id: input-validation
   stage: s14-security
   title: Validação de entrada e injeção
-  status: planned
+  status: authored
   objective: Validar entradas na fronteira e prevenir injeção de SQL e XSS com consultas parametrizadas e escaping.
-  whyItMatters: Injeção continua sendo uma das formas mais simples de comprometer um sistema.
+  whyItMatters: Injeção continua sendo uma das formas mais simples de comprometer um sistema. O erro de origem — misturar dados com código — aparece em SQL, HTML, shell e strings em C.
   prerequisites: [authentication-sessions, c-strings]
+  related: [authorization, javascript-browser, jdbc-postgresql, tokenizing-parsing]
+  mathThreads: [logic]
+  explanation: |
+    Toda **injeção** tem a mesma raiz: o programa monta um texto que outro interpretador vai *parsear* (SQL, HTML, shell) concatenando dados vindos do usuário. Se o dado contém caracteres com significado na linguagem de destino (`'`, `<`, `;`), ele deixa de ser dado e vira código. Com `"SELECT * FROM tasks WHERE title = '" + q + "'"`, a entrada `' OR '1'='1` muda a estrutura da consulta.
+
+    A defesa contra **SQL injection** não é "limpar" a string, é não misturar: **consultas parametrizadas** (`PreparedStatement` com `?` no JDBC, `$1` no PostgreSQL) enviam o texto da consulta e os valores separadamente. O banco faz o parse antes de ver os valores, então nenhum valor consegue alterar a estrutura. Partes que não podem ser parâmetro (nome de coluna em `ORDER BY`) são escolhidas de uma allowlist.
+
+    **XSS** é injeção em HTML: um título de tarefa `<img src=x onerror=alert(1)>` exibido sem tratamento vira script rodando na página de outro usuário, com a sessão dele. A defesa é **output encoding conforme o contexto**: em texto HTML, `<` vira `&lt;`; em atributo, em JavaScript ou em URL as regras são diferentes. Templates modernos (Thymeleaf, React, Vue) escapam por padrão; o perigo está nas saídas de emergência (`innerHTML`, `th:utext`, `dangerouslySetInnerHTML`, `v-html`). Uma **Content Security Policy** é uma segunda camada.
+
+    **Validação de entrada** na fronteira (tipo, tamanho, formato, allowlist) rejeita lixo cedo e reduz a superfície, mas não substitui as duas defesas acima: um apóstrofo é válido num nome ("O'Brien"). Valide na entrada, parametrize na consulta, escape na saída.
+  misconceptions:
+    - claim: Escapar aspas manualmente na string protege contra SQL injection.
+      correction: Escaping manual depende de codificação, contexto e de nunca esquecer um caso. Consultas parametrizadas eliminam a classe de erro porque dados nunca são parseados como SQL.
+    - claim: Validar a entrada no frontend é suficiente.
+      correction: Qualquer um envia requisições diretas ao servidor. Validação no cliente é usabilidade; a do servidor é segurança.
+    - claim: Se eu sanitizo a entrada ao salvar, não preciso escapar ao exibir.
+      correction: O mesmo dado pode ser exibido em HTML, atributo, JSON ou CSV, cada um com regras diferentes. O escaping correto depende do contexto de saída.
   resources:
-    start: owasp-cheatsheets
+    start: owasp-sql-injection-prevention-cheatsheet
+    deeper: [owasp-xss-prevention-cheatsheet, owasp-input-validation-cheatsheet, owasp-top-10-2025, owasp-cheatsheets, mit-6858-ocw-2014]
+    videos: [mit-6858-lecture-9-securing-web-applications, computerphile-sql-injection, computerphile-xss]
+  exercise:
+    id: ex-injection-by-hand
+    title: Injeção no papel e no psql
+    prediction: Para a consulta montada por concatenação `... WHERE owner_id = 7 AND title = '<q>'`, escreva qual valor de q faz a consulta devolver tarefas de todos os donos.
+    steps:
+      - No PostgreSQL de laboratório, monte à mão no `psql` a consulta concatenada com a sua entrada e rode; confira o resultado.
+      - Rode a mesma busca com `PREPARE busca(int, text) AS SELECT ... WHERE owner_id = $1 AND title = $2;` e `EXECUTE busca(7, '<sua entrada>')`.
+      - Escreva uma função `escapeHtml` que trata `& < > " '` e teste com 5 entradas maliciosas num arquivo HTML estático aberto no navegador.
+      - Liste 3 campos do app de tarefas com regras de validação (tipo, tamanho, formato) e um exemplo de valor válido que contém caracteres perigosos.
+    checks:
+      - A consulta concatenada devolve tarefas de outros donos; a preparada devolve zero linhas.
+      - O HTML com escaping mostra o texto literal e nenhum alert dispara.
+      - Você explica por que validação não teria bloqueado "O'Brien" e nem deveria.
+  experiment:
+    title: SQL injection e XSS no próprio app, depois corrigidos
+    project: task-platform
+    steps:
+      - Numa branch de laboratório do app de tarefas local, implemente a busca `GET /tasks?q=` concatenando a string no SQL (via JDBC `Statement`).
+      - Explore com curl, codificando a entrada (`--data-urlencode`), até listar tarefas de outros usuários; ative `log_statement = 'all'` e veja o SQL recebido pelo banco.
+      - Corrija com `PreparedStatement` e observe no log que o valor chega como parâmetro.
+      - Crie uma tarefa com título `<img src=x onerror=alert(document.domain)>` e renderize a lista com `innerHTML` (ou `th:utext`); observe o alert numa segunda sessão.
+      - Troque por `textContent` (ou `th:text`) e adicione o cabeçalho `Content-Security-Policy` `default-src 'self'`; confira o bloqueio no console do DevTools.
+    observe:
+      - O SQL alterado no log do PostgreSQL na versão vulnerável e os parâmetros separados na corrigida.
+      - O script executando no navegador da segunda sessão e o HTML escapado após a correção.
+      - A mensagem de violação de CSP no console.
+  reflectionQuestions:
+    - Por que a consulta parametrizada é imune mesmo a entradas que você nunca imaginou?
+    - Qual é o equivalente de "parametrizar" para chamar um comando do shell a partir de Java ou C?
+    - Em quais pontos do seu frontend existe uma saída de emergência que desliga o escaping automático?
+  completionCriteria:
+    - Mostra o log do PostgreSQL com a consulta injetada e depois com parâmetros separados.
+    - Demonstra o XSS armazenado disparando na versão vulnerável e não disparando na corrigida, com captura do DevTools.
+    - Apresenta regras de validação de 3 campos com testes para valores válidos e inválidos.
+  evidencePrompts:
+    - Diff da busca concatenada para a parametrizada, com os trechos do log.
+    - Captura do HTML renderizado antes e depois do escaping e da violação de CSP.
+  firstAction: Escreva num papel a consulta que o servidor montaria por concatenação para a busca `x' OR '1'='1` e circule onde termina o dado e começa o código.
 
 - id: secrets-threat-modeling
   stage: s14-security
   title: Segredos e threat modeling
-  status: planned
+  status: authored
   objective: Guardar segredos fora do código e conduzir um threat modeling simples de um sistema do time.
-  whyItMatters: Segredos vazados em repositórios e ameaças não pensadas viram incidentes.
+  whyItMatters: Segredos vazados em repositórios e ameaças não pensadas viram incidentes. Robôs varrem repositórios públicos atrás de chaves; um threat model de uma hora encontra problemas que nenhum teste procura.
   prerequisites: [authorization, filesystem-permissions]
+  related: [git-fundamentals, containers-deployment, authentication-sessions]
+  explanation: |
+    Um **segredo** é qualquer valor que dá acesso: senha do banco, chave de API, chave de assinatura de sessão. Colocá-lo no código tem dois problemas. Primeiro, **o Git não esquece**: um `git rm` cria um commit novo, mas o segredo continua em todo clone e no histórico; a única resposta segura a um vazamento é **revogar e rotacionar**, e só depois limpar o histórico. Segundo, o código vai para lugares (forks, CI, notebooks) que o segredo não deveria ir.
+
+    A prática mínima: o código lê segredos do **ambiente** (variáveis de ambiente, arquivo `.env` local listado no `.gitignore`, Docker secrets ou um cofre como Vault em produção); o repositório tem só um `.env.example` sem valores; arquivos com segredos têm permissão restrita (`chmod 600`); e um scanner (gitleaks) roda num hook de pre-commit e no CI. Segredos também vazam por logs, mensagens de erro, variáveis impressas em stack traces e imagens de container — vale procurar lá também.
+
+    **Threat modeling** é pensar como atacante de forma sistemática, antes do incidente. Um roteiro de quatro perguntas funciona bem:
+    - **O que estamos construindo?** Um diagrama de fluxo de dados: atores, processos, armazenamentos e as **fronteiras de confiança** (navegador ↔ API, API ↔ banco, worker ↔ fila).
+    - **O que pode dar errado?** Para cada elemento e cada fronteira, percorra **STRIDE**: *Spoofing* (autenticidade), *Tampering* (integridade), *Repudiation* (não repúdio), *Information disclosure* (confidencialidade), *Denial of service* (disponibilidade), *Elevation of privilege* (autorização).
+    - **O que vamos fazer?** Mitigar, aceitar, transferir ou eliminar — com dono e prazo.
+    - **Fizemos um bom trabalho?** Revisar quando o sistema mudar.
+  misconceptions:
+    - claim: Se eu apagar o arquivo com a senha e fizer commit, o vazamento está resolvido.
+      correction: O segredo continua no histórico e em todos os clones. É preciso revogar e rotacionar o segredo; reescrever o histórico vem depois e não basta sozinho.
+    - claim: Repositório privado pode ter segredos.
+      correction: Acesso muda com o tempo (novos membros, integrações, forks, vazamento de token). Segredos ficam fora do código independentemente da visibilidade.
+    - claim: Threat modeling é uma atividade de especialistas que exige ferramentas.
+      correction: Um diagrama no quadro, a lista STRIDE e uma hora com o time já encontram as ameaças mais prováveis do seu sistema.
+  resources:
+    start: owasp-threat-modeling-cheatsheet
+    deeper: [owasp-secrets-management-cheatsheet, microsoft-threat-modeling-tool-threats, twelve-factor-config, gitleaks, owasp-top-10-2025, mit-6858-ocw-2014]
+    videos: [mit-6858-lecture-1-threat-models, akitando-67-criptografia-video]
+  exercise:
+    id: ex-stride-task-platform
+    title: STRIDE da plataforma de tarefas
+    prediction: Antes de começar, escreva as 3 ameaças que você acha mais prováveis para o app de tarefas do time.
+    steps:
+      - Desenhe o diagrama de fluxo de dados do app (navegador, API, PostgreSQL, worker, fila) e marque as fronteiras de confiança.
+      - Para cada fronteira, preencha uma tabela STRIDE com pelo menos uma ameaça concreta por letra quando fizer sentido (ex.:"bob altera owner_id no corpo do PUT" em Tampering).
+      - Classifique cada ameaça por probabilidade e impacto (baixo, médio, alto) e escolha uma resposta (mitigar, aceitar, transferir, eliminar).
+      - Para as 3 ameaças mais graves, aponte o tópico do roadmap ou a mudança de código que as mitiga.
+      - Compare com a sua previsão inicial.
+    checks:
+      - O diagrama tem fronteiras de confiança explícitas.
+      - A tabela tem ao menos 10 ameaças concretas, cobrindo as 6 categorias STRIDE.
+      - Cada uma das 3 ameaças principais tem mitigação com responsável.
+  experiment:
+    title: Vazar um segredo num repositório de laboratório
+    steps:
+      - Crie um repositório Git local de laboratório (sem remoto) com um `config.properties` contendo `db.password=lab-secret-123`.
+      - Faça commit, depois apague o arquivo com `git rm` e faça outro commit.
+      - Recupere o segredo com `git log -p --all -S lab-secret-123` e rode `gitleaks git .` (ou `gitleaks detect` em versões antigas) no repositório.
+      - Mova a configuração para variável de ambiente lida pelo app, crie `.env` com `chmod 600`, adicione-o ao `.gitignore` e crie `.env.example` sem valores.
+      - Instale um hook de pre-commit que roda gitleaks e tente commitar um novo segredo.
+      - Escreva o procedimento de resposta caso isso acontecesse num repositório real (revogar, rotacionar, limpar o histórico, avisar o time).
+    observe:
+      - O segredo recuperado do histórico mesmo após a remoção do arquivo.
+      - O relatório do gitleaks apontando commit e arquivo.
+      - O commit bloqueado pelo hook de pre-commit.
+  reflectionQuestions:
+    - Por que rotacionar o segredo é mais importante do que reescrever o histórico do Git?
+    - Qual fronteira de confiança do app de tarefas concentra mais ameaças, e por quê?
+    - Que segredos o app de tarefas tem hoje (banco, assinatura de sessão, APIs) e onde cada um está guardado?
+  completionCriteria:
+    - Mostra o segredo recuperado com git log -S após a remoção e o relatório do gitleaks.
+    - Demonstra um commit com segredo bloqueado pelo hook de pre-commit.
+    - Apresenta o diagrama de fluxo de dados com a tabela STRIDE cobrindo as 6 categorias.
+  evidencePrompts:
+    - Diagrama e tabela STRIDE da plataforma de tarefas.
+    - Saída do git log -S, do gitleaks e do hook bloqueando o commit.
+  firstAction: Rode `git log -p | grep -i -E 'password|secret|token' | head` num repositório seu e veja o que aparece.

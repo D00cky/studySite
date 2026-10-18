@@ -3,40 +3,279 @@
 - id: partial-failure-retries
   stage: s13-distributed-systems
   title: Falha parcial e retries
-  status: planned
+  status: authored
   objective: Explicar por que uma chamada remota pode falhar de formas ambíguas e aplicar retries com backoff e jitter.
-  whyItMatters: Retries ingênuos transformam uma lentidão pequena numa queda geral.
+  whyItMatters: Retries ingênuos transformam uma lentidão pequena numa queda geral. Todo backend que chama um banco, uma fila ou outra API precisa decidir quanto esperar, quantas vezes tentar e quando desistir.
   prerequisites: [timeouts-caching, bounded-queues]
+  related: [idempotency, latency-percentiles-diagnosis, tcp-udp-sockets]
   mathThreads: [probability]
+  explanation: |
+    Num programa local, uma função ou retorna ou lança exceção. Numa chamada pela rede existe um terceiro resultado: **não sei**. Se o timeout estoura, três histórias são possíveis — a requisição se perdeu antes de chegar, o servidor processou mas a resposta se perdeu, ou o servidor ainda está processando. Do lado do cliente as três parecem idênticas. Isso é **falha parcial**: parte do sistema funciona, parte não, e você não consegue distinguir "lento" de "morto".
+
+    O **timeout** é a única ferramenta para transformar "esperar para sempre" em uma decisão. Curto demais, você desiste de chamadas que iam dar certo (e talvez já tenham surtido efeito); longo demais, threads e conexões ficam presas e o problema sobe na pilha. Uma regra prática é partir do p99 observado da dependência, e não de um número redondo.
+
+    O **retry** tenta de novo esperando que a falha seja transitória. O perigo é a amplificação: se cada uma de três camadas tenta 3 vezes, uma falha no fundo vira até 27 chamadas. Quando o servidor está lento por sobrecarga, retries imediatos aumentam a carga justamente quando ele mais precisa de alívio. Por isso:
+    - **Backoff exponencial**: esperar `base * 2^tentativa` entre tentativas, com um teto.
+    - **Jitter**: sortear a espera (ex.: entre 0 e o valor do backoff). Sem jitter, mil clientes que falharam juntos voltam juntos, em ondas sincronizadas.
+    - **Limite e orçamento**: número máximo de tentativas, deadline total e, idealmente, um orçamento de retries (ex.: no máximo 10% das chamadas são retries).
+
+    Só é seguro repetir o que pode ser repetido. Um `GET` pode; um `POST /tasks` que cria um registro pode criar dois se a primeira tentativa "falhou" depois de ter sido processada. É isso que motiva o próximo tópico, idempotência.
+  misconceptions:
+    - claim: Se deu timeout, a operação não aconteceu.
+      correction: O timeout só diz que a resposta não chegou a tempo. O servidor pode ter processado tudo; repetir sem cuidado duplica o efeito.
+    - claim: Mais retries sempre aumentam a confiabilidade.
+      correction: Com a dependência sobrecarregada, retries multiplicam a carga e podem causar cascading failure. Retries precisam de limite, backoff, jitter e orçamento.
+    - claim: Backoff exponencial sozinho resolve a sincronização dos clientes.
+      correction: Sem jitter, clientes que falharam ao mesmo tempo continuam tentando ao mesmo tempo, só que em intervalos maiores. O sorteio é o que espalha a carga.
   resources:
-    start: sre-book
+    start: aws-timeouts-retries-backoff-jitter
+    deeper: [sre-book-cascading-failures, aws-exponential-backoff-and-jitter, kleppmann-cambridge-dist-sys-notes, sre-book-handling-overload, sre-book, toxiproxy, tc-netem-man, mit-65840-distributed-systems]
+    videos: [kleppmann-ds-1-3-rpc, kleppmann-ds-2-3-system-models, mit-6824-2020-lecture-2-rpc-threads]
+  exercise:
+    id: ex-backoff-jitter-sim
+    title: Simular tempestade de retries
+    prediction: Com 100 clientes que falham no mesmo instante e tentam até 5 vezes, desenhe (à mão) o histograma de chamadas por segundo para retry imediato, backoff exponencial sem jitter e backoff com full jitter. Onde ficam os picos?
+    steps:
+      - Escreva um script (Java, Python ou JS) que simula 100 clientes; cada tentativa falha com probabilidade 0,5 e o servidor só aguenta 20 chamadas por segundo (as excedentes também falham).
+      - "Implemente três políticas: retry imediato, `sleep = min(cap, base * 2^n)` e full jitter `sleep = random(0, min(cap, base * 2^n))`."
+      - Registre o instante de cada chamada e gere um histograma por segundo (texto ou CSV).
+      - Calcule o total de chamadas, a taxa de sucesso final e o tempo até o último cliente terminar em cada política.
+      - Calcule à mão a probabilidade de um cliente falhar as 5 tentativas com falhas independentes de 0,5 e compare com a simulação.
+    checks:
+      - O histograma do retry imediato e do backoff sem jitter mostra picos sincronizados; o de full jitter é mais espalhado.
+      - A probabilidade calculada (0,5^5 ≈ 3%) bate aproximadamente com a medida quando a carga não satura o servidor, e você explica por que diverge quando satura.
+      - Você registra uma tabela com total de chamadas e tempo total por política.
+  experiment:
+    title: Latência artificial entre o app e o PostgreSQL
+    project: task-platform
+    steps:
+      - Em uma pasta de laboratório, suba PostgreSQL e Toxiproxy em containers (ou só PostgreSQL e use `tc qdisc add dev <iface> root netem delay 800ms` dentro de um container com `NET_ADMIN`, nunca na interface do host).
+      - Aponte o app de tarefas (ou um cliente simples com JDBC/psql) para a porta do proxy e configure um timeout de consulta de 500 ms.
+      - Adicione um toxic de latência de 800 ms e faça 20 requisições; depois troque por um toxic `timeout` que corta a conexão sem resposta.
+      - Execute `INSERT` de tarefas com retry ingênuo (3 tentativas, sem chave de idempotência) e conte as linhas no banco depois.
+      - Repita com backoff exponencial e jitter, registrando a hora de cada tentativa no log.
+    observe:
+      - A distribuição de latências antes e depois do toxic (p50 e p99).
+      - Linhas duplicadas criadas por retries de INSERT cuja resposta se perdeu.
+      - Os instantes das tentativas no log, mostrando espaçamento crescente e aleatório.
+  reflectionQuestions:
+    - Como você escolheria o timeout de uma chamada ao banco de dados a partir de medições, e não de um palpite?
+    - Por que retries em várias camadas da mesma requisição são perigosos, e em qual camada você manteria os retries?
+    - Que tipos de erro (4xx, 5xx, timeout, conexão recusada) você repetiria, e quais nunca?
+  completionCriteria:
+    - Mostra a saída da simulação com total de chamadas e histograma por segundo para as três políticas.
+    - Reproduz com Toxiproxy ou netem um timeout em que o INSERT foi aplicado mesmo com erro no cliente, provado por `SELECT count(*)`.
+    - Apresenta código de retry com limite, backoff exponencial, jitter e deadline total.
+  evidencePrompts:
+    - Histogramas das três políticas lado a lado, com sua interpretação.
+    - Trecho do log com tentativas e horários, mais a consulta mostrando as linhas duplicadas.
+  firstAction: Escreva as três explicações possíveis para "minha requisição deu timeout" e, para cada uma, se repetir a requisição é seguro.
 
 - id: idempotency
   stage: s13-distributed-systems
   title: Idempotência
-  status: planned
+  status: authored
   objective: Projetar operações que podem ser repetidas com segurança usando chaves de idempotência e constraints.
-  whyItMatters: Evita cobranças e pedidos duplicados quando a rede falha no meio.
+  whyItMatters: Evita cobranças e pedidos duplicados quando a rede falha no meio. É o que torna retries, filas at-least-once e cliques duplos no botão inofensivos.
   prerequisites: [partial-failure-retries, transactions-basics]
+  related: [queues-delivery-semantics, relational-modeling-constraints, isolation-locks]
+  mathThreads: [sets]
+  explanation: |
+    Uma operação é **idempotente** quando aplicá-la duas vezes tem o mesmo efeito que aplicá-la uma vez: `f(f(x)) = f(x)`. "Marcar a tarefa 42 como concluída" é idempotente; "incrementar o contador" não é; "adicionar o usuário 7 ao conjunto de curtidas" é (união de conjuntos), enquanto "somar 1 ao total de curtidas" não é.
+
+    Em HTTP, `GET`, `PUT` e `DELETE` são definidos como idempotentes; `POST` não. Mas a definição do protocolo é uma promessa — quem cumpre é o seu código. Um `PUT /tasks/42 {status: done}` que também dispara um e-mail a cada chamada não é idempotente na prática.
+
+    Para tornar uma **criação** repetível, o cliente gera uma **chave de idempotência** (um UUID) antes da primeira tentativa e envia a mesma chave em todos os retries. O servidor, na mesma transação que cria a tarefa, grava a chave numa coluna com constraint `UNIQUE`:
+    - primeira vez: o `INSERT` passa, a tarefa é criada e a resposta é guardada junto com a chave;
+    - repetição: o `INSERT` viola a constraint (ou `ON CONFLICT DO NOTHING` não insere nada) e o servidor devolve a resposta original.
+
+    O detalhe que importa é a **atomicidade**: verificar "a chave existe?" com um `SELECT` e depois inserir tem uma race condition — duas tentativas concorrentes passam pelo `SELECT` juntas. A constraint no banco transforma a checagem e a inserção numa só operação. Também é preciso decidir o que fazer quando a mesma chave chega com um corpo diferente (normalmente: rejeitar com erro) e por quanto tempo guardar as chaves.
+  misconceptions:
+    - claim: Basta checar com SELECT se a chave já existe antes de inserir.
+      correction: Entre o SELECT e o INSERT outra requisição pode passar. Só a constraint UNIQUE (ou um lock) garante que apenas uma inserção vence.
+    - claim: Idempotente significa que a resposta é sempre a mesma.
+      correction: Idempotência fala do efeito no estado. Um DELETE repetido pode responder 404 na segunda vez e ainda ser idempotente.
+    - claim: O servidor pode gerar a chave de idempotência.
+      correction: A chave precisa nascer no cliente, antes da primeira tentativa; se o servidor gera, um retry chega sem saber qual chave usar.
+  resources:
+    start: aws-idempotent-apis
+    deeper: [postgres-insert-on-conflict, brandur-idempotency-keys, kleppmann-cambridge-dist-sys-notes, postgres-constraints, toxiproxy]
+    videos: [kleppmann-ds-5-1-replication]
+  exercise:
+    id: ex-idempotency-key-table
+    title: Chave de idempotência com UNIQUE
+    prediction: Dois clientes enviam ao mesmo tempo a mesma chave de idempotência. Sem a constraint UNIQUE, mas com um SELECT antes do INSERT, quantas tarefas você espera ver depois de 1000 rodadas concorrentes?
+    steps:
+      - "Crie no PostgreSQL de laboratório a tabela `idempotency_keys(key uuid PRIMARY KEY, request_hash text NOT NULL, response jsonb, created_at timestamptz DEFAULT now())`."
+      - Escreva a função de criação de tarefa em duas versões — "SELECT e depois INSERT" e "INSERT ... ON CONFLICT (key) DO NOTHING RETURNING" — ambas dentro de uma transação junto com o INSERT da tarefa.
+      - Dispare a mesma chave de duas sessões `psql` ao mesmo tempo (ou com um script de threads) e conte tarefas e chaves.
+      - Envie a mesma chave com um título diferente e implemente a resposta de erro (por exemplo, 422).
+      - Classifique 8 operações do app de tarefas (criar, renomear, concluir, apagar, incrementar prioridade, mover posição, comentar, enviar notificação) como idempotentes ou não, justificando com `f(f(x)) = f(x)`.
+    checks:
+      - A versão SELECT-depois-INSERT produz duplicatas sob concorrência; a versão com constraint não produz.
+      - A segunda tentativa devolve exatamente a resposta guardada da primeira.
+      - A tabela de classificação tem justificativa para cada operação.
+  experiment:
+    title: Retry com a resposta perdida
+    project: task-platform
+    steps:
+      - Com o setup de Toxiproxy do tópico anterior, coloque o proxy entre o cliente HTTP e a API de tarefas.
+      - Ative um toxic que deixa passar a requisição mas corta a resposta (ex.:`limit_data` ou `timeout` no sentido downstream).
+      - Envie `POST /tasks` com retry e sem `Idempotency-Key`; conte as tarefas no banco.
+      - Repita enviando o mesmo `Idempotency-Key` em todas as tentativas.
+      - Ative o log de statements do PostgreSQL (`log_statement = 'all'`) e localize o erro ou o `ON CONFLICT` da segunda tentativa.
+    observe:
+      - Quantas tarefas existem em cada cenário após o mesmo número de retries.
+      - A linha do log em que a segunda tentativa colide com a chave já gravada.
+      - O status HTTP e o corpo devolvidos na repetição.
+  reflectionQuestions:
+    - Por que a gravação da chave e a criação da tarefa precisam estar na mesma transação?
+    - Por quanto tempo você guardaria chaves de idempotência, e o que acontece com um retry que chega depois disso?
+    - Como tornar idempotente uma operação que envia e-mail ou chama um serviço externo?
+  completionCriteria:
+    - Mostra a contagem de tarefas com e sem a constraint sob concorrência, com o script usado.
+    - Demonstra um retry após resposta perdida que não cria tarefa duplicada, com o log do PostgreSQL.
+    - Apresenta a classificação de 8 operações com justificativa.
+  evidencePrompts:
+    - SQL da tabela de chaves e da função de criação, com a saída das contagens.
+    - Trecho do log do PostgreSQL mostrando a colisão da segunda tentativa.
+  firstAction: Escreva uma operação do app de tarefas que não é idempotente e reescreva-a de forma que seja.
 
 - id: queues-delivery-semantics
   stage: s13-distributed-systems
   title: Filas e semântica de entrega
-  status: planned
+  status: authored
   objective: Comparar entrega at-most-once, at-least-once e o que significa "exatamente uma vez" na prática.
-  whyItMatters: Processamento em background depende de entender o que pode ser duplicado ou perdido.
+  whyItMatters: Processamento em background depende de entender o que pode ser duplicado ou perdido. Um worker que cai no meio de um job é rotina, não exceção.
   prerequisites: [idempotency, bounded-queues]
+  related: [partial-failure-retries, transactions-basics, logs-metrics-traces]
+  mathThreads: [logic]
+  explanation: |
+    Uma fila separa quem produz trabalho de quem o executa. O ponto delicado é o **acknowledgement** (ack): o momento em que o consumidor diz "terminei, pode apagar". A ordem entre *processar* e *confirmar* define a semântica:
+    - **At-most-once**: confirma (ou apaga) antes de processar. Se o worker morrer no meio, a mensagem se perdeu. Nunca duplica, pode perder.
+    - **At-least-once**: processa e só depois confirma. Se o worker morrer depois de processar e antes do ack, a mensagem volta para a fila e é processada de novo. Nunca perde (enquanto a fila estiver de pé), pode duplicar.
+
+    **Exactly-once** de ponta a ponta não existe como propriedade da rede: é a mesma ambiguidade do timeout, agora entre worker e fila. O que se constrói na prática é **efeito exatamente uma vez**: entrega at-least-once + processamento idempotente (ou deduplicação por id da mensagem). Quando a fila e o efeito moram no mesmo banco, dá para fazer melhor: processar e marcar o job como feito **na mesma transação**.
+
+    Uma tabela PostgreSQL serve de fila didática: `SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1` pega um job que nenhum outro worker está segurando; o lock some se a conexão cai, e o job volta a ficar disponível. Outros detalhes que aparecem cedo:
+    - **Visibility timeout / lease**: quanto tempo um job fica reservado antes de outro worker poder pegá-lo. Curto demais gera duplicatas mesmo sem falhas.
+    - **Poison message**: um job que sempre falha volta para sempre; precisa de contador de tentativas e uma *dead letter queue*.
+    - **Ordem**: com vários consumidores e reentregas, a ordem de processamento não é a ordem de chegada.
+  misconceptions:
+    - claim: Usar um broker que anuncia exactly-once dispensa idempotência no consumidor.
+      correction: Garantias desse tipo valem dentro do sistema do broker. Quando o consumidor escreve em outro sistema (banco, API, e-mail), a falha entre o efeito e o ack continua podendo duplicar.
+    - claim: Se a fila é FIFO, os jobs são processados na ordem de chegada.
+      correction: Com vários workers, durações diferentes e reentregas após falha, a ordem de conclusão diverge. Ordem estrita exige um consumidor por chave ou números de sequência.
+    - claim: Dar ack logo no início evita trabalho duplicado sem custo.
+      correction: Isso troca duplicatas por perdas — é at-most-once. Depende do que é pior para aquele job.
   resources:
-    start: ddia
+    start: kleppmann-cambridge-dist-sys-notes
+    deeper: [rabbitmq-reliability-guide, postgres-select-for-update-skip-locked, ddia, aws-idempotent-apis]
+    videos: [kleppmann-ds-5-1-replication, kleppmann-ds-4-2-broadcast-ordering]
+  exercise:
+    id: ex-pg-queue-ack-order
+    title: Fila em tabela e a ordem do ack
+    prediction: Um worker processa 100 jobs e você o mata com `kill -9` em momentos aleatórios. Para "ack antes" e "ack depois", preveja quantos jobs serão perdidos e quantos processados duas vezes.
+    steps:
+      - "Crie `jobs(id bigserial PRIMARY KEY, payload jsonb, status text DEFAULT 'pending', attempts int DEFAULT 0, locked_until timestamptz)` e uma tabela `effects(job_id bigint, applied_at timestamptz)` sem constraint."
+      - Escreva um worker que pega um job com `FOR UPDATE SKIP LOCKED`, grava em `effects` e marca `done`, em duas variantes — marcar done antes do efeito (at-most-once) e depois (at-least-once), com commits separados para simular o efeito externo.
+      - Rode o worker e mate-o com `kill -9` várias vezes durante o processamento; reinicie-o até a fila esvaziar.
+      - Conte jobs sem efeito (perdidos) e jobs com mais de um efeito (duplicados) com `GROUP BY job_id HAVING count(*) > 1`.
+      - Adicione `UNIQUE (job_id)` em `effects` com `ON CONFLICT DO NOTHING` e repita a variante at-least-once.
+    checks:
+      - A variante ack-antes tem perdas e nenhuma duplicata; a ack-depois tem duplicatas e nenhuma perda.
+      - Com a constraint, a variante at-least-once termina sem perdas e sem duplicatas.
+      - Você explica cada contagem relacionando com o instante do `kill -9`.
+  experiment:
+    title: Dois workers, lease curto e poison message
+    project: task-platform
+    steps:
+      - Rode dois workers da fila em tabela ao mesmo tempo e observe em `pg_locks` (ou `pg_stat_activity`) os locks de linha de cada um.
+      - Troque o lock de transação por um lease (`locked_until = now() + interval '2 seconds'`) e faça um job demorar 5 segundos com `pg_sleep`.
+      - Conte quantas vezes esse job é executado.
+      - Insira um job cujo payload sempre lança exceção e observe o contador `attempts`; implemente uma dead letter (status `dead` após 5 tentativas).
+    observe:
+      - Os locks de linha de cada worker e que nenhum job é pego pelos dois ao mesmo tempo com SKIP LOCKED.
+      - A reexecução do job demorado quando o lease expira antes do fim.
+      - O job venenoso indo para `dead` depois do limite.
+  reflectionQuestions:
+    - Para o envio de um e-mail de lembrete de tarefa, você prefere at-most-once ou at-least-once? E para gerar uma fatura?
+    - Por que processar e marcar como feito na mesma transação dá efeito exatamente uma vez, e por que isso não vale quando o efeito é uma chamada HTTP?
+    - Como você escolheria o valor do lease de um job?
+  completionCriteria:
+    - Mostra as contagens de perdidos e duplicados para as duas variantes, após kills reais do worker.
+    - Demonstra a deduplicação com constraint UNIQUE eliminando duplicatas na variante at-least-once.
+    - Reproduz uma reexecução causada por lease expirado e uma poison message indo para dead letter.
+  evidencePrompts:
+    - Consultas de contagem e seus resultados para cada variante.
+    - Log dos dois workers mostrando o job demorado executado duas vezes.
+  firstAction: Escreva as duas linhas de pseudocódigo `process(job)` e `ack(job)` e marque onde um crash causa perda e onde causa duplicata.
 
 - id: consistency-models
   stage: s13-distributed-systems
   title: Modelos de consistência
-  status: planned
+  status: authored
   objective: Distinguir consistência forte, eventual e causal com exemplos observáveis.
-  whyItMatters: Explica por que um usuário às vezes "não vê" o que acabou de salvar.
+  whyItMatters: Explica por que um usuário às vezes "não vê" o que acabou de salvar. Réplicas de leitura, caches e CDNs são comuns mesmo em sistemas pequenos, e cada um enfraquece a consistência de um jeito.
   prerequisites: [queues-delivery-semantics, isolation-locks]
+  related: [timeouts-caching, transactions-basics]
   mathThreads: [logic]
+  explanation: |
+    Um **modelo de consistência** é um contrato: diz quais resultados de leitura são permitidos dada uma história de escritas. Quanto mais forte, menos resultados "estranhos" o cliente pode ver — e mais coordenação (e latência) o sistema paga.
+
+    Do mais forte para o mais fraco, os que mais aparecem:
+    - **Linearizability**: o sistema se comporta como se houvesse uma única cópia; assim que uma escrita termina, qualquer leitura posterior (no tempo real) vê o valor novo.
+    - **Causal**: se B foi escrito depois de alguém ler A, ninguém vê B sem ver A. Respostas não aparecem antes das perguntas, mas escritas independentes podem ser vistas em ordens diferentes.
+    - **Eventual**: se as escritas pararem, as réplicas acabam convergindo. Não diz quando, nem o que você lê no meio do caminho.
+
+    Entre esses ficam garantias de sessão úteis na prática, como **read-your-writes**: o próprio usuário sempre vê o que escreveu, mesmo que os outros ainda não vejam.
+
+    O mecanismo por trás quase sempre é **replicação assíncrona**: o primário confirma a escrita e só depois a envia às réplicas. Se a próxima leitura vai para uma réplica atrasada (ou para um cache que ainda não expirou), o usuário salva a tarefa, recarrega a página e ela "sumiu". Correções comuns: ler do primário logo após escrever, rotear a sessão sempre para a mesma réplica, ou esperar a réplica alcançar a posição do log (LSN) da escrita. Note que isso é diferente de *isolation* (o "I" de ACID), que trata de transações concorrentes num único banco; modelos de consistência tratam de cópias.
+  misconceptions:
+    - claim: Consistência eventual significa que os dados ficam consistentes em poucos milissegundos.
+      correction: O modelo não promete prazo nenhum. O atraso real depende de carga, rede e falhas, e precisa ser medido.
+    - claim: O C de ACID e o C de consistência em sistemas distribuídos são a mesma coisa.
+      correction: O C de ACID é sobre invariantes da aplicação (constraints) num banco; consistência em distribuídos é sobre o que leituras em réplicas diferentes podem retornar.
+    - claim: Se eu leio do mesmo banco que escrevo, não preciso pensar em consistência.
+      correction: Caches de aplicação, réplicas de leitura e CDNs reintroduzem leituras antigas mesmo com um único banco primário.
   resources:
     start: jepsen-consistency
-    deeper: [ddia]
+    deeper: [kleppmann-cambridge-dist-sys-notes, jepsen-read-your-writes, jepsen-linearizable, postgres-replication-config, ddia, mit-65840-distributed-systems]
+    videos: [kleppmann-ds-7-2-linearizability, kleppmann-ds-7-3-eventual-consistency, kleppmann-ds-5-2-quorums, mit-6824-2020-lecture-17-cops]
+  exercise:
+    id: ex-consistency-histories
+    title: Classificar histórias de leitura e escrita
+    prediction: Para a história "A escreve x=1 e termina; depois B lê x=0", diga quais modelos (linearizable, causal, read-your-writes, eventual) ela viola.
+    steps:
+      - Desenhe em papel 5 histórias com dois clientes e linhas do tempo, incluindo escritas concorrentes e uma leitura do próprio cliente após sua escrita.
+      - Para cada história, marque quais modelos ela satisfaz e escreva uma frase de justificativa.
+      - Escreva uma história em que a ordem causal é violada (um comentário visível antes da tarefa que ele comenta).
+      - Compare suas respostas com as definições no Jepsen e corrija o que divergir.
+    checks:
+      - Cada história tem marcação para os quatro modelos com justificativa.
+      - A violação causal está descrita com a cadeia de dependência explícita.
+      - As correções feitas após consultar o Jepsen estão anotadas.
+  experiment:
+    title: Réplica atrasada de propósito
+    steps:
+      - Em uma pasta de laboratório, suba dois containers PostgreSQL; crie a réplica com `pg_basebackup -R` apontando para o primário.
+      - Na réplica, configure `recovery_min_apply_delay = '5s'` e reinicie.
+      - Num script, faça `INSERT` de uma tarefa no primário e imediatamente `SELECT` na réplica; repita a leitura a cada 500 ms até a tarefa aparecer.
+      - Compare `pg_current_wal_lsn()` no primário com `pg_last_wal_replay_lsn()` na réplica durante o atraso.
+      - Implemente read-your-writes guardando o LSN da escrita e lendo da réplica só quando `pg_last_wal_replay_lsn()` for maior ou igual a ele (senão, leia do primário).
+    observe:
+      - Por quanto tempo a tarefa recém-criada não aparece na réplica.
+      - A diferença de LSN entre primário e réplica ao longo do tempo.
+      - Que a versão com checagem de LSN nunca devolve leitura antiga para o próprio escritor.
+  reflectionQuestions:
+    - Em quais telas do app de tarefas consistência eventual é aceitável, e em quais o usuário perceberia um problema?
+    - Por que read-your-writes não garante que outro usuário veja a sua escrita?
+    - Que custo de latência você paga ao exigir linearizability, e de onde ele vem?
+  completionCriteria:
+    - Mostra a leitura antiga na réplica atrasada, com timestamps e LSNs do primário e da réplica.
+    - Implementa read-your-writes por LSN e demonstra que o escritor sempre vê a própria tarefa.
+    - Classifica 5 histórias de leitura e escrita segundo quatro modelos, com justificativas.
+  evidencePrompts:
+    - Saída do script com tentativas de leitura e o momento em que a tarefa aparece.
+    - Diagramas das histórias com a classificação final.
+  firstAction: Descreva uma situação real em que você salvou algo num site, recarregou e não viu a mudança. Qual modelo de consistência faltou?
