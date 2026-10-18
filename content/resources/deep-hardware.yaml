@@ -1048,32 +1048,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: computerphile-whats-virtual-memory
-  title: "What's Virtual Memory? - Computerphile"
-  author: "Computerphile"
-  url: https://www.youtube.com/watch?v=5lFnKYCZT5o
-  language: en
-  format: video
-  difficulty: intro
-  topics: [virtual-memory]
-  why: "Steve Bagley explica memória virtual: endereços virtuais, páginas e o que acontece quando a página não está na RAM."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: computerphile-buffer-overflow-attack
-  title: "Running a Buffer Overflow Attack - Computerphile"
-  author: "Computerphile"
-  url: https://www.youtube.com/watch?v=1S0aBV-Waeo
-  language: en
-  format: video
-  difficulty: intermediate
-  topics: [c-strings, stack-heap-lifetime]
-  why: "Mike Pound executa um buffer overflow que sobrescreve o endereço de retorno na pilha para obter root."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: computerphile-reverse-polish-notation-stack
   title: "Reverse Polish Notation and The Stack - Computerphile"
   author: "Computerphile"
@@ -1122,45 +1096,6 @@
   difficulty: intro
   topics: [dns-ip, tcp-udp-sockets]
   why: "O modelo de camadas de rede (OSI e o que se usa de fato), para situar enlace, IP e transporte."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: computerphile-transport-layer-udp
-  title: "Network Basics - Transport Layer and User Datagram Protocol Explained - Computerphile"
-  author: "Computerphile"
-  url: https://www.youtube.com/watch?v=ihvbhwGblQg
-  language: en
-  format: video
-  difficulty: intro
-  topics: [tcp-udp-sockets]
-  why: "A camada de transporte e o UDP: portas, datagramas e o que o UDP deliberadamente não garante."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: computerphile-tcp-a
-  title: "TCP a : Ensuring Your Data Gets There & in the Right Order! - Computerphile"
-  author: "Computerphile"
-  url: https://www.youtube.com/watch?v=IADOV8UZO34
-  language: en
-  format: video
-  difficulty: intermediate
-  topics: [tcp-udp-sockets]
-  why: "Como o TCP garante entrega e ordem: números de sequência, ACKs e retransmissão."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: computerphile-how-dns-works
-  title: "How DNS Works - Computerphile"
-  author: "Computerphile"
-  url: https://www.youtube.com/watch?v=uOfonONtIuk
-  language: en
-  format: video
-  difficulty: intro
-  topics: [dns-ip]
-  why: "Mike Pound explica a resolução DNS: resolvedores, servidores raiz, TLD e autoritativos."
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
