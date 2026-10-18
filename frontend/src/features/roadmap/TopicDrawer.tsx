@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useTopicPage } from '../../api/queries'
 import type { TopicProgress } from '../../api/types'
+import { Essentials } from '../../components/DrillDown'
 import { InlineMarkdown } from '../../components/Markdown'
 import { ProgressTag } from '../../components/ProgressTag'
 import { ErrorMessage, Loading } from '../../components/Status'
@@ -58,6 +59,7 @@ export function TopicDrawer({ topicId, progress, onClose }: Props) {
             <p className="small">
               <strong>Por que importa:</strong> <InlineMarkdown text={data.topic.whyItMatters} />
             </p>
+            <Essentials items={data.topic.essentials} compact />
             {data.prerequisites.length > 0 && (
               <div>
                 <p className="eyebrow">Pré-requisitos</p>

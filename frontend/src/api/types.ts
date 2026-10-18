@@ -84,6 +84,15 @@ export interface Topic extends TopicSummary {
   completionCriteria: string[]
   evidencePrompts: string[]
   firstAction?: string
+  /** Drill-down 80/20: o essencial e o aprofundamento para depois. */
+  essentials: string[]
+  deepDive: DeepDivePoint[]
+}
+
+export interface DeepDivePoint {
+  title: string
+  why: string
+  resource?: string
 }
 
 export interface Verification {
@@ -145,6 +154,7 @@ export interface TopicPage {
   startResource?: Resource
   deeperResources: Resource[]
   videos: Resource[]
+  deepDiveResources: Resource[]
   prerequisites: TopicSummary[]
   unlocks: TopicSummary[]
   related: TopicSummary[]

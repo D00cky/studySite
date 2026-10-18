@@ -81,6 +81,28 @@ describe('sessão do time', () => {
     ])
   })
 
+  it('distribui papéis manualmente', async () => {
+    let body: unknown
+    setup({ ...detail, session: { ...detail.session, createdBy: 'u-lia' }, roles: [] })
+    server.use(
+      http.put('/api/team-sessions/ts1/roles', async ({ request }) => {
+        body = await request.json()
+        return HttpResponse.json(detail)
+      }),
+    )
+    const { user } = renderApp('/sessoes/ts1')
+    const form = await screen.findByRole('form', { name: 'Distribuir papéis' })
+    await user.selectOptions(within(form).getByLabelText('Autor(a)'), 'u-gabriel')
+    await user.selectOptions(within(form).getByLabelText('Desafiante'), 'u-lia')
+    await user.selectOptions(within(form).getByLabelText('Sintetizador(a)'), 'u-lia')
+    await user.click(within(form).getByRole('button', { name: 'Salvar papéis' }))
+    expect(body).toEqual([
+      { userId: 'u-gabriel', role: 'author' },
+      { userId: 'u-lia', role: 'challenger' },
+      { userId: 'u-lia', role: 'synthesizer' },
+    ])
+  })
+
   it('registra achados e próximos passos', async () => {
     let body: unknown
     setup()

@@ -69,6 +69,31 @@ describe('página de tópico — conteúdo', () => {
   })
 })
 
+describe('página de tópico — drill-down 80/20', () => {
+  it('mostra o essencial em destaque, antes do resto da lição', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    const essentials = await screen.findByRole('region', { name: /O essencial/ })
+    const items = within(essentials).getAllByRole('listitem')
+    expect(items).toHaveLength(3)
+    expect(within(essentials).getByText('gcc -c', { selector: 'code' })).toBeInTheDocument()
+    const startResource = screen.getByRole('region', { name: 'Comece por aqui' })
+    expect(essentials.compareDocumentPosition(startResource) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('mapeia o aprofundamento para depois, com quando usar e recurso', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    const summary = await screen.findByText(/Aprofundamento/, { selector: 'summary' })
+    const details = summary.closest('details')!
+    expect(details).not.toHaveAttribute('open')
+    expect(within(details).getByText('Link-time optimization (LTO)')).toBeInTheDocument()
+    expect(within(details).getByText(/builds de produção/)).toBeInTheDocument()
+    expect(within(details).getByRole('link', { name: /Overall Options/ })).toHaveAttribute('href', topicPage.startResource!.url)
+    expect(within(details).getByText('Formato ELF por dentro')).toBeInTheDocument()
+  })
+})
+
 describe('página de tópico — vídeos', () => {
   const video = {
     ...topicPage.startResource!, id: 'cs61c-call', title: 'Lecture 12: Compilation, Assembly, Linking',

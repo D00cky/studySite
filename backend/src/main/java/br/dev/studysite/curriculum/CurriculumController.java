@@ -34,6 +34,7 @@ class CurriculumController {
     }
 
     record TopicPage(Topic topic, Stage stage, Resource startResource, List<Resource> deeperResources, List<Resource> videos,
+            List<Resource> deepDiveResources,
             List<TopicSummary> prerequisites, List<TopicSummary> unlocks, List<TopicSummary> related,
             List<ProjectSummary> projects) {
     }
@@ -75,7 +76,9 @@ class CurriculumController {
                 : t.resources().deeper().stream().map(r -> curriculum.resource(r).orElseThrow()).toList();
         List<Resource> videos = t.resources() == null ? List.of()
                 : t.resources().videos().stream().map(r -> curriculum.resource(r).orElseThrow()).toList();
-        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos,
+        List<Resource> deepDive = t.deepDive().stream().map(Model.DeepDivePoint::resource).filter(java.util.Objects::nonNull)
+                .distinct().map(r -> curriculum.resource(r).orElseThrow()).toList();
+        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos, deepDive,
                 summaries(t.prerequisites()),
                 curriculum.topics().stream().filter(o -> o.prerequisites().contains(id)).map(TopicSummary::of).toList(),
                 summaries(t.related()),

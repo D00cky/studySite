@@ -404,3 +404,18 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 0; }
 .kv dt { color: var(--muted); font-weight: 600; }
 .kv dd { margin: 0; }
+
+/* Drill-down 80/20 ----------------------------------------------------------------- */
+.essentials {
+  margin: 1.25rem 0; padding: 1rem 1.2rem 0.6rem; border: 2px solid var(--line); border-radius: var(--radius);
+  background: var(--success-soft); box-shadow: var(--shadow);
+}
+.essentials h2, .essentials h3 { margin: 0 0 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
+.essentials ol { margin: 0.6rem 0 0.4rem; padding-left: 1.3rem; }
+.essentials li { margin-bottom: 0.45rem; font-weight: 550; }
+.essentials-badge {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; padding: 0.1rem 0.45rem; border-radius: 999px;
+  background: var(--line); color: var(--surface);
+}
+.essentials-compact { margin: 0.25rem 0; padding: 0.75rem 0.9rem 0.3rem; box-shadow: none; font-size: 0.95rem; }
+.deep-dive > summary { color: var(--accent); }

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router'
 import { useRecordResourceEvent, useTopicPage, useTopicWorkspace } from '../../api/queries'
 import type { Resource } from '../../api/types'
+import { DeepDive, Essentials } from '../../components/DrillDown'
 import { InlineMarkdown, Markdown } from '../../components/Markdown'
 import { ProgressTag } from '../../components/ProgressTag'
 import { ResourceDetails } from '../../components/ResourceCard'
@@ -18,7 +19,8 @@ export function TopicPage() {
 
   if (page.isPending) return <Loading />
   if (page.error) return <ErrorMessage error={page.error} />
-  const { topic, stage, startResource, deeperResources, videos, prerequisites, unlocks, related, projects } = page.data
+  const { topic, stage, startResource, deeperResources, videos, deepDiveResources, prerequisites, unlocks, related, projects } =
+    page.data
   const ws = workspace.data
 
   const openResource = (r: Resource) => () => record.mutate({ resourceId: r.id, topicId: topic.id, kind: 'opened' })
@@ -55,6 +57,8 @@ export function TopicPage() {
               </p>
             )}
           </section>
+
+          <Essentials items={topic.essentials} />
 
           {topic.status === 'planned' && (
             <p className="callout callout-warning">
@@ -235,9 +239,11 @@ export function TopicPage() {
             </details>
           )}
 
+          <DeepDive points={topic.deepDive} resources={deepDiveResources} />
+
           {deeperResources.length > 0 && (
             <section aria-labelledby="deeper-title">
-              <h2 id="deeper-title">Para aprofundar</h2>
+              <h2 id="deeper-title">Mais recursos</h2>
               <ul className="list-plain">
                 {deeperResources.map((r) => (
                   <li key={r.id}>

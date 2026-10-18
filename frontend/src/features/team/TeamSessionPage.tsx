@@ -11,7 +11,7 @@ import {
   useUpdateTeamSession,
 } from '../../api/queries'
 import type { RoleAssignment, TeamSessionDetail } from '../../api/types'
-import { TextArea } from '../../components/Field'
+import { Select, TextArea } from '../../components/Field'
 import { ErrorMessage, Loading } from '../../components/Status'
 import { formatDateTime } from '../../lib/format'
 import { SESSION_ROLE_LABEL } from '../../lib/labels'
@@ -104,6 +104,7 @@ function Roles({ detail, myId, canAssign }: { detail: TeamSessionDetail; myId?: 
           ))}
         </ul>
       )}
+      {canAssign && group && <ManualRoles detail={detail} members={group.members} />}
       {canAssign && suggested.length > 0 && (
         <div className="stack">
           <p className="small" style={{ margin: 0 }}>
@@ -122,6 +123,47 @@ function Roles({ detail, myId, canAssign }: { detail: TeamSessionDetail; myId?: 
       )}
       <ErrorMessage error={setRoles.error} />
     </section>
+  )
+}
+
+const ROLE_IDS: RoleAssignment['role'][] = ['author', 'challenger', 'reviewer', 'synthesizer']
+
+/** Distribuição manual: uma pessoa por papel (papéis vazios ficam sem ninguém). */
+function ManualRoles({ detail, members }: { detail: TeamSessionDetail; members: { userId: string; displayName: string }[] }) {
+  const setRoles = useSetTeamRoles()
+  const initial = Object.fromEntries(ROLE_IDS.map((r) => [r, detail.roles.find((a) => a.role === r)?.userId ?? '']))
+  const [choice, setChoice] = useState<Record<string, string>>(initial)
+
+  function submit(e: FormEvent) {
+    e.preventDefault()
+    setRoles.mutate({
+      id: detail.session.id,
+      body: ROLE_IDS.filter((r) => choice[r]).map((r) => ({ userId: choice[r]!, role: r })),
+    })
+  }
+
+  return (
+    <details>
+      <summary>Distribuir papéis manualmente</summary>
+      <form onSubmit={submit} className="stack details-body" aria-label="Distribuir papéis">
+        <div className="filters" style={{ padding: 0, border: 0, background: 'transparent' }}>
+          {ROLE_IDS.map((r) => (
+            <Select key={r} label={SESSION_ROLE_LABEL[r]} value={choice[r]} onChange={(e) => setChoice({ ...choice, [r]: e.target.value })}>
+              <option value="">Ninguém</option>
+              {members.map((m) => (
+                <option key={m.userId} value={m.userId}>
+                  {m.displayName}
+                </option>
+              ))}
+            </Select>
+          ))}
+        </div>
+        <ErrorMessage error={setRoles.error} />
+        <button type="submit" className="button-secondary" disabled={setRoles.isPending}>
+          Salvar papéis
+        </button>
+      </form>
+    </details>
   )
 }
 
