@@ -61,12 +61,19 @@
     - Sessão do jshell e saída do javap anotadas.
     - Tabela de tempos do experimento de boxing com as linhas de log do GC.
   firstAction: Abra o terminal, rode `jshell` e digite `record Task(long id, String title) {}` seguido de `new Task(1, "estudar")`.
-  essentials:
-    - "Compare objetos com `equals`, nunca `==` (Strings, Integer, Long); `==` compara referências."
-    - "Sobrescreveu `equals`? Sobrescreva `hashCode` junto e não use objetos mutáveis como chave de HashMap."
-    - "Use `record` para dados imutáveis e `List.of`/`Map.of` para coleções que não mudam."
-    - "Feche recursos com try-with-resources; não remova itens de uma coleção dentro do for-each (use `removeIf`)."
-    - "Na dúvida sobre o que a linguagem faz, teste no `jshell` e inspecione com `javap -c -p`."
+  kit:
+    - term: "jshell"
+      use: "Testar rapidamente um trecho de Java e ver o resultado sem criar projeto."
+    - term: "record Task(long id, String title) {}"
+      use: "Declarar dados imutáveis com construtor, equals, hashCode e toString gerados."
+    - term: "a.equals(b)"
+      use: "Comparar conteúdo de objetos (String, Integer); == compara referências."
+    - term: "ArrayList / HashMap / List.of"
+      use: "Usar as coleções do dia a dia; List.of e Map.of para coleções imutáveis."
+    - term: "try (var in = Files.newBufferedReader(p)) { }"
+      use: "Abrir recursos com fechamento automático, mesmo com exceção."
+    - term: "javac Task.java && javap -c -p Task"
+      use: "Compilar e ver os métodos e o bytecode que o compilador gerou."
   deepDive:
     - title: Generics, wildcards e type erasure
       why: Ao escrever APIs genéricas ou entender erros como "unchecked cast" e por que não existe `new T()`.
@@ -142,12 +149,19 @@
     - Transcrição do curl -v dos casos de sucesso e erro.
     - Trecho do relatório de condições e do jstack com anotações.
   firstAction: Gere um projeto em start.spring.io com Spring Web, rode-o e faça `curl -v localhost:8080/` para ver o 404 padrão e seus headers.
-  essentials:
-    - "Injete dependências pelo construtor; o container só monta o grafo de objetos que você poderia montar com `new`."
-    - "Responda com o status certo: 201 + `Location` ao criar, 400 com detalhes, 404 para inexistente; erros via `ProblemDetail`, nunca stack trace."
-    - "Valide entrada com Bean Validation (`@Valid` + `@NotBlank`/`@Size`); regra de negócio continua no seu código."
-    - "Bean não encontrado ou auto-configuração estranha: rode com `--debug` e leia o conditions evaluation report."
-    - "Teste a API com `curl -v` olhando status, headers (`Content-Type`, `Accept`) e corpo."
+  kit:
+    - term: "@RestController + @GetMapping/@PostMapping"
+      use: "Mapear rotas HTTP para métodos Java."
+    - term: "@PathVariable / @RequestBody"
+      use: "Ler o id da URL e desserializar o JSON do corpo."
+    - term: "ResponseEntity.created(uri).body(t)"
+      use: "Responder com o status certo, como 201 com header Location."
+    - term: "@Valid + @NotBlank"
+      use: "Validar a entrada e devolver 400 automaticamente quando ela é inválida."
+    - term: "@ExceptionHandler → ProblemDetail"
+      use: "Transformar exceções em 404/400 com corpo padronizado, sem stack trace."
+    - term: "curl -v -H 'Content-Type: application/json' -d '{...}' URL"
+      use: "Testar a API olhando status, headers e corpo."
   deepDive:
     - title: Spring Security e a cadeia de filtros
       why: Quando a API precisar de autenticação e autorização e você quiser saber onde cada decisão é tomada.
@@ -224,12 +238,19 @@
     - Código do repositório e as duas consultas (vulnerável e corrigida) com seus resultados.
     - Saídas do pg_stat_activity e do log do Hikari anotadas.
   firstAction: "Suba um Postgres com `docker run --rm -e POSTGRES_PASSWORD=lab -p 5432:5432 postgres` e conecte com `psql -h localhost -U postgres`."
-  essentials:
-    - "Sempre `PreparedStatement` com parâmetros `?`; nunca concatene entrada do usuário no SQL."
-    - "Feche `Connection`, `PreparedStatement` e `ResultSet` com try-with-resources."
-    - "Operações que precisam ser atômicas: `setAutoCommit(false)`, `commit()` e `rollback()` no catch — ou `@Transactional` chamado de fora da classe."
-    - "Use o pool (HikariCP) com tamanho pequeno e timeout; investigue `pg_stat_activity` quando conexões esgotarem."
-    - "Mude o esquema só por migração versionada (Flyway `V<n>__descricao.sql`), nunca à mão no banco."
+  kit:
+    - term: "psql -h localhost -U postgres"
+      use: "Conectar ao banco para ver tabelas e testar queries à mão."
+    - term: "conn.prepareStatement(\"... WHERE id = ?\")"
+      use: "Executar SQL com parâmetros e evitar SQL injection."
+    - term: "try (Connection c = ds.getConnection()) { }"
+      use: "Pegar conexão do pool (HikariCP) e garantir que ela seja devolvida."
+    - term: "rs.next() + rs.getLong(\"id\")"
+      use: "Percorrer o ResultSet e mapear cada linha para um objeto."
+    - term: "setAutoCommit(false) / commit() / rollback()"
+      use: "Agrupar operações numa transação atômica."
+    - term: "V1__create_tasks.sql (Flyway)"
+      use: "Versionar cada mudança de esquema numa migração aplicada automaticamente."
   deepDive:
     - title: Dimensionamento do pool de conexões
       why: Quando a API escalar e você precisar justificar o tamanho do pool em vez de aumentá-lo no chute.
@@ -306,12 +327,19 @@
     - Saída do runner de testes com tempos e a lista de casos da matriz.
     - Captura do docker ps durante os testes e o log do Testcontainers.
   firstAction: Abra a página do módulo Postgres do Testcontainers e copie o exemplo mínimo de teste para uma pasta de laboratório.
-  essentials:
-    - "Teste acesso a dados contra PostgreSQL real com Testcontainers (`@ServiceConnection`), aplicando as migrações Flyway reais; não use H2."
-    - "Cada teste prepara e isola seus dados; a suíte precisa passar em qualquer ordem."
-    - "Reutilize o container entre classes de teste para manter a suíte rápida."
-    - "Teste a API pela camada HTTP (MockMvc ou porta aleatória), conferindo status e corpo, não só o serviço."
-    - "Escreva a matriz de autorização com testes negativos: anônimo e outro usuário devem receber 401/403/404."
+  kit:
+    - term: "@Test + assertEquals / assertThrows"
+      use: "Escrever um teste JUnit e conferir resultado ou exceção esperada."
+    - term: "@Testcontainers + PostgreSQLContainer"
+      use: "Rodar os testes contra um PostgreSQL real em container."
+    - term: "@ServiceConnection"
+      use: "Ligar o container ao Spring Boot sem configurar URL e senha à mão."
+    - term: "@BeforeEach limpa e insere dados"
+      use: "Isolar os dados de cada teste para a suíte passar em qualquer ordem."
+    - term: "mockMvc.perform(get(\"/tasks/1\")).andExpect(status().isOk())"
+      use: "Testar a API pela camada HTTP, conferindo status e corpo."
+    - term: "@ParameterizedTest + @MethodSource"
+      use: "Montar a matriz de autorização usuário × operação com casos negativos."
   deepDive:
     - title: Mutation testing
       why: Quando a cobertura parecer alta mas bugs continuarem passando, e você quiser medir a força das asserções.

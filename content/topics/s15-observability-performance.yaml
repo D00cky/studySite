@@ -66,12 +66,19 @@
     - Trecho do log estruturado, saída do endpoint de métricas e captura/saída do trace da mesma requisição.
     - Antes e depois do experimento de cardinalidade e do vazamento de token, com a correção aplicada.
   firstAction: Rode o serviço de tarefas, faça um `curl` de criação e copie a linha de log gerada. Liste quais campos faltam para você saber quem, o quê, quanto tempo e com que resultado.
-  essentials:
-    - "Log estruturado: uma linha JSON por evento com `level`, `msg`, `request_id`/`trace_id` e `duration_ms`; filtre com `jq`, não com regex."
-    - "Contador para quantidade, gauge para nível atual, histograma para latência — e nunca IDs (`task_id`, `user_id`) como label de métrica."
-    - "Propague o `trace_id` (cabeçalho `traceparent`) e coloque-o em todos os logs: é ele que liga alerta, trace e linha de log."
-    - Alerte em sintomas que o usuário sente (latência, erros, tráfego, saturação); use os demais sinais para chegar à causa.
-    - Nunca logue senhas, tokens nem corpos inteiros de requisição; use lista de campos permitidos.
+  kit:
+    - term: "logger.info(\"msg\", kv(\"task_id\", id))"
+      use: "Emitir log estruturado em JSON com campos de contexto em vez de frase livre."
+    - term: "jq 'select(.request_id==\"...\")' app.log"
+      use: "Filtrar todas as linhas de log de uma requisição ou trace específico."
+    - term: "counter / gauge / histogram"
+      use: "Escolher a métrica: contador para quantidade, gauge para nível atual, histograma para latência."
+    - term: "curl localhost:8080/actuator/prometheus"
+      use: "Ler os valores das métricas expostas pelo serviço e conferir se mudam com a carga."
+    - term: "tracer.spanBuilder(\"nome\").startSpan()"
+      use: "Criar um span manual em volta de handler ou query para ver onde o tempo foi gasto."
+    - term: "traceparent + trace_id no MDC"
+      use: "Propagar o contexto entre serviços e colocar o trace_id em todo log para ligar log e trace."
   deepDive:
     - title: Amostragem de traces (head-based vs tail-based)
       why: Quando o volume de traces ficar caro demais para guardar todos e você precisar manter justamente os lentos e os com erro.
@@ -154,12 +161,19 @@
     - Flame graphs (SVG) antes e depois, com uma frase explicando a mudança.
     - Saída do JMH com a tabela de resultados e o código do benchmark.
   firstAction: Rode `perf stat ls -R /usr > /dev/null` e anote quantas instruções, ciclos e context switches aparecem.
-  essentials:
-    - Perfile antes de otimizar e faça benchmark depois para confirmar; otimizar sem medir é chute.
-    - "Em C, compile com `-O2 -g -fno-omit-frame-pointer` e use `perf record -g` + flame graph; procure as caixas largas no topo."
-    - "No flame graph, largura é proporção de amostras; o eixo x não é tempo."
-    - "Em Java, use JMH: warmup, forks, `@Param` e `Blackhole.consume` para o resultado não ser eliminado pelo JIT."
-    - "Rode várias vezes e reporte mediana e dispersão (`hyperfine`, erro do JMH); uma execução isolada é ruído."
+  kit:
+    - term: "gcc -O2 -g -fno-omit-frame-pointer"
+      use: "Compilar com otimização e símbolos para o profiler mostrar pilhas com nomes legíveis."
+    - term: "perf stat ./prog"
+      use: "Medir tempo total, instruções, ciclos e cache-misses de uma execução."
+    - term: "perf record -g ./prog && perf report"
+      use: "Gravar amostras de pilha e ver quais funções consomem mais CPU."
+    - term: "flamegraph.pl (FlameGraph)"
+      use: "Gerar o flame graph e procurar as caixas mais largas no topo; o eixo x não é tempo."
+    - term: "hyperfine 'cmd1' 'cmd2'"
+      use: "Comparar comandos com várias execuções e ver média, mínimo, máximo e dispersão."
+    - term: "@Benchmark + @Param + Blackhole.consume"
+      use: "Escrever um benchmark JMH com warmup e forks sem o JIT eliminar o resultado."
   deepDive:
     - title: Profiling da JVM com async-profiler e JFR
       why: Quando perfilar serviços Java em produção, inclusive alocação e contenção de locks, sem o viés de safepoint.
@@ -244,12 +258,19 @@
     - Arquivo de amostras, script de percentis e histograma das duas cargas.
     - Relatório de diagnóstico com saída de EXPLAIN ANALYZE, jstack ou perf que confirmou a causa.
   firstAction: "Rode `for i in $(seq 50); do curl -s -o /dev/null -w '%{time_total}\\n' localhost:8080/tasks; done | sort -n` e leia o 25º e o 50º valores."
-  essentials:
-    - "Olhe p50, p99 e máximo, nunca só a média; escreva SLOs em percentil (\"99% abaixo de 300 ms\")."
-    - "Não tire média de percentis entre instâncias: some os histogramas e calcule o percentil do total."
-    - "Gere carga com taxa fixa (`wrk2 -R`) para evitar coordinated omission; geradores fechados escondem a cauda."
-    - "Diagnostique por hipóteses: sintoma (rota, percentil, desde quando) → camada (traces) → recurso (USE) → ferramenta (`EXPLAIN ANALYZE`, `jstack`, `perf`)."
-    - Perto de 100% de utilização a fila cresce e a cauda explode; deixe folga de capacidade.
+  kit:
+    - term: "p50 / p99 / máximo"
+      use: "Descrever a latência pela distribuição, nunca só pela média; SLO em percentil."
+    - term: "curl -w '%{time_total}\\n' URL"
+      use: "Medir o tempo de uma requisição e montar amostras rápidas num laço do shell."
+    - term: "wrk2 -R 100 -d 30s --latency URL"
+      use: "Gerar carga com taxa fixa e obter percentis sem coordinated omission."
+    - term: "sort -n amostras.txt | awk"
+      use: "Calcular percentis à mão ordenando as amostras e pegando a posição certa."
+    - term: "vmstat 1 / iostat -x 1"
+      use: "Checar utilização e saturação de CPU, memória e disco pelo USE method."
+    - term: "EXPLAIN ANALYZE / jstack <pid>"
+      use: "Confirmar a causa: plano lento da query ou threads bloqueadas na JVM."
   deepDive:
     - title: Tail at scale e hedged requests
       why: Quando seu serviço fizer fan-out para muitos backends e a cauda de um deles virar a latência típica do usuário.

@@ -69,12 +69,19 @@
     - Dockerfile, docker-compose.yml e saídas de ps/proc/ns comparadas.
     - Saídas do OOM kill, do cgroup e da recuperação do segredo, com explicação.
   firstAction: "Rode `docker run --rm alpine ps aux` e depois `ls -l /proc/self/ns` no seu terminal. Quantos processos o container vê?"
-  essentials:
-    - "Container é processo do Linux: namespaces limitam o que ele vê, cgroups o que ele usa; exit 137 costuma ser OOM kill."
-    - "Dockerfile multi-stage: copie `pom.xml` e baixe dependências antes do código para aproveitar o cache de camadas."
-    - "Rode como usuário não-root (`USER`) e use `ENTRYPOINT` em forma exec para o `SIGTERM` chegar ao processo."
-    - Segredos e configuração entram pelo ambiente em tempo de execução; nunca no build (camadas guardam tudo).
-    - "Tagueie a imagem pelo commit (`git rev-parse --short HEAD`), não só `latest`, para poder reproduzir e voltar."
+  kit:
+    - term: "FROM ... AS build + COPY --from=build"
+      use: "Fazer build multi-stage: compilar com JDK e copiar só o .jar para a imagem com JRE."
+    - term: "docker build -t app:$(git rev-parse --short HEAD) ."
+      use: "Gerar imagem imutável com tag do commit para reproduzir e voltar versões."
+    - term: "docker run --rm -p 8080:8080 --memory=256m app:tag"
+      use: "Rodar o container expondo a porta e com limite de memória (exit 137 = OOM kill)."
+    - term: "docker compose up -d"
+      use: "Subir app e PostgreSQL juntos numa rede própria, com variáveis de ambiente."
+    - term: "docker logs -f <c> / docker exec -it <c> sh"
+      use: "Ver a saída do processo e entrar no container para inspecionar processos e arquivos."
+    - term: "USER app + ENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]"
+      use: "Rodar como não-root e na forma exec para o SIGTERM chegar ao Java."
   deepDive:
     - title: Capabilities e seccomp
       why: Ao endurecer containers em produção, descartando privilégios e syscalls que a aplicação não usa.
@@ -161,12 +168,19 @@
     - Código dos endpoints de saúde, Dockerfile/Compose e saída dos testes de falha.
     - Linha do tempo do deploy quebrado com métricas, decisão e rollback.
   firstAction: "Rode `docker ps` com um container qualquer que tenha HEALTHCHECK (ou adicione `--health-cmd` a um `docker run`) e veja a coluna STATUS mudar para `(healthy)`."
-  essentials:
-    - "Liveness checa só o próprio processo (reinicia); readiness checa dependências essenciais (tira do balanceamento)."
-    - "Todo check com timeout curto, custo baixo e `failureThreshold`; uma falha isolada não deve derrubar nada."
-    - "No shutdown: ao receber `SIGTERM`, falhe o readiness, pare de aceitar conexões e termine as em andamento."
-    - "Migrações em expand/contract para que a versão anterior continue funcionando depois do deploy."
-    - Defina antes o critério de rollback (taxa de erro, p99) e ensaie o script; rollback nunca testado não é plano.
+  kit:
+    - term: "GET /health/live e /health/ready"
+      use: "Separar liveness (só o processo, reinicia) de readiness (dependências, sai do balanceamento)."
+    - term: "HEALTHCHECK CMD curl -f localhost:8080/health/ready"
+      use: "Marcar o container como healthy ou unhealthy no Docker."
+    - term: "depends_on: condition: service_healthy"
+      use: "Fazer o Compose só subir o app depois que o banco estiver saudável."
+    - term: "docker inspect --format '{{.State.Health.Status}}' <c>"
+      use: "Conferir o estado de saúde atual do container."
+    - term: "SIGTERM → readiness 503 → drenar → sair"
+      use: "Fazer shutdown gracioso sem cortar requisições em andamento."
+    - term: "docker run app:<tag-anterior>"
+      use: "Voltar à imagem anterior conhecida quando erro ou p99 passam do critério."
   deepDive:
     - title: Rolling update e rollout undo no Kubernetes
       why: Quando o deploy passar a ser feito por um orquestrador e você precisar controlar quantas réplicas trocam por vez.
@@ -247,12 +261,19 @@
     - Schema, interface do extrator, testes e saída do runner de evals.
     - Comparação de duas versões de prompt ou modelo nos mesmos casos, com a decisão justificada.
   firstAction: "Escreva à mão o JSON que você esperaria para a frase \"comprar pão amanhã\" e as três regras que tornariam esse JSON inválido."
-  essentials:
-    - "Trate o modelo como dependência remota não confiável: timeout, retry limitado e fallback, como qualquer chamada de rede."
-    - "Defina um JSON Schema para a resposta e valide sempre no cliente; o schema garante forma, não conteúdo nem regras de negócio."
-    - "Fallback em camadas: nova tentativa com o erro de validação → extrator determinístico → usuário preenche; conte fallbacks por motivo."
-    - "Evals = arquivo versionado de casos com checagens por código; rode cada caso várias vezes e compare taxa de acerto antes de trocar prompt ou modelo."
-    - "Texto do usuário é dado, não instrução: separe-o do prompt e nunca dê ao modelo poder que o usuário não tem."
+  kit:
+    - term: "JSON Schema da resposta"
+      use: "Definir campos, tipos e enums que a saída do modelo precisa respeitar."
+    - term: "validator.validate(schema, json)"
+      use: "Validar toda resposta no cliente antes de usar; o schema garante forma, não conteúdo."
+    - term: "interface TaskExtractor + StubExtractor"
+      use: "Trocar o modelo por respostas gravadas (inclusive quebradas) para testar de forma determinística."
+    - term: "timeout + 1 retry + extrator por regras"
+      use: "Encadear fallbacks quando o modelo demora, devolve JSON inválido ou viola regra."
+    - term: "evals/cases.jsonl + runner N vezes"
+      use: "Medir taxa de acerto por campo e de fallback antes de trocar prompt ou modelo."
+    - term: "ollama run <modelo> --format json"
+      use: "Testar localmente um modelo pequeno com saída restrita a JSON, sem API paga."
   deepDive:
     - title: Geração restrita por gramática (constrained decoding)
       why: Quando quiser entender por que um runtime consegue garantir JSON válido e quais schemas ele não suporta.

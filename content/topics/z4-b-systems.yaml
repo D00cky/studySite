@@ -66,12 +66,19 @@
     - Saídas de strace -c e perf stat das quatro versões.
     - Código e resultados do experimento com fsync e kill -9.
   firstAction: "Rode `strace -c cat /etc/passwd > /dev/null` e anote quantos `read` e `write` aparecem."
-  essentials:
-    - "Cada read/write é uma syscall com custo fixo: leia e escreva em blocos (ex.: 64 KiB), nunca byte a byte."
-    - "stdio bufferiza: use `fflush` ou `setvbuf` quando a saída precisar aparecer já, e lembre que `kill -9` perde o buffer."
-    - "`write` retornou não significa disco; para durabilidade use `fsync` e agrupe vários registros por fsync."
-    - "`strace -c` para contar syscalls; `perf stat` ou `time` para medir tempo — strace distorce o tempo."
-    - "Rode o benchmark várias vezes e separe cache frio de quente; reporte a mediana."
+  kit:
+    - term: "read(fd, buf, 65536) / write(fd, buf, n)"
+      use: "Ler e escrever em blocos grandes em vez de byte a byte."
+    - term: "fopen / fgetc / fwrite / fflush"
+      use: "Usar stdio com buffer da libc e forçar a saída quando necessário."
+    - term: "fsync(fd)"
+      use: "Garantir que os dados chegaram ao disco, não só ao cache do kernel."
+    - term: "strace -c ./prog"
+      use: "Contar quantas syscalls o programa faz e de que tamanho."
+    - term: "perf stat -r 5 ./prog"
+      use: "Medir tempo e contadores em várias execuções e ver a variação."
+    - term: "cmp a b"
+      use: "Conferir que a cópia ficou idêntica ao original."
   deepDive:
     - title: io_uring e I/O assíncrono
       why: Em servidores ou bancos que fazem muito I/O concorrente e querem reduzir syscalls e cópias.
@@ -153,12 +160,19 @@
     - Saídas do dump_heap antes e depois do coalescing.
     - Tabela de fragmentação e trecho do strace com brk/mmap da glibc.
   firstAction: "Rode `strace -e trace=brk,mmap ./algum_programa_com_malloc` e conte quantas vezes a heap cresceu."
-  essentials:
-    - "malloc pede regiões grandes ao kernel (`brk`/`mmap`) e as subdivide; `free` geralmente devolve à free list, não ao kernel."
-    - "Cada bloco tem header com tamanho e bit livre/ocupado; `free(p)` acha o header logo antes de `p`."
-    - "Implemente splitting ao alocar e coalescing ao liberar, senão a fragmentação externa toma conta."
-    - "Alinhe blocos a 16 bytes; `malloc(10)` usa mais que 10 bytes (confira com `malloc_usable_size`)."
-    - "Teste seu alocador com ASan/Valgrind: estouro de um bloco corrompe o header do próximo."
+  kit:
+    - term: "mmap(NULL, n, ..., MAP_PRIVATE | MAP_ANONYMOUS, -1, 0)"
+      use: "Pedir ao kernel a arena de onde o alocador vai tirar os blocos."
+    - term: "struct header { size_t size; int free; }"
+      use: "Guardar tamanho e estado antes de cada bloco; free(p) acha o header em p - 1."
+    - term: "first fit + splitting"
+      use: "Usar o primeiro bloco livre que cabe e dividir a sobra num bloco livre novo."
+    - term: "coalescing de vizinhos livres"
+      use: "Juntar blocos livres adjacentes ao liberar para reduzir fragmentação externa."
+    - term: "(n + 15) & ~15"
+      use: "Arredondar tamanhos para alinhar blocos a 16 bytes."
+    - term: "gcc -fsanitize=address -g"
+      use: "Detectar estouro de bloco e uso após free nos testes do alocador."
   deepDive:
     - title: Classes de tamanho e caches por thread
       why: Ao entender por que alocadores reais escalam com muitas threads e como ler o código de um deles.
@@ -238,12 +252,19 @@
     - Código do spinlock com comentários justificando cada memory order.
     - Saídas do perf stat e do strace de futex anotadas.
   firstAction: Escreva um programa com duas threads fazendo `counter++` um milhão de vezes cada e imprima o resultado três vezes.
-  essentials:
-    - "`counter++` não é atômico: use `_Atomic`/`atomic_fetch_add` ou um mutex; `volatile` não resolve."
-    - "Na dúvida, use seq_cst (padrão); acquire/release só quando souber qual escrita precisa ficar visível para qual leitura."
-    - "Prefira mutex a spinlock em código de aplicação; spinlock só para seções curtíssimas."
-    - "Rode o código concorrente com ThreadSanitizer (`-fsanitize=thread`) antes de confiar nele."
-    - "Evite false sharing: contadores por thread somados no fim ou alinhados a 64 bytes; confirme com `perf stat`."
+  kit:
+    - term: "pthread_create / pthread_join"
+      use: "Criar threads e esperar que terminem."
+    - term: "pthread_mutex_lock / unlock"
+      use: "Proteger uma seção crítica; a escolha padrão em código de aplicação."
+    - term: "atomic_fetch_add(&c, 1)"
+      use: "Incrementar um contador compartilhado sem data race nem lock."
+    - term: "atomic_flag_test_and_set_explicit(..., memory_order_acquire)"
+      use: "Implementar spinlock com acquire ao pegar e release ao soltar."
+    - term: "gcc -O2 -pthread -fsanitize=thread"
+      use: "Compilar com ThreadSanitizer para apontar data races."
+    - term: "perf stat -e cache-misses ./prog"
+      use: "Medir contenção e false sharing entre threads."
   deepDive:
     - title: Estruturas lock-free e o problema ABA
       why: Ao implementar filas ou pilhas sem lock em sistemas de baixa latência.
