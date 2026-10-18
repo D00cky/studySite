@@ -1,0 +1,407 @@
+# Trechos (capítulo de vídeo com minuto, ou capítulo/seção de livro/documentação) para os tópicos das etapas 3 e 4.
+
+- id: akitando-93-hello-world-video-inteiros
+  title: "Hello World Como Você Nunca Viu! | Entendendo C — 4:37 Inteiros"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=Gp2m8ZuXoPg&t=277s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Trecho sobre como inteiros são guardados em bytes e por que o tamanho do tipo importa (do minuto 4:37 até o próximo capítulo)."
+  section: "4:37 Inteiros"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-93-hello-world-video-ponteiros
+  title: "Hello World Como Você Nunca Viu! | Entendendo C — 42:54 Ponteiros!"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=Gp2m8ZuXoPg&t=2574s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [pointers]
+  why: "Trecho em que o Akita introduz ponteiros depois de mostrar endereços, referências e a pilha (do minuto 42:54 até o próximo capítulo)."
+  section: "42:54 Ponteiros!"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-1-c-pt-video-tipos
+  title: "CS50x em Português - Aula 1 - C — 1:02:55 Tipos"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=eepzDoovmAw&t=3775s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Trecho da aula dublada sobre os tipos de dados em C (do minuto 1:02:55 até o próximo capítulo)."
+  section: "1:02:55 Tipos"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-1-c-pt-video-funcoes
+  title: "CS50x em Português - Aula 1 - C — 1:44:46 Funções"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=eepzDoovmAw&t=6286s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Trecho da aula dublada sobre declarar e definir funções em C (do minuto 1:44:46 até o próximo capítulo)."
+  section: "1:44:46 Funções"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-1-c-video-types
+  title: "CS50x - Lecture 1 - C — 1:02:55 Types"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=SlqjA04_dpk&t=3775s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Trecho da aula original sobre os tipos de dados em C (do minuto 1:02:55 até o próximo capítulo)."
+  section: "1:02:55 Types"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-1-c-video-functions
+  title: "CS50x - Lecture 1 - C — 1:44:46 Functions"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=SlqjA04_dpk&t=6286s
+  language: en
+  format: video
+  difficulty: intro
+  topics: [c-types-functions]
+  why: "Trecho da aula original sobre declarar e definir funções em C (do minuto 1:44:46 até o próximo capítulo)."
+  section: "1:44:46 Functions"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-2-arrays-pt-video-vetores-arrays
+  title: "CS50x em Português - Aula 2 - Arrays — 1:12:40 Vetores (Arrays)"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=vdCJU-1mB-A&t=4360s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-arrays-structs]
+  why: "Trecho da aula dublada sobre arrays em C (do minuto 1:12:40 até o próximo capítulo)."
+  section: "1:12:40 Vetores (Arrays)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-2-arrays-pt-video-strings
+  title: "CS50x em Português - Aula 2 - Arrays — 1:29:56 Strings"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=vdCJU-1mB-A&t=5396s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-strings]
+  why: "Trecho da aula dublada sobre strings em C (do minuto 1:29:56 até o próximo capítulo)."
+  section: "1:29:56 Strings"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-117-compilada-interpretada-video-fases-de-um-compilador
+  title: "Linguagem Compilada vs Interpretada | Qual é melhor? — 42:52 As Fases de um Compilador"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=SNyh-cubxaU&t=2572s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [compilation-pipeline]
+  why: "Trecho sobre as fases de um compilador (do minuto 42:52 até o próximo capítulo)."
+  section: "42:52 As Fases de um Compilador"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-4-memory-pt-video-ponteiros
+  title: "CS50x em Português - Aula 4 - Memória — 18:05 Ponteiros"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=DweS4KseeDE&t=1085s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [pointers]
+  why: "Trecho da aula dublada que introduz ponteiros (do minuto 18:05 até o próximo capítulo)."
+  section: "18:05 Ponteiros"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: cs50x-lecture-4-memory-pt-video-strings
+  title: "CS50x em Português - Aula 4 - Memória — 31:28 Strings"
+  author: "David J. Malan (Harvard CS50)"
+  url: https://www.youtube.com/watch?v=DweS4KseeDE&t=1888s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [c-strings]
+  why: "Trecho da aula dublada que volta às strings depois de apresentar ponteiros (do minuto 31:28 até o próximo capítulo)."
+  section: "31:28 Strings"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-94-consertando-c-video-segmentos-memoria-virtual
+  title: "O que vem DEPOIS do Hello World | Consertando meu C — 4:13 Segmentos da Memória Virtual"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=YyWMN_0g3BQ&t=253s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime]
+  why: "Trecho sobre os segmentos da memória virtual de um processo (do minuto 4:13 até o próximo capítulo)."
+  section: "4:13 Segmentos da Memória Virtual"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: akitando-136-python-java-rust-video-cap-7-rust
+  title: "Python? Java? Rust? Qual a Diferença? | Discutindo Linguagens — 36:21 Cap 7 - Onde cada Linguagem é mais Forte? | Rust"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=MI9cdxETA4c&t=2181s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [dynamic-allocation-ownership]
+  why: "Trecho em que o Akita discute onde cada linguagem é mais forte, incluindo Rust (do minuto 36:21 até o próximo capítulo)."
+  section: "36:21 Cap 7 - Onde cada Linguagem é mais Forte? | Rust"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-video-debugging
+  title: "Lecture 4: Debugging and Profiling — 0:11 Debugging"
+  author: "Missing Semester"
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs&t=11s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [memory-debugging]
+  why: "Trecho sobre depuração (do minuto 0:11 até o próximo capítulo)."
+  section: "0:11 Debugging"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-video-sanitizers
+  title: "Lecture 4: Debugging and Profiling — 46:49 Sanitizers"
+  author: "Missing Semester"
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs&t=2809s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [memory-debugging]
+  why: "Trecho sobre sanitizers (do minuto 46:49 até o próximo capítulo)."
+  section: "46:49 Sanitizers"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-video-valgrind
+  title: "Lecture 4: Debugging and Profiling — 50:56 Valgrind: When You Can't Recompile"
+  author: "Missing Semester"
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs&t=3056s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [memory-debugging]
+  why: "Trecho sobre Valgrind para quando não dá para recompilar (do minuto 50:56 até o próximo capítulo)."
+  section: "50:56 Valgrind: When You Can't Recompile"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
+
+- id: mike-acton-data-oriented-design-cppcon-2014-memory-access-and-performance
+  title: "CppCon 2014: Mike Acton \"Data-Oriented Design and C++\" — 25:18 Memory access and performance"
+  author: "Mike Acton (CppCon)"
+  url: https://www.youtube.com/watch?v=rX0ItVEVjHc&t=1518s
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [c-arrays-structs]
+  why: "Trecho sobre acesso à memória e desempenho, ponto de partida para o layout de dados e o cache (do minuto 25:18 até o próximo capítulo)."
+  section: "25:18 Memory access and performance (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: mit-6858-lecture-1-threat-models-buffer-overflow-demonstration
+  title: "1. Introduction, Threat Models — 45:41 Buffer overflow demonstration"
+  author: "MIT OpenCourseWare"
+  url: https://www.youtube.com/watch?v=GqmQg-cszw4&t=2741s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [stack-heap-lifetime]
+  why: "Trecho com a demonstração de buffer overflow (do minuto 45:41 até o próximo capítulo)."
+  section: "45:41 Buffer overflow demonstration (capítulo automático do YouTube)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
+
+- id: cppreference-c-arithmetic-types
+  title: "Arithmetic types - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/language/arithmetic_types
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-types-functions]
+  why: "Tabela dos tipos inteiros e de ponto flutuante de C, com as garantias mínimas de tamanho e intervalo."
+  section: "Arithmetic types"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: cppreference-c-functions
+  title: "Functions - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/language/functions
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-types-functions]
+  why: "Referência sobre declaração, definição e chamada de funções em C."
+  section: "Functions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: cppreference-c-array
+  title: "Array declaration - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/language/array
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-arrays-structs]
+  why: "Referência sobre declaração de arrays e arrays multidimensionais."
+  section: "Array declaration"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: cppreference-c-struct
+  title: "Struct declaration - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/language/struct
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-arrays-structs]
+  why: "Referência sobre declaração de structs e a ordem dos membros na memória."
+  section: "Struct declaration"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: cppreference-c-preprocessor
+  title: "Preprocessor - cppreference.com"
+  author: "cppreference.com"
+  url: https://en.cppreference.com/w/c/preprocessor
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-preprocessor]
+  why: "Referência das diretivas do pré-processador (#include, #define, #if, #ifdef)."
+  section: "Preprocessor"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: csapp-1-2-programs-translated
+  title: "Computer Systems: A Programmer's Perspective (3ª edição) — 1.2 Programs Are Translated by Other Programs into Different Forms"
+  author: "Randal E. Bryant e David R. O'Hallaron"
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Seção curta que acompanha hello.c até o executável, passando por pré-processador, compilador, assembler e linker."
+  section: "1.2 Programs Are Translated by Other Programs into Different Forms"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no sumário oficial (TOC and Preface em csapp.cs.cmu.edu/3e/pieces/preface3e.pdf); o livro não tem URL por capítulo." }
+
+- id: csapp-3-machine-level-representation
+  title: "Computer Systems: A Programmer's Perspective (3ª edição) — 3 Machine-Level Representation of Programs"
+  author: "Randal E. Bryant e David R. O'Hallaron"
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [compilation-pipeline]
+  why: "Capítulo sobre assembly x86-64, procedimentos e convenção de chamada."
+  section: "3 Machine-Level Representation of Programs"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no sumário oficial (TOC and Preface em csapp.cs.cmu.edu/3e/pieces/preface3e.pdf); o livro não tem URL por capítulo." }
+
+- id: csapp-7-linking
+  title: "Computer Systems: A Programmer's Perspective (3ª edição) — 7 Linking"
+  author: "Randal E. Bryant e David R. O'Hallaron"
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [linking-object-files]
+  why: "Capítulo sobre object files, tabelas de símbolos, resolução de símbolos, bibliotecas estáticas, relocação e bibliotecas compartilhadas."
+  section: "7 Linking"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no sumário oficial (TOC and Preface em csapp.cs.cmu.edu/3e/pieces/preface3e.pdf); o livro não tem URL por capítulo." }
+
+- id: csapp-3-7-procedures
+  title: "Computer Systems: A Programmer's Perspective (3ª edição) — 3.7 Procedures"
+  author: "Randal E. Bryant e David R. O'Hallaron"
+  url: https://csapp.cs.cmu.edu/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [stack-heap-lifetime]
+  why: "Seção sobre a run-time stack: frames, armazenamento local na pilha e recursão."
+  section: "3.7 Procedures (3.7.1 The Run-Time Stack · 3.7.4 Local Storage on the Stack)"
+  access: paid
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Seção conferida no sumário oficial (TOC and Preface em csapp.cs.cmu.edu/3e/pieces/preface3e.pdf); o livro não tem URL por capítulo." }
+
+- id: cert-c-rules-memory-management-mem
+  title: "Memory Management (MEM) | CERT Secure Coding"
+  author: "Software Engineering Institute (CMU)"
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [dynamic-allocation-ownership]
+  why: "Regras do CERT C para memória dinâmica, com código vulnerável e corrigido."
+  section: "Rules — Memory Management (MEM)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
+
+- id: cert-c-rules-characters-and-strings-str
+  title: "Characters and Strings (STR) | CERT Secure Coding"
+  author: "Software Engineering Institute (CMU)"
+  url: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [c-strings]
+  why: "Regras do CERT C para strings, com código vulnerável e corrigido."
+  section: "Rules — Characters and Strings (STR)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Página da seção aberta hoje." }
