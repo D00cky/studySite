@@ -33,7 +33,7 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
         assertThat(page.get("videos").isArray()).as("vídeos resolvidos na página do tópico").isTrue();
         assertThat(page.get("deepDiveResources").isArray()).as("recursos do aprofundamento resolvidos").isTrue();
         assertThat(page.get("books").findValuesAsString("id"))
-                .as("livros de referência ligados ao tópico pela biblioteca").contains("csapp");
+                .as("livros de referência ligados ao tópico pela biblioteca").anyMatch(id -> id.startsWith("csapp"));
         JsonNode workspace = learner.get("/api/me/topics/compilation-pipeline").expect(200).json();
         assertThat(workspace.get("progress").get("status").asString()).isEqualTo("not_started");
         assertThat(workspace.get("missingPrerequisites")).as("orienta, não bloqueia").isNotEmpty();
@@ -120,6 +120,9 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
     @Test
     void bookChaptersReplaceTheWholeBookOnATopicPage() {
         ApiClient someone = register("Leitor");
+        JsonNode compilation = someone.get("/api/curriculum/topics/compilation-pipeline").expect(200).json().get("books");
+        assertThat(compilation.findValuesAsString("id")).as("CS:APP inteiro some quando há capítulo dele")
+                .doesNotContain("csapp").anyMatch(id -> id.startsWith("csapp-"));
         JsonNode books = someone.get("/api/curriculum/topics/processes-syscalls").expect(200).json().get("books");
         java.util.Set<String> chapterUrls = new java.util.HashSet<>();
         for (JsonNode b : books) {

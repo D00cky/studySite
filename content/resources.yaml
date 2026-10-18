@@ -144,8 +144,7 @@
   format: book
   difficulty: intro
   topics: [terminal-shell, filesystem-permissions]
-  why: Livro completo e gratuito sobre a linha de comando do Linux, do básico a scripts. Referência paciente para quem está começando.
-  section: Seventh Internet Edition
+  why: "Livro completo e gratuito sobre a linha de comando do Linux, do básico a scripts. Referência paciente para quem está começando. Edição de referência: Seventh Internet Edition."
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Página verificada (licença CC BY-NC-ND, PDF gratuito). O download do PDF no SourceForge não pôde ser confirmado por bloqueio a bots." }
@@ -439,8 +438,7 @@
   format: book
   difficulty: intermediate
   topics: [binary-hexadecimal, integer-representation-overflow, floating-point, cpu-memory-caches, compilation-pipeline, linking-object-files, stack-heap-lifetime]
-  why: O livro de referência sobre como programas rodam na máquina — representação de dados, assembly, linking e hierarquia de memória. Pago; o site tem materiais gratuitos para estudantes.
-  section: "3ª edição (site oferece Student Site, Web Asides e PDF com sumário e prefácio)"
+  why: "O livro de referência sobre como programas rodam na máquina — representação de dados, assembly, linking e hierarquia de memória. Pago; o site tem materiais gratuitos para estudantes. Edição de referência: 3ª edição (site oferece Student Site, Web Asides e PDF com sumário e prefácio)."
   access: paid
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
@@ -534,8 +532,7 @@
   format: book
   difficulty: intro
   topics: [c-types-functions, c-arrays-structs, c-preprocessor, pointers, c-strings, linking-object-files]
-  why: Guia gratuito, completo e bem-humorado de C. As etapas 3 e 4 usam vários capítulos dele.
-  section: v0.11.2
+  why: "Guia gratuito, completo e bem-humorado de C. As etapas 3 e 4 usam vários capítulos dele. Edição de referência: v0.11.2."
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
@@ -866,8 +863,7 @@
   format: book
   difficulty: intermediate
   topics: [processes-syscalls, virtual-memory, threads-basics, filesystems]
-  why: Livro gratuito e muito claro sobre sistemas operacionais — virtualização, concorrência e persistência.
-  section: Versão 1.10 (capítulos em PDF)
+  why: "Livro gratuito e muito claro sobre sistemas operacionais — virtualização, concorrência e persistência. Edição de referência: Versão 1.10 (capítulos em PDF)."
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
@@ -1354,8 +1350,7 @@
   format: book
   difficulty: advanced
   topics: [queues-delivery-semantics, consistency-models]
-  why: Referência sobre dados em sistemas distribuídos — replicação, particionamento, transações e consistência. Livro pago.
-  section: 1ª edição (ISBN 9781449373320)
+  why: "Referência sobre dados em sistemas distribuídos — replicação, particionamento, transações e consistência. Livro pago. Edição de referência: 1ª edição (ISBN 9781449373320)."
   access: paid
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
