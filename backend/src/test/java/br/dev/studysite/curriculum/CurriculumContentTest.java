@@ -36,9 +36,16 @@ class CurriculumContentTest {
     }
 
     @Test
-    void laterStagesAreMarkedPlanned() {
-        assertThat(curriculum.stages().stream().filter(s -> s.order() >= 5))
-                .allSatisfy(s -> assertThat(s.status()).isEqualTo("planned"));
+    void wholeCurriculumIsAuthored() {
+        assertThat(curriculum.stages()).allSatisfy(s -> assertThat(s.status()).as(s.id()).isEqualTo("authored"));
+        assertThat(curriculum.topics()).allSatisfy(t -> assertThat(t.status()).as(t.id()).isEqualTo("authored"));
+        assertThat(curriculum.projects()).allSatisfy(p -> assertThat(p.status()).as(p.id()).isEqualTo("authored"));
+    }
+
+    @Test
+    void everyTopicHasAtLeastOneVideo() {
+        assertThat(curriculum.topics()).allSatisfy(t ->
+                assertThat(t.resources().videos()).as("vídeos de %s", t.id()).isNotEmpty());
     }
 
     @Test

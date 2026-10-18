@@ -73,34 +73,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: akitando-118-servidor-sql-banco-de-dados
-  title: "Fiz um servidor de \"SQL\"?? | Entendendo Banco de Dados"
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=_7nISfpofec
-  language: pt-BR
-  format: video
-  difficulty: intermediate
-  topics: [indexes]
-  why: Em português, constrói um banco de brinquedo e explica o que é um índice, transaction log e B-Trees em disco.
-  section: "[Akitando] #118"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: akitando-149-docker-compose-postgres-rinha
-  title: "Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend"
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=-yGHG3pnHLg
-  language: pt-BR
-  format: video
-  difficulty: intermediate
-  topics: [query-plans, containers-deployment, latency-percentiles-diagnosis]
-  why: Em português, mostra o PostgreSQL como gargalo sob carga e usa EXPLAIN ANALYZE para entender a estratégia de uma consulta.
-  section: "[Akitando] #149 · CAP 11 - Estratégia de SQL com EXPLAIN ANALYZE"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: kleppmann-transactions-strange-loop
   title: "\"Transactions: myths, surprises and opportunities\" by Martin Kleppmann"
   author: Martin Kleppmann (Strange Loop Conference)
@@ -359,19 +331,6 @@
   why: Documentação oficial do JUnit (a versão atual é a 6, que mantém a API Jupiter do JUnit 5) — @Test, asserções, testes parametrizados.
   access: free
   priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: testcontainers-postgres
-  title: Postgres Module - Testcontainers for Java
-  author: Testcontainers
-  url: https://java.testcontainers.org/modules/databases/postgres/
-  language: en
-  format: documentation
-  difficulty: intermediate
-  topics: [interfaces-testing]
-  why: Sobe um PostgreSQL real e descartável em testes de integração Java.
-  access: free
-  priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
 - id: ian-cooper-tdd-where-did-it-go-wrong

@@ -90,7 +90,7 @@
   resources:
     start: ostep-memory-api
     deeper: [akita-memory-1, ostep-address-spaces, csapp]
-    videos: [akitando-45-memoria-parte-1-video, cs61c-fa20-lecture-05-3-memory-locations-video, akitando-94-consertando-c-video]
+    videos: [akitando-45-memoria-1-video, cs61c-fa20-lecture-05-3-memory-locations-video, akitando-94-consertando-c-video]
   exercise:
     id: ex-memory-map
     title: Mapa de endereços
@@ -155,7 +155,7 @@
   resources:
     start: beej-c-malloc
     deeper: [ostep-memory-api, akita-memory-2, man-malloc, valgrind-quickstart, cert-c]
-    videos: [cs61c-fa20-lecture-05-1-dynamic-allocation-video, akitando-46-memoria-parte-2-video, cs61c-fa20-lecture-05-5-memory-goes-bad-video]
+    videos: [cs61c-fa20-lecture-05-1-dynamic-allocation-video, akitando-46-memoria-2-video, cs61c-fa20-lecture-05-5-memory-goes-bad-video]
   exercise:
     id: ex-dynamic-array-core
     title: Um vetor que cresce

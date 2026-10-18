@@ -672,7 +672,7 @@
   language: en
   format: documentation
   difficulty: intermediate
-  topics: [backend-testing-java]
+  topics: [backend-testing-java, interfaces-testing]
   why: "Módulo PostgreSQL: imagem, JDBC URL e scripts de inicialização."
   access: free
   priority: core
@@ -905,7 +905,7 @@
   language: en
   format: book
   difficulty: intermediate
-  topics: [low-level-concurrency]
+  topics: [low-level-concurrency, race-conditions-synchronization, bounded-queues]
   why: "Contadores, listas e filas com locks, incluindo medições de escalabilidade e o contador aproximado."
   section: "Chapter 29: Lock-based Concurrent Data Structures"
   access: free
@@ -961,7 +961,7 @@
   language: en
   format: documentation
   difficulty: intermediate
-  topics: [systems-io-performance, memory-allocators]
+  topics: [systems-io-performance, memory-allocators, virtual-memory]
   why: "Mapear arquivos e memória anônima; usado por I/O e por alocadores para blocos grandes."
   access: free
   priority: core
@@ -1169,7 +1169,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [spring-web-backend]
+  topics: [spring-web-backend, tcp-udp-sockets, http-protocol]
   why: "O que existe por baixo de um servidor web: sockets, HTTP em texto e o ciclo de requisição."
   access: free
   priority: optional
@@ -1182,7 +1182,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [jdbc-postgresql]
+  topics: [jdbc-postgresql, indexes]
   why: "Em português: o que um servidor de banco faz entre receber SQL e devolver linhas."
   access: free
   priority: optional
@@ -1195,7 +1195,7 @@
   language: pt-BR
   format: video
   difficulty: intermediate
-  topics: [backend-testing-java]
+  topics: [backend-testing-java, query-plans, containers-deployment, latency-percentiles-diagnosis]
   why: "Backend com PostgreSQL em containers sob teste de carga; contexto para testes contra banco real."
   access: free
   priority: optional
@@ -1208,7 +1208,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [tokenizing-parsing, tree-walk-evaluation]
+  topics: [tokenizing-parsing, tree-walk-evaluation, compilation-pipeline]
   why: "Vídeo do episódio #117: compilação, interpretação, bytecode e JIT em português."
   access: free
   priority: core
@@ -1260,7 +1260,7 @@
   language: en
   format: video
   difficulty: intermediate
-  topics: [systems-io-performance, low-level-concurrency]
+  topics: [systems-io-performance, low-level-concurrency, profiling-benchmarks, latency-percentiles-diagnosis]
   why: "Tutorial sobre metodologia e ferramentas de observação (vmstat, iostat, strace, perf)."
   access: free
   priority: optional
@@ -1273,7 +1273,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [memory-allocators]
+  topics: [memory-allocators, virtual-memory, stack-heap-lifetime]
   why: "Em português: stack, heap e como alocação de memória funciona por baixo."
   access: free
   priority: core
@@ -1286,7 +1286,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [memory-allocators]
+  topics: [memory-allocators, virtual-memory, dynamic-allocation-ownership]
   why: "Continuação: fragmentação, coleta de lixo e custo de alocação."
   access: free
   priority: optional
@@ -1299,7 +1299,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [low-level-concurrency]
+  topics: [low-level-concurrency, threads-basics, race-conditions-synchronization]
   why: "Em português: concorrência vs paralelismo, threads e o papel do sistema operacional."
   access: free
   priority: optional
@@ -1312,7 +1312,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [low-level-concurrency]
+  topics: [low-level-concurrency, threads-basics, race-conditions-synchronization]
   why: "Continuação: modelos de concorrência e o custo de coordenação."
   access: free
   priority: optional

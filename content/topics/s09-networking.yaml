@@ -102,7 +102,7 @@
   resources:
     start: beej-network
     deeper: [beej-network-ptbr, cs168-textbook-transport-principles, cs168-textbook-tcp-design, man-recv, man-socket7, man-ss, rfc-9293-tcp]
-    videos: [akitando-124-redes-parte-4, akitando-122-redes-parte-2]
+    videos: [akitando-124-sockets-web-video, akitando-122-redes-parte-2]
   exercise:
     id: ex-line-echo-server
     title: Servidor de linhas que sobrevive a leituras parciais
@@ -181,7 +181,7 @@
   resources:
     start: mdn-http-messages
     deeper: [mdn-http-overview, mdn-http-overview-ptbr, mdn-learn, cs168-textbook-http, curl-manpage, rfc-9110-http-semantics, rfc-9112-http11]
-    videos: [akitando-124-redes-parte-4]
+    videos: [akitando-124-sockets-web-video]
   exercise:
     id: ex-http-by-hand
     title: HTTP digitado à mão
@@ -323,6 +323,7 @@
   resources:
     start: mdn-http-caching
     deeper: [aws-builders-timeouts-retries, mdn-cache-control, csswizardry-cache-control-for-civilians, cs168-textbook-transport-principles, man-socket7, curl-manpage, rfc-9111-http-caching]
+    videos: [roadmapsh-http-caching-video, hnasr-frontend-backend-timeouts-video, hnasr-http-caching-etags-video]
   exercise:
     id: ex-slow-server
     title: Servidor lento, cliente com prazo

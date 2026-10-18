@@ -30,7 +30,7 @@
   resources:
     start: ostep-concurrency-intro
     deeper: [ostep-thread-api, man-pthreads, man-pthread-create, gdb-threads, akita-memory-2]
-    videos: [cs162-lecture-3-threads-processes, cs162-lecture-6-synchronization-1, akitando-43-concorrencia-paralelismo-1-video, akitando-46-memoria-parte-2-video]
+    videos: [cs162-lecture-3-threads-processes, cs162-lecture-6-synchronization-1, akitando-43-concorrencia-1-video, akitando-46-memoria-2-video]
   exercise:
     id: ex-what-threads-share
     title: O que as threads compartilham
@@ -96,8 +96,8 @@
       correction: Wakeups espúrios e outras threads podem invalidar a condição; reavalie sempre em while.
   resources:
     start: ostep-locks
-    deeper: [ostep-thread-api, ostep-condition-variables, ostep-semaphores, ostep-locked-data-structures, man-pthread-mutex-lock, man-pthread-cond-wait, clang-threadsanitizer, valgrind-helgrind]
-    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-9-synchronization-4, mit-6s081-2020-lecture-10-locks, mit-6s081-2020-lecture-13-sleep-wakeup, akitando-44-concorrencia-paralelismo-2-video]
+    deeper: [ostep-thread-api, ostep-condition-variables, ostep-semaphores, ostep-lock-based-data-structures, man-pthread-mutex-lock, man-pthread-cond-wait, clang-threadsanitizer, valgrind-helgrind]
+    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-9-synchronization-4, mit-6s081-2020-lecture-10-locks, mit-6s081-2020-lecture-13-sleep-wakeup, akitando-44-concorrencia-2-video]
   exercise:
     id: ex-lost-updates
     title: Contador de tarefas concluídas com updates perdidos
@@ -234,7 +234,7 @@
       correction: Só enquanto há recursos ociosos; depois, contenção no lock, troca de contexto e limites de CPU ou I/O achatam a curva.
   resources:
     start: ostep-condition-variables
-    deeper: [ostep-semaphores, ostep-locked-data-structures, man-pthread-cond-wait, clang-threadsanitizer]
+    deeper: [ostep-semaphores, ostep-lock-based-data-structures, man-pthread-cond-wait, clang-threadsanitizer]
     videos: [cs162-lecture-9-synchronization-4, cs162-lecture-7-synchronization-2, mit-6s081-2020-lecture-13-sleep-wakeup]
   exercise:
     id: ex-bounded-buffer

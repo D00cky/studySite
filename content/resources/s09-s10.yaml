@@ -46,20 +46,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: akitando-124-redes-parte-4
-  title: "Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4"
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=lc6U93P4Sxw
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [tcp-udp-sockets, http-protocol]
-  why: Sockets, o modelo cliente-servidor e como HTTP roda por cima de TCP, em português.
-  section: "[Akitando] #124"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 # --- Vídeos: Akitando (criptografia) ----------------------------------------------
 
 - id: akitando-67-criptografia-parte-1
@@ -663,4 +649,45 @@
   why: Meta-comandos do psql (\d, \dt, \timing, \set ON_ERROR_ROLLBACK, \echo :AUTOCOMMIT) usados nos laboratórios.
   access: free
   priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Vídeos adicionados na integração (verificados via oEmbed) ---------------------
+
+- id: hnasr-frontend-backend-timeouts-video
+  title: "Frontend and Backends Timeouts"
+  author: Hussein Nasser
+  url: https://www.youtube.com/watch?v=2GAQVXGT_Zw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [timeouts-caching]
+  why: Discussão prática dos tipos de timeout em frontend e backend e de por que eles liberam recursos e expõem operações lentas.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: hnasr-http-caching-etags-video
+  title: "HTTP Caching with E-Tags -  (Explained by Example)"
+  author: Hussein Nasser
+  url: https://www.youtube.com/watch?v=TgZnpp5wJWU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [timeouts-caching, http-protocol]
+  why: Mostra por exemplo como ETag e respostas 304 Not Modified validam o cache sem reenviar o conteúdo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: roadmapsh-http-caching-video
+  title: "Everything you need to know about HTTP Caching"
+  author: roadmap.sh
+  url: https://www.youtube.com/watch?v=HiBDZgTNpXY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [timeouts-caching]
+  why: Visão geral dos cabeçalhos de cache HTTP (Expires, Cache-Control), da validação e das estratégias de cache, do canal do roadmap.sh.
+  access: free
+  priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }

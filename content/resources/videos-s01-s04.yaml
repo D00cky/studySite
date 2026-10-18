@@ -154,20 +154,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: akitando-117-compilada-interpretada-video
-  title: "Linguagem Compilada vs Interpretada | Qual é melhor?"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=SNyh-cubxaU
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [compilation-pipeline]
-  why: "Vídeo do episódio #117 do Akitando: o que realmente diferencia compilação, interpretação e as etapas intermediárias."
-  section: "Akitando #117"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: cs50x-lecture-1-c-pt-video
   title: "CS50x em Português - Aula 1 - C"
   author: "David J. Malan (Harvard CS50)"

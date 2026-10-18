@@ -401,19 +401,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: brendan-gregg-linux-performance-tools-part-1
-  title: Linux Performance Tools, Brendan Gregg, part 1 of 2
-  author: Brendan Gregg
-  url: https://www.youtube.com/watch?v=FJW8nGV4jxY
-  language: en
-  format: video
-  difficulty: intermediate
-  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
-  why: Tutorial sobre as ferramentas de observação de desempenho do Linux e metodologias de análise.
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: usenix-lisa19-linux-systems-performance
   title: LISA19 - Linux Systems Performance
   author: USENIX

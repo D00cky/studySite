@@ -46,7 +46,7 @@
   kind: core
   title: Algoritmos e estruturas básicas
   summary: Complexidade, busca, ordenação, arrays dinâmicos, listas, pilhas e filas — implementados à mão e medidos.
-  status: planned
+  status: authored
   dependsOn: [s04-memory-runtime]
   mathThreads: [proofs, combinatorics]
   crossCutting: [testing, debugging]
@@ -56,7 +56,7 @@
   kind: core
   title: Árvores, hashing, heaps e grafos
   summary: Implementação, colisões, redimensionamento, travessias e modelagem de dependências.
-  status: planned
+  status: authored
   dependsOn: [s05-algorithms-basics]
   mathThreads: [graphs, probability, proofs]
   crossCutting: [testing]
@@ -66,7 +66,7 @@
   kind: core
   title: Sistemas operacionais
   summary: Processos, syscalls, descritores, sinais, sistemas de arquivos e memória virtual.
-  status: planned
+  status: authored
   dependsOn: [s04-memory-runtime, s02-data-machine]
   mathThreads: [logic]
   crossCutting: [debugging, secure-coding]
@@ -76,7 +76,7 @@
   kind: core
   title: Concorrência
   summary: Threads, sincronização, condições de corrida, deadlocks e filas limitadas.
-  status: planned
+  status: authored
   dependsOn: [s07-operating-systems]
   mathThreads: [logic, proofs, graphs]
   crossCutting: [testing, debugging]
@@ -86,7 +86,7 @@
   kind: core
   title: Redes
   summary: DNS, IP, TCP/UDP, sockets, HTTP, conceitos de TLS, timeouts e caching.
-  status: planned
+  status: authored
   dependsOn: [s07-operating-systems]
   mathThreads: [probability]
   crossCutting: [debugging, secure-coding]
@@ -96,7 +96,7 @@
   kind: core
   title: Modelagem de dados e SQL
   summary: Constraints, relacionamentos, joins, agregação e transações.
-  status: planned
+  status: authored
   dependsOn: [s01-tools, s05-algorithms-basics]
   mathThreads: [sets, logic]
   crossCutting: [testing, secure-coding]
@@ -106,7 +106,7 @@
   kind: core
   title: Internals de banco de dados
   summary: Índices, query plans, isolamento, locks e paginação.
-  status: planned
+  status: authored
   dependsOn: [s10-data-modeling-sql, s06-trees-hashing-graphs, s07-operating-systems]
   mathThreads: [graphs, probability]
   crossCutting: [debugging]
@@ -116,7 +116,7 @@
   kind: core
   title: Engenharia de software
   summary: Requisitos, modularidade, interfaces, testes, refatoração, arquitetura e CI.
-  status: planned
+  status: authored
   dependsOn: [s05-algorithms-basics]
   mathThreads: [logic]
   crossCutting: [git, testing]
@@ -126,7 +126,7 @@
   kind: core
   title: Sistemas distribuídos
   summary: Falha parcial, retries, idempotência, filas, semântica de entrega e consistência.
-  status: planned
+  status: authored
   dependsOn: [s09-networking, s11-database-internals, s08-concurrency]
   mathThreads: [probability, logic]
   crossCutting: [testing, debugging]
@@ -136,7 +136,7 @@
   kind: core
   title: Segurança
   summary: Autenticação, autorização, sessões, validação, segredos e threat modeling.
-  status: planned
+  status: authored
   dependsOn: [s09-networking, s10-data-modeling-sql]
   mathThreads: [probability, logic]
   crossCutting: [secure-coding, testing]
@@ -146,7 +146,7 @@
   kind: core
   title: Observabilidade e desempenho
   summary: Logs, métricas, traces, profiling, benchmarks, p95/p99 e diagnóstico.
-  status: planned
+  status: authored
   dependsOn: [s07-operating-systems, s09-networking, s11-database-internals]
   mathThreads: [probability]
   crossCutting: [debugging]
@@ -156,7 +156,7 @@
   kind: core
   title: Infraestrutura e IA aplicada
   summary: Containers, deploy, health checks, rollback, avaliação, structured outputs e fallbacks.
-  status: planned
+  status: authored
   dependsOn: [s12-software-engineering, s13-distributed-systems, s15-observability-performance]
   mathThreads: [probability]
   crossCutting: [testing, secure-coding]
@@ -168,7 +168,7 @@
   kind: branch
   title: "Ramo: fundamentos de frontend"
   summary: HTML semântico, CSS, JavaScript, comportamento do navegador, acessibilidade, renderização, desempenho e testes. Frameworks não são marcos obrigatórios.
-  status: planned
+  status: authored
   dependsOn: [s01-tools]
   crossCutting: [testing, secure-coding]
 
@@ -177,7 +177,7 @@
   kind: branch
   title: "Ramo: backend com Java e PostgreSQL"
   summary: Java moderno, APIs HTTP, acesso a dados com PostgreSQL e testes de integração.
-  status: planned
+  status: authored
   dependsOn: [s05-algorithms-basics, s09-networking, s10-data-modeling-sql]
   crossCutting: [testing, secure-coding]
 
@@ -186,7 +186,7 @@
   kind: branch
   title: "Ramo: linguagens e interpretadores"
   summary: Tokenização, parsing, avaliação, escopo e mensagens de erro.
-  status: planned
+  status: authored
   dependsOn: [s06-trees-hashing-graphs]
   mathThreads: [logic, graphs]
   crossCutting: [testing]
@@ -196,6 +196,6 @@
   kind: branch
   title: "Ramo: programação de sistemas"
   summary: I/O de baixo nível, alocadores de memória e concorrência perto do hardware.
-  status: planned
+  status: authored
   dependsOn: [s07-operating-systems, s08-concurrency]
   crossCutting: [debugging, secure-coding]

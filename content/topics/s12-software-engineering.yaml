@@ -94,7 +94,7 @@
       correction: Mocks em excesso fixam a sequência de chamadas internas. Prefira fakes simples e verifique o resultado observável.
   resources:
     start: engsoftmoderna-cap8-testes
-    deeper: [akita-why-test, mit-6031-reading-testing, fowler-practical-test-pyramid, junit-user-guide, fowler-test-double, testcontainers-postgres]
+    deeper: [akita-why-test, mit-6031-reading-testing, fowler-practical-test-pyramid, junit-user-guide, fowler-test-double, testcontainers-postgres-module]
     videos: [ian-cooper-tdd-where-did-it-go-wrong, akitando-130-projetos-testes-estimativa]
   exercise:
     id: ex-testable-task-service

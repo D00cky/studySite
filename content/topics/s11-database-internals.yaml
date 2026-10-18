@@ -30,7 +30,7 @@
   resources:
     start: postgres-indexes
     deeper: [use-the-index-luke, postgres-indexes-multicolumn, postgres-index-only-scans, cmu-15445-fall2024]
-    videos: [akitando-118-servidor-sql-banco-de-dados, cmu-15445-f24-lecture-08-btree]
+    videos: [akitando-118-servidor-sql-video, cmu-15445-f24-lecture-08-btree]
   exercise:
     id: ex-index-predictions
     title: Prever quando o índice entra em jogo
@@ -99,7 +99,7 @@
   resources:
     start: postgres-explain
     deeper: [postgres-sql-explain, postgres-planner-stats, postgres-pg-stat-statements, use-the-index-luke, cmu-15445-fall2024]
-    videos: [cmu-15445-f24-lecture-15-query-planning, cmu-15445-f24-lecture-13-query-execution-1, akitando-149-docker-compose-postgres-rinha]
+    videos: [cmu-15445-f24-lecture-15-query-planning, cmu-15445-f24-lecture-13-query-execution-1, akitando-149-docker-compose-postgres-video]
   exercise:
     id: ex-annotate-plan
     title: Anotar um plano à mão

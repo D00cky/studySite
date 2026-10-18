@@ -299,7 +299,7 @@
   resources:
     start: ostep-address-spaces
     deeper: [ostep-paging, ostep-tlbs, ostep-swapping-mechanisms, man-mmap, man-proc-pid-maps, csapp, akita-memory-1]
-    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, mit-6s081-2020-lecture-8-page-faults, mit-6s081-lecture-4-page-tables, akitando-45-memoria-parte-1-video, sorber-virtual-memory]
+    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, mit-6s081-2020-lecture-8-page-faults, mit-6s081-lecture-4-page-tables, akitando-45-memoria-1-video, sorber-virtual-memory]
   exercise:
     id: ex-translate-and-touch
     title: Traduzir endereços à mão e tocar páginas

@@ -97,7 +97,7 @@
   resources:
     start: brendan-gregg-flame-graphs
     deeper: [openjdk-jmh, openjdk-jmh-samples, brendan-gregg-perf-examples, brendan-gregg-perf, missing-semester-debugging]
-    videos: [usenix-lisa13-flame-graphs, missing-semester-2026-lecture-4-debugging-profiling-video, brendan-gregg-linux-performance-tools-part-1]
+    videos: [usenix-lisa13-flame-graphs, missing-semester-2026-lecture-4-debugging-profiling-video, brendan-gregg-linux-performance-tools-1]
   exercise:
     id: ex-flamegraph-and-jmh
     title: Flame graph em C e benchmark JMH em Java
@@ -166,7 +166,7 @@
   resources:
     start: brendan-gregg-use-method
     deeper: [sre-book-monitoring-distributed-systems, sre-book-service-level-objectives, sre-book-effective-troubleshooting, hdrhistogram, postgres-explain]
-    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres-rinha]
+    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres-video]
   exercise:
     id: ex-percentiles-by-hand
     title: Percentis a partir de dados medidos

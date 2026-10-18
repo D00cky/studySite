@@ -141,20 +141,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: ostep-locked-data-structures
-  title: "OSTEP — Lock-based Concurrent Data Structures"
-  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
-  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf
-  language: en
-  format: book
-  difficulty: intermediate
-  topics: [race-conditions-synchronization, bounded-queues]
-  why: "Contadores, listas, filas e tabelas hash com locks, medindo escalabilidade — ótimo modelo para o experimento de throughput."
-  section: "Locked Data Structures"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: man-dup
   title: "dup(2) — Linux manual page"
   author: "Michael Kerrisk (man-pages project)"
@@ -255,19 +241,6 @@
   difficulty: intermediate
   topics: [filesystems]
   why: "Campos de um inode (tipo, permissões, contagem de links, timestamps) como vistos por stat."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: man-mmap
-  title: "mmap(2) — Linux manual page"
-  author: "Michael Kerrisk (man-pages project)"
-  url: https://man7.org/linux/man-pages/man2/mmap.2.html
-  language: en
-  format: documentation
-  difficulty: intermediate
-  topics: [virtual-memory]
-  why: "Mapear arquivos e memória anônima no espaço de endereçamento — a interface direta para a memória virtual."
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
@@ -429,32 +402,6 @@
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #103." }
-
-- id: akitando-45-memoria-parte-1-video
-  title: "Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes  (Parte 5)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=9AK_1gqEfkQ
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [virtual-memory, stack-heap-lifetime]
-  why: "Episódio #45: intuição em português sobre gerenciamento de memória de processos."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #45." }
-
-- id: akitando-46-memoria-parte-2-video
-  title: "Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=DGU1awKrNiA
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [virtual-memory, dynamic-allocation-ownership]
-  why: "Episódio #46: continuação sobre gerenciamento de memória, em português."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #46." }
 
 - id: cs162-lecture-3-threads-processes
   title: "CS162 Lecture 3: Abstractions 1: Threads and Processes"
@@ -761,28 +708,3 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: akitando-43-concorrencia-paralelismo-1-video
-  title: "Concorrência e Paralelismo (Parte 1) | Entendendo Back-End para Iniciantes (Parte 3)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=cx1ULv4wYxM
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [threads-basics, race-conditions-synchronization]
-  why: "Episódio #43: intuição em português sobre processos, threads, concorrência e paralelismo em backends."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #43." }
-
-- id: akitando-44-concorrencia-paralelismo-2-video
-  title: "Concorrência e Paralelismo (Parte 2) | Entendendo Back-end para Iniciantes (Parte 4)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=gYJSWs-gp1g
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [threads-basics, race-conditions-synchronization]
-  why: "Episódio #44: continuação sobre concorrência e paralelismo, em português."
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #44." }
