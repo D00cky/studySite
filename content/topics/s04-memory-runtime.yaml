@@ -61,12 +61,21 @@
     - Código e desenho da memória do swap.
     - Sessão do gdb com print, x e bt anotados.
   firstAction: Declare `int x = 5; int *p = &x;` e imprima `p`, `*p` e `&p`.
-  essentials:
-    - "Leia `&x` como \"endereço de x\" e `*p` como \"o valor no endereço guardado em p\"; desenhe caixas e setas quando travar."
-    - "Inicialize todo ponteiro (com um endereço válido ou `NULL`) e cheque `NULL` antes de desreferenciar."
-    - "Para uma função alterar dados de quem chamou, passe o endereço: `void f(int *out)`."
-    - "Use `const` para deixar claro o que só é lido: `const char *s` não deixa a função alterar o conteúdo."
-    - "`p + 1` avança `sizeof(*p)` bytes e `v[i]` é `*(v + i)`; no crash, use `gdb` com `bt`, `print p` e `x/4dw p`."
+  kit:
+    - term: "int *p = &x;"
+      use: "Guardar o endereço de uma variável num ponteiro (inicialize sempre, nem que seja com `NULL`)."
+    - term: "*p = 10;"
+      use: "Ler ou alterar o valor no endereço apontado; mudar `*p` muda `x`."
+    - term: "void f(int *out)  +  f(&x)"
+      use: "Deixar uma função alterar dados de quem a chamou."
+    - term: "if (p == NULL) ..."
+      use: "Checar o ponteiro antes de desreferenciar para não causar segfault."
+    - term: "v[i] == *(v + i)"
+      use: "Percorrer arrays por aritmética de ponteiros; cada `+1` anda `sizeof(*p)` bytes."
+    - term: "printf(\"%p\\n\", (void *)p)"
+      use: "Imprimir endereços para desenhar caixas e setas e conferir o que aponta para onde."
+    - term: "gdb: print p, print *p, x/4dw p, bt"
+      use: "Inspecionar ponteiros e memória e ver a pilha de chamadas num segfault."
   deepDive:
     - title: Ponteiro para ponteiro e arrays de ponteiros (`char **argv`)
       why: Ao montar listas encadeadas, alterar um ponteiro dentro de uma função ou processar argv e matrizes dinâmicas.
@@ -140,12 +149,19 @@
     - Saída do programa ao lado do trecho relevante de /proc/pid/maps.
     - Relatório do sanitizer sobre o dangling pointer.
   firstAction: Imprima o endereço de uma variável local em main e de outra dentro de uma função chamada por main. Qual é maior?
-  essentials:
-    - "Locais vivem até a função retornar: nunca devolva nem guarde o endereço de uma variável local."
-    - Dado que precisa sobreviver à função vai para a heap (`malloc`) ou é escrito num buffer recebido de quem chamou.
-    - "Globais e `static` vivem o programa todo; use-as com parcimônia porque viram estado compartilhado."
-    - "Evite arrays locais enormes e recursão sem limite; a stack tem poucos MB (`ulimit -s`)."
-    - "Para ver onde algo vive, imprima com `%p` e compare com `/proc/<pid>/maps`."
+  kit:
+    - term: "variável local (stack)"
+      use: "Guardar dados que só precisam existir até a função retornar; nunca devolva o endereço dela."
+    - term: "malloc / free (heap)"
+      use: "Guardar dados que precisam sobreviver à função que os criou."
+    - term: "global ou static"
+      use: "Manter um valor durante o programa todo, com parcimônia, porque vira estado compartilhado."
+    - term: "printf(\"%p\") + cat /proc/<pid>/maps"
+      use: "Ver em qual região (stack, heap, dados) cada endereço cai."
+    - term: "ulimit -s"
+      use: "Conferir o tamanho da stack quando recursão profunda ou array local enorme derruba o programa."
+    - term: "gcc -Wall -fsanitize=address"
+      use: "Detectar retorno de endereço de variável local e uso de dangling pointer."
   deepDive:
     - title: Espaço de endereçamento virtual e paginação
       why: Quando estudar sistemas operacionais e precisar explicar por que dois processos têm os mesmos endereços.
@@ -224,12 +240,19 @@
     - Link do código do vetor e saída limpa do valgrind ou ASan.
     - Relatórios dos três erros provocados, com a linha culpada destacada.
   firstAction: Escreva um programa com um malloc sem free e rode `valgrind ./programa`. Encontre a palavra "definitely".
-  essentials:
-    - "Cheque o retorno de `malloc`/`calloc`/`realloc` contra `NULL` e calcule tamanhos com `n * sizeof *p`."
-    - "Use `realloc` via temporário: `tmp = realloc(p, n); if (!tmp) { ... } p = tmp;` para não perder o bloco original."
-    - "Para cada bloco, um único dono responsável pelo `free`; documente no header se a função devolve ou só empresta memória."
-    - "Escreva o `free` junto com o `malloc` e, após liberar, zere o ponteiro (`p = NULL`) se a variável continuar em uso."
-    - "Rode os testes com `valgrind --leak-check=full` ou `-fsanitize=address` até a saída ficar limpa."
+  kit:
+    - term: "p = malloc(n * sizeof *p); if (!p) ..."
+      use: "Alocar n elementos na heap e tratar a falha de alocação."
+    - term: "calloc(n, sizeof *p)"
+      use: "Alocar memória já zerada, útil para contadores e structs que precisam começar limpas."
+    - term: "tmp = realloc(p, novo); if (tmp) p = tmp;"
+      use: "Redimensionar sem perder o bloco original se falhar; o bloco pode mudar de endereço."
+    - term: "free(p); p = NULL;"
+      use: "Liberar exatamente uma vez cada bloco e evitar use-after-free acidental."
+    - term: "comentário de ownership no header"
+      use: "Documentar quem é dono do bloco e quem libera (ex.: o chamador libera com `vec_free`)."
+    - term: "valgrind --leak-check=full ./prog"
+      use: "Achar leaks, double free e use-after-free com a pilha de onde o bloco foi alocado."
   deepDive:
     - title: Como alocadores funcionam (free lists, fragmentação, coalescing)
       why: Ao implementar um alocador, investigar fragmentação ou entender o custo real de muitas alocações pequenas.
@@ -303,12 +326,19 @@
     - Código e saída dos testes das funções de string.
     - Relatório do ASan antes da correção e execução limpa depois.
   firstAction: Imprima `sizeof("oi")` e `strlen("oi")` e explique a diferença.
-  essentials:
-    - "Reserve sempre `strlen(s) + 1` bytes: o `\\0` também ocupa espaço."
-    - "Não use `strcpy`, `strcat`, `sprintf` nem `gets`; prefira `snprintf(dst, cap, \"%s\", src)` e cheque se truncou."
-    - "`strncpy` pode não terminar com `\\0`; se usar, termine manualmente (`dst[cap - 1] = '\\0'`)."
-    - "Literais são somente leitura: declare como `const char *`; para alterar, copie para `char s[]` ou para a heap."
-    - "`strlen` conta bytes, não caracteres: em UTF-8, `strlen(\"ação\")` é 6."
+  kit:
+    - term: "char s[] = \"oi\";  /* 3 bytes com \\0 */"
+      use: "Criar uma string modificável, lembrando que o terminador também ocupa um byte."
+    - term: "malloc(strlen(src) + 1)"
+      use: "Reservar espaço para uma cópia, incluindo o `\\0`."
+    - term: "snprintf(dst, cap, \"%s\", src)"
+      use: "Copiar ou montar texto sem estourar o buffer; retorno `>= cap` indica que truncou."
+    - term: "strlen / strcmp / strchr"
+      use: "Medir em bytes, comparar (0 = iguais) e procurar um caractere numa string terminada."
+    - term: "const char *s = \"literal\";"
+      use: "Apontar para literais, que são somente leitura, sem tentar alterá-los."
+    - term: "gcc -g -fsanitize=address"
+      use: "Pegar na hora o stack-buffer-overflow de um `strcpy` mal usado."
   deepDive:
     - title: Strings com tamanho explícito (ponteiro + comprimento)
       why: Ao escrever parsers, protocolos de rede ou bibliotecas em que dados podem conter bytes zero.
@@ -393,12 +423,17 @@
     - Diário de depuração completo.
     - Saídas das três ferramentas no mesmo bug, com comentários.
   firstAction: Compile um programa seu com `-g -fsanitize=address,undefined` e rode. Anote se algo aparece.
-  essentials:
-    - "Compile o desenvolvimento com `-g -O0 -fsanitize=address,undefined`; o sanitizer aponta o erro na linha em que ele acontece."
-    - "No crash, rode `gdb ./prog`, `run`, `bt`, `frame N` e `print var` antes de mudar qualquer código."
-    - "Use `valgrind --leak-check=full` para leaks e para binários que você não pode recompilar (sem misturar com ASan)."
-    - Reproduza o bug no menor caso possível e mude uma coisa por vez para testar cada hipótese.
-    - "Registre sintoma, hipótese, evidência, causa e correção, e transforme o caso de reprodução num teste."
+  kit:
+    - term: "gcc -g -O0 -fsanitize=address,undefined"
+      use: "Compilar para desenvolvimento e ver o erro de memória ou UB na linha em que acontece."
+    - term: "gdb ./prog → run, bt, frame N, print var"
+      use: "Ir do crash à causa inspecionando a pilha e as variáveis antes de mudar código."
+    - term: "break arquivo.c:42, next, step, watch var"
+      use: "Parar num ponto, andar linha a linha e descobrir quem altera uma variável."
+    - term: "valgrind --leak-check=full ./prog"
+      use: "Achar leaks e acessos inválidos sem recompilar (não misture com ASan)."
+    - term: "diário: sintoma → hipótese → evidência → correção"
+      use: "Registrar a investigação, mudar uma coisa por vez e virar o caso mínimo um teste."
   deepDive:
     - title: Watchpoints, breakpoints condicionais e core dumps no gdb
       why: Quando uma variável muda "sozinha" ou o crash acontece em produção e só sobra o core.
