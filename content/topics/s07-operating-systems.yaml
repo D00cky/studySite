@@ -31,7 +31,7 @@
   resources:
     start: ostep-process-api
     deeper: [ostep-processes, ostep-limited-direct-execution, man-fork, man-execve, man-wait, man-strace, man-proc, akita-linux-boot]
-    videos: [cs162-lecture-3-threads-processes, mit-6s081-2020-lecture-1-introduction, mit-6s081-2020-lecture-3-system-calls, akitando-127-boot-linux-video]
+    videos: [cs162-lecture-2-four-fundamental-os-concepts, cs162-lecture-3-threads-processes, cmu-15213-f15-lecture-14-ecf-exceptions-processes, akitando-127-boot-linux-video]
   exercise:
     id: ex-fork-exec-wait
     title: Um "run" mínimo com fork, exec e wait
@@ -66,6 +66,27 @@
     - Código do run.c e saídas para sucesso, falha, comando inexistente e sinal.
     - Trecho do strace -f anotado e saída do ps mostrando o zumbi.
   firstAction: Rode `strace -f -e trace=process sh -c 'ls'` e encontre a linha do `execve` do ls.
+  essentials:
+    - "fork retorna duas vezes: 0 no filho e o pid do filho no pai; -1 é erro e deve ser tratado."
+    - "Ajuste o filho (dup2, chdir, sinais) entre fork e exec; se execvp retornar, falhou: imprima em stderr e saia com 127."
+    - "Todo filho precisa ser colhido com waitpid; leia o status com WIFEXITED/WEXITSTATUS e WIFSIGNALED/WTERMSIG."
+    - "Zumbi (estado Z no ps) não se resolve com kill: corrija o pai que não chama wait."
+    - "Para ver o que um programa pede ao kernel, comece por `strace -f` e `/proc/<pid>/` antes de abrir o código."
+  deepDive:
+    - title: clone, flags de compartilhamento e namespaces
+      why: Quando for entender como threads e containers nascem da mesma syscall que fork.
+      resource: man-clone
+    - title: posix_spawn, vfork e o custo de fork em processos grandes
+      why: Ao lançar muitos processos a partir de uma JVM ou servidor com gigabytes de memória.
+    - title: Escalonamento de CPU (CFS/EEVDF, nice, prioridades)
+      why: Quando precisar explicar latência sob carga ou por que um processo recebe menos CPU.
+      resource: ostep-cpu-scheduling
+    - title: Grupos de processos, sessões e job control
+      why: Ao escrever um shell, um supervisor de processos ou depurar o PID 1 de um container.
+      resource: man-credentials
+    - title: pidfd e a corrida de reutilização de pid
+      why: Em supervisores que esperam ou sinalizam processos e não podem atingir o pid errado.
+      resource: man-pidfd-open
 
 - id: file-descriptors
   stage: s07-operating-systems
@@ -97,7 +118,7 @@
   resources:
     start: man-pipe
     deeper: [man-dup, man-open, ostep-files-directories, man-proc]
-    videos: [cs162-lecture-4-files-io, cs162-lecture-5-ipc-pipes-sockets, mit-6s081-2020-lecture-1-introduction, sorber-pipe-system-call]
+    videos: [cs162-lecture-4-files-io, cs162-lecture-5-ipc-pipes-sockets, cmu-15213-f15-lecture-16-system-level-io, sorber-pipe-system-call]
   exercise:
     id: ex-redirect-pipe
     title: Implementar "> arquivo" e "a | b" à mão
@@ -132,6 +153,24 @@
     - Diagrama das tabelas de descritores antes e depois dos dup2, ao lado da saída do strace.
     - Saída de ls -l /proc/pid/fd na versão travada com a ponta culpada destacada.
   firstAction: Rode `ls -l /proc/self/fd` e depois `ls -l /proc/self/fd > /tmp/fd.txt; cat /tmp/fd.txt` e compare para onde o fd 1 aponta.
+  essentials:
+    - "fd é índice numa tabela por processo; 0, 1 e 2 são stdin, stdout e stderr, e open devolve sempre o menor livre."
+    - "Redirecionar é `dup2(fd, 1)` no filho, entre fork e exec; depois feche o fd original."
+    - "Em pipelines, feche toda ponta de pipe que o processo não usa; senão o leitor nunca recebe EOF."
+    - "Abra com `O_CLOEXEC` o que não deve vazar para programas executados, e feche descritores em todo caminho de erro."
+    - "Diagnostique com `ls -l /proc/<pid>/fd`, `lsof -p` e `ulimit -n` quando aparecer EMFILE (too many open files)."
+  deepDive:
+    - title: I/O multiplexado com poll e epoll
+      why: Quando for construir ou depurar servidores que atendem milhares de conexões numa thread.
+      resource: man-epoll
+    - title: I/O assíncrono com io_uring
+      why: Em serviços de alto throughput de disco ou rede no Linux moderno.
+      resource: man-io-uring
+    - title: Passar descritores entre processos (SCM_RIGHTS em Unix sockets)
+      why: Ao estudar como systemd, proxies e zero-downtime restarts entregam sockets prontos.
+    - title: eventfd, signalfd e "tudo é descritor"
+      why: Quando quiser acordar um laço de eventos a partir de outra thread ou de um sinal.
+      resource: man-eventfd
 
 - id: signals
   stage: s07-operating-systems
@@ -163,7 +202,7 @@
   resources:
     start: man-signal
     deeper: [man-sigaction, ostep-limited-direct-execution, man-wait]
-    videos: [sorber-signals-in-c]
+    videos: [cmu-15213-f15-lecture-15-ecf-signals, sorber-signals-in-c]
   exercise:
     id: ex-graceful-shutdown
     title: Desligamento gracioso de um worker de tarefas
@@ -198,6 +237,27 @@
     - Código do worker e o conteúdo do arquivo após cada tipo de sinal.
     - Trecho do strace mostrando o sinal e a syscall interrompida.
   firstAction: Rode `sleep 100`, aperte Ctrl+C e depois rode `echo $?`. Por que o valor é 130?
+  essentials:
+    - "Use `sigaction`, não `signal`; no handler, apenas sete uma flag `volatile sig_atomic_t` e trate no laço principal."
+    - "SIGTERM é o pedido educado de parada: trate-o para terminar a tarefa atual e salvar estado; SIGKILL não dá chance de limpeza."
+    - "Syscalls bloqueadas podem falhar com EINTR: use SA_RESTART ou repita a chamada quando errno for EINTR."
+    - "Sinais iguais não se acumulam: colha filhos em laço com `waitpid(-1, &st, WNOHANG)` no tratamento de SIGCHLD."
+    - "Exit code 128+N significa morte pelo sinal N (130 = SIGINT, 137 = SIGKILL, 143 = SIGTERM)."
+  deepDive:
+    - title: Lista de funções async-signal-safe
+      why: Quando precisar fazer algo além de setar uma flag dentro de um handler.
+      resource: man-signal-safety
+    - title: signalfd e sigwait para tratar sinais de forma síncrona
+      why: Em servidores com laço de eventos ou programas multithread, onde handlers assíncronos complicam.
+      resource: man-signalfd
+    - title: Sinais e threads (máscaras por thread, pthread_sigmask)
+      why: Ao tratar SIGTERM num programa com várias threads e decidir qual delas recebe o sinal.
+      resource: man-pthreads-7
+    - title: PID 1 em containers (tini, dumb-init) e propagação de sinais
+      why: Quando um container ignora docker stop ou deixa zumbis acumulando.
+    - title: Sinais de tempo real e sigqueue
+      why: Em sistemas que precisam enfileirar sinais com dados em vez de perdê-los.
+      resource: man-signal
 
 - id: filesystems
   stage: s07-operating-systems
@@ -230,7 +290,7 @@
   resources:
     start: ostep-files-directories
     deeper: [ostep-file-system-implementation, ostep-crash-consistency, man-inode, man-fsync, man-rename, akita-filesystems]
-    videos: [cs162-lecture-20-filesystems-2, mit-6s081-2020-lecture-14-file-systems, mit-6s081-2020-lecture-15-crash-recovery, akitando-102-sistemas-de-arquivos-fat-video, akitando-103-sistemas-de-arquivos-video]
+    videos: [cs162-lecture-20-filesystems-2, cs162-lecture-21-filesystems-3, akitando-102-sistemas-de-arquivos-fat-video, akitando-103-sistemas-de-arquivos-video]
   exercise:
     id: ex-inodes-links-atomic-save
     title: Inodes, links e salvamento atômico de tarefas
@@ -265,6 +325,27 @@
     - Saídas de ls -li e stat comentadas.
     - Código do save.c, trecho do strace e o resultado do teste com kill -9 nas duas versões.
   firstAction: Rode `ls -li /etc/hostname` e `stat /etc/hostname` e encontre o número do inode e a contagem de links.
+  essentials:
+    - "Nome é entrada de diretório e arquivo é inode: `ls -li` e `stat` mostram número do inode e contagem de links."
+    - "write só chega ao page cache; para durabilidade chame fsync no arquivo e, para criação ou rename, também no diretório."
+    - "Salve com segurança: temporário no mesmo FS → fsync → rename sobre o original → fsync do diretório."
+    - "Disco cheio com espaço livre? Rode `df -i` (inodes) e procure arquivos apagados mas abertos em /proc/*/fd."
+    - "Hard link não cruza sistemas de arquivos e rename só é atômico dentro do mesmo FS."
+  deepDive:
+    - title: Journaling e modos do ext4 (ordered, writeback, journal)
+      why: Quando precisar saber o que sobrevive a uma queda de energia em cada configuração.
+      resource: kernel-ext4-journal
+    - title: Crash consistency e write-ahead logging
+      why: Ao estudar como bancos de dados garantem durabilidade de transações.
+      resource: ostep-crash-consistency
+    - title: Estrutura interna (blocos, extents, bitmaps, diretórios em árvore)
+      why: Ao comparar sistemas de arquivos ou investigar desempenho com milhões de arquivos.
+      resource: ostep-file-system-implementation
+    - title: Copy-on-write e snapshots (btrfs, ZFS)
+      why: Quando trabalhar com backups, snapshots de volumes ou camadas de imagens de container.
+    - title: fdatasync, O_SYNC e O_DIRECT
+      why: Em bancos de dados e sistemas que controlam o próprio cache e precisam medir latência de disco.
+      resource: man-fsync
 
 - id: virtual-memory
   stage: s07-operating-systems
@@ -299,7 +380,7 @@
   resources:
     start: ostep-address-spaces
     deeper: [ostep-paging, ostep-tlbs, ostep-swapping-mechanisms, man-mmap, man-proc-pid-maps, csapp, akita-memory-1]
-    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, mit-6s081-2020-lecture-8-page-faults, mit-6s081-lecture-4-page-tables, akitando-45-memoria-1-video, sorber-virtual-memory]
+    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, cs162-lecture-15-demand-paging, cmu-15213-f15-lecture-17-vm-concepts, akitando-45-memoria-1-video, sorber-virtual-memory]
   exercise:
     id: ex-translate-and-touch
     title: Traduzir endereços à mão e tocar páginas
@@ -334,3 +415,25 @@
     - Tabela com VmSize/VmRSS em cada pausa do touch.c e a explicação.
     - Saída de perf stat ou time -v com faults e tempos anotados.
   firstAction: Rode `cat /proc/self/maps` e identifique as linhas de heap, stack e da libc.
+  essentials:
+    - "Endereços que seu programa vê são virtuais; com páginas de 4 KiB, offset = endereço % 4096 e VPN = endereço / 4096."
+    - "malloc reserva espaço virtual; RSS só sobe quando a página é tocada. Compare VmSize e VmRSS em /proc/<pid>/status."
+    - "Page faults minor são normais (alocação preguiçosa, copy-on-write); só acesso inválido vira SIGSEGV."
+    - "Acesso sequencial é amigo da TLB e do cache; saltos aleatórios em áreas grandes custam caro."
+    - "Leia `/proc/<pid>/maps` para saber o que está mapeado e meça faults com `perf stat` ou `/usr/bin/time -v`."
+  deepDive:
+    - title: Substituição de páginas, swap e thrashing
+      why: Quando um servidor fica lento por falta de RAM antes de o OOM killer agir.
+      resource: ostep-swapping-policies
+    - title: Huge pages e Transparent Huge Pages
+      why: Ao ajustar bancos de dados ou JVMs com heaps grandes e muitos TLB misses.
+      resource: kernel-transparent-hugepages
+    - title: mmap de arquivos e memória compartilhada entre processos
+      why: Ao estudar como bancos e bibliotecas leem arquivos grandes sem read ou compartilham dados entre processos.
+      resource: man-mmap
+    - title: Overcommit, OOM killer e limites de memória em cgroups
+      why: Quando um container ou serviço é morto com exit code 137 sem mensagem de erro.
+      resource: man-cgroups
+    - title: userfaultfd e page faults em espaço de usuário
+      why: Ao estudar live migration de VMs, checkpoint/restore ou garbage collectors avançados.
+      resource: man-userfaultfd

@@ -65,6 +65,27 @@
     - Código e saída de share.c, antes e depois da correção do argumento.
     - Saída de ps -L, strace com clone e thread apply all bt anotados.
   firstAction: Rode `ps -eLf | head` e descubra o que a coluna LWP significa.
+  essentials:
+    - "Threads compartilham globais, heap e descritores; cada uma tem stack, registradores e errno próprios."
+    - "Faça `pthread_join` (ou detach) em toda thread criada e confira o retorno de pthread_create."
+    - "Nunca passe o endereço da variável do laço para pthread_create: dê a cada thread seu próprio argumento."
+    - "Compile com `-pthread` e depure com `ps -L`, `/proc/<pid>/task` e `info threads` / `thread apply all bt` no gdb."
+    - "Não assuma ordem de execução entre threads; dado compartilhado com escrita exige sincronização."
+  deepDive:
+    - title: Pools de threads e Executors em Java
+      why: Quando for processar tarefas em backend Java sem criar uma thread por requisição.
+      resource: java-util-concurrent-21
+    - title: Modelo de memória (happens-before, atomics, memory ordering)
+      why: Ao escrever código lock-free ou entender por que um flag sem volatile/atomic pode não ser visto por outra thread.
+      resource: cppcon-2017-pikus-atomics
+    - title: Concorrência por eventos em vez de threads
+      why: Ao comparar servidores estilo Node.js/nginx com servidores thread-per-request.
+      resource: ostep-event-based-concurrency
+    - title: Thread-local storage e o que é por thread vs por processo
+      why: Ao misturar threads com sinais, fork ou bibliotecas que guardam estado global.
+      resource: man-pthreads-7
+    - title: Virtual threads (Project Loom) e green threads
+      why: Quando avaliar milhares de tarefas concorrentes bloqueantes em Java 21+.
 
 - id: race-conditions-synchronization
   stage: s08-concurrency
@@ -97,7 +118,7 @@
   resources:
     start: ostep-locks
     deeper: [ostep-thread-api, ostep-condition-variables, ostep-semaphores, ostep-lock-based-data-structures, man-pthread-mutex-lock, man-pthread-cond-wait, clang-threadsanitizer, valgrind-helgrind]
-    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-9-synchronization-4, mit-6s081-2020-lecture-10-locks, mit-6s081-2020-lecture-13-sleep-wakeup, akitando-44-concorrencia-2-video]
+    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3, cs162-lecture-9-synchronization-4, cmu-15213-f15-lecture-24-sync-basics, akitando-44-concorrencia-2-video]
   exercise:
     id: ex-lost-updates
     title: Contador de tarefas concluídas com updates perdidos
@@ -132,6 +153,28 @@
     - Valores das execuções sem lock, desenho da intercalação e código corrigido.
     - Relatório do TSan anotado e tabela de tempos.
   firstAction: Compile `int c=0; void *f(void*a){for(int i=0;i<1000000;i++)c++;return 0;}` com duas threads e imprima `c`.
+  essentials:
+    - "`x++` são três passos (ler, somar, escrever); todo acesso compartilhado com pelo menos uma escrita precisa do mesmo lock."
+    - "Mantenha a seção crítica mínima e escreva o invariante que o lock protege (ex.: `0 <= count <= cap`)."
+    - "Espere condições com `while (!cond) pthread_cond_wait(&cv, &m)`, nunca `if`, e sinalize com o mutex em mãos."
+    - "Rode os testes com `-fsanitize=thread` (ThreadSanitizer) ou Helgrind: teste que passa não prova ausência de race."
+    - "Prefira estruturas prontas e testadas (filas bloqueantes, atômicos da linguagem) a sincronização feita à mão."
+  deepDive:
+    - title: Atômicos e programação lock-free
+      why: Quando um contador ou estrutura muito disputada vira gargalo com mutex.
+      resource: preshing-lock-free-intro
+    - title: Semáforos e leitores/escritores (rwlocks)
+      why: Ao proteger dados lidos com muita frequência e escritos raramente.
+      resource: ostep-semaphores
+    - title: Como locks são implementados (spinlocks, futex)
+      why: Ao entender por que um mutex sem disputa é barato e o que acontece sob contenção.
+      resource: man-futex
+    - title: Estruturas de dados concorrentes e granularidade de locks
+      why: Quando um lock global limitar o throughput de uma estrutura compartilhada.
+      resource: ostep-lock-based-data-structures
+    - title: Concorrência em Java (synchronized, volatile, java.util.concurrent)
+      why: Ao levar estes conceitos para o backend Java do time.
+      resource: java-util-concurrent-21
 
 - id: deadlocks
   stage: s08-concurrency
@@ -167,7 +210,7 @@
   resources:
     start: ostep-concurrency-bugs
     deeper: [man-pthread-mutex-lock, valgrind-helgrind, gdb-threads]
-    videos: [cs162-lecture-12-deadlock, mit-6s081-2020-lecture-10-locks]
+    videos: [cs162-lecture-12-deadlock, cmu-15213-f15-lecture-25-sync-advanced]
   exercise:
     id: ex-transfer-deadlock
     title: Mover tarefas entre listas e travar
@@ -202,6 +245,23 @@
     - Saída de thread apply all bt anotada e o grafo de espera desenhado.
     - Código antes e depois da ordenação e o relatório da ferramenta.
   firstAction: Escreva no papel duas threads e dois locks e desenhe a sequência de lock que leva ao travamento.
+  essentials:
+    - "Deadlock exige as quatro condições de Coffman ao mesmo tempo; quebre a espera circular com uma ordem global de locks."
+    - "Regra de bolso: trave sempre pelo id menor primeiro e documente essa ordem junto ao código."
+    - "Processo parado com ~0% de CPU? `gdb -p <pid>` e `thread apply all bt` mostram quem espera qual lock."
+    - "Não chame código desconhecido (callbacks, I/O lento) segurando um lock; isso cria ordens de aquisição escondidas."
+    - "Helgrind e TSan acusam ordem de lock inconsistente mesmo quando o deadlock não aconteceu naquela execução."
+  deepDive:
+    - title: Detecção de deadlock em bancos de dados e retry de transações
+      why: Quando o PostgreSQL abortar uma transação com "deadlock detected" e a aplicação precisar repetir.
+      resource: ostep-concurrency-bugs
+    - title: Validação de ordem de locks em tempo de execução (lockdep)
+      why: Em sistemas grandes com muitos locks, onde a ordem não cabe na cabeça de ninguém.
+      resource: kernel-lockdep-design
+    - title: Livelock, starvation e inversão de prioridade
+      why: Ao usar trylock com recuo, prioridades de thread ou sistemas de tempo real.
+    - title: Algoritmo do banqueiro e prevenção por alocação segura
+      why: Em provas e entrevistas, e em sistemas que reservam todos os recursos antes de executar.
 
 - id: bounded-queues
   stage: s08-concurrency
@@ -235,7 +295,7 @@
   resources:
     start: ostep-condition-variables
     deeper: [ostep-semaphores, ostep-lock-based-data-structures, man-pthread-cond-wait, clang-threadsanitizer]
-    videos: [cs162-lecture-9-synchronization-4, cs162-lecture-7-synchronization-2, mit-6s081-2020-lecture-13-sleep-wakeup]
+    videos: [cs162-lecture-9-synchronization-4, cs162-lecture-7-synchronization-2, cs162-lecture-8-synchronization-3, cmu-15213-f15-lecture-25-sync-advanced]
   exercise:
     id: ex-bounded-buffer
     title: Buffer circular limitado com duas variáveis de condição
@@ -271,3 +331,23 @@
     - Código da fila, saída dos testes e relatório limpo do TSan.
     - Gráfico ou tabela de throughput com nproc anotado e a explicação da curva.
   firstAction: Desenhe um buffer circular de capacidade 4 e simule à mão três puts e dois gets, anotando head, tail e count.
+  essentials:
+    - "Fila limitada = buffer circular + 1 mutex + 2 variáveis de condição (não cheia, não vazia), cada wait num `while`."
+    - "Processe a tarefa fora do lock; só a manipulação de head, tail e count fica na seção crítica."
+    - "A capacidade é backpressure: o produtor bloqueia em vez de acumular tarefas até estourar a memória."
+    - "Planeje o desligamento desde o início: flag `fechada` + broadcast, ou uma poison pill por worker."
+    - "Mais workers só ajudam até saturar núcleos ou I/O; meça throughput por número de workers antes de escolher."
+  deepDive:
+    - title: Filas bloqueantes prontas em Java (ArrayBlockingQueue, ThreadPoolExecutor)
+      why: Ao implementar workers no backend Java em vez de escrever a fila à mão.
+      resource: java-arrayblockingqueue-21
+    - title: Lei de Little e teoria de filas
+      why: Ao dimensionar filas, pools e timeouts de um serviço sob carga.
+    - title: Filas lock-free e ring buffers
+      why: Em sistemas de baixíssima latência onde o mutex da fila vira gargalo.
+      resource: preshing-lock-free-intro
+    - title: Semáforos contadores como alternativa às variáveis de condição
+      why: Ao ler implementações clássicas de produtor-consumidor e comparar abordagens.
+      resource: ostep-semaphores
+    - title: Filas distribuídas (Kafka, RabbitMQ) e entrega pelo menos uma vez
+      why: Quando o produtor e o consumidor estiverem em processos ou máquinas diferentes.

@@ -1,0 +1,387 @@
+# Recursos do drill-down (essentials/deepDive) das etapas s07 e s08,
+# mais vídeos oficiais que substituem os uploads de terceiros do MIT 6.S081 Fall 2020.
+# Verificados em 2026-10-18: YouTube via oEmbed (título e canal); Panopto da CMU via
+# feed público do curso (Podcast.ashx) e página Viewer.aspx com o título da aula; demais via curl.
+
+# --- Vídeos: Berkeley CS162 (canal do professor John Kubiatowicz) ---
+
+- id: cs162-lecture-2-four-fundamental-os-concepts
+  title: "CS162 Lecture 2: Four Fundamental OS Concepts"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=4FpG1DcvHzc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Threads, espaço de endereçamento, processo e modo dual (usuário/kernel): a base de como uma syscall atravessa a fronteira para o kernel. Aula de Berkeley CS162 no canal do professor."
+  section: "CS162 Lecture 2: Four Fundamental OS Concepts"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-8-synchronization-3
+  title: "CS162 Lecture 8: Synchronization 3: Atomic Instructions (Con't), Monitors, Readers/Writers"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=yqsqjqLGMe4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Instruções atômicas para implementar locks, monitores (mutex + variáveis de condição) e leitores/escritores. Aula de Berkeley CS162 no canal do professor."
+  section: "CS162 Lecture 8: Synchronization 3: Atomic Instructions (Con't), Monitors, Readers/Writers"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-15-demand-paging
+  title: "CS162 Lecture 15: Memory 3: Caching and TLBs (Con't), Demand Paging"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=IBgkKX6DUTM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Fecha TLBs e entra em demand paging: o que o kernel faz num page fault e por que páginas só ganham frames quando tocadas. Aula de Berkeley CS162 no canal do professor."
+  section: "CS162 Lecture 15: Memory 3: Caching and TLBs (Con't), Demand Paging"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-21-filesystems-3
+  title: "CS162 Lecture 21: Filesystems 3: Case Studies (Con't), Buffering, Reliability, and Transactions"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=NpM0n6xBbrA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Buffer cache, confiabilidade e transações/journaling no sistema de arquivos: por que write não é durável e como o FS sobrevive a quedas. Aula de Berkeley CS162 no canal do professor."
+  section: "CS162 Lecture 21: Filesystems 3: Case Studies (Con't), Buffering, Reliability, and Transactions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Vídeos: CMU 15-213 Fall 2015 (gravações oficiais no Panopto da CMU SCS, linkadas pelo site do curso) ---
+
+- id: cmu-15213-f15-lecture-14-ecf-exceptions-processes
+  title: "Lecture 14: Exceptional Control Flow: Exceptions and Processes"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=d2759175-d59e-4f80-ab9e-24c2f15c8adb
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Exceções, traps e syscalls, seguidos de fork/exec/wait e zumbis com exemplos em C. Gravação oficial da CMU (15-213 Introduction to Computer Systems), a base do livro CS:APP."
+  section: "Lecture 14: Exceptional Control Flow: Exceptions and Processes"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+- id: cmu-15213-f15-lecture-15-ecf-signals
+  title: "Lecture 15: Exceptional Control Flow: Signals and Nonlocal Jumps"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=aa227a4e-543a-4192-bef4-4eaf6aee1c21
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [signals]
+  why: "Aula completa sobre sinais: envio, sinais pendentes e bloqueados, handlers seguros (async-signal-safe), sinais que não se acumulam e colheita de filhos com SIGCHLD. Gravação oficial da CMU."
+  section: "Lecture 15: Exceptional Control Flow: Signals and Nonlocal Jumps"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+- id: cmu-15213-f15-lecture-16-system-level-io
+  title: "Lecture 16: System Level I/O"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=f107c2ce-79d5-4529-baeb-2bb495d8c11a
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "Unix I/O, tabelas de descritores e de arquivos abertos do kernel, compartilhamento após fork e redirecionamento com dup2. Gravação oficial da CMU."
+  section: "Lecture 16: System Level I/O"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+- id: cmu-15213-f15-lecture-17-vm-concepts
+  title: "Lecture 17: Virtual Memory: Concepts"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=80cd47f9-2eba-4e7b-bbab-a2867f87b7fa
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Memória virtual como cache do disco, tabelas de páginas, page faults e tradução de endereços. Gravação oficial da CMU."
+  section: "Lecture 17: Virtual Memory: Concepts"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+- id: cmu-15213-f15-lecture-24-sync-basics
+  title: "Lecture 24: Synchronization: Basics"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=aae5ff94-1551-42b6-8981-7d19157afa0c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization]
+  why: "Variáveis compartilhadas entre threads, o contador que perde incrementos e grafos de progresso para explicar a corrida. Gravação oficial da CMU."
+  section: "Lecture 24: Synchronization: Basics"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+- id: cmu-15213-f15-lecture-25-sync-advanced
+  title: "Lecture 25: Synchronization: Advanced"
+  author: "CMU 15-213 Fall 2015 (Randal E. Bryant e David R. O'Hallaron)"
+  url: https://scs.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=06892ab8-1a16-46de-8910-537dab546828
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [bounded-queues, deadlocks]
+  why: "Produtor-consumidor com buffer limitado, leitores/escritores e deadlock. Gravação oficial da CMU."
+  section: "Lecture 25: Synchronization: Advanced"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Panopto público; o site do curso 15213-f15 linka a pasta de vídeos." }
+
+# --- Documentação e capítulos para os aprofundamentos ---
+
+- id: man-signal-safety
+  title: signal-safety(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/signal-safety.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [signals]
+  why: "Lista oficial das funções async-signal-safe e por que chamar printf/malloc num handler é indefinido."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-signalfd
+  title: signalfd(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/signalfd.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [signals]
+  why: "Receber sinais como leituras de um descritor, integrando-os a um laço de eventos sem handlers assíncronos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pidfd-open
+  title: pidfd_open(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/pidfd_open.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [processes-syscalls, signals]
+  why: "Referência estável a um processo por descritor, evitando a corrida de reutilização de pid ao esperar ou sinalizar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-clone
+  title: clone(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/clone.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [processes-syscalls, threads-basics]
+  why: "A syscall por trás de fork e de pthread_create: as flags dizem o que pai e filho compartilham (memória, descritores, namespaces)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-credentials
+  title: credentials(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/credentials.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls, signals]
+  why: "Pids, grupos de processos, sessões e uids reais/efetivos: o que define job control e quem pode sinalizar quem."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-cpu-scheduling
+  title: "OSTEP — Scheduling: Introduction"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Métricas (turnaround, tempo de resposta) e políticas clássicas de escalonamento de CPU."
+  section: "Scheduling: Introduction"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-epoll
+  title: epoll(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/epoll.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [file-descriptors]
+  why: "Esperar muitos descritores ao mesmo tempo (servidores com milhares de conexões), com level vs edge triggered."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-io-uring
+  title: io_uring(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/io_uring.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [file-descriptors, filesystems]
+  why: "Interface de I/O assíncrona do Linux com filas compartilhadas entre usuário e kernel."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-eventfd
+  title: eventfd(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/eventfd.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [file-descriptors, bounded-queues]
+  why: "Um contador no kernel exposto como descritor, para acordar um laço de eventos a partir de outra thread."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kernel-ext4-journal
+  title: "Journal (jbd2) — The Linux Kernel documentation"
+  author: The Linux Kernel documentation
+  url: https://docs.kernel.org/filesystems/ext4/journal.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [filesystems]
+  why: "Como o ext4 registra transações no journal e o que os modos data=ordered, writeback e journal garantem."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-swapping-policies
+  title: "OSTEP — Beyond Physical Memory: Policies"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Políticas de substituição de páginas (LRU, clock), working set e thrashing quando a memória tocada passa da RAM."
+  section: "Beyond Physical Memory: Policies"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kernel-transparent-hugepages
+  title: "Transparent Hugepage Support — The Linux Kernel documentation"
+  author: The Linux Kernel documentation
+  url: https://docs.kernel.org/admin-guide/mm/transhuge.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [virtual-memory]
+  why: "Páginas grandes (2 MiB) para reduzir TLB misses, e os custos de latência e memória que elas trazem."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-userfaultfd
+  title: userfaultfd(2) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man2/userfaultfd.2.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [virtual-memory]
+  why: "Tratar page faults em espaço de usuário, usado em live migration de VMs e checkpoint/restore."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pthreads-7
+  title: pthreads(7) — Linux manual page
+  author: man7.org
+  url: https://man7.org/linux/man-pages/man7/pthreads.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: "O que é por thread e o que é por processo (sinais, descritores, pid), funções thread-safe e a implementação NPTL."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-event-based-concurrency
+  title: "OSTEP — Event-based Concurrency (Advanced)"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [threads-basics, file-descriptors]
+  why: "A alternativa a threads: um laço de eventos com select/poll e I/O não bloqueante, e onde ele complica."
+  section: "Event-based Concurrency (Advanced)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-util-concurrent-21
+  title: "java.util.concurrent (Java SE 21 & JDK 21)"
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/package-summary.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [threads-basics, race-conditions-synchronization, bounded-queues]
+  why: "Executors, filas bloqueantes, locks, atômicos e a seção de propriedades de consistência de memória (happens-before) em Java."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: java-arrayblockingqueue-21
+  title: "ArrayBlockingQueue (Java SE 21 & JDK 21)"
+  author: Oracle
+  url: https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ArrayBlockingQueue.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [bounded-queues]
+  why: "A fila limitada pronta do Java: put/take bloqueantes, offer com timeout e política de fairness."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kernel-lockdep-design
+  title: "Runtime locking correctness validator — The Linux Kernel documentation"
+  author: The Linux Kernel documentation
+  url: https://docs.kernel.org/locking/lockdep-design.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [deadlocks]
+  why: "Como o kernel detecta ordens de lock inconsistentes por classes de lock antes de o deadlock acontecer."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
