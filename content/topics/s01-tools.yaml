@@ -59,12 +59,19 @@
     - Cole os comandos do exercício com as saídas reais e marque onde sua previsão errou.
     - Explique em 3–5 frases o caminho de uma linha de comando até virar processo.
   firstAction: Abra um terminal, rode `echo $PATH | tr ':' '\n'` e escreva quantos diretórios aparecem.
-  essentials:
-    - "Use `type nome` para saber se um comando é builtin, alias, função ou arquivo, e `echo $PATH` para ver onde o shell procura executáveis."
-    - "Ponha variáveis entre aspas duplas (`\"$arquivo\"`) por padrão; aspas simples quando quiser o texto literal, sem expansão."
-    - "Antes de um comando destrutivo com glob (`rm *.log`), rode `echo rm *.log` para ver a lista que o shell vai realmente passar."
-    - "Leia a ajuda local primeiro: `man cmd`, `cmd --help` e `help builtin`; navegue com `cd -`, Tab e Ctrl+R para buscar no histórico."
-    - "Nunca rode `curl ... | sh` nem comandos com `sudo` que você não entende; leia o script antes num arquivo."
+  kit:
+    - term: "type comando"
+      use: "Descobrir se o comando é builtin, alias, função ou arquivo, e qual o shell vai executar."
+    - term: "echo $PATH"
+      use: "Ver em quais diretórios, e em que ordem, o shell procura executáveis."
+    - term: "\"$var\" vs '$var'"
+      use: "Usar aspas duplas para expandir a variável sem quebrá-la em palavras; simples para texto literal."
+    - term: "echo rm *.log"
+      use: "Ver a lista que o glob vai gerar antes de rodar um comando destrutivo."
+    - term: "man cmd / cmd --help"
+      use: "Ler a ajuda local de um comando antes de pesquisar na internet."
+    - term: "Tab, Ctrl+R, cd -"
+      use: "Completar nomes, buscar no histórico e voltar ao diretório anterior sem redigitar."
   deepDive:
     - title: Scripts robustos (set -euo pipefail, trap, quoting)
       why: Quando seus scripts de CI ou deploy passarem de poucas linhas e uma falha silenciosa no meio custar caro.
@@ -141,12 +148,21 @@
     - Tabela da matriz de permissões com previsões erradas destacadas.
     - Saída de `stat` do arquivo de segredos protegido.
   firstAction: Rode `ls -la ~` e explique a permissão de três arquivos que aparecerem.
-  essentials:
-    - "Leia `ls -l` como tipo + dono/grupo/outros (`-rw-r-----`) e converta com r=4, w=2, x=1; `chmod 640` e `chmod u=rw,g=r,o=` são a mesma coisa."
-    - "Para ler `a/b/c.txt` você precisa de `x` em todos os diretórios do caminho; apagar um arquivo depende de `w` no diretório, não no arquivo."
-    - "Segredos (`.env`, chaves SSH) ficam com `chmod 600` e diretórios privados com `700`; confira com `stat` e nunca use `chmod 777`."
-    - "Script não executa? Verifique `x` (`chmod +x`) e o shebang na primeira linha; arquivo novo nasce com permissões ditadas pelo `umask`."
-    - "Use `sudo` só para o comando que precisa; arquivos criados como root no seu projeto viram `Permission denied` depois. Corrija com `chown`."
+  kit:
+    - term: "ls -l"
+      use: "Ler tipo, dono, grupo e permissões (-rw-r-----) de cada arquivo."
+    - term: "chmod 640 arquivo (r=4, w=2, x=1)"
+      use: "Ajustar permissões em octal; segredos com 600, diretórios privados com 700."
+    - term: "chmod +x script.sh"
+      use: "Tornar um script executável (e conferir o shebang na primeira linha)."
+    - term: "stat arquivo"
+      use: "Confirmar permissões, dono e datas exatas de um arquivo."
+    - term: "x em todo diretório do caminho"
+      use: "Explicar um Permission denied: atravessar diretório exige x; apagar exige w no diretório."
+    - term: "sudo chown $USER: arquivo"
+      use: "Devolver ao seu usuário arquivos que foram criados como root no projeto."
+    - term: "umask"
+      use: "Ver por que arquivos novos nascem com aquelas permissões padrão."
   deepDive:
     - title: setuid, setgid e sticky bit
       why: Ao entender por que `passwd` altera arquivos do root ou por que todos escrevem em `/tmp` sem apagar arquivos alheios.
@@ -222,12 +238,21 @@
     - Script checa.sh (link ou texto) e saídas de `echo $?` nos dois casos.
     - Saída do `ps --forest` com uma explicação de cada linha.
   firstAction: Rode `ls /nao-existe; echo $?` e anote o número que aparece.
-  essentials:
-    - "Descritores 0, 1 e 2 são stdin, stdout e stderr: `cmd > out.txt 2> err.txt` separa dados de erros; `cmd > tudo.log 2>&1` junta (a ordem importa)."
-    - "Exit code 0 é sucesso, qualquer outro é falha; consulte com `echo $?` e encadeie com `&&` (se deu certo) e `||` (se falhou)."
-    - "Num pipe `a | b` os dois rodam ao mesmo tempo e o shell reporta o exit code do último; use `set -o pipefail` em scripts."
-    - "Nos seus programas e scripts, mande diagnósticos para stderr (`echo erro >&2`) e saia com código diferente de zero ao falhar."
-    - "Inspecione processos com `ps -o pid,ppid,stat,cmd --forest` e encerre com `kill PID`; 128+N no exit code indica morte pelo sinal N (130 = Ctrl+C)."
+  kit:
+    - term: "cmd > out.txt 2> err.txt"
+      use: "Separar dados (stdout, fd 1) de erros (stderr, fd 2) em arquivos diferentes."
+    - term: "cmd > tudo.log 2>&1"
+      use: "Juntar stdout e stderr no mesmo arquivo (o 2>&1 vem depois do >)."
+    - term: "a | b"
+      use: "Ligar o stdout de um programa ao stdin de outro; os dois rodam ao mesmo tempo."
+    - term: "echo $?"
+      use: "Ver o exit code do último comando: 0 é sucesso, qualquer outro valor é falha."
+    - term: "cmd && deu_certo || falhou"
+      use: "Encadear comandos conforme o exit code do anterior."
+    - term: "echo \"erro\" >&2; exit 1"
+      use: "Fazer seus scripts reportarem falha de um jeito que outros programas e o CI entendem."
+    - term: "ps -o pid,ppid,stat,cmd --forest / kill PID"
+      use: "Ver a árvore de processos (pai e filhos) e encerrar um processo pelo PID."
   deepDive:
     - title: fork, exec e wait
       why: Quando for implementar o mini shell ou entender como servidores e o próprio shell criam processos.
@@ -305,13 +330,21 @@
     - Foto ou texto do grafo previsto ao lado da saída de `git log --graph`.
     - Comandos usados para recuperar o commit, com os hashes.
   firstAction: Rode `git config --global --list` e confira se seu nome e e-mail estão configurados.
-  essentials:
-    - "Ciclo diário: `git status` → `git add -p` (revise o que entra) → `git commit -m` com mensagem clara → `git push`; rode `git status` o tempo todo."
-    - "Branch é um ponteiro: crie com `git switch -c nome`, troque com `git switch`, integre com `git merge` e visualize com `git log --oneline --graph --all`."
-    - "Veja o que mudou antes de commitar: `git diff` (working tree vs index) e `git diff --staged` (index vs último commit)."
-    - "Em branch compartilhado, desfaça com `git revert`; `git reset --hard` só no seu branch local. Algo sumiu? `git reflog` e crie um branch no hash."
-    - "Nunca commite segredos nem artefatos gerados: use `.gitignore` e, se vazou, troque a credencial — apagar o commit não basta."
+  kit:
+    - term: "git status"
+      use: "Ver o que mudou e o que está preparado antes de qualquer outro comando."
+    - term: "git add <arquivo>"
+      use: "Preparar as mudanças que vão entrar no próximo commit."
+    - term: "git commit -m \"mensagem\""
+      use: "Gravar um snapshot com uma descrição do que mudou."
+    - term: "git pull"
+      use: "Trazer o trabalho do time antes de começar e antes de enviar."
+    - term: "git push"
+      use: "Enviar seus commits para o repositório compartilhado."
   deepDive:
+    - title: Branches, diff e desfazer (switch, merge, diff, log --graph, revert, reflog)
+      why: Logo depois do ciclo diário, ao trabalhar em paralelo num branch, revisar o que vai entrar ou recuperar um commit perdido.
+      resource: pro-git-ptbr
     - title: Rebase interativo e reescrita de histórico
       why: Quando for limpar commits antes de abrir um pull request ou o time adotar histórico linear.
       resource: pro-git-ptbr-reescrevendo-historico

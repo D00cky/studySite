@@ -59,12 +59,19 @@
     - Conversões feitas à mão com a conferência na máquina.
     - Dump do experimento com cada leitura anotada.
   firstAction: Escreva 42 em binário à mão e confira com `echo 'obase=2; 42' | bc`.
-  essentials:
-    - "Cada dígito hex são exatamente 4 bits e um byte são 2 dígitos hex (`0xff` = 255): converta binário↔hex agrupando de 4 em 4."
-    - "Memorize potências de 2 até 2¹⁶ (256, 1024, 4096, 65536) e que n bits representam 2ⁿ valores, de 0 a 2ⁿ − 1."
-    - "Inspecione bytes com `xxd arquivo` ou `od -An -tx1`; converta no terminal com `printf '%x\\n' 255` e `echo 'obase=2; 42' | bc`."
-    - "Reconheça bytes comuns em dumps: `0a` = `\\n`, `20` = espaço, `30`–`39` = dígitos, `41`–`5a` = A–Z, `61`–`7a` = a–z."
-    - "Bits não têm significado próprio: antes de interpretar um dump, pergunte qual tipo, formato ou protocolo define aqueles bytes."
+  kit:
+    - term: "1 hex = 4 bits; 1 byte = 2 hex (0xff = 255)"
+      use: "Converter binário↔hex agrupando os bits de 4 em 4."
+    - term: "2⁸ = 256, 2¹⁰ = 1024, 2¹⁶ = 65536"
+      use: "Saber quantos valores cabem em n bits: 2ⁿ, de 0 a 2ⁿ − 1."
+    - term: "xxd arquivo"
+      use: "Ver os bytes de qualquer arquivo em hex, ao lado da leitura em ASCII."
+    - term: "printf '%x\\n' 255"
+      use: "Converter decimal para hex no terminal (%o para octal)."
+    - term: "echo 'obase=2; 42' | bc"
+      use: "Converter decimal para binário no terminal."
+    - term: "0a = \\n, 20 = espaço, 41 = A, 61 = a"
+      use: "Reconhecer quebras de linha, espaços e letras ASCII num dump."
   deepDive:
     - title: Operações bitwise, máscaras e flags
       why: Quando for ler código de sistemas, protocolos de rede ou permissões que guardam várias opções num único inteiro.
@@ -137,12 +144,21 @@
     - Programa e saída da tabela de overflow.
     - Função vulnerável, entradas que a quebram e a versão corrigida.
   firstAction: Escreva à mão o byte que representa −1 em complemento de dois.
-  essentials:
-    - "Com n bits: unsigned vai de 0 a 2ⁿ − 1; signed (complemento de dois) de −2ⁿ⁻¹ a 2ⁿ⁻¹ − 1. Saiba os limites de 32 bits (~2,1 bilhões)."
-    - "Em complemento de dois, −1 é todos os bits ligados; para negar, inverta os bits e some 1."
-    - "Verifique antes de calcular: `if (count > SIZE_MAX / size)` antes de `count * size`; em Java use `Math.addExact`/`multiplyExact`."
-    - "Em C, unsigned dá a volta (definido) e signed é undefined behavior; compile com `-Wall -Wextra -fsanitize=undefined` nos testes."
-    - "Use tipos de largura explícita (`int32_t`, `uint64_t`, `size_t` para tamanhos) e `bigint`/`long` para IDs e contadores que crescem."
+  kit:
+    - term: "uint8_t 0..255 / int8_t -128..127"
+      use: "Saber os limites: n bits sem sinal vão até 2ⁿ − 1; com sinal, de −2ⁿ⁻¹ a 2ⁿ⁻¹ − 1."
+    - term: "INT32_MAX ≈ 2,1 bilhões"
+      use: "Estimar quando um contador ou ID de 32 bits vai estourar."
+    - term: "-1 = 0xff (inverta os bits e some 1)"
+      use: "Ler e negar números negativos em complemento de dois."
+    - term: "if (count > SIZE_MAX / size)"
+      use: "Checar overflow antes de multiplicar para calcular um tamanho."
+    - term: "gcc -Wall -Wextra -fsanitize=undefined"
+      use: "Detectar overflow de signed (undefined behavior) enquanto testa."
+    - term: "int32_t, uint64_t, size_t"
+      use: "Escolher tipos de largura explícita; size_t para tamanhos e índices."
+    - term: "Math.addExact / Math.multiplyExact"
+      use: "Fazer o Java lançar exceção em vez de dar a volta silenciosamente."
   deepDive:
     - title: Integer promotions e conversões aritméticas usuais em C
       why: Quando comparações entre signed e unsigned ou contas com `char` e `short` derem resultados inesperados.
@@ -216,12 +232,21 @@
     - Dumps anotados de "ação" nas duas formas.
     - Passo a passo do mojibake e da correção.
   firstAction: Rode `printf 'ç' | xxd` e anote quantos bytes aparecem.
-  essentials:
-    - "Separe três coisas: caractere (o que se vê), code point (U+00E3) e bytes (`c3 a3` em UTF-8). Em C, `strlen` conta bytes."
-    - "Use UTF-8 em tudo e declare explicitamente: arquivos, `Content-Type: text/html; charset=utf-8`, banco (`ENCODING 'UTF8'`) e conexões."
-    - "Diagnostique com `xxd` ou `file -i`: `Ã£`, `Ã§` no lugar de ã e ç indica bytes UTF-8 lidos como Latin-1 (mojibake)."
-    - "Converta encodings com `iconv -f latin1 -t utf-8` só quando souber a origem; conversão dupla corrompe ainda mais."
-    - "Valide limites de tamanho dizendo o que conta (bytes, code points ou caracteres) e use a função certa da linguagem para isso."
+  kit:
+    - term: "caractere / code point (U+00E3) / bytes (c3 a3)"
+      use: "Separar o que se vê, o número Unicode e os bytes UTF-8 gravados."
+    - term: "printf 'ação' | xxd"
+      use: "Ver quantos e quais bytes cada caractere ocupa."
+    - term: "wc -c vs wc -m"
+      use: "Contar bytes versus caracteres de um texto (em C, strlen conta bytes)."
+    - term: "file -i arquivo"
+      use: "Descobrir o encoding provável de um arquivo."
+    - term: "Ã£ / Ã§ = mojibake"
+      use: "Reconhecer UTF-8 lido como Latin-1 ao ver acentos quebrados."
+    - term: "iconv -f latin1 -t utf-8"
+      use: "Converter o encoding de um arquivo quando você sabe qual é a origem."
+    - term: "charset=utf-8"
+      use: "Declarar UTF-8 em HTTP, HTML, banco e conexões em vez de depender do padrão."
   deepDive:
     - title: Normalização Unicode (NFC/NFD)
       why: Quando comparar, buscar ou usar como chave textos que podem vir com acentos combinantes, como nomes de arquivo no macOS.
@@ -297,12 +322,19 @@
     - Programa e saídas da soma de 0.1 com float e double.
     - Resultado do experimento de potências de 2 com explicação.
   firstAction: Abra `python3` ou `node` e rode `0.1 + 0.2`. Anote o resultado.
-  essentials:
-    - "0.1 não é exato em binário: nunca compare floats com `==`; use tolerância (`fabs(a - b) < eps`, relativa para valores grandes)."
-    - "Dinheiro e quantidades exatas: inteiros de centavos ou decimal (`numeric` no PostgreSQL, `BigDecimal` em Java), nunca `double`."
-    - "Use `double` por padrão em vez de `float`; precisão de ~15–17 dígitos é relativa ao tamanho do número."
-    - "Ao depurar contas que não fecham, imprima com precisão total (`%.17g` em C, `repr()` em Python)."
-    - "NaN é diferente de tudo, inclusive de si mesmo: teste com `isnan()`/`Double.isNaN()`; divisão por zero em float gera `inf`, não erro."
+  kit:
+    - term: "0.1 + 0.2 != 0.3"
+      use: "Lembrar que 0.1 não é exato em binário e que pequenos erros se acumulam."
+    - term: "fabs(a - b) < eps"
+      use: "Comparar floats com tolerância em vez de ==."
+    - term: "printf(\"%.17g\", x) / repr(x)"
+      use: "Imprimir com precisão total ao depurar contas que não fecham."
+    - term: "centavos em long / BigDecimal / numeric"
+      use: "Guardar dinheiro e valores exatos sem usar double."
+    - term: "double em vez de float"
+      use: "Ter ~15–17 dígitos de precisão por padrão."
+    - term: "isnan(x) / Double.isNaN(x)"
+      use: "Testar NaN, que é diferente de tudo, inclusive de si mesmo."
   deepDive:
     - title: Kahan summation e erro acumulado
       why: Quando somar milhões de valores (estatística, ML, simulação) e o erro acumulado importar.
@@ -376,12 +408,19 @@
     - Código, comandos de compilação e tabela de tempos.
     - Gráfico ou tabela do experimento de tamanhos com a saída de `lscpu`.
   firstAction: Rode `lscpu | grep -i cache` e anote os tamanhos de L1, L2 e L3.
-  essentials:
-    - "Acesso sequencial e contíguo é rápido; saltos pela memória são lentos. Prefira arrays a listas ligadas para percorrer muitos dados."
-    - "O cache traz blocos de 64 bytes (cache lines): use dados vizinhos (localidade espacial) e reuse dados recentes (localidade temporal)."
-    - "Matrizes em C são row-major: o laço interno deve variar o último índice (`m[i][j]` com `j` por dentro)."
-    - "Benchmark sério: compile com `-O2`, rode várias vezes, reporte mediana e variação, e confira que o compilador não eliminou o laço."
-    - "Ordens de grandeza para decidir: L1 ~1 ns, RAM ~100 ns, SSD ~100 µs, rede entre datacenters em ms. Consulte `lscpu` para os caches da sua máquina."
+  kit:
+    - term: "cache line = 64 bytes"
+      use: "Entender por que ler dados vizinhos sai quase de graça e saltos pela memória custam caro."
+    - term: "for i { for j { m[i][j] } }"
+      use: "Percorrer matrizes em C por linhas (row-major), com o último índice no laço interno."
+    - term: "array > lista ligada"
+      use: "Preferir dados contíguos ao percorrer muitos elementos."
+    - term: "lscpu | grep -i cache"
+      use: "Ver os tamanhos de L1, L2 e L3 da sua máquina."
+    - term: "gcc -O2 + 5 execuções + mediana"
+      use: "Fazer um benchmark confiável em vez de medir uma execução só."
+    - term: "L1 ~1 ns, RAM ~100 ns, SSD ~100 µs"
+      use: "Estimar ordens de grandeza para decidir onde está o gargalo."
   deepDive:
     - title: Medir cache misses com perf
       why: Quando precisar provar que um gargalo é de memória e não de CPU, em vez de adivinhar.
