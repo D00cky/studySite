@@ -73,7 +73,14 @@ export function RoadmapPage() {
       {data && (
         <>
           <div className="filters">
-            <TextField label="Buscar tópico" type="search" value={query} onChange={(e) => setQuery(e.target.value)} />
+            <TextField
+              label="Buscar tópico"
+              type="search"
+              prefix="❯"
+              placeholder="grep ponteiro…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
             <Select label="Etapa" value={stageId} onChange={(e) => setStageId(e.target.value)}>
               <option value="">Todas</option>
               {sortedStages.map((s) => (

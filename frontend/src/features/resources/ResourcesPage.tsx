@@ -27,7 +27,7 @@ export function ResourcesPage() {
       <div>
         <div>
           <div className="filters">
-            <TextField label="Buscar" type="search" value={filters.q} onChange={set('q')} />
+            <TextField label="Buscar" type="search" prefix="❯" placeholder="grep título…" value={filters.q} onChange={set('q')} />
             <Select label="Tópico" value={filters.topic} onChange={set('topic')}>
               <option value="">Todos</option>
               {roadmap?.topics.map((t) => (

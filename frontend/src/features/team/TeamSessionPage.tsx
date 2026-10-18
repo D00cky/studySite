@@ -146,7 +146,7 @@ function ManualRoles({ detail, members }: { detail: TeamSessionDetail; members: 
     <details>
       <summary>Distribuir papéis manualmente</summary>
       <form onSubmit={submit} className="stack details-body" aria-label="Distribuir papéis">
-        <div className="filters" style={{ padding: 0, border: 0, background: 'transparent' }}>
+        <div className="filters filters-plain">
           {ROLE_IDS.map((r) => (
             <Select key={r} label={SESSION_ROLE_LABEL[r]} value={choice[r]} onChange={(e) => setChoice({ ...choice, [r]: e.target.value })}>
               <option value="">Ninguém</option>
