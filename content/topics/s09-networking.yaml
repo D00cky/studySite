@@ -3,50 +3,362 @@
 - id: dns-ip
   stage: s09-networking
   title: DNS e IP
-  status: planned
+  status: authored
   objective: Rastrear como um nome vira um endereço IP e como pacotes chegam ao destino, usando dig, ip e traceroute.
-  whyItMatters: Boa parte dos incidentes de "o site caiu" começa em DNS ou roteamento.
+  whyItMatters: Boa parte dos incidentes de "o site caiu" começa em DNS ou roteamento. Saber separar "o nome não resolve" de "o endereço não responde" corta horas de depuração, e o mesmo raciocínio vale para containers, Kubernetes e bancos de dados remotos.
   prerequisites: [processes-streams-exit-codes, binary-hexadecimal]
+  related: [tcp-udp-sockets, timeouts-caching]
+  mathThreads: [graphs]
+  explanation: |
+    **IP** entrega pacotes entre máquinas; não garante ordem nem entrega. Um endereço IPv4 tem 32 bits, escrito como quatro bytes em decimal (`192.168.0.10`). A notação **CIDR** (`192.168.0.0/24`) diz quantos bits iniciais formam o prefixo da rede — os bits restantes identificam a máquina dentro dela.
+
+    Para enviar um pacote, o kernel consulta a **tabela de rotas** (`ip route`): procura o prefixo mais específico que contém o destino. Se for a rede local, entrega direto (descobrindo o endereço físico via ARP, `ip neigh`); senão, manda para o **gateway** padrão. Cada roteador no caminho repete a decisão e decrementa o **TTL** do pacote; quando chega a zero, o roteador descarta e devolve um aviso ICMP. É exatamente isso que `traceroute` explora: envia pacotes com TTL 1, 2, 3... e anota quem reclama.
+
+    **DNS** é um banco de dados distribuído e hierárquico. Sua máquina pergunta a um **resolvedor recursivo** (veja `/etc/resolv.conf` ou `resolvectl status`), que, se não tiver a resposta em cache, consulta a raiz (`.`), depois o servidor do TLD (`com.`), depois o **servidor autoritativo** do domínio. Cada resposta vem com um **TTL** que diz por quanto tempo pode ser guardada em cache.
+
+    Tipos de registro que você vai ver: `A` (IPv4), `AAAA` (IPv6), `CNAME` (apelido para outro nome), `MX` (e-mail), `NS` (quem é autoritativo), `TXT`. Antes de tudo isso, o `/etc/hosts` pode responder sozinho — uma fonte comum de "na minha máquina funciona".
+
+    Um diagnóstico de rede começa separando camadas: **resolveu o nome?** (`dig`), **existe rota?** (`ip route get <ip>`), **o host responde?** (`ping`, `traceroute`), **a porta aceita conexão?** (próximo tópico).
+  misconceptions:
+    - claim: Mudei o registro DNS, então todo mundo já vê o endereço novo.
+      correction: Resolvedores guardam a resposta antiga até o TTL expirar. Por isso se baixa o TTL antes de uma migração, e não depois.
+    - claim: Se o ping não responde, o servidor está fora do ar.
+      correction: Muitas redes bloqueiam ICMP. O host pode estar aceitando conexões TCP normalmente; teste a porta do serviço.
+    - claim: DNS só traduz nomes de sites para IP.
+      correction: DNS guarda vários tipos de registro (MX, TXT, SRV, CNAME) e é usado para e-mail, verificação de domínio, descoberta de serviços e mais.
   resources:
-    start: akita-networks-1
-    deeper: [akita-networks-3]
+    start: cs168-textbook-dns
+    deeper: [cs168-textbook-addressing, akita-networks-3, man-ip8, rfc-1035-dns]
+    videos: [akitando-123-redes-parte-3, akitando-121-redes-parte-1, akitando-122-redes-parte-2]
+  exercise:
+    id: ex-trace-a-name
+    title: Do nome ao pacote, à mão
+    prediction: Antes de rodar qualquer comando, escreva quantos saltos (hops) você espera até `example.com` e qual servidor DNS sua máquina consulta primeiro.
+    steps:
+      - "Rode `ip addr` e `ip route` e anote: seu IP, o prefixo da sua rede em CIDR e o gateway padrão."
+      - Converta seu IP e a máscara para binário e mostre, bit a bit, por que o gateway está na mesma rede que você.
+      - Rode `dig example.com` e identifique na saída a seção ANSWER, o TTL e o servidor que respondeu (SERVER).
+      - Rode `dig +trace example.com` e desenhe a cadeia raiz → TLD → autoritativo com os nomes dos servidores.
+      - Rode `dig example.com` duas vezes seguidas e explique por que o TTL diminuiu.
+      - Rode `traceroute -n example.com` (ou `tracepath`) e compare com a sua previsão.
+    checks:
+      - O cálculo binário mostra o prefixo de rede igual para seu IP e o gateway.
+      - O desenho da cadeia DNS bate com os servidores listados por `dig +trace`.
+      - Você explica a queda do TTL pelo cache do resolvedor.
+  experiment:
+    title: Quebrar a resolução de propósito
+    steps:
+      - "Numa VM ou container de laboratório, adicione ao `/etc/hosts` uma linha `127.0.0.1 example.com` e rode `curl -v http://example.com`."
+      - Compare com `dig example.com` (que ignora o /etc/hosts) e explique a diferença; desfaça a alteração.
+      - Rode `dig @1.1.1.1 nome-que-nao-existe-123.com` e observe o status NXDOMAIN.
+      - Em outro terminal, rode `sudo tcpdump -n -i any port 53` enquanto executa `dig example.com`; leia a pergunta e a resposta no tráfego.
+      - Rode `ip route get 8.8.8.8` e `ip route get 127.0.0.1` e compare a interface escolhida.
+    observe:
+      - Para onde o curl conectou com o /etc/hosts alterado e o que o dig respondeu.
+      - O status NXDOMAIN e a seção AUTHORITY da resposta.
+      - Os pacotes UDP para a porta 53, com o id da consulta igual na pergunta e na resposta.
+  reflectionQuestions:
+    - Por que o DNS usa cache em vários níveis, e que problema isso cria numa migração de servidor?
+    - Como a regra do prefixo mais específico decide entre duas rotas que contêm o mesmo destino?
+    - Num incidente, que sequência de comandos você usaria para decidir se o problema é DNS, rota ou o serviço?
+  completionCriteria:
+    - Mostra a saída de `dig +trace` anotada com raiz, TLD e servidor autoritativo.
+    - Mostra o cálculo binário que prova que o gateway está na rede local, usando a saída de `ip addr` e `ip route`.
+    - Mostra uma captura do tcpdump com uma consulta DNS e sua resposta, identificando porta, protocolo e id.
+  evidencePrompts:
+    - Saídas de `dig +trace` e `traceroute` anotadas, com a previsão inicial ao lado.
+    - Captura do tcpdump da consulta DNS e explicação do experimento com /etc/hosts.
+  firstAction: Rode `dig example.com` e circule na saída o endereço IP, o TTL e a linha SERVER.
 
 - id: tcp-udp-sockets
   stage: s09-networking
   title: TCP, UDP e sockets
-  status: planned
+  status: authored
   objective: Escrever um cliente e um servidor TCP com sockets, tratando leituras parciais e conexões encerradas.
-  whyItMatters: Todo protocolo de aplicação — HTTP, PostgreSQL, Redis — roda sobre isso.
+  whyItMatters: Todo protocolo de aplicação — HTTP, PostgreSQL, Redis — roda sobre isso. Bugs de leitura parcial, de conexão fechada e de porta presa em TIME-WAIT aparecem em qualquer linguagem; em Java e JavaScript eles só ficam escondidos atrás de bibliotecas.
   prerequisites: [dns-ip, file-descriptors]
+  related: [http-protocol, timeouts-caching, c-strings]
+  mathThreads: [probability]
+  explanation: |
+    **UDP** entrega datagramas independentes: cada `sendto` vira um pacote, que pode chegar fora de ordem, duplicado ou não chegar. **TCP** constrói por cima de IP um **fluxo de bytes** confiável e ordenado: numera cada byte (número de sequência), espera confirmações (ACK) e retransmite o que não foi confirmado depois de um timeout.
+
+    A consequência mais importante para quem programa: **TCP não tem mensagens**. Se o cliente faz `send` de 100 bytes, o servidor pode receber 100 bytes num `recv`, ou 60 e depois 40, ou 100 junto com bytes do próximo envio. Por isso todo protocolo sobre TCP define **framing** — um delimitador (`\n`, `\r\n\r\n`) ou um prefixo de tamanho — e o código lê em loop, acumulando num buffer até ter uma mensagem completa.
+
+    Um **socket** é um file descriptor. No servidor: `socket` → `bind` (porta) → `listen` (fila de conexões pendentes) → `accept` (devolve um **novo** fd por cliente). No cliente: `socket` → `connect`, que dispara o **three-way handshake** (SYN, SYN-ACK, ACK). Os retornos de `recv` contam a história:
+    - `> 0`: chegaram n bytes (talvez menos do que você pediu).
+    - `0`: o outro lado fechou a escrita (FIN). Não é erro; é fim de fluxo.
+    - `-1`: erro em `errno` (`ECONNRESET`, `EINTR`, `EAGAIN` com timeout).
+
+    `send` também pode escrever só parte dos bytes; um `send_all` em loop é obrigatório. Escrever num socket que o outro lado fechou pode gerar `SIGPIPE`, que mata o processo se não for tratado (`MSG_NOSIGNAL` ou ignorar o sinal).
+
+    `ss -tanp` mostra os estados da máquina de estados TCP: `LISTEN`, `ESTAB`, `CLOSE-WAIT` (o outro lado fechou e você ainda não chamou `close` — sintoma clássico de vazamento de fd) e `TIME-WAIT` (quem fechou primeiro espera um tempo antes de liberar a combinação de portas). Sobre probabilidade: se cada pacote se perde com probabilidade p independente, a chance de uma tentativa falhar é p, de k tentativas seguidas falharem é p^k — por isso retransmitir resolve perdas raras, mas não uma rede caída.
+  misconceptions:
+    - claim: Cada send do cliente corresponde a exatamente um recv no servidor.
+      correction: TCP é um fluxo de bytes; envios podem ser fragmentados ou agrupados. Você precisa de framing e de um loop de leitura com buffer.
+    - claim: recv retornando 0 significa que não chegou nada ainda.
+      correction: 0 significa que o outro lado encerrou a conexão (EOF). Sem dados disponíveis, um socket bloqueante espera; um não bloqueante devolve -1 com EAGAIN.
+    - claim: TCP garante que a aplicação do outro lado processou a mensagem.
+      correction: O ACK do TCP só diz que o kernel remoto recebeu os bytes. Confirmação de processamento precisa ser uma resposta do protocolo de aplicação.
   resources:
     start: beej-network
-    deeper: [beej-network-ptbr]
+    deeper: [beej-network-ptbr, cs168-textbook-transport-principles, cs168-textbook-tcp-design, man-recv, man-socket7, man-ss, rfc-9293-tcp]
+    videos: [akitando-124-redes-parte-4, akitando-122-redes-parte-2]
+  exercise:
+    id: ex-line-echo-server
+    title: Servidor de linhas que sobrevive a leituras parciais
+    prediction: "Escreva o que seu servidor vai imprimir se o cliente enviar `ola\\nmun` e, um segundo depois, `do\\n`: quantas chamadas a recv e quantas linhas?"
+    steps:
+      - "Escreva em C um servidor TCP que aceita uma conexão por vez e responde cada linha terminada em `\\n` com `ECO: <linha>`."
+      - Leia com `recv` em loop num buffer fixo; extraia linhas completas e mantenha o resto para a próxima leitura.
+      - Escreva `send_all` que repete `send` até enviar todos os bytes e trata erro.
+      - "Trate os três retornos de recv: dados, 0 (feche e volte para accept) e -1 (imprima `strerror(errno)`)."
+      - Rejeite linhas maiores que o buffer com uma mensagem de erro e feche a conexão, em vez de estourar memória.
+      - Teste com `nc localhost 5000` e com `printf 'ola\nmun' | nc ...` seguido de outro envio.
+      - Faça commit no Git a cada etapa que funcionar, com mensagem descrevendo o caso tratado.
+    checks:
+      - Linhas fragmentadas em dois envios são ecoadas inteiras, uma única vez.
+      - Fechar o cliente no meio não derruba o servidor; ele volta a aceitar conexões.
+      - Uma linha gigante gera erro controlado, sem crash e sem leitura fora do buffer (confirme com ASan).
+  experiment:
+    title: Ver o handshake, o FIN e o RST
+    project: tcp-http-lab
+    steps:
+      - "Em um terminal rode `sudo tcpdump -n -i lo port 5000`; em outro, o servidor; num terceiro, `nc localhost 5000`."
+      - Envie uma linha, depois feche o nc com Ctrl+D e identifique SYN, SYN-ACK, ACK, os dados, FIN e ACK na captura.
+      - Rode `ss -tanp | grep 5000` durante a conexão e logo depois de fechar; observe ESTAB e TIME-WAIT.
+      - Comente o `close` do fd do cliente no servidor, reconecte e feche o nc; observe CLOSE-WAIT se acumulando no `ss`.
+      - Conecte numa porta sem servidor (`nc localhost 5999`) e veja o RST na captura e o erro `Connection refused`.
+      - Reinicie o servidor logo após encerrá-lo sem `SO_REUSEADDR` e leia o erro de `bind`; depois adicione a opção.
+    observe:
+      - As flags TCP [S], [S.], [.], [P.], [F.] e [R] e os números de sequência na saída do tcpdump.
+      - Os estados ESTAB, CLOSE-WAIT e TIME-WAIT no ss e qual lado fica em cada um.
+      - A mensagem `Address already in use` e o efeito de SO_REUSEADDR.
+  reflectionQuestions:
+    - Por que um protocolo sobre TCP precisa de delimitador ou prefixo de tamanho? Que tipo de dado quebra cada escolha?
+    - Se você vê centenas de conexões em CLOSE-WAIT no seu servidor, de quem é o bug e qual é?
+    - Quando UDP seria preferível a TCP, e o que a aplicação passa a ter que fazer sozinha?
+  completionCriteria:
+    - Mostra o servidor ecoando corretamente uma linha enviada em dois pedaços, com log do número de bytes de cada recv.
+    - Mostra uma captura do tcpdump anotada com handshake, dados e encerramento de uma conexão do seu cliente.
+    - Mostra no ss uma conexão em CLOSE-WAIT provocada de propósito e explica a correção.
+  evidencePrompts:
+    - Código do loop de leitura com buffer e de send_all, com o teste de leitura parcial.
+    - Captura do tcpdump e saída do ss anotadas.
+  firstAction: Rode `ss -tlnp` e identifique quais processos estão escutando em quais portas na sua máquina.
 
 - id: http-protocol
   stage: s09-networking
   title: HTTP
-  status: planned
+  status: authored
   objective: Ler e escrever requisições e respostas HTTP à mão, incluindo métodos, status, cabeçalhos e corpo.
-  whyItMatters: É a interface de praticamente todo backend e frontend que vamos construir.
+  whyItMatters: É a interface de praticamente todo backend e frontend que vamos construir. Quem sabe o que trafega de fato consegue depurar CORS, redirects, uploads e erros 4xx/5xx sem adivinhar, e escreve APIs com semântica correta.
   prerequisites: [tcp-udp-sockets, text-encoding]
+  related: [tls-concepts, timeouts-caching, input-validation]
+  explanation: |
+    HTTP/1.1 é **texto sobre TCP**. Uma requisição é uma linha inicial, cabeçalhos, uma linha em branco e um corpo opcional; cada linha termina em `\r\n`:
+
+    ```
+    GET /tasks?status=open HTTP/1.1
+    Host: localhost:8080
+    Accept: application/json
+
+    ```
+
+    A resposta tem o mesmo formato com uma **linha de status** (`HTTP/1.1 200 OK`). O fim dos cabeçalhos é `\r\n\r\n`; o tamanho do corpo vem em `Content-Length` ou o corpo é enviado em pedaços (`Transfer-Encoding: chunked`). Sem um desses, o receptor não sabe onde a mensagem termina — é o problema de framing do tópico anterior, resolvido por cabeçalhos.
+
+    **Métodos** têm semântica: `GET` lê e deve ser **seguro** (sem efeitos colaterais), `PUT` e `DELETE` são **idempotentes** (repetir dá o mesmo resultado), `POST` não é. Isso importa porque proxies, navegadores e clientes fazem retry contando com essas propriedades. **Status** em classes: `2xx` sucesso, `3xx` redirecionamento (`Location`), `4xx` erro de quem pediu (`400` malformado, `404`, `409` conflito), `5xx` erro do servidor.
+
+    O cabeçalho `Host` permite vários sites no mesmo IP. Conexões são reutilizadas por padrão em HTTP/1.1 (*keep-alive*), então o servidor precisa saber onde cada requisição termina para ler a próxima. HTTP/2 e HTTP/3 mantêm a mesma semântica (métodos, status, cabeçalhos) mas mudam o formato no fio para binário e multiplexado.
+
+    Um parser HTTP é uma **fronteira de confiança**: limite o tamanho da linha e dos cabeçalhos, rejeite `Content-Length` inválido ou negativo com `400`, e nunca confie que o corpo chegou inteiro num único `recv`.
+  misconceptions:
+    - claim: HTTP é um formato de mensagem que chega inteiro.
+      correction: Requisição e resposta são bytes num fluxo TCP; o servidor monta a mensagem lendo até `\r\n\r\n` e então lê exatamente Content-Length bytes de corpo.
+    - claim: 'Status 200 com `{"error": ...}` no corpo é uma forma aceitável de indicar falha.'
+      correction: Clientes, caches, proxies e ferramentas de monitoramento leem o status. Use 4xx/5xx com corpo explicativo.
+    - claim: POST é para enviar dados e GET para pegar, e a diferença acaba aí.
+      correction: A diferença é semântica (segurança e idempotência) e afeta retries, cache e o botão voltar do navegador.
   resources:
-    start: mdn-learn
+    start: mdn-http-messages
+    deeper: [mdn-http-overview, mdn-http-overview-ptbr, mdn-learn, cs168-textbook-http, curl-manpage, rfc-9110-http-semantics, rfc-9112-http11]
+    videos: [akitando-124-redes-parte-4]
+  exercise:
+    id: ex-http-by-hand
+    title: HTTP digitado à mão
+    prediction: "Antes de rodar: o que o servidor responde se você mandar a requisição sem o cabeçalho `Host`? E sem a linha em branco final?"
+    steps:
+      - "Rode `curl -v http://example.com/` e copie as linhas que começam com `>` (enviadas) e `<` (recebidas)."
+      - "Abra `nc example.com 80` e digite a mesma requisição à mão, terminando com uma linha vazia; compare a resposta."
+      - Repita sem `Host` e depois com um método inventado (`FOO / HTTP/1.1`) e anote os status.
+      - "Use `printf 'GET / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n' | nc example.com 80` e explique por que `\\r\\n` importa."
+      - "Faça um POST com corpo usando `curl -v -d 'title=estudar' http://localhost:8000/` contra `python3 -m http.server` (ou nc em modo escuta) e veja Content-Type e Content-Length."
+    checks:
+      - Você identifica linha inicial, cabeçalhos, linha em branco e corpo na sua transcrição.
+      - Você explica cada status recebido nos casos sem Host e com método inválido.
+      - O Content-Length do POST bate com a contagem de bytes do corpo.
+  experiment:
+    title: Escrever e atacar um parser HTTP mínimo
+    project: tcp-http-lab
+    steps:
+      - "No servidor TCP do tópico anterior, leia até `\\r\\n\\r\\n` e extraia método, caminho e versão da primeira linha."
+      - "Responda `GET /tasks` com `200` e um corpo texto listando tarefas fixas, com Content-Length correto; outras rotas com `404`."
+      - Envie requisições malformadas com nc (linha inicial sem espaços, cabeçalho sem dois-pontos, Content-Length negativo ou maior que o corpo) e faça o servidor responder `400`.
+      - Envie a requisição byte a byte com um script (`for c in ...; do printf; sleep 0.1; done | nc`) e confirme que o parser espera o fim dos cabeçalhos.
+      - Capture com `tcpdump -A -i lo port 8080` e encontre sua requisição e resposta em texto.
+    observe:
+      - A resposta do servidor para cada entrada malformada e se ele continuou vivo.
+      - O comportamento com a requisição enviada aos poucos.
+      - O texto HTTP legível dentro dos pacotes TCP capturados.
+  reflectionQuestions:
+    - Por que HTTP precisa de Content-Length ou chunked, e o que acontece numa conexão keep-alive se o valor estiver errado?
+    - Que garantias GET, PUT e POST dão a um cliente que decide repetir uma requisição após timeout?
+    - Que limites seu parser impõe, e que ataque cada um previne?
+  completionCriteria:
+    - Mostra uma requisição HTTP digitada no nc e a resposta, com cada parte rotulada.
+    - Mostra o servidor respondendo 200, 404 e 400 para requisições válidas, rotas inexistentes e entradas malformadas, com os comandos usados.
+    - Mostra uma captura do tcpdump em que a requisição e a resposta aparecem em texto.
+  evidencePrompts:
+    - Transcrição do nc e do curl -v anotadas.
+    - Lista de entradas malformadas testadas com a resposta do servidor para cada uma.
+  firstAction: Rode `curl -v http://example.com/ -o /dev/null` e conte quantos cabeçalhos a resposta trouxe.
 
 - id: tls-concepts
   stage: s09-networking
   title: Conceitos de TLS
-  status: planned
+  status: authored
   objective: Explicar o que TLS garante (confidencialidade, integridade, autenticidade do servidor) e inspecionar um certificado.
-  whyItMatters: Configurar HTTPS e diagnosticar erros de certificado é rotina em deploy.
+  whyItMatters: Configurar HTTPS e diagnosticar erros de certificado é rotina em deploy. Entender o que TLS garante — e o que não garante — evita tanto pânico com avisos legítimos quanto falsa segurança, como desligar a verificação de certificado "para funcionar".
   prerequisites: [http-protocol]
+  related: [secrets-threat-modeling, authentication-sessions]
+  explanation: |
+    TLS fica entre TCP e HTTP e transforma um fluxo de bytes inseguro num fluxo com três garantias:
+    - **Confidencialidade**: quem observa a rede vê bytes cifrados.
+    - **Integridade**: bytes alterados no caminho são detectados (cada registro leva um código de autenticação).
+    - **Autenticidade do servidor**: você está falando com quem tem a chave privada correspondente ao certificado de `example.com`.
+
+    O **handshake** combina duas ideias de criptografia. Uma **troca de chaves** (Diffie-Hellman efêmero, no TLS 1.3) deixa cliente e servidor combinarem um segredo sem nunca enviá-lo — quem só escuta não consegue calculá-lo. Depois, os dados viajam com **criptografia simétrica** (AES-GCM, ChaCha20-Poly1305), que é rápida. Mas troca de chaves sozinha não impede um intermediário de fazer uma troca com cada lado; por isso o servidor **assina** o handshake com sua chave privada.
+
+    O **certificado** liga um nome a uma chave pública e é assinado por uma **autoridade certificadora (CA)**. O cliente verifica a **cadeia**: certificado do site → intermediária → raiz que já está no repositório de confiança do sistema. Também confere a **validade** (datas) e se o nome pedido está em **Subject Alternative Name**. O nome vai no handshake pelo **SNI**, que permite vários certificados no mesmo IP.
+
+    O que TLS **não** garante: que o servidor é honesto, que a aplicação não tem bugs, nem esconde o IP de destino e (na maioria dos casos) o nome do site no SNI. Ele protege o transporte; autenticação de usuário, autorização e validação de entrada continuam sendo problema da aplicação.
+  misconceptions:
+    - claim: O cadeado no navegador significa que o site é confiável.
+      correction: Significa só que a conexão é cifrada e que o servidor provou controlar o nome. Um site de phishing pode ter um certificado válido.
+    - claim: Usar `curl -k` ou desligar a verificação é aceitável se a conexão continua cifrada.
+      correction: Sem verificar o certificado, qualquer intermediário pode se passar pelo servidor; você perde a autenticidade e, na prática, a confidencialidade.
+    - claim: TLS cifra os dados com a chave pública do certificado.
+      correction: A chave do certificado serve para assinar e autenticar o handshake. Os dados são cifrados com chaves simétricas derivadas da troca de chaves.
   resources:
-    start: akita-crypto-1
+    start: cs168-textbook-tls
+    deeper: [akita-crypto-1, openssl-s-client, rfc-8446-tls13]
+    videos: [akitando-67-criptografia-parte-1, akitando-68-criptografia-parte-2, akitando-147-criptografia-na-pratica]
+  exercise:
+    id: ex-inspect-certificate
+    title: Ler um certificado e um handshake
+    prediction: Antes de rodar, escreva quantos certificados você espera na cadeia de um site grande e quem deve ser o emissor do primeiro.
+    steps:
+      - Rode `openssl s_client -connect example.com:443 -servername example.com </dev/null` e localize a cadeia (Certificate chain), a versão do protocolo e o cipher.
+      - "Extraia o certificado e leia os campos com `openssl x509 -noout -subject -issuer -dates -ext subjectAltName`."
+      - Desenhe a cadeia site → intermediária → raiz e diga onde a raiz está guardada na sua máquina.
+      - Rode `curl -v https://example.com/ -o /dev/null` e encontre as linhas do handshake e a verificação do certificado.
+      - Compare um tcpdump da porta 443 com o da porta 80 do tópico HTTP e explique o que dá e o que não dá para ver.
+    checks:
+      - A cadeia desenhada bate com a saída do s_client.
+      - Você aponta o nome do site no SAN e as datas de validade.
+      - Você explica por que o conteúdo HTTP não aparece na captura da porta 443.
+  experiment:
+    title: Provocar erros de certificado num laboratório
+    steps:
+      - Numa pasta de laboratório, gere um certificado autoassinado com `openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 1 -subj /CN=localhost`.
+      - Suba `openssl s_server -accept 8443 -cert cert.pem -key key.pem -www` e acesse com `curl -v https://localhost:8443/`; leia o erro.
+      - Repita com `--cacert cert.pem` e veja a verificação passar; depois acesse como `https://127.0.0.1:8443/` e leia o novo erro.
+      - Teste sites de demonstração com certificados propositalmente inválidos (por exemplo `expired.badssl.com`, `wrong.host.badssl.com`) usando curl e compare as mensagens.
+      - Escreva no seu caderno qual garantia de TLS cada erro protege.
+    observe:
+      - A mensagem de erro de verificação do curl em cada caso (emissor desconhecido, nome não confere, expirado).
+      - Que a mesma conexão cifrada passa a ser aceita quando você confia explicitamente no certificado.
+  reflectionQuestions:
+    - Por que a troca de chaves sozinha não impede um ataque man-in-the-middle, e o que o certificado acrescenta?
+    - O que um observador na rede ainda consegue saber sobre sua navegação com HTTPS?
+    - Num deploy, que verificações você faria ao ver o erro "certificate has expired" ou "hostname mismatch"?
+  completionCriteria:
+    - Mostra a saída do openssl s_client e do openssl x509 anotadas com cadeia, SAN, datas, versão e cipher.
+    - Reproduz em laboratório pelo menos três erros de verificação distintos e associa cada um a uma garantia de TLS.
+    - Mostra e explica a diferença entre capturas de tráfego HTTP e HTTPS.
+  evidencePrompts:
+    - Desenho da cadeia de certificados com os campos extraídos.
+    - Tabela "erro → garantia protegida" com os comandos do experimento.
+  firstAction: Abra um site com HTTPS no navegador, clique no cadeado e anote quem emitiu o certificado e até quando ele vale.
 
 - id: timeouts-caching
   stage: s09-networking
   title: Timeouts e caching
-  status: planned
+  status: authored
   objective: Configurar timeouts de conexão e leitura e usar cabeçalhos de cache HTTP corretamente.
-  whyItMatters: Sem timeouts, uma dependência lenta trava o sistema inteiro; cache errado serve dados velhos.
+  whyItMatters: Sem timeouts, uma dependência lenta trava o sistema inteiro; cache errado serve dados velhos. Esses dois mecanismos decidem a latência e a resiliência de qualquer backend e aparecem de novo em filas, bancos e sistemas distribuídos.
   prerequisites: [http-protocol]
+  related: [partial-failure-retries, latency-percentiles-diagnosis, idempotency]
   mathThreads: [probability]
+  explanation: |
+    Uma chamada de rede pode travar em fases diferentes, e cada uma precisa do seu **timeout**:
+    - **Resolução DNS**.
+    - **Conexão**: o SYN pode se perder ou ser descartado por um firewall; sem timeout, o kernel tenta de novo por muito tempo (`tcp_syn_retries`).
+    - **Leitura/escrita**: a conexão existe, mas o outro lado não responde — o caso mais traiçoeiro, porque não há erro, só espera.
+    - **Total (deadline)**: limite para a operação inteira, incluindo retries.
+
+    Em C, `SO_RCVTIMEO`/`SO_SNDTIMEO` fazem `recv`/`send` falharem com `EAGAIN` após o prazo; `poll` com timeout dá controle mais fino. No curl, `--connect-timeout` e `--max-time`. Uma thread ou processo bloqueado sem timeout é um recurso preso; com tráfego, eles se acumulam até esgotar o pool — é assim que uma dependência lenta derruba quem a chama.
+
+    Escolher o valor é estatística, não chute: olhe a distribuição de latência e escolha um percentil alto (p99, p99.9) mais folga. Com **retries**, pense em probabilidade: se uma tentativa falha com probabilidade p de forma independente, n tentativas falham com p^n. Mas falhas costumam ser **correlacionadas** (servidor sobrecarregado), e retries sem **backoff exponencial com jitter** multiplicam a carga justamente quando o servidor está pior. Só repita operações **idempotentes**.
+
+    **Cache HTTP** evita refazer trabalho. `Cache-Control: max-age=60` diz que a resposta é **fresca** por 60 s e pode ser reutilizada sem perguntar. Vencido o prazo, o cliente **revalida**: envia `If-None-Match: <ETag>` ou `If-Modified-Since`, e o servidor responde `304 Not Modified` sem corpo se nada mudou. `no-cache` significa "guarde, mas revalide sempre"; `no-store` significa "não guarde"; `private` proíbe caches compartilhados (proxies, CDN) — essencial para respostas com dados do usuário.
+
+    A troca fundamental do cache é **frescor contra custo**: todo cache aceita servir algo potencialmente velho por um tempo definido. Decida esse tempo por recurso, conscientemente.
+  misconceptions:
+    - claim: Um timeout de conexão protege a chamada inteira.
+      correction: Depois de conectar, a leitura pode esperar para sempre. Configure timeout de leitura e um deadline total.
+    - claim: Mais retries sempre aumentam a disponibilidade.
+      correction: Com falhas correlacionadas, retries agressivos multiplicam a carga e prolongam a queda. Use poucos retries, backoff com jitter e só em operações idempotentes.
+    - claim: "`Cache-Control: no-cache` impede que a resposta seja guardada."
+      correction: no-cache permite guardar, mas exige revalidação antes de usar. Para não guardar, use no-store.
+  resources:
+    start: mdn-http-caching
+    deeper: [aws-builders-timeouts-retries, mdn-cache-control, csswizardry-cache-control-for-civilians,cs168-textbook-transport-principles, man-socket7, curl-manpage, rfc-9111-http-caching]
+  exercise:
+    id: ex-slow-server
+    title: Servidor lento, cliente com prazo
+    prediction: Quanto tempo `curl http://localhost:8080/` espera por um servidor que aceita a conexão e nunca responde? E com `--max-time 2`?
+    steps:
+      - Crie um servidor que aceita conexões e nunca responde (`nc -l 8080` sem digitar nada, ou um `sleep` no seu servidor em C).
+      - Rode `time curl -v http://localhost:8080/` e interrompa depois de 30 s; depois rode com `--max-time 2` e com `--connect-timeout 2`, e explique qual deles age.
+      - "Teste `--connect-timeout 2` contra um IP que descarta pacotes (por exemplo `10.255.255.1`) e compare com `Connection refused` numa porta fechada local."
+      - No seu cliente TCP em C, configure `SO_RCVTIMEO` de 2 s e mostre o `recv` falhando com EAGAIN e a mensagem de erro tratada.
+      - "Calcule: se cada tentativa falha com p = 0,1 de forma independente, qual a probabilidade de 3 tentativas falharem? Por que esse número é otimista num incidente real?"
+    checks:
+      - Você distingue com evidência timeout de conexão, timeout de leitura e conexão recusada.
+      - O cliente em C termina em cerca de 2 s com erro tratado, sem travar.
+      - O cálculo dá 0,001 e você explica a hipótese de independência.
+  experiment:
+    title: Observar revalidação de cache
+    project: tcp-http-lab
+    steps:
+      - Numa pasta de laboratório, sirva arquivos com `python3 -m http.server 8000` e rode `curl -v http://localhost:8000/arquivo.txt`; anote Last-Modified.
+      - "Repita com `-H 'If-Modified-Since: <valor anotado>'` e observe o status `304` e a ausência de corpo."
+      - Altere o arquivo e repita; observe `200` com o corpo novo.
+      - "No servidor do laboratório TCP/HTTP, adicione `ETag` e `Cache-Control: max-age=10` à rota de tarefas e responda `304` a `If-None-Match` igual."
+      - Abra a rota no navegador com as DevTools (aba Network), recarregue dentro e depois de 10 s e compare o que é servido do cache e o que é revalidado.
+    observe:
+      - Os status 200 e 304 e o tamanho das respostas em cada caso.
+      - Os cabeçalhos Cache-Control, ETag e If-None-Match nas DevTools.
+      - Quando o navegador nem chega a fazer a requisição (servido do cache).
+  reflectionQuestions:
+    - Como você escolheria o timeout de leitura de uma chamada a um serviço cuja latência p99 é 300 ms?
+    - Por que retries sem jitter podem sincronizar clientes e piorar uma sobrecarga?
+    - Que respostas da API de tarefas podem ter max-age alto, quais precisam de no-store e quais de private?
+  completionCriteria:
+    - Mostra três execuções do curl (sem timeout, com --connect-timeout, com --max-time) contra cenários diferentes, com tempo e mensagem de cada uma.
+    - Mostra o cliente em C abortando uma leitura por timeout com errno tratado.
+    - Mostra uma troca If-None-Match → 304 contra o próprio servidor, capturada com curl -v ou DevTools.
+  evidencePrompts:
+    - Saídas de `time curl` nos cenários de timeout, com a explicação de qual fase travou.
+    - Transcrição da revalidação 200 → 304 → 200 com os cabeçalhos relevantes.
+  firstAction: Rode `curl -sI https://developer.mozilla.org/ | grep -iE 'cache-control|etag|age'` e anote o que cada cabeçalho promete.

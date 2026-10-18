@@ -3,32 +3,219 @@
 - id: relational-modeling-constraints
   stage: s10-data-modeling-sql
   title: Modelagem relacional e constraints
-  status: planned
+  status: authored
   objective: Modelar entidades e relacionamentos em tabelas e proteger invariantes com constraints (NOT NULL, UNIQUE, CHECK, FOREIGN KEY).
-  whyItMatters: Constraints impedem dados inválidos mesmo quando o código da aplicação tem bugs.
+  whyItMatters: Constraints impedem dados inválidos mesmo quando o código da aplicação tem bugs. O banco é compartilhado por várias versões do código, scripts e pessoas; a regra que só existe na aplicação é a primeira a ser violada.
   prerequisites: [terminal-shell, complexity-analysis]
+  related: [joins-aggregation, transactions-basics, input-validation]
   mathThreads: [sets, logic]
+  explanation: |
+    No modelo relacional, uma **tabela** (relação) é um **conjunto de tuplas** com os mesmos atributos. Cada linha descreve um fato ("a tarefa 7 pertence ao usuário 3 e está aberta"). Modelar é decidir quais fatos existem e onde cada um vive **uma vez só**: se o nome do usuário aparecer em toda tarefa, atualizar o nome vira atualizar milhares de linhas — e esquecer uma cria contradição.
+
+    **Chaves** identificam linhas. A **primary key** é única e não nula; uma **foreign key** diz que o valor de uma coluna precisa existir na chave de outra tabela. Relacionamentos:
+    - **1:N** (um usuário, muitas tarefas): a FK fica no lado N (`tasks.user_id`).
+    - **N:N** (tarefas e etiquetas): uma **tabela de associação** (`task_tags(task_id, tag_id)`) com chave primária composta.
+
+    **Constraints** são predicados lógicos que o banco verifica em toda escrita:
+    - `NOT NULL` — o atributo sempre existe.
+    - `UNIQUE` — não há duas linhas com o mesmo valor (ex.: e-mail do usuário).
+    - `CHECK (priority BETWEEN 1 AND 5)` — predicado sobre a própria linha.
+    - `FOREIGN KEY ... ON DELETE CASCADE | RESTRICT` — integridade referencial e o que fazer quando o pai some.
+
+    Atenção à **lógica de três valores** do SQL: `NULL` significa "desconhecido", e `NULL = NULL` não é verdadeiro, é `NULL`. Um `CHECK` só rejeita quando o predicado é **falso** — se der `NULL`, passa. Por isso `UNIQUE` aceita vários `NULL` e `CHECK (due_date > created_at)` não impede `due_date` nulo; combine com `NOT NULL` quando o valor for obrigatório.
+
+    A pergunta-guia da modelagem: **que estados inválidos esse esquema torna impossíveis?** Cada invariante que você consegue expressar como constraint deixa de depender da disciplina de quem escreve o código.
+  misconceptions:
+    - claim: Validação na aplicação já basta; constraints no banco são redundantes.
+      correction: Scripts, migrações, outros serviços e bugs escrevem no banco sem passar pela sua validação, e duas requisições concorrentes passam ambas na checagem da aplicação. Só a constraint é garantida em toda escrita.
+    - claim: CHECK (coluna > 0) impede valores nulos.
+      correction: Com NULL o predicado resulta em NULL, não em falso, e a linha é aceita. Use NOT NULL junto.
+    - claim: Uma tabela pode ter linhas duplicadas sem problema porque o id é diferente.
+      correction: Um id gerado não impede que o mesmo fato seja gravado duas vezes. Identifique a chave natural do fato e proteja-a com UNIQUE.
   resources:
     start: postgres-tutorial
-    deeper: [postgres-constraints]
+    deeper: [postgres-constraints, postgres-tutorial-fk, postgres-ddl, postgres-psql, cmu-15445-fall2024]
+    videos: [cmu-15445-f24-lecture-01-relational-model]
+  exercise:
+    id: ex-tasks-schema
+    title: Esquema de tarefas à prova de dados inválidos
+    prediction: "Liste cinco estados inválidos para o domínio de tarefas (ex.: tarefa sem dono, prioridade 99) e escreva, para cada um, qual constraint o impediria."
+    steps:
+      - "Numa base de laboratório (`createdb lab_tasks`), crie `users(id, email)`, `tasks(id, user_id, title, status, priority, created_at, done_at)`, `tags` e `task_tags`."
+      - Use NOT NULL, UNIQUE em email, CHECK em status (valores permitidos) e priority, FK de tasks para users e de task_tags para tasks e tags.
+      - "Adicione o invariante `CHECK ((status = 'done') = (done_at IS NOT NULL))` e explique-o em linguagem natural."
+      - Escreva um arquivo `violations.sql` com um INSERT ou UPDATE que viole cada constraint e rode com `psql -f`; guarde as mensagens de erro.
+      - Teste o caso NULL de propósito (prioridade nula, e-mail nulo duplicado) e explique o resultado com lógica de três valores.
+      - Versione `schema.sql` e `violations.sql` no Git.
+    checks:
+      - Cada um dos cinco estados inválidos da previsão é rejeitado com a mensagem de erro do PostgreSQL correspondente.
+      - O caso NULL é explicado com a tabela verdade de três valores.
+      - "`\\d tasks` no psql mostra todas as constraints com nomes significativos."
+  experiment:
+    title: Constraint contra bug de aplicação concorrente
+    steps:
+      - Remova temporariamente o UNIQUE de users.email numa cópia do esquema.
+      - "Em dois terminais psql, simule a aplicação: cada um faz `SELECT count(*) FROM users WHERE email = 'a@x.com'`, vê 0 e então faz o INSERT."
+      - Confira que agora existem dois usuários com o mesmo e-mail.
+      - Recoloque o UNIQUE (observe o erro ao criá-lo com duplicatas e corrija os dados), repita a simulação e veja o segundo INSERT falhar.
+      - Teste ON DELETE RESTRICT e depois CASCADE apagando um usuário com tarefas, e compare o que sobra em tasks.
+    observe:
+      - A duplicata criada pela checagem na aplicação e a mensagem `duplicate key value violates unique constraint`.
+      - O erro ao criar uma constraint sobre dados que já a violam.
+      - As linhas removidas em cascata versus o erro de RESTRICT.
+  reflectionQuestions:
+    - Que invariante do seu esquema não dá para expressar com constraints simples, e como você o protegeria?
+    - Por que uma checagem "SELECT e depois INSERT" na aplicação não garante unicidade?
+    - Quando ON DELETE CASCADE é perigoso?
+  completionCriteria:
+    - Mostra o schema.sql com pelo menos uma constraint de cada tipo (NOT NULL, UNIQUE, CHECK, FK) e a saída de `\d` no psql.
+    - Mostra a execução de violations.sql com uma mensagem de erro do PostgreSQL para cada constraint.
+    - Reproduz a duplicata com dois terminais sem UNIQUE e mostra a constraint impedindo-a depois.
+  evidencePrompts:
+    - Lista "estado inválido → constraint → mensagem de erro" com os comandos usados.
+    - Transcrição dos dois terminais no experimento de unicidade.
+  firstAction: "Abra o psql numa base de laboratório e rode `SELECT NULL = NULL, NULL IS NULL;` — anote e explique o resultado."
 
 - id: joins-aggregation
   stage: s10-data-modeling-sql
   title: Joins e agregação
-  status: planned
+  status: authored
   objective: Escrever consultas com joins, GROUP BY e funções de agregação, prevendo o número de linhas do resultado.
-  whyItMatters: Relatórios, dashboards e APIs dependem de consultas corretas e eficientes.
+  whyItMatters: Relatórios, dashboards e APIs dependem de consultas corretas e eficientes. O erro mais comum — um join que multiplica linhas e infla uma soma — não gera mensagem de erro, só números errados num relatório.
   prerequisites: [relational-modeling-constraints]
-  mathThreads: [sets]
+  related: [query-plans, indexes, pagination]
+  mathThreads: [sets, logic, combinatorics]
+  explanation: |
+    Um join é, conceitualmente, um **produto cartesiano filtrado**: `A CROSS JOIN B` tem `|A| × |B|` linhas, e `A JOIN B ON cond` mantém só os pares em que `cond` é verdadeira. O banco não executa assim (usa índices, hash e merge), mas o **resultado** é definido assim — e é esse modelo que permite prever cardinalidade.
+
+    Para prever o número de linhas, olhe as chaves:
+    - Join por FK em direção ao pai (`tasks JOIN users ON tasks.user_id = users.id`): cada tarefa casa com exatamente um usuário → **mesmo número de linhas de tasks**.
+    - Join em direção aos filhos (`users JOIN tasks`): cada usuário aparece **uma vez por tarefa**; usuários sem tarefas somem.
+    - Dois joins em direção a filhos diferentes (tarefas e comentários de um usuário): as linhas se **multiplicam** — 3 tarefas × 4 comentários = 12 linhas. Uma `SUM` ou `COUNT` em cima disso conta errado (*fan-out*).
+
+    `LEFT JOIN` preserva todas as linhas da esquerda, preenchendo as colunas da direita com `NULL` quando não há par. Um filtro na tabela da direita colocado no `WHERE` elimina esses NULL e transforma, sem aviso, o LEFT JOIN num INNER; no `ON`, ele preserva as linhas.
+
+    **Agregação** agrupa linhas por chave (`GROUP BY user_id`) e reduz cada grupo a um valor (`count`, `sum`, `avg`, `max`). A ordem lógica é: `FROM/JOIN` → `WHERE` (filtra linhas) → `GROUP BY` → `HAVING` (filtra grupos) → `SELECT` → `ORDER BY` → `LIMIT`. `count(*)` conta linhas; `count(coluna)` ignora NULL — com LEFT JOIN, `count(tasks.id)` dá 0 para quem não tem tarefas, enquanto `count(*)` dá 1.
+
+    Operações de conjuntos fecham o quadro: `UNION` (remove duplicatas), `UNION ALL`, `INTERSECT`, `EXCEPT`. Lembre que SQL trabalha, na prática, com **multiconjuntos** (bags): linhas repetidas são permitidas até você pedir `DISTINCT`.
+  misconceptions:
+    - claim: Um JOIN nunca aumenta o número de linhas da tabela principal.
+      correction: Join em direção ao lado N de um relacionamento repete a linha principal uma vez por par; dois desses joins multiplicam as linhas.
+    - claim: count(*) e count(coluna) são a mesma coisa.
+      correction: count(coluna) ignora NULL. Com LEFT JOIN, isso decide se quem não tem filhos aparece com 0 ou com 1.
+    - claim: Filtrar no WHERE ou no ON dá o mesmo resultado num LEFT JOIN.
+      correction: Um filtro sobre a tabela da direita no WHERE descarta as linhas sem par e anula o LEFT JOIN; no ON, só restringe quais pares casam.
   resources:
-    start: postgres-queries
+    start: postgres-tutorial-join
+    deeper: [postgres-tutorial-agg, postgres-queries, postgres-table-expressions]
+    videos: [cmu-15445-f24-lecture-02-modern-sql, cmu-15445-f24-lecture-01-relational-model]
+  exercise:
+    id: ex-predict-cardinality
+    title: Prever cardinalidade antes de rodar
+    prediction: Para cada consulta abaixo, escreva o número de linhas esperado antes de executá-la.
+    steps:
+      - "Popule o esquema de tarefas com dados pequenos e conhecidos: 3 usuários (um sem tarefas), 5 tarefas, 4 etiquetas e 6 linhas em task_tags; adicione uma tabela comments com 7 comentários."
+      - "Preveja e depois rode: `users CROSS JOIN tasks`, `tasks JOIN users`, `users LEFT JOIN tasks`, `users JOIN tasks JOIN task_tags`."
+      - Escreva a contagem de tarefas por usuário incluindo quem tem zero; compare count(*) e count(tasks.id).
+      - Escreva uma consulta que soma tarefas e comentários por usuário com dois joins e mostre o número inflado; corrija agregando em subconsultas (ou CTEs) separadas antes do join.
+      - Use HAVING para listar usuários com mais de uma tarefa aberta e explique por que não dá para fazer isso no WHERE.
+      - Registre previsão versus resultado numa tabela.
+    checks:
+      - Todas as previsões têm justificativa por chaves (1:1, 1:N, N:N) e conferem com o resultado, ou o erro é explicado.
+      - A consulta com fan-out e a corrigida dão totais diferentes, e você explica por quê.
+      - O usuário sem tarefas aparece com 0 na contagem.
+  experiment:
+    title: Um LEFT JOIN que vira INNER sem avisar
+    steps:
+      - "Escreva `SELECT u.email, t.title FROM users u LEFT JOIN tasks t ON t.user_id = u.id WHERE t.status = 'open'` e conte as linhas."
+      - Mova a condição de status para o ON e compare o resultado; explique o papel do NULL na condição do WHERE.
+      - Rode EXPLAIN nas duas versões e observe se o plano mostra Left Join ou um join simples.
+      - Use EXCEPT para listar usuários sem tarefas abertas e compare com a versão LEFT JOIN ... WHERE t.id IS NULL.
+    observe:
+      - A diferença de linhas e quais usuários desaparecem na versão com filtro no WHERE.
+      - O tipo de join no EXPLAIN de cada versão.
+      - Que as duas formas de "usuários sem tarefas abertas" dão o mesmo conjunto.
+  reflectionQuestions:
+    - Como você descobre, olhando só o esquema, se um join pode multiplicar linhas?
+    - Por que HAVING existe se já temos WHERE?
+    - Em que situação um relatório com SUM depois de dois joins pode parecer correto nos testes e errar em produção?
+  completionCriteria:
+    - Mostra a tabela de previsões de cardinalidade com resultados reais e justificativa por chaves para cada consulta.
+    - Mostra uma consulta com fan-out e a versão corrigida, com os totais de cada uma.
+    - Mostra as duas versões do LEFT JOIN (filtro no WHERE e no ON) com saídas e EXPLAIN.
+  evidencePrompts:
+    - Arquivo .sql com as consultas, previsões em comentários e resultados.
+    - Explicação curta do bug de fan-out com um exemplo numérico.
+  firstAction: "Com 3 usuários e 5 tarefas, escreva num papel quantas linhas `users CROSS JOIN tasks` devolve, depois confirme no psql."
 
 - id: transactions-basics
   stage: s10-data-modeling-sql
   title: Transações
-  status: planned
+  status: authored
   objective: Usar transações para manter invariantes em operações de várias etapas e explicar atomicidade.
-  whyItMatters: Transferências, reservas e pedidos precisam ser tudo-ou-nada.
+  whyItMatters: Transferências, reservas e pedidos precisam ser tudo-ou-nada. Uma operação interrompida no meio — por erro, crash ou timeout de rede — sem transação deixa o banco num estado que nenhuma regra de negócio permite.
   prerequisites: [joins-aggregation]
+  related: [isolation-locks, race-conditions-synchronization, idempotency]
+  mathThreads: [logic]
+  explanation: |
+    Uma **transação** agrupa comandos numa unidade: `BEGIN; ... COMMIT;` aplica tudo, `ROLLBACK` descarta tudo. As propriedades **ACID**:
+    - **Atomicidade**: ou todos os efeitos acontecem, ou nenhum. Se o processo morrer antes do COMMIT, o banco desfaz o que foi feito.
+    - **Consistência**: ao fim, as constraints continuam verdadeiras — a transação leva de um estado válido a outro.
+    - **Isolamento**: transações simultâneas não veem os estados intermediários umas das outras (em graus diferentes, conforme o nível de isolamento).
+    - **Durabilidade**: depois do COMMIT confirmado, o dado sobrevive a um crash (o PostgreSQL grava no WAL antes de confirmar).
+
+    No psql, **sem `BEGIN` cada comando é sua própria transação** (autocommit). Dentro de uma transação, um erro coloca a transação no estado *aborted*: todo comando seguinte falha com `current transaction is aborted` até você dar ROLLBACK. `SAVEPOINT` permite desfazer só uma parte.
+
+    O exemplo canônico do domínio de tarefas: "mover uma tarefa para outro usuário e registrar o evento em `task_events`". Sem transação, um crash entre os dois comandos deixa a tarefa movida sem histórico. Com transação, ou as duas coisas existem ou nenhuma.
+
+    Com dois terminais você vê o isolamento: o que o terminal A alterou e ainda não confirmou é **invisível** para B (o PostgreSQL nunca mostra dados não confirmados). Se B tentar alterar a **mesma linha**, ele **espera** o lock de A até o COMMIT ou ROLLBACK. Atomicidade não resolve tudo, porém: duas transações que leem um valor, calculam e escrevem por cima podem perder uma atualização (*lost update*) — use `UPDATE ... SET x = x + 1` atômico ou `SELECT ... FOR UPDATE`; os níveis de isolamento vêm no tópico de isolamento e locks.
+  misconceptions:
+    - claim: Cada comando no psql já está numa transação, então não preciso de BEGIN.
+      correction: Cada comando é atômico sozinho, mas uma operação de várias etapas só é tudo-ou-nada se estiver entre BEGIN e COMMIT.
+    - claim: Usar transação elimina todas as race conditions.
+      correction: Atomicidade não impede lost update num padrão ler-calcular-escrever no nível padrão (READ COMMITTED). É preciso UPDATE atômico, lock explícito ou isolamento mais forte.
+    - claim: Depois de um erro dentro da transação, os comandos seguintes continuam funcionando.
+      correction: No PostgreSQL a transação fica abortada; tudo falha até ROLLBACK (ou ROLLBACK TO SAVEPOINT).
   resources:
-    start: postgres-tutorial
+    start: postgres-tutorial-transactions
+    deeper: [postgres-tutorial, postgres-sql-begin, postgres-mvcc, postgres-psql]
+    videos: [cmu-15445-f24-lecture-16-concurrency-control-theory]
+  exercise:
+    id: ex-two-terminals
+    title: Transações em dois terminais
+    prediction: "Se o terminal A fizer `BEGIN; UPDATE tasks SET status='done' WHERE id=1;` sem COMMIT, o que o terminal B vê ao ler a tarefa 1? E o que acontece se B tentar atualizá-la?"
+    steps:
+      - Crie `task_events(id, task_id, kind, at)` com FK para tasks.
+      - "No terminal A: `BEGIN;` atualize o dono de uma tarefa e insira o evento; ainda não dê COMMIT."
+      - No terminal B, leia a tarefa e os eventos; depois tente atualizar a mesma tarefa e observe o bloqueio.
+      - No terminal A, dê ROLLBACK; observe B desbloquear e confira que nem a mudança nem o evento ficaram.
+      - Repita com COMMIT e confira que as duas mudanças aparecem juntas.
+      - Dentro de uma transação, provoque um erro (violação de CHECK), tente um SELECT e leia a mensagem; use SAVEPOINT para recuperar.
+    checks:
+      - B nunca enxerga dados não confirmados de A.
+      - O UPDATE de B espera até A terminar, e você explica por quê.
+      - Depois do ROLLBACK não existe evento órfão nem mudança parcial.
+  experiment:
+    title: Crash no meio e lost update
+    steps:
+      - "Escreva um script `move_task.sql` que faz o UPDATE, um `SELECT pg_sleep(10)` e o INSERT do evento, sem BEGIN; rode e mate o psql (Ctrl+C ou `kill`) durante o sleep."
+      - Confira o estado inconsistente; depois envolva o script em BEGIN/COMMIT, repita o kill e confira que nada ficou.
+      - "Em dois terminais, faça ambos lerem `priority` de uma tarefa, e cada um gravar `priority = valor_lido + 1` (dentro de BEGIN), confirmando um depois do outro."
+      - Observe que um incremento se perdeu; refaça com `UPDATE tasks SET priority = priority + 1` e depois com `SELECT ... FOR UPDATE` e compare.
+      - Use `SELECT pid, state, wait_event_type, query FROM pg_stat_activity` num terceiro terminal enquanto um terminal espera o outro.
+    observe:
+      - A tarefa movida sem evento no caso sem transação, e nenhum efeito no caso com transação.
+      - O valor final de priority em cada versão do incremento.
+      - O wait_event_type Lock na sessão bloqueada em pg_stat_activity.
+  reflectionQuestions:
+    - Que invariante do domínio de tarefas exige que duas escritas aconteçam juntas?
+    - Por que uma transação longa aberta (por exemplo, esperando uma chamada HTTP) é perigosa para os outros usuários do banco?
+    - Como você explicaria a diferença entre atomicidade e isolamento usando o experimento de lost update?
+  completionCriteria:
+    - Mostra a transcrição de dois terminais com bloqueio, ROLLBACK e COMMIT, anotando o que cada um viu.
+    - Mostra o estado inconsistente após matar o script sem transação e o estado intacto com transação.
+    - Mostra um lost update reproduzido e duas correções com o valor final correto.
+  evidencePrompts:
+    - Transcrição dos dois terminais lado a lado, com horários ou numeração dos passos.
+    - Consulta a pg_stat_activity mostrando a sessão em espera.
+  firstAction: "Abra dois terminais psql na base de laboratório e rode `SELECT pg_backend_pid();` em cada um para identificar as sessões."

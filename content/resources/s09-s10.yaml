@@ -1,0 +1,666 @@
+# Recursos das etapas s09 (redes) e s10 (modelagem de dados e SQL).
+# Verificados em 2026-10-18: páginas com curl (HTTP 200 + <title>), vídeos do YouTube via oEmbed
+# (título e canal copiados do retorno). Vídeos do Akitando extraídos do embed dos posts em akitaonrails.com.
+
+# --- Vídeos: Akitando (redes) -----------------------------------------------------
+
+- id: akitando-121-redes-parte-1
+  title: "Introdução a Redes: Como Dados viram Ondas? | Parte 1"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=0TndL-Nh6Ok
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: Abre a série de redes do Akitando, começando pela transmissão de sinais; contexto para o resto da série.
+  section: "[Akitando] #121"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-122-redes-parte-2
+  title: "Detecção e Correção de Erros | Introdução a Redes Parte 2"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=3W-8TQJwuWY
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [dns-ip, tcp-udp-sockets]
+  why: Como bits corrompidos são detectados e corrigidos; base para entender checksums e por que TCP retransmite.
+  section: "[Akitando] #122"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-123-redes-parte-3
+  title: "Como sua Internet Funciona | Introdução a Redes Parte 3"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=gcv5hXyTcIo
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [dns-ip]
+  why: Endereçamento, roteamento e o caminho dos pacotes até o seu provedor, em português.
+  section: "[Akitando] #123"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-124-redes-parte-4
+  title: "Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [tcp-udp-sockets, http-protocol]
+  why: Sockets, o modelo cliente-servidor e como HTTP roda por cima de TCP, em português.
+  section: "[Akitando] #124"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Vídeos: Akitando (criptografia) ----------------------------------------------
+
+- id: akitando-67-criptografia-parte-1
+  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [tls-concepts]
+  why: Hashes, criptografia simétrica e assimétrica explicadas com intuição; pré-requisito para entender o handshake TLS.
+  section: "[Akitando] #67"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-68-criptografia-parte-2
+  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=HCHqtpipwu4
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [tls-concepts]
+  why: Continuação dos conceitos básicos de criptografia, em português; complete a Parte 1 antes de estudar o handshake TLS.
+  section: "[Akitando] #68"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-147-criptografia-na-pratica
+  title: "Criptografia na Prática - Certificados, BitTorrent, Git, Bitcoin"
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=iAA8NrfQtHo
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [tls-concepts]
+  why: Aplica hashes e assinaturas a casos reais, incluindo certificados — liga a teoria ao que openssl s_client mostra.
+  section: "[Akitando] #147"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Vídeos: CMU 15-445 (Andy Pavlo), Fall 2024 -----------------------------------
+
+- id: cmu-15445-f24-lecture-01-relational-model
+  title: "#01 - Relational Model & Algebra (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=APqWIjtzNGE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [relational-modeling-constraints, joins-aggregation]
+  why: Modelo relacional, chaves e álgebra relacional (seleção, projeção, join) como operações sobre conjuntos.
+  section: "Lecture #01: Relational Model & Algebra (Fall 2024)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-02-modern-sql
+  title: "#02 - Modern SQL (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=MzigBKf84aY
+  language: en
+  format: video
+  difficulty: intro
+  topics: [joins-aggregation]
+  why: SQL além do básico — joins e agregações vistos como operações relacionais, com exemplos.
+  section: "Lecture #02: Modern SQL (Fall 2024)"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-f24-lecture-16-concurrency-control-theory
+  title: "#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems)"
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=4y656idl8ZU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [transactions-basics, isolation-locks]
+  why: ACID e o que significa uma execução de transações ser correta; aprofunda atomicidade e isolamento.
+  section: "Lecture #16: Concurrency Control Theory (Fall 2024)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cmu-15445-fall2024
+  title: "CMU 15-445/645 :: Intro to Database Systems (Fall 2024)"
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/
+  language: en
+  format: course
+  difficulty: intermediate
+  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics]
+  why: Página oficial do curso, com slides, notas e links para todas as aulas gravadas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Berkeley CS 168 Textbook ------------------------------------------------------
+
+- id: cs168-textbook-layers
+  title: "Layers of the Internet | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/intro/layers.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [dns-ip, tcp-udp-sockets]
+  why: O modelo de camadas e o que cada uma promete; ajuda a ler o que tcpdump mostra em cada cabeçalho.
+  section: Layers of the Internet
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-addressing
+  title: "Addressing | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/routing/addressing.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [dns-ip]
+  why: Prefixos, notação CIDR e por que o endereçamento hierárquico torna o roteamento escalável.
+  section: Addressing
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-dns
+  title: "DNS | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/applications/dns.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [dns-ip]
+  why: Hierarquia de nomes, resolvedores recursivos, servidores autoritativos e cache com TTL.
+  section: DNS
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-transport-principles
+  title: "Transport Layer Principles | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/transport/reliability.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets, timeouts-caching]
+  why: Como entregar bytes de forma confiável sobre uma rede que perde pacotes — ACKs, timeouts e retransmissão.
+  section: Transport Layer Principles
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-tcp-design
+  title: "TCP Design | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/transport/tcp-design.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: Números de sequência, handshake e o modelo de bytestream do TCP.
+  section: TCP Design
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-http
+  title: "HTTP | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/applications/http.html
+  language: en
+  format: book
+  difficulty: intro
+  topics: [http-protocol, timeouts-caching]
+  why: HTTP explicado no livro do curso de redes de Berkeley, conectado às camadas de baixo.
+  section: HTTP
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs168-textbook-tls
+  title: "TLS: Secure Bytestreams | CS 168 Textbook"
+  author: Berkeley CS 168 (Sylvia Ratnasamy et al.)
+  url: https://textbook.cs168.io/end-to-end/tls.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [tls-concepts]
+  why: Como TLS constrói um bytestream seguro sobre TCP, com certificados e troca de chaves.
+  section: "TLS: Secure Bytestreams"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- MDN HTTP ----------------------------------------------------------------------
+
+- id: mdn-http-overview
+  title: "Overview of HTTP - HTTP | MDN"
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [http-protocol]
+  why: Visão geral precisa do protocolo — cliente, servidor, mensagens e o que mudou entre versões.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-http-overview-ptbr
+  title: "Uma visão geral do HTTP - HTTP | MDN"
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Guides/Overview
+  language: pt-BR
+  format: documentation
+  difficulty: intro
+  topics: [http-protocol]
+  why: Versão em português da visão geral do HTTP; pode estar atrás da versão em inglês.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-http-messages
+  title: "HTTP messages - HTTP | MDN"
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [http-protocol]
+  why: Estrutura exata de requisições e respostas (linha inicial, cabeçalhos, linha em branco, corpo).
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-http-caching
+  title: "HTTP caching - HTTP | MDN"
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [timeouts-caching]
+  why: Freshness, validação com ETag/Last-Modified e padrões de cache recomendados.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-cache-control
+  title: "Cache-Control header - HTTP | MDN"
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [timeouts-caching]
+  why: Referência das diretivas (max-age, no-cache, no-store, private, must-revalidate) e seus significados exatos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: csswizardry-cache-control-for-civilians
+  title: Cache-Control for Civilians
+  author: Harry Roberts (CSS Wizardry)
+  url: https://csswizardry.com/2019/03/cache-control-for-civilians/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [timeouts-caching]
+  why: Guia prático de um especialista em desempenho web sobre como escolher diretivas de Cache-Control para cada tipo de recurso.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- RFCs --------------------------------------------------------------------------
+
+- id: rfc-1035-dns
+  title: "RFC 1035: Domain Names - Implementation and Specification"
+  author: P. Mockapetris (IETF)
+  url: https://www.rfc-editor.org/rfc/rfc1035.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [dns-ip]
+  why: Especificação original do formato de mensagens DNS; útil para entender o que dig mostra campo a campo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9293-tcp
+  title: "RFC 9293: Transmission Control Protocol (TCP)"
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9293.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [tcp-udp-sockets]
+  why: Especificação atual do TCP, incluindo a máquina de estados que ss mostra (ESTABLISHED, TIME-WAIT...).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9110-http-semantics
+  title: "RFC 9110: HTTP Semantics"
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9110.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [http-protocol]
+  why: Definição normativa de métodos, status codes e cabeçalhos; consulte para tirar dúvidas exatas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9112-http11
+  title: "RFC 9112: HTTP/1.1"
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9112.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [http-protocol]
+  why: Sintaxe de mensagens HTTP/1.1 (CRLF, Content-Length, chunked); é o que seu parser em C precisa respeitar.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-9111-http-caching
+  title: "RFC 9111: HTTP Caching"
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9111.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [timeouts-caching]
+  why: Regras normativas de freshness e validação de cache HTTP.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rfc-8446-tls13
+  title: "RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3"
+  author: E. Rescorla (IETF)
+  url: https://www.rfc-editor.org/rfc/rfc8446.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [tls-concepts]
+  why: Especificação do TLS 1.3; a seção de visão geral do handshake é legível e mostra o que cada mensagem garante.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Ferramentas e man pages ----------------------------------------------------------
+
+- id: man-socket7
+  title: socket(7) - Linux manual page
+  author: Linux man-pages project (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/man7/socket.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [tcp-udp-sockets, timeouts-caching]
+  why: Opções de socket como SO_RCVTIMEO, SO_SNDTIMEO e SO_REUSEADDR.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-tcp7
+  title: tcp(7) - Linux manual page
+  author: Linux man-pages project (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/man7/tcp.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: Como o kernel Linux implementa TCP e quais parâmetros (sysctl, opções) controlam retransmissões e keepalive.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-recv
+  title: recv(2) - Linux manual page
+  author: Linux man-pages project (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/man2/recv.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [tcp-udp-sockets]
+  why: Valores de retorno de recv — bytes lidos, 0 em conexão encerrada, -1 com errno — a base de um loop de leitura correto.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-ss
+  title: ss(8) - Linux manual page
+  author: Linux man-pages project (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/man8/ss.8.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [tcp-udp-sockets]
+  why: Listar sockets e estados TCP (LISTEN, ESTAB, TIME-WAIT) e filas de recepção/envio.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-ip8
+  title: ip(8) - Linux manual page
+  author: Linux man-pages project (Michael Kerrisk)
+  url: https://man7.org/linux/man-pages/man8/ip.8.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [dns-ip]
+  why: Ver endereços, rotas e vizinhos (`ip addr`, `ip route`, `ip neigh`) da sua máquina.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: tcpdump-manpage
+  title: tcpdump(1) man page
+  author: The Tcpdump Group
+  url: https://www.tcpdump.org/manpages/tcpdump.1.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [dns-ip, tcp-udp-sockets, http-protocol]
+  why: Capturar e filtrar pacotes; referência das opções (-i, -n, -A, -X, -w) e da sintaxe de filtros.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wireshark-user-guide
+  title: Wireshark User’s Guide
+  author: Wireshark Foundation
+  url: https://www.wireshark.org/docs/wsug_html_chunked/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [tcp-udp-sockets, http-protocol]
+  why: Abrir capturas do tcpdump, seguir streams TCP e aplicar filtros de exibição.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: curl-manpage
+  title: curl - How To Use
+  author: Daniel Stenberg (curl project)
+  url: https://curl.se/docs/manpage.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [http-protocol, timeouts-caching]
+  why: Opções como -v, --connect-timeout, --max-time e -H para inspecionar e controlar requisições.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: openssl-s-client
+  title: openssl-s_client - OpenSSL Documentation
+  author: OpenSSL Project
+  url: https://docs.openssl.org/master/man1/openssl-s_client/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [tls-concepts]
+  why: Abrir uma conexão TLS à mão e ver cadeia de certificados, versão do protocolo e cipher negociado.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: aws-builders-timeouts-retries
+  title: Timeouts, retries, and backoff with jitter
+  author: Marc Brooker (Amazon Builders' Library)
+  url: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [timeouts-caching, partial-failure-retries]
+  why: Como escolher timeouts a partir de percentis de latência e por que retries sem backoff e jitter amplificam falhas.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- PostgreSQL ------------------------------------------------------------------------
+
+- id: postgres-ddl
+  title: "PostgreSQL — Chapter 5. Data Definition"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/ddl.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [relational-modeling-constraints]
+  why: Criação de tabelas, defaults, colunas geradas, constraints e alteração de esquema.
+  section: Chapter 5. Data Definition (versão 18)
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-tutorial-fk
+  title: "PostgreSQL — 3.3. Foreign Keys"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-fk.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [relational-modeling-constraints]
+  why: Exemplo curto de integridade referencial e do erro que o banco devolve ao violá-la.
+  section: 3.3. Foreign Keys (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-tutorial-join
+  title: "PostgreSQL — 2.6. Joins Between Tables"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-join.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [joins-aggregation]
+  why: Inner, outer e self joins com exemplos pequenos que dá para reproduzir no psql.
+  section: 2.6. Joins Between Tables (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-tutorial-agg
+  title: "PostgreSQL — 2.7. Aggregate Functions"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-agg.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [joins-aggregation]
+  why: GROUP BY, HAVING e a diferença entre WHERE (antes de agrupar) e HAVING (depois).
+  section: 2.7. Aggregate Functions (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-table-expressions
+  title: "PostgreSQL — 7.2. Table Expressions"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/queries-table-expressions.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [joins-aggregation]
+  why: Definição precisa de cada tipo de join (incluindo CROSS JOIN como produto cartesiano) e de GROUP BY.
+  section: 7.2. Table Expressions (versão 18)
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-tutorial-transactions
+  title: "PostgreSQL — 3.4. Transactions"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-transactions.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [transactions-basics]
+  why: BEGIN, COMMIT, ROLLBACK e savepoints com o exemplo clássico de transferência bancária.
+  section: 3.4. Transactions (versão 18)
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-sql-begin
+  title: "PostgreSQL — BEGIN"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-begin.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [transactions-basics]
+  why: Referência do comando BEGIN e das opções de modo de transação.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-psql
+  title: "PostgreSQL — psql"
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/app-psql.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [relational-modeling-constraints, joins-aggregation, transactions-basics]
+  why: Meta-comandos do psql (\d, \dt, \timing, \set ON_ERROR_ROLLBACK, \echo :AUTOCOMMIT) usados nos laboratórios.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

@@ -1,17 +1,78 @@
 - id: tcp-http-lab
   title: Laboratório TCP/HTTP
-  status: planned
+  status: authored
   cumulative: false
   topics: [tcp-udp-sockets, http-protocol, timeouts-caching]
   question: O que realmente trafega numa requisição HTTP, e como um servidor lida com entradas malformadas, leituras parciais e clientes lentos?
   prerequisites: [tcp-udp-sockets]
-  minimalVersion: Um servidor TCP que responde HTTP simples para listar tarefas, inspecionado com curl e tcpdump.
+  minimalVersion: |
+    Um servidor TCP em C, sem bibliotecas além da libc, que escuta numa porta e responde HTTP/1.1:
+    `GET /tasks` devolve `200` com as tarefas (lidas de um arquivo texto, uma por linha) e
+    Content-Length correto; rotas desconhecidas devolvem `404`; requisições malformadas devolvem `400`
+    sem derrubar o servidor. Leituras usam loop com buffer (nada de assumir que um recv traz a
+    requisição inteira) e o comportamento é inspecionado com `curl -v`, `nc` e `tcpdump`.
+  extensions:
+    - "`POST /tasks` lendo exatamente Content-Length bytes de corpo, com limite máximo e `413` acima dele."
+    - Conexões keep-alive com várias requisições na mesma conexão TCP e timeout de inatividade.
+    - Atender vários clientes com `poll` (ou um processo/thread por conexão) e comparar o comportamento com um cliente lento.
+    - "`ETag` e `Cache-Control` em `GET /tasks`, respondendo `304` a `If-None-Match`."
+    - Um cliente HTTP mínimo em C com timeout de conexão e de leitura, usado para testar o próprio servidor.
+    - Fuzzing simples do parser (entradas aleatórias via script) rodando com ASan.
+  constraints:
+    - Apenas C e libc; compilar com `-Wall -Wextra -std=c17` sem avisos.
+    - Toda leitura de socket em loop com buffer de tamanho fixo e limites explícitos (linha inicial, cabeçalhos, corpo).
+    - Nenhuma entrada do cliente pode causar crash, leitura fora do buffer ou travamento indefinido; testes rodam com AddressSanitizer.
+    - Toda chamada de sistema tem o retorno verificado e erros são registrados em stderr com `strerror(errno)`.
+    - Servidor escuta só em `127.0.0.1` durante o laboratório.
   milestones:
     - id: m1-echo
       title: Servidor de eco TCP
+      description: socket/bind/listen/accept, eco de linhas com loop de leitura e send_all, tratamento de recv = 0 e -1; observar handshake e FIN no tcpdump.
+      minutes: 50
     - id: m2-http
       title: Parsing de requisição HTTP
+      description: Ler até `\r\n\r\n`, interpretar a linha inicial e responder `GET /tasks` com 200 e Content-Length; 404 para outras rotas. Comparar com uma transcrição do curl -v.
+      minutes: 75
     - id: m3-malformed
       title: Entradas malformadas e leituras parciais
+      description: Limites de tamanho, 400 para linha inicial ou cabeçalhos inválidos, requisição enviada byte a byte, cliente que fecha no meio; script de testes com nc.
+      minutes: 75
     - id: m4-timeouts
       title: Timeouts e clientes lentos
+      description: Configurar SO_RCVTIMEO (ou poll com timeout), mostrar um cliente lento bloqueando o servidor de uma conexão por vez e corrigir; tratar SIGPIPE.
+      minutes: 50
+    - id: m5-cache
+      title: Cache e revisão
+      description: Adicionar Cache-Control e ETag, demonstrar 304 com curl e DevTools e escrever o README com as evidências.
+      minutes: 50
+  edgeCases:
+    - Requisição dividida em vários pacotes, inclusive no meio de `\r\n`.
+    - Duas requisições chegando no mesmo recv (pipelining) numa conexão keep-alive.
+    - Linha inicial sem versão, com espaços extras, método desconhecido ou caminho gigante.
+    - Cabeçalho sem dois-pontos, cabeçalhos excedendo o limite, Content-Length negativo, não numérico ou maior que o corpo enviado.
+    - Cliente que conecta e não envia nada; cliente que fecha a conexão antes de receber a resposta.
+    - Arquivo de tarefas ausente ou vazio.
+  failureExperiments:
+    - Remover o loop de leitura e assumir um único recv; enviar a requisição byte a byte e observar o parser falhar.
+    - Enviar uma linha maior que o buffer com e sem o limite e ler o relatório do ASan.
+    - Abrir um `nc` que não envia nada e mostrar que, sem timeout, um segundo cliente fica esperando indefinidamente.
+    - Fechar o cliente antes da resposta sem tratar SIGPIPE e observar o servidor morrer (exit code e sinal no shell).
+    - Esquecer o `close` do fd do cliente e acompanhar o acúmulo de CLOSE-WAIT com `ss -tanp`.
+    - Reiniciar o servidor sem SO_REUSEADDR logo após encerrá-lo e ler o erro de bind.
+  tools: [gcc, make, curl, nc, tcpdump, Wireshark, ss, strace, "gcc -fsanitize=address", gdb]
+  acceptanceCriteria:
+    - "`curl -v http://127.0.0.1:<porta>/tasks` recebe 200 com corpo e Content-Length corretos; outras rotas recebem 404."
+    - Todos os casos-limite listados têm comportamento definido e são exercitados por um script de testes reprodutível.
+    - Um cliente lento ou parado não impede o servidor de atender outros clientes por mais que o timeout configurado.
+    - A suíte roda sob ASan sem erros, e nenhuma entrada de teste derruba o servidor.
+    - Captura do tcpdump mostra handshake, requisição, resposta e encerramento de uma conexão real.
+  evidence:
+    - Link do repositório com README explicando build, uso, limites do parser e decisões de timeout.
+    - Saída do script de testes cobrindo requisições válidas, malformadas e parciais com o status recebido em cada uma.
+    - Captura do tcpdump (ou arquivo .pcap aberto no Wireshark) anotada com as fases da conexão.
+    - Saída do ss mostrando estados de conexão antes e depois das correções de close e timeout.
+  reviewQuestions:
+    - Onde exatamente seu servidor decide que uma requisição terminou, e o que acontece se o cliente mentir no Content-Length?
+    - Que recurso um cliente parado consome no seu servidor, e qual mecanismo o libera?
+    - Se você trocasse TCP por UDP, que partes do seu código deixariam de fazer sentido e quais problemas novos apareceriam?
+    - Quais limites do seu parser previnem quais ataques de negação de serviço?
