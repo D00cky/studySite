@@ -88,6 +88,7 @@ describe('página de tópico — drill-down 80/20', () => {
     expect(items).toHaveLength(3)
     expect(within(items[0]!).getByText('gcc -Wall -Wextra -o prog prog.c', { selector: 'code' })).toBeInTheDocument()
     expect(items[0]).toHaveTextContent('Compilar e linkar com avisos ligados.')
+    expect(within(items[2]!).getByText('.o', { selector: 'code' })).toBeInTheDocument()
     const startResource = screen.getByRole('region', { name: 'Comece por aqui' })
     expect(kit.compareDocumentPosition(startResource) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })

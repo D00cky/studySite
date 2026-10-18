@@ -31,7 +31,9 @@ export function Kit({ items, compact = false }: { items: KitItem[]; compact?: bo
           {items.map((k) => (
             <li key={k.term}>
               <code className="kit-term">{k.term}</code>
-              <span className="kit-use"># {k.use}</span>
+              <span className="kit-use">
+                # <InlineMarkdown text={k.use} />
+              </span>
             </li>
           ))}
         </ul>

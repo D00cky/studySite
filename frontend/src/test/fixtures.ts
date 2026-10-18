@@ -93,7 +93,7 @@ export const topicPage: TopicPage = {
     kit: [
       { term: 'gcc -Wall -Wextra -o prog prog.c', use: 'Compilar e linkar com avisos ligados.' },
       { term: './prog; echo $?', use: 'Executar e ver o exit code.' },
-      { term: 'gcc -c arquivo.c', use: 'Compilar sem linkar, gerando um .o.' },
+      { term: 'gcc -c arquivo.c', use: 'Compilar sem linkar, gerando um `.o`.' },
     ],
     deepDive: [
       { title: 'Link-time optimization (LTO)', why: 'Quando precisar otimizar entre arquivos em builds de produção.', resource: 'gcc-overall-options' },
