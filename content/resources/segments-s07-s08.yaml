@@ -9,7 +9,7 @@
   difficulty: intermediate
   topics: [processes-syscalls]
   why: "Trecho que cobre o que é um processo (address space + threads) e por que ele isola programas (do minuto 56:15 até o próximo capítulo)."
-  section: "56:15 Defining processes"
+  section: "56:15 Defining processes (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -23,7 +23,7 @@
   difficulty: intermediate
   topics: [processes-syscalls]
   why: "Trecho que cobre syscalls e a transição entre modo usuário e modo kernel (do minuto 1:11:20 até o próximo capítulo)."
-  section: "1:11:20 System calls and transitions"
+  section: "1:11:20 System calls and transitions (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -37,7 +37,7 @@
   difficulty: intermediate
   topics: [processes-syscalls]
   why: "Trecho que cobre gerência de processos (fork, exec, wait) a partir da interface de syscalls (do minuto 1:12:35 até o próximo capítulo)."
-  section: "1:12:35 Process management"
+  section: "1:12:35 Process management (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -65,7 +65,7 @@
   difficulty: intermediate
   topics: [file-descriptors]
   why: "Trecho que cobre file descriptors como estado do processo no kernel (do minuto 59:04 até o próximo capítulo)."
-  section: "59:04 File descriptors and process state"
+  section: "59:04 File descriptors and process state (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -79,7 +79,7 @@
   difficulty: intermediate
   topics: [file-descriptors]
   why: "Trecho que cobre pipes do Unix como par de file descriptors (do minuto 27:51 até o próximo capítulo)."
-  section: "27:51 Unix pipes explained"
+  section: "27:51 Unix pipes explained (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -93,7 +93,7 @@
   difficulty: intermediate
   topics: [filesystems]
   why: "Trecho que cobre os componentes de um file system (diretórios, inodes/índices, blocos) (do minuto 34:49 até o próximo capítulo)."
-  section: "34:49 Components of file systems"
+  section: "34:49 Components of file systems (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -107,7 +107,7 @@
   difficulty: intermediate
   topics: [filesystems]
   why: "Trecho que cobre buffer cache e confiabilidade do file system (do minuto 56:04 até o próximo capítulo)."
-  section: "56:04 Buffer cache and reliability"
+  section: "56:04 Buffer cache and reliability (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -135,7 +135,7 @@
   difficulty: intermediate
   topics: [virtual-memory]
   why: "Trecho que cobre introdução à paginação e page tables (do minuto 1:12:16 até o próximo capítulo)."
-  section: "1:12:16 Introduction to paging"
+  section: "1:12:16 Introduction to paging (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -149,7 +149,7 @@
   difficulty: intermediate
   topics: [virtual-memory]
   why: "Trecho que cobre page tables de dois níveis para address spaces esparsos (do minuto 26:53 até o próximo capítulo)."
-  section: "26:53 Two-level page tables"
+  section: "26:53 Two-level page tables (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -163,7 +163,7 @@
   difficulty: intermediate
   topics: [virtual-memory]
   why: "Trecho que cobre demand paging e page faults (do minuto 53:46 até o próximo capítulo)."
-  section: "53:46 Demand paging concepts"
+  section: "53:46 Demand paging concepts (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -177,7 +177,7 @@
   difficulty: intermediate
   topics: [threads-basics]
   why: "Trecho que cobre criação de threads (do minuto 39:29 até o próximo capítulo)."
-  section: "39:29 Thread creation"
+  section: "39:29 Thread creation (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -191,7 +191,7 @@
   difficulty: intermediate
   topics: [threads-basics]
   why: "Trecho que cobre threads dentro de um processo (o que compartilham e o que é próprio) (do minuto 21:16 até o próximo capítulo)."
-  section: "21:16 Threads within processes"
+  section: "21:16 Threads within processes (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -205,7 +205,7 @@
   difficulty: intermediate
   topics: [race-conditions-synchronization]
   why: "Trecho que cobre race conditions, atomicidade e locks/seções críticas (do minuto 1:10:03 até o próximo capítulo)."
-  section: "1:10:03 Race conditions"
+  section: "1:10:03 Race conditions (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -219,7 +219,7 @@
   difficulty: intermediate
   topics: [race-conditions-synchronization]
   why: "Trecho que cobre instruções atômicas de hardware usadas para construir locks (do minuto 14:13 até o próximo capítulo)."
-  section: "14:13 Atomic hardware instructions"
+  section: "14:13 Atomic hardware instructions (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -233,7 +233,7 @@
   difficulty: intermediate
   topics: [race-conditions-synchronization, bounded-queues]
   why: "Trecho que cobre monitores (lock + condition variables) (do minuto 9:16 até o próximo capítulo)."
-  section: "9:16 Monitors overview"
+  section: "9:16 Monitors overview (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -247,7 +247,7 @@
   difficulty: intermediate
   topics: [deadlocks]
   why: "Trecho que cobre deadlock: condições, detecção e estratégias (do minuto 37:47 até o próximo capítulo)."
-  section: "37:47 Introduction to deadlock"
+  section: "37:47 Introduction to deadlock (capítulo automático do YouTube)"
   access: free
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
@@ -261,7 +261,7 @@
   difficulty: intermediate
   topics: [bounded-queues]
   why: "Trecho que cobre o bounded buffer (produtor/consumidor) com semáforos (do minuto 55:14 até o próximo capítulo)."
-  section: "55:14 Bounded buffer with semaphores"
+  section: "55:14 Bounded buffer with semaphores (capítulo automático do YouTube)"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos exibidos pelo YouTube na página do vídeo (o YouTube marca esses capítulos como gerados automaticamente)." }
