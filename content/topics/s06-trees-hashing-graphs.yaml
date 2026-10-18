@@ -69,6 +69,28 @@
     - Código do validador e a prova escrita do percurso em ordem.
     - Tabela de alturas e o backtrace do stack overflow anotado.
   firstAction: Desenhe a BST resultante de inserir 5, 3, 8, 1, 4 e depois a de inserir 1, 3, 4, 5, 8. Compare as alturas.
+  essentials:
+    - "Precisa de ordem (intervalo, min/max, sucessor, iteração ordenada)? Use árvore balanceada da biblioteca (`TreeMap`/`TreeSet`); só busca por chave exata? Use hash."
+    - "O custo é O(altura): uma BST ingênua com chaves sequenciais (IDs, timestamps) vira lista; em produção use sempre uma versão balanceada."
+    - "Valide uma BST passando limites min/max na recursão, não comparando só o pai com os filhos."
+    - "Na remoção com dois filhos, troque pela chave do sucessor (o menor da subárvore direita) e remova o sucessor."
+    - "Índices de banco são B-trees: servem `=`, `<`, `BETWEEN` e `ORDER BY` na ordem das colunas; pense em árvore ordenada ao criar um índice."
+  deepDive:
+    - title: Árvores rubro-negras e AVL
+      why: Quando ler a implementação de `TreeMap` ou do kernel, ou precisar implementar uma estrutura ordenada com garantia de O(log n).
+      resource: algs4-balanced-search-trees
+    - title: B-trees e B+trees em disco
+      why: Quando projetar índices no PostgreSQL e quiser entender páginas, fanout e por que poucas leituras de disco bastam.
+      resource: cmu-15445-f24-lecture-08-btree
+    - title: Tries e radix trees
+      why: Quando a busca for por prefixo, como autocomplete, roteamento de IP ou roteadores de URL em frameworks web.
+      resource: algs4-tries
+    - title: Árvores aumentadas (interval tree, order statistics)
+      why: Quando consultar sobreposição de intervalos (agendas, reservas) ou o k-ésimo elemento sem percorrer tudo.
+      resource: linux-kernel-rbtree
+    - title: LSM-trees
+      why: Quando lidar com bancos de escrita pesada (RocksDB, Cassandra) e o trade-off entre custo de escrita e de leitura.
+      resource: ddia
 
 - id: hash-tables
   stage: s06-trees-hashing-graphs
@@ -139,6 +161,27 @@
     - Histogramas e a tabela simulação versus fórmula.
     - Gráfico de custo por α e saída do perf stat comparando as duas estratégias.
   firstAction: Calcule hash = soma dos bytes para "abc" e "cba" e explique o que isso significa para ids de tarefa.
+  essentials:
+    - "Use o mapa da linguagem (`HashMap`, `Map` em JS); implemente o seu para aprender ou por requisito muito específico."
+    - "Em Java, `equals` e `hashCode` andam juntos: chaves iguais precisam do mesmo hash, e nunca mude campos de uma chave já inserida."
+    - "Espere colisões cedo (paradoxo do aniversário): o custo depende do fator de carga e da qualidade do hash, não do tamanho da tabela."
+    - "Hash não guarda ordem: para intervalos e iteração ordenada use árvore; para ordem de inserção, `LinkedHashMap`."
+    - "Chaves controladas pelo usuário? Limite quantas chaves cada requisição cria e use hash com semente (SipHash) contra hash flooding."
+  deepDive:
+    - title: Endereçamento aberto moderno (Swiss Tables, Robin Hood)
+      why: Quando a tabela hash virar gargalo de CPU e a localidade de cache das sondagens fizer diferença.
+      resource: abseil-swiss-tables
+    - title: Hash criptográfico vs não criptográfico
+      why: Quando escolher entre hash para tabelas (rápido), para integridade (SHA-256) e para senhas (lento de propósito).
+      resource: akita-crypto-1
+    - title: Consistent hashing e particionamento
+      why: Quando distribuir chaves entre vários servidores ou caches sem remapear quase tudo ao adicionar um nó.
+      resource: ddia
+    - title: Bloom filters
+      why: Quando precisar testar pertinência com pouca memória aceitando falsos positivos (caches, LSM-trees, crawlers).
+    - title: Buckets em árvore no HashMap do Java
+      why: Quando investigar o desempenho de um HashMap com muitas colisões ou chaves com `hashCode` ruim.
+      resource: java-hashmap-21
 
 - id: heaps-priority-queues
   stage: s06-trees-hashing-graphs
@@ -206,6 +249,23 @@
     - Arrays previstos e impressos para a sequência de inserções e o contador de trocas.
     - Tabela do top-k e da comparação heapsort/merge sort/qsort com cache-misses.
   firstAction: Desenhe o array [1, 3, 2, 5, 9, 8] como árvore usando filhos 2i+1 e 2i+2 e confira a propriedade de heap.
+  essentials:
+    - "Para sempre pegar o próximo mais urgente (timers, jobs, top-k), use fila de prioridade: `PriorityQueue` em Java, heap em array em C."
+    - "No heap em array, filhos ficam em `2i+1` e `2i+2` e o pai em `(i-1)/2`; insert faz sift-up e extract faz sift-down, ambos O(log n)."
+    - "Heap não é ordenado nem estável: desempate com número de sequência na chave e não espere achar um elemento arbitrário rápido."
+    - "Top-k de um fluxo: mantenha um min-heap de tamanho k (O(n log k), memória O(k)) em vez de ordenar tudo."
+    - "Com todos os n elementos de uma vez, use heapify bottom-up (O(n)) em vez de n inserções."
+  deepDive:
+    - title: Fila de prioridade indexada e decrease-key
+      why: Quando implementar Dijkstra ou A* e precisar atualizar a prioridade de um item que já está no heap.
+      resource: algs4-priority-queues
+    - title: Timer wheels
+      why: Quando um servidor precisar gerenciar milhões de timeouts e o O(log n) do heap por timer pesar.
+    - title: Starvation e aging em escalonadores
+      why: Quando jobs de baixa prioridade nunca rodarem e for preciso envelhecer prioridades ou usar filas multinível.
+      resource: ostep
+    - title: Heaps d-ários e heaps mescláveis
+      why: Quando o heap for gargalo (menos níveis, melhor cache) ou for preciso unir filas inteiras com frequência.
 
 - id: graphs-traversal
   stage: s06-trees-hashing-graphs
@@ -277,6 +337,25 @@
     - Desenho do grafo com o traço à mão ao lado da saída do programa.
     - Saída da BFS no grafo de pacotes e o backtrace do stack overflow da DFS recursiva.
   firstAction: Desenhe um grafo com 5 vértices e 6 arestas e escreva suas listas de adjacência.
+  essentials:
+    - "Modele primeiro: o que são vértices, o que são arestas, se é dirigido e se tem peso; escreva isso antes do código."
+    - "Use listas de adjacência por padrão (com um mapa id → índice para ids textuais); matriz só para grafos pequenos e densos."
+    - "Marque visitado ao enfileirar ou empilhar; sem isso, um ciclo trava a travessia."
+    - "Menor número de arestas: BFS com fila e `parent[]` para reconstruir o caminho; com pesos não negativos, Dijkstra."
+    - "Alcançabilidade, componentes e ciclos: DFS, iterativa com pilha explícita quando o grafo pode ser profundo."
+  deepDive:
+    - title: Dijkstra, A* e Bellman-Ford
+      why: Quando as arestas tiverem custo (rotas, latência de rede) ou houver pesos negativos.
+      resource: algs4-shortest-paths
+    - title: Union-find
+      why: Quando arestas chegarem aos poucos e você só precisar saber se dois vértices já estão conectados.
+      resource: algs4-union-find
+    - title: Componentes fortemente conexos
+      why: Quando procurar grupos de dependência mútua num grafo dirigido, como ciclos de imports ou de chamadas entre serviços.
+      resource: algs4-directed-graphs
+    - title: Árvore geradora mínima (Prim, Kruskal)
+      why: Quando conectar todos os pontos de uma rede com custo mínimo ou agrupar dados por proximidade.
+      resource: algs4-minimum-spanning-trees
 
 - id: dependency-graphs
   stage: s06-trees-hashing-graphs
@@ -346,3 +425,23 @@
     - Ordem gerada, ondas de paralelismo e o ciclo detectado.
     - Trechos de make -d e o Makefile com a dependência circular anotados.
   firstAction: Escreva em 5 linhas "X precisa de Y" para sua rotina de manhã e desenhe as setas.
+  essentials:
+    - "Modele \"A precisa de B\" como aresta `B → A`; ordem topológica só existe se o grafo for um DAG."
+    - "Use Kahn (graus de entrada + fila): ele dá a ordem, detecta ciclo (sobram vértices) e mostra ondas que podem rodar em paralelo."
+    - "Ao detectar ciclo, reporte os vértices envolvidos; só dizer que existe um ciclo não ajuda ninguém a corrigir."
+    - "Se o resultado muda conforme a ordem válida escolhida (ex.: `make -j`), há dependência não declarada: declare-a."
+    - "Valide qualquer ordem com um `check_order` que confere se toda aresta aponta para frente."
+  deepDive:
+    - title: Componentes fortemente conexos para quebrar ciclos
+      why: Quando um grafo grande de módulos ou pacotes tiver vários ciclos e você precisar achar todos de uma vez.
+      resource: algs4-directed-graphs
+    - title: Caminho crítico em DAGs
+      why: Quando estimar a duração mínima de um pipeline ou build paralelo e descobrir qual cadeia de tarefas o limita.
+      resource: algs4-shortest-paths
+    - title: Builds incrementais e sistemas de build baseados em grafo (Bazel, Gradle)
+      why: Quando builds ficarem lentos ou não reprodutíveis e for preciso cache de tarefas e dependências declaradas com precisão.
+    - title: Grafo de espera e detecção de deadlock
+      why: Na etapa de concorrência, quando threads ou transações esperarem umas pelas outras em ciclo.
+      resource: ostep-concurrency-bugs
+    - title: Resolução de versões em gerenciadores de pacotes
+      why: Quando conflitos de versão no Maven ou npm exigirem entender como o resolvedor escolhe uma versão entre várias restrições.
