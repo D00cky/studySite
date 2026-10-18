@@ -1,0 +1,788 @@
+# Recursos novos das etapas s07 (sistemas operacionais) e s08 (concorrência).
+# Verificados em 2026-10-18 (curl e oEmbed do YouTube).
+
+- id: ostep-limited-direct-execution
+  title: "OSTEP — Mechanism: Limited Direct Execution"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [processes-syscalls, signals]
+  why: "Como uma syscall troca de modo usuário para kernel (trap) e como o SO retoma o controle com interrupções de timer."
+  section: "Direct Execution"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-paging
+  title: "OSTEP — Paging: Introduction"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Páginas, frames e tabelas de páginas, com a conta de tradução de endereço passo a passo."
+  section: "Introduction to Paging"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-tlbs
+  title: "OSTEP — Paging: Faster Translations (TLBs)"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory, cpu-memory-caches]
+  why: "Por que a TLB existe e como padrões de acesso afetam o custo da tradução de endereços."
+  section: "Translation Lookaside Buffers"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-swapping-mechanisms
+  title: "OSTEP — Beyond Physical Memory: Mechanisms"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Page faults, swap e o caminho completo de um acesso a uma página que não está na RAM."
+  section: "Swapping: Mechanisms"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-file-system-implementation
+  title: "OSTEP — File System Implementation"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Inodes, bitmaps, blocos de dados e diretórios de um sistema de arquivos simples (vsfs), com o caminho de open/read/write."
+  section: "File System Implementation"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-crash-consistency
+  title: "OSTEP — Crash Consistency: FSCK and Journaling"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [filesystems]
+  why: "O que acontece com o disco se a energia cai no meio de uma escrita, e como journaling resolve. Base para entender fsync e WAL de bancos."
+  section: "FSCK and Journaling"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-thread-api
+  title: "OSTEP — Interlude: Thread API"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf
+  language: en
+  format: book
+  difficulty: intro
+  topics: [threads-basics, race-conditions-synchronization]
+  why: "pthread_create, join, mutexes e variáveis de condição com exemplos curtos em C."
+  section: "Thread API"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-condition-variables
+  title: "OSTEP — Condition Variables"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Variáveis de condição e o problema produtor-consumidor, incluindo por que usar while em vez de if."
+  section: "Condition Variables"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-semaphores
+  title: "OSTEP — Semaphores"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Semáforos como primitiva geral, buffer limitado e leitores/escritores."
+  section: "Semaphores"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-concurrency-bugs
+  title: "OSTEP — Common Concurrency Problems"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [deadlocks, race-conditions-synchronization]
+  why: "Estudo de bugs reais de concorrência: violações de atomicidade e de ordem, e as quatro condições de deadlock com estratégias de prevenção."
+  section: "Concurrency Bugs"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ostep-locked-data-structures
+  title: "OSTEP — Lock-based Concurrent Data Structures"
+  author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+  url: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Contadores, listas, filas e tabelas hash com locks, medindo escalabilidade — ótimo modelo para o experimento de throughput."
+  section: "Locked Data Structures"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-dup
+  title: "dup(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/dup.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "dup e dup2 — a syscall por trás de todo redirecionamento do shell."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-open
+  title: "open(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/open.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [file-descriptors, filesystems]
+  why: "Flags de abertura (O_CREAT, O_TRUNC, O_APPEND, O_CLOEXEC) e a relação entre descritor e open file description."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-execve
+  title: "execve(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/execve.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "O que exec substitui no processo e o que é preservado (pid, descritores sem O_CLOEXEC)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-wait
+  title: "wait(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/wait.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "wait/waitpid, macros WIFEXITED/WEXITSTATUS e o que é um processo zumbi."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-sigaction
+  title: "sigaction(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/sigaction.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [signals]
+  why: "A interface recomendada para instalar handlers, com SA_RESTART e máscaras."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-fsync
+  title: "fsync(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/fsync.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "O que fsync garante (e o que não garante) sobre dados chegarem ao disco."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-rename
+  title: "rename(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/rename.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Atomicidade de rename — base da técnica \"escreve no temporário e renomeia\"."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-inode
+  title: "inode(7) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man7/inode.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Campos de um inode (tipo, permissões, contagem de links, timestamps) como vistos por stat."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-mmap
+  title: "mmap(2) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man2/mmap.2.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Mapear arquivos e memória anônima no espaço de endereçamento — a interface direta para a memória virtual."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-proc-pid-maps
+  title: "proc_pid_maps(5) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [virtual-memory, processes-syscalls]
+  why: "Formato de /proc/pid/maps: cada região do espaço de endereçamento com permissões e arquivo de origem."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-proc
+  title: "proc(5) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man5/proc.5.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors]
+  why: "Visão geral do /proc — onde ver fd, status, maps e muito mais de um processo vivo."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pthreads
+  title: "pthreads(7) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man7/pthreads.7.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: "O que threads POSIX compartilham e o que é por thread, e a implementação NPTL no Linux."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pthread-create
+  title: "pthread_create(3) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man3/pthread_create.3.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [threads-basics]
+  why: "Assinatura, erros e exemplo completo de criação e join de threads."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pthread-mutex-lock
+  title: "pthread_mutex_lock(3p) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, deadlocks]
+  why: "Semântica POSIX de lock/trylock/unlock e dos tipos de mutex (incluindo error-checking)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-pthread-cond-wait
+  title: "pthread_cond_timedwait(3p) — Linux manual page"
+  author: "Michael Kerrisk (man-pages project)"
+  url: https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Contrato de pthread_cond_wait: liberar o mutex atomicamente, wakeups espúrios e por que reavaliar o predicado."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: valgrind-helgrind
+  title: "Helgrind: a thread error detector"
+  author: "Valgrind Developers"
+  url: https://valgrind.org/docs/manual/hg-manual.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, deadlocks]
+  why: "Como o Helgrind detecta races, uso incorreto da API pthreads e inversões de ordem de locks (potenciais deadlocks)."
+  section: "7. Helgrind: a thread error detector"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: clang-threadsanitizer
+  title: "ThreadSanitizer — Clang documentation"
+  author: "LLVM Project"
+  url: https://clang.llvm.org/docs/ThreadSanitizer.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, threads-basics]
+  why: "Como compilar com -fsanitize=thread e interpretar relatórios de data race."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gdb-threads
+  title: "Debugging with GDB — Debugging Programs with Multiple Threads"
+  author: "GNU Project"
+  url: https://sourceware.org/gdb/current/onlinedocs/gdb.html/Threads.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [threads-basics, deadlocks]
+  why: "info threads, thread N e thread apply all bt — o essencial para ver onde cada thread está travada."
+  section: "Threads"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Manual da versão de desenvolvimento (current)." }
+
+- id: akitando-127-boot-linux-video
+  title: "Como Funciona o Boot de um Linux? | O que tem num LiveCD?"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=5F6BbhgvFOE
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [processes-syscalls]
+  why: "Vídeo do episódio #127: do bootloader ao kernel e ao init (PID 1) — contexto para a árvore de processos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #127." }
+
+- id: akitando-102-sistemas-de-arquivos-fat-video
+  title: "Entendendo Sistemas de Arquivos: FAT"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=6YQve3KUqJs
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [filesystems]
+  why: "Episódio #102: como um sistema de arquivos organiza blocos e diretórios, usando FAT como exemplo concreto."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #102." }
+
+- id: akitando-103-sistemas-de-arquivos-video
+  title: "Todos os Sistemas de Arquivos: de FAT a ZFS"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=71o6Tyh2MUk
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [filesystems]
+  why: "Episódio #103: panorama dos sistemas de arquivos, de FAT a ZFS, em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #103." }
+
+- id: akitando-45-memoria-parte-1-video
+  title: "Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes  (Parte 5)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=9AK_1gqEfkQ
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [virtual-memory, stack-heap-lifetime]
+  why: "Episódio #45: intuição em português sobre gerenciamento de memória de processos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #45." }
+
+- id: akitando-46-memoria-parte-2-video
+  title: "Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=DGU1awKrNiA
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [virtual-memory]
+  why: "Episódio #46: continuação sobre gerenciamento de memória, em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #46." }
+
+- id: cs162-lecture-3-threads-processes
+  title: "CS162 Lecture 3: Abstractions 1: Threads and Processes"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=QSep-J6vtdc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, threads-basics]
+  why: "Processos e threads do ponto de vista do programador, com a API POSIX. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 3: Abstractions 1: Threads and Processes"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-4-files-io
+  title: "CS162 Lecture 4: Abstractions 2: Files and I/O"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=WHmmT_syaG8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors, filesystems]
+  why: "APIs de arquivo de alto nível (streams) e baixo nível (descritores). Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 4: Abstractions 2: Files and I/O"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-5-ipc-pipes-sockets
+  title: "CS162 Lecture 5: Abstractions 3: IPC, Pipes and Sockets"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=MKcSCaP0ZrQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "Comunicação entre processos com pipes e sockets usando descritores. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 5: Abstractions 3: IPC, Pipes and Sockets"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-6-synchronization-1
+  title: "CS162: Lecture 6: Synchronization 1: Concurrency and Mutual Exclusion"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=5uyGn147rr0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [threads-basics, race-conditions-synchronization]
+  why: "Por que intercalações causam races e o que é exclusão mútua. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162: Lecture 6: Synchronization 1: Concurrency and Mutual Exclusion"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-7-synchronization-2
+  title: "CS162 Lecture 7: Synchronization 2: Semaphores (Con't), Lock Implementation, Atomic Instructions"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=gRX-YxdFQzk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Semáforos, implementação de locks e instruções atômicas. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 7: Synchronization 2: Semaphores (Con't), Lock Implementation, Atomic Instructions"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-9-synchronization-4
+  title: "CS162 Lecture 9: Synchronization 4: Monitors and Readers/Writers (Con't), Process Structure"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=snp580kqCto
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Monitores (mutex + variáveis de condição) e leitores/escritores. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 9: Synchronization 4: Monitors and Readers/Writers (Con't), Process Structure"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-12-deadlock
+  title: "CS162 Lecture 12: Scheduling 3: Deadlock"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=FDwJ6EW4dCM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [deadlocks]
+  why: "Condições de deadlock, grafos de alocação de recursos e estratégias de prevenção e detecção. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 12: Scheduling 3: Deadlock"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-13-address-translation
+  title: "CS162 Lecture 13: Memory 1: Address Translation and Virtual Memory"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=1SJeLcI8otk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Tradução de endereços, segmentação e tabelas de páginas. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 13: Memory 1: Address Translation and Virtual Memory"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-14-virtual-memory-tlbs
+  title: "CS162 Lecture 14: Memory 2: Virtual Memory (Con't), Caching and TLBs"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=aaCeY4YCCmM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Tabelas multinível, caching e TLBs. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 14: Memory 2: Virtual Memory (Con't), Caching and TLBs"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-19-filesystems-1
+  title: "CS162 Lecture 19: Filesystems 1: Performance (Con't), Queueing Theory, Filesystem Design"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=CrpLw5s2HQs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Desempenho de I/O e início do design de sistemas de arquivos. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 19: Filesystems 1: Performance (Con't), Queueing Theory, Filesystem Design"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cs162-lecture-20-filesystems-2
+  title: "CS162 Lecture 20: Filesystems 2: Filesystem Design (Con't), Filesystem Case Studies"
+  author: "John Kubiatowicz"
+  url: https://www.youtube.com/watch?v=9UQza7XNt6M
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Continuação do design de sistemas de arquivos e estudos de caso. Aula de Berkeley CS162 (Operating Systems and System Programming) no canal do professor."
+  section: "CS162 Lecture 20: Filesystems 2: Filesystem Design (Con't), Filesystem Case Studies"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mit-6s081-2020-lecture-1-introduction
+  title: "6.S081 Fall 2020 Lecture 1: Introduction and Examples"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=L6YqHxYHa7A
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls, file-descriptors]
+  why: "Introdução com exemplos de syscalls do xv6 (fork, exec, wait, pipe, redirecionamento). Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 1: Introduction and Examples"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-3-system-calls
+  title: "6.S081 Fall 2020 Lecture 3: OS Organization and System Calls"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=o44d---Dk4o
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [processes-syscalls]
+  why: "Modo usuário vs. kernel, isolamento e como uma syscall entra no kernel. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 3: OS Organization and System Calls"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-lecture-4-page-tables
+  title: "6.S081 Lecture 4: Page Tables"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=f1Hpjty3TT8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Tabelas de páginas do RISC-V e como o xv6 monta o espaço de endereçamento. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Lecture 4: Page Tables"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-8-page-faults
+  title: "6.S081 Fall 2020 Lecture 8: Page Faults"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=KSYO-gTZo0A
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [virtual-memory]
+  why: "Usos de page faults: lazy allocation, copy-on-write e demand paging. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 8: Page Faults"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-10-locks
+  title: "6.S081 Fall 2020 Lecture 10: Multiprocessors and Locks"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=NGXu3vN7yAk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, deadlocks]
+  why: "Por que locks são necessários em multiprocessadores e como evitar deadlocks entre eles. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 10: Multiprocessors and Locks"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-13-sleep-wakeup
+  title: "6.S081 Fall 2020 Lecture 13: Sleep & Wakeup"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=gP67sJ4PTnc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [race-conditions-synchronization, bounded-queues]
+  why: "Coordenação entre threads (o equivalente a variáveis de condição) e o problema do lost wakeup. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 13: Sleep & Wakeup"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-14-file-systems
+  title: "6.S081 Fall 2020 Lecture 14: File Systems"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=ADzLv1nRtR8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Inodes, diretórios e camadas do sistema de arquivos do xv6. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 14: File Systems"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: mit-6s081-2020-lecture-15-crash-recovery
+  title: "6.S081 Fall 2020 Lecture 15: Crash Recovery"
+  author: "David Morejon"
+  url: https://www.youtube.com/watch?v=7Hk2dIorDkk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [filesystems]
+  why: "Logging no sistema de arquivos do xv6 e recuperação após queda. Aula do MIT 6.S081 (xv6, RISC-V), Fall 2020."
+  section: "6.S081 Fall 2020 Lecture 15: Crash Recovery"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo linkado como gravação oficial da aula no cronograma do curso (pdos.csail.mit.edu/6.828/2020/schedule.html); o canal do upload é de terceiro." }
+
+- id: sorber-signals-in-c
+  title: "Sending and Handling Signals in C (kill, signal, sigaction)"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=83M5-NPDeWs
+  language: en
+  format: video
+  difficulty: intro
+  topics: [signals]
+  why: "Demonstração curta de enviar e tratar sinais em C com kill, signal e sigaction."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-virtual-memory
+  title: "Your Computer is Lying To You (Virtual Memory)"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=Aw0YAUdQp1c
+  language: en
+  format: video
+  difficulty: intro
+  topics: [virtual-memory]
+  why: "Demonstração curta em C de que os endereços que o programa vê são virtuais."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sorber-pipe-system-call
+  title: "Understanding the Pipe System Call (popen3 example in C)"
+  author: "Jacob Sorber"
+  url: https://www.youtube.com/watch?v=8AXEHrQTf3I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [file-descriptors]
+  why: "Uso de pipe, fork e redirecionamento de descritores em C para conversar com um processo filho."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-43-concorrencia-paralelismo-1-video
+  title: "Concorrência e Paralelismo (Parte 1) | Entendendo Back-End para Iniciantes (Parte 3)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=cx1ULv4wYxM
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [threads-basics, race-conditions-synchronization]
+  why: "Episódio #43: intuição em português sobre processos, threads, concorrência e paralelismo em backends."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #43." }
+
+- id: akitando-44-concorrencia-paralelismo-2-video
+  title: "Concorrência e Paralelismo (Parte 2) | Entendendo Back-end para Iniciantes (Parte 4)"
+  author: "Fabio Akita"
+  url: https://www.youtube.com/watch?v=gYJSWs-gp1g
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [threads-basics, race-conditions-synchronization]
+  why: "Episódio #44: continuação sobre concorrência e paralelismo, em português."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo embutido no post akitaonrails.com do episódio #44." }

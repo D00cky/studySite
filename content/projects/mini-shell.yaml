@@ -1,17 +1,75 @@
 - id: mini-shell
   title: Mini shell
-  status: planned
+  status: authored
   cumulative: false
   topics: [processes-syscalls, file-descriptors, signals, processes-streams-exit-codes]
   question: O que um shell faz, em syscalls, para executar comandos, redirecionar saídas e montar pipelines?
   prerequisites: [processes-syscalls, c-strings]
-  minimalVersion: Ler uma linha, separar em argumentos, executar com fork/exec/wait e reportar o exit code.
+  minimalVersion: |
+    `msh` lê uma linha, separa em argumentos por espaços, executa com fork/execvp/waitpid e
+    imprime o prompt de novo. Suporta os builtins `cd` e `exit` e guarda o exit code do último
+    comando (mostrado por `echo $?` implementado como builtin simples ou no prompt).
+    Para testar com o domínio comum, os comandos de exemplo usam a CLI de tarefas
+    (`tasks list > pendentes.txt`, `tasks list | grep urgente`).
+  extensions:
+    - Redirecionamento de entrada e de append (`<` e `>>`) e de stderr (`2>`).
+    - Pipelines com qualquer número de estágios (`a | b | c`), esperando todos os filhos.
+    - Execução em segundo plano com `&`, colhendo filhos com handler de SIGCHLD e waitpid em laço com WNOHANG.
+    - Grupos de processos e controle de jobs básico (`setpgid`, `tcsetpgrp`, Ctrl+Z, `fg`).
+    - Testes automatizados que comparam a saída do msh com a do `/bin/sh` para uma lista de comandos.
+  constraints:
+    - Apenas libc e syscalls POSIX; nada de `system()` ou `popen()`.
+    - Compilar com `-Wall -Wextra -std=c17 -g` sem avisos; rodar os testes também com `-fsanitize=address`.
+    - Todo retorno de fork, exec, dup2, pipe, open, close e waitpid é verificado, com mensagem em stderr.
+    - Nenhum descritor vaza para os comandos executados (conferido em /proc/pid/fd).
+    - Experimentos apenas numa pasta de laboratório, nunca como shell de login.
   milestones:
     - id: m1-exec
       title: Executar um comando
+      description: Laço de leitura, separação em argumentos, fork/execvp/waitpid, builtins cd e exit, exit code 127 para comando inexistente.
+      minutes: 50
     - id: m2-redirect
       title: Redirecionamento com dup2
+      description: Interpretar `>` e `<`, abrir o arquivo no filho entre fork e exec, aplicar dup2 e fechar o descritor original.
+      minutes: 50
     - id: m3-pipes
       title: Pipelines com pipe
+      description: Montar `a | b` com pipe, dois filhos e fechamento correto das pontas; generalizar para N estágios se sobrar tempo.
+      minutes: 75
     - id: m4-signals
       title: Ctrl+C sem matar o shell
+      description: O shell ignora ou trata SIGINT; os filhos restauram a disposição padrão antes do exec e morrem com Ctrl+C; reportar término por sinal.
+      minutes: 50
+    - id: m5-tests
+      title: Testes e investigação com strace
+      description: Script de testes comparando com /bin/sh e um relatório curto com o strace de um pipeline anotado.
+      minutes: 50
+  edgeCases:
+    - Linha vazia, só espaços e EOF (Ctrl+D) no prompt.
+    - Comando inexistente, sem permissão de execução e caminho para um diretório.
+    - Redirecionamento para arquivo sem permissão de escrita ou em diretório inexistente.
+    - Pipeline em que o primeiro comando termina antes do segundo começar a ler (ex. `yes | head -1`).
+    - cd sem argumento, para diretório inexistente e para um arquivo.
+    - Linha muito longa ou com muitos argumentos.
+  failureExperiments:
+    - Esquecer de fechar a ponta de escrita do pipe no pai e mostrar o pipeline que nunca termina, provando com /proc/pid/fd.
+    - Não chamar waitpid e acumular processos zumbis visíveis em `ps`.
+    - Não restaurar SIGINT no filho e mostrar que Ctrl+C deixa de interromper o comando.
+    - Abrir arquivos sem O_CLOEXEC e mostrar com `ls -l /proc/self/fd` (executado pelo msh) que o filho herdou descritores do shell.
+  tools: [gcc, make, strace, gdb, valgrind, "ls -l /proc/<pid>/fd", ps, "echo $?"]
+  acceptanceCriteria:
+    - Executa comandos com argumentos e reporta exit code e término por sinal corretamente.
+    - Redirecionamentos e pipelines produzem a mesma saída que /bin/sh para o script de testes.
+    - Ctrl+C interrompe o comando em primeiro plano e não encerra o shell.
+    - Nenhum zumbi permanece e nenhum descritor extra vaza para os filhos.
+    - Todos os casos-limite listados têm comportamento definido e testado.
+  evidence:
+    - Link do repositório com README explicando build, uso e limitações.
+    - Saída do script de testes comparando msh e /bin/sh.
+    - Trecho do `strace -f` de um pipeline com clone, pipe2, dup2, close, execve e wait4 anotados.
+    - Demonstração gravada ou transcrita de Ctrl+C durante `sleep 100` com o shell sobrevivendo.
+  reviewQuestions:
+    - Por que o redirecionamento precisa acontecer entre o fork e o exec, e não antes do fork?
+    - Que descritores cada processo de `a | b` deve fechar, e o que quebra se um deles ficar aberto?
+    - Por que cd precisa ser um builtin e não um programa externo?
+    - Como o shell distingue um filho que saiu com código 130 de um filho morto por SIGINT?

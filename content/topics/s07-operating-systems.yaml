@@ -3,51 +3,334 @@
 - id: processes-syscalls
   stage: s07-operating-systems
   title: Processos e syscalls
-  status: planned
+  status: authored
   objective: Criar e esperar processos com fork, exec e wait, observando as syscalls com strace.
-  whyItMatters: Shells, servidores e containers são construídos sobre essas chamadas.
+  whyItMatters: Shells, servidores e containers são construídos sobre essas chamadas. Saber o que acontece em fork/exec/wait explica processos zumbis, exit codes perdidos e por que um container "morre" quando seu PID 1 termina.
   prerequisites: [processes-streams-exit-codes, stack-heap-lifetime]
+  related: [file-descriptors, signals, virtual-memory]
+  explanation: |
+    Um **processo** é um programa em execução: um espaço de endereçamento próprio, registradores, uma tabela de descritores abertos e metadados do kernel (pid, pai, credenciais). Seu programa não acessa hardware diretamente; ele pede ao kernel por meio de **syscalls**. Uma syscall é uma instrução especial que troca a CPU de modo usuário para modo kernel, executa o código do kernel e volta com um resultado (ou `-1` e `errno`).
+
+    Criar um processo no Unix é feito em duas etapas separadas:
+
+    - `fork()` duplica o processo atual. Retorna **duas vezes**: `0` no filho e o pid do filho no pai. A memória é copiada logicamente (na prática, com copy-on-write) e os descritores são herdados.
+    - `execve()` substitui o programa do processo atual por outro. O pid continua o mesmo; código, heap e stack são trocados. Se exec retorna, ele falhou.
+
+    Separar as duas etapas é o que permite ao shell ajustar o filho (redirecionar descritores, mudar diretório, tratar sinais) **entre** o fork e o exec.
+
+    O pai chama `wait`/`waitpid` para colher o status do filho. Até ser colhido, um filho que terminou vira **zumbi**: não roda mais, mas sua entrada na tabela de processos guarda o exit code. Se o pai morre antes, o filho é adotado pelo PID 1 (init/systemd), que o colhe.
+
+    `strace -f` mostra essa conversa com o kernel em tempo real; `/proc/<pid>/` mostra o estado de um processo vivo (status, maps, fd).
+  misconceptions:
+    - claim: fork cria um processo novo do zero, que começa a executar no main.
+      correction: O filho é uma cópia do pai e continua do ponto em que fork retornou, com as mesmas variáveis e descritores.
+    - claim: exec cria um novo processo.
+      correction: exec troca o programa do processo atual; o pid é o mesmo. Quem cria processos é fork (ou clone).
+    - claim: Um processo zumbi está consumindo CPU e precisa de kill -9.
+      correction: O zumbi já terminou; ocupa só uma entrada na tabela até o pai chamar wait. kill não tem efeito — é preciso corrigir ou matar o pai.
   resources:
     start: ostep-process-api
-    deeper: [ostep-processes, man-fork, man-strace, akita-linux-boot]
+    deeper: [ostep-processes, ostep-limited-direct-execution, man-fork, man-execve, man-wait, man-strace, man-proc, akita-linux-boot]
+    videos: [cs162-lecture-3-threads-processes, mit-6s081-2020-lecture-1-introduction, mit-6s081-2020-lecture-3-system-calls, akitando-127-boot-linux-video]
+  exercise:
+    id: ex-fork-exec-wait
+    title: Um "run" mínimo com fork, exec e wait
+    prediction: "Antes de rodar, escreva quantas linhas um programa com `fork(); fork(); printf(\"oi\\n\");` imprime e quais pids aparecem."
+    steps:
+      - Escreva o programa da previsão imprimindo `getpid()` e `getppid()` e confira a contagem.
+      - "Escreva `run.c`: recebe um comando em `argv` (ex.: `./run ls -l /tmp`), faz fork, o filho chama `execvp` e o pai faz `waitpid` e imprime o exit code com `WIFEXITED`/`WEXITSTATUS`."
+      - Trate a falha de exec (comando inexistente) saindo do filho com código 127 e mensagem em stderr.
+      - Faça o filho terminar por sinal (por exemplo `./run sleep 100` e `kill -TERM` no filho) e imprima `WTERMSIG`.
+    checks:
+      - A contagem de linhas bate com 2^n para n forks, e você explica por quê.
+      - "`./run false` imprime exit code 1, `./run comando-inexistente` imprime 127 e o caso do sinal mostra o número do sinal."
+  experiment:
+    title: Ver fork/exec/wait e zumbis pelo kernel
+    steps:
+      - Em uma pasta de laboratório, rode `strace -f -e trace=process ./run ls` e identifique `clone`, `execve`, `wait4` e `exit_group`.
+      - Rode `strace -c ./run ls` e compare quantas syscalls de cada tipo foram feitas.
+      - Escreva uma variante em que o pai faz `sleep(30)` sem chamar wait; durante a pausa, rode `ps -o pid,ppid,stat,cmd` e procure o estado `Z`.
+      - Enquanto o processo dorme, leia `/proc/<pid>/status` e `ls -l /proc/<pid>/fd`.
+    observe:
+      - A linha de execve com o caminho e argumentos e o valor de retorno de wait4.
+      - O filho no estado Z até o pai colhê-lo ou terminar.
+  reflectionQuestions:
+    - Por que separar fork e exec, em vez de uma única chamada "spawn", torna o shell mais simples?
+    - O que acontece com os filhos de um servidor que nunca chama wait?
+    - Que custo uma syscall tem em relação a uma chamada de função comum, e por quê?
+  completionCriteria:
+    - Mostra o programa run executando comandos e reportando exit code e sinal corretamente.
+    - Apresenta saída do strace com clone/execve/wait4 anotada linha a linha.
+    - Reproduz um processo zumbi e mostra o estado Z no ps antes e a ausência dele depois do wait.
+  evidencePrompts:
+    - Código do run.c e saídas para sucesso, falha, comando inexistente e sinal.
+    - Trecho do strace -f anotado e saída do ps mostrando o zumbi.
+  firstAction: Rode `strace -f -e trace=process sh -c 'ls'` e encontre a linha do `execve` do ls.
 
 - id: file-descriptors
   stage: s07-operating-systems
   title: Descritores de arquivo, redirecionamento e pipes
-  status: planned
+  status: authored
   objective: Manipular descritores com open, dup2 e pipe para implementar redirecionamento e pipelines.
-  whyItMatters: Explica como o shell, sockets e logs funcionam por baixo.
+  whyItMatters: Explica como o shell, sockets e logs funcionam por baixo. Vazamento de descritores, pipelines travados e "too many open files" em servidores vêm de não entender esse modelo.
   prerequisites: [processes-syscalls]
+  related: [filesystems, signals, tcp-udp-sockets]
+  explanation: |
+    Para um processo, um **descritor de arquivo** é só um inteiro pequeno: um índice na sua tabela de descritores. Cada entrada aponta para uma **open file description** no kernel, que guarda o offset atual e as flags, e que por sua vez aponta para o arquivo, pipe, terminal ou socket. Por convenção, `0` é stdin, `1` é stdout e `2` é stderr.
+
+    `open` devolve sempre o **menor descritor livre**. `dup2(old, new)` faz `new` apontar para a mesma open file description de `old` (fechando `new` antes, se preciso). É isso que o shell faz em `cmd > saida.txt`: no filho, entre fork e exec, abre o arquivo e faz `dup2(fd, 1)`. O programa executado escreve em "1" sem saber que é um arquivo.
+
+    Um **pipe** é um buffer no kernel com duas pontas: `pipe(fds)` devolve `fds[0]` para leitura e `fds[1]` para escrita. Para `a | b`, o shell cria o pipe, faz dois forks, liga o stdout de `a` à ponta de escrita e o stdin de `b` à ponta de leitura, e **fecha as pontas que não usa**. Detalhes do mecanismo:
+
+    - `read` num pipe vazio bloqueia; só retorna `0` (EOF) quando **todas** as pontas de escrita estiverem fechadas — em todos os processos.
+    - `write` num pipe cheio bloqueia (backpressure); escrever num pipe sem leitores gera `SIGPIPE`.
+    - Descritores são herdados por fork e preservados por exec, a menos que tenham `O_CLOEXEC`.
+
+    Esquecer de fechar uma ponta de escrita é a causa clássica de um pipeline que nunca termina.
+  misconceptions:
+    - claim: Redirecionar com > é algo que o programa executado faz.
+      correction: É o shell que reorganiza os descritores no filho antes do exec; o programa só escreve no fd 1.
+    - claim: Depois que o leitor lê tudo, o pipe envia EOF automaticamente.
+      correction: EOF só chega quando todas as cópias da ponta de escrita forem fechadas, inclusive as herdadas por outros processos.
+    - claim: Dois processos que herdaram o mesmo descritor têm offsets independentes.
+      correction: Após fork, pai e filho compartilham a mesma open file description, logo o mesmo offset. Offsets independentes só com open separados.
   resources:
     start: man-pipe
+    deeper: [man-dup, man-open, ostep-files-directories, man-proc]
+    videos: [cs162-lecture-4-files-io, cs162-lecture-5-ipc-pipes-sockets, mit-6s081-2020-lecture-1-introduction, sorber-pipe-system-call]
+  exercise:
+    id: ex-redirect-pipe
+    title: Implementar "> arquivo" e "a | b" à mão
+    prediction: "Se o pai não fechar `fds[1]` depois dos forks em `ls | wc -l`, o que acontece com o `wc`?"
+    steps:
+      - "Escreva `redir.c` que executa `ls -l` com stdout redirecionado para `saida.txt` usando `open(..., O_WRONLY|O_CREAT|O_TRUNC, 0644)` e `dup2`."
+      - Escreva `pipe2.c` que executa o equivalente a `ls | wc -l` com `pipe`, dois forks, `dup2` e `close` das pontas não usadas.
+      - Remova propositalmente um `close(fds[1])` e verifique se a previsão estava certa.
+      - Imprima o menor descritor livre antes e depois de cada open/close para confirmar a regra do menor número.
+    checks:
+      - O resultado de pipe2 é idêntico a `ls | wc -l` no shell.
+      - Você explica, com o diagrama da tabela de descritores de cada processo, por que a versão sem close trava.
+  experiment:
+    title: Observar descritores vivos e vazamentos
+    steps:
+      - Rode `strace -f -e trace=pipe2,dup2,close,execve ./pipe2` e desenhe a tabela de descritores de cada processo a partir da saída.
+      - Na versão travada, rode `ls -l /proc/<pid>/fd` no wc e no pai e encontre quem segura a ponta de escrita.
+      - Escreva um laço que abre arquivos sem fechar até falhar; veja o `errno` (EMFILE) e o limite com `ulimit -n`.
+      - "Rode `yes | head -1` sob `strace -f` e encontre o `SIGPIPE` recebido pelo yes."
+    observe:
+      - Os números de descritor retornados e para onde cada link de /proc/pid/fd aponta (pipe:[inode], arquivo).
+      - A mensagem de erro e a quantidade de arquivos abertos no momento da falha.
+  reflectionQuestions:
+    - Por que o design "tudo é descritor" permite que o mesmo programa escreva em arquivo, terminal, pipe ou socket?
+    - Como um servidor pode vazar descritores e qual sintoma isso causa depois de horas?
+    - Para que serve O_CLOEXEC numa aplicação que executa outros programas?
+  completionCriteria:
+    - Mostra redirecionamento e pipeline implementados em C com saída idêntica ao shell.
+    - Reproduz o pipeline travado e aponta, via /proc/pid/fd, o descritor que impede o EOF.
+    - Demonstra o erro EMFILE e explica o limite de descritores com ulimit.
+  evidencePrompts:
+    - Diagrama das tabelas de descritores antes e depois dos dup2, ao lado da saída do strace.
+    - Saída de ls -l /proc/pid/fd na versão travada com a ponta culpada destacada.
+  firstAction: Rode `ls -l /proc/self/fd` e depois `ls -l /proc/self/fd > /tmp/fd.txt; cat /tmp/fd.txt` e compare para onde o fd 1 aponta.
 
 - id: signals
   stage: s07-operating-systems
   title: Sinais
-  status: planned
+  status: authored
   objective: Enviar, tratar e ignorar sinais, explicando o que Ctrl+C e kill fazem com um processo.
-  whyItMatters: Desligamento gracioso de servidores e containers depende de tratar SIGTERM corretamente.
+  whyItMatters: Desligamento gracioso de servidores e containers depende de tratar SIGTERM corretamente. Sinais mal tratados causam dados corrompidos no desligamento, deploys que esperam o timeout inteiro e shells que morrem junto com o comando.
   prerequisites: [processes-syscalls]
+  related: [file-descriptors, health-checks-rollback]
+  explanation: |
+    Um **sinal** é uma notificação assíncrona que o kernel entrega a um processo. Ele pode vir de outro processo (`kill(pid, SIGTERM)`), do terminal (Ctrl+C gera `SIGINT` para o **grupo de processos** em primeiro plano) ou do próprio kernel (`SIGSEGV` num acesso inválido, `SIGPIPE` ao escrever num pipe sem leitor, `SIGCHLD` quando um filho termina).
+
+    Para cada sinal, o processo tem uma **disposição**: ação padrão (terminar, gerar core, parar, ignorar), ignorar (`SIG_IGN`) ou executar um **handler**. `SIGKILL` e `SIGSTOP` não podem ser tratados nem ignorados — é por isso que `kill -9` sempre funciona e nunca dá chance de limpeza.
+
+    Mecanismo da entrega: o kernel marca o sinal como **pendente**; quando o processo volta ao modo usuário, o kernel desvia a execução para o handler e depois retoma de onde parou. Consequências práticas:
+
+    - O handler pode interromper o código **em qualquer ponto**, inclusive dentro de `printf` ou `malloc`. Por isso só funções *async-signal-safe* devem ser chamadas nele; o padrão seguro é apenas setar uma flag `volatile sig_atomic_t` e tratar no laço principal.
+    - Uma syscall bloqueada (como `read`) pode retornar `-1` com `errno == EINTR`, a menos que o handler seja instalado com `SA_RESTART`.
+    - Sinais iguais pendentes não se acumulam: dois `SIGCHLD` podem virar um, então o handler deve colher filhos em laço com `waitpid(-1, ..., WNOHANG)`.
+
+    Prefira `sigaction` a `signal`: o comportamento é portátil e você controla flags e máscaras. Disposições "ignorar" sobrevivem ao exec; handlers não (o código deles deixa de existir).
+  misconceptions:
+    - claim: kill sempre mata o processo.
+      correction: kill envia um sinal (SIGTERM por padrão), que o processo pode tratar ou ignorar. Só SIGKILL e SIGSTOP são incondicionais.
+    - claim: Dentro de um handler posso chamar printf e malloc normalmente.
+      correction: Essas funções não são async-signal-safe; o handler pode interromper uma chamada delas no meio e corromper estado. Use write ou apenas sete uma flag.
+    - claim: Ctrl+C manda SIGINT só para o shell.
+      correction: O terminal envia SIGINT para todo o grupo de processos em primeiro plano; o shell interativo normalmente o ignora ou trata.
   resources:
     start: man-signal
+    deeper: [man-sigaction, ostep-limited-direct-execution, man-wait]
+    videos: [sorber-signals-in-c]
+  exercise:
+    id: ex-graceful-shutdown
+    title: Desligamento gracioso de um worker de tarefas
+    prediction: Escreva o que acontece com um processo em `sleep` dentro de um laço quando recebe SIGTERM sem handler, com handler sem SA_RESTART e com SIGKILL.
+    steps:
+      - "Escreva `worker.c`: um laço que \"processa uma tarefa\" por segundo (imprime o número) e grava um contador num arquivo."
+      - "Instale com `sigaction` um handler de SIGTERM e SIGINT que só faz `stop = 1` (`volatile sig_atomic_t`); o laço termina a tarefa atual, grava o contador e sai com código 0."
+      - Teste com `kill -TERM <pid>`, Ctrl+C e `kill -KILL <pid>` e compare o estado do arquivo em cada caso.
+      - Troque o sleep por um `read` bloqueante no stdin e observe o EINTR com e sem `SA_RESTART`.
+    checks:
+      - Com SIGTERM e SIGINT, a última tarefa termina e o arquivo fica consistente; com SIGKILL, não há limpeza.
+      - Você mostra a diferença de comportamento do read com e sem SA_RESTART.
+  experiment:
+    title: Rastrear a entrega de sinais
+    steps:
+      - Rode o worker sob `strace -e trace=signal,read,nanosleep` e envie SIGTERM de outro terminal.
+      - Veja a máscara e as disposições em `grep Sig /proc/<pid>/status` antes e depois de instalar o handler.
+      - "Rode `sleep 100 &` num shell, depois `kill -STOP` e `kill -CONT` e observe o estado com `ps -o pid,stat,cmd`."
+      - Coloque um printf dentro do handler e discuta por que o bug pode não aparecer nos testes mesmo sendo incorreto.
+    observe:
+      - "A linha `--- SIGTERM {si_signo=SIGTERM, ...} ---` no strace e a syscall interrompida."
+      - Os bits de SigCgt e SigIgn em /proc/pid/status mudando após o sigaction.
+  reflectionQuestions:
+    - Por que um container que não trata SIGTERM demora o timeout inteiro para parar?
+    - Por que a abordagem "handler só seta uma flag" é mais segura do que fazer a limpeza dentro do handler?
+    - Como o shell evita morrer quando você aperta Ctrl+C durante um comando?
+  completionCriteria:
+    - Demonstra o worker parando graciosamente com SIGTERM e SIGINT e perdendo a limpeza com SIGKILL.
+    - Mostra a entrega do sinal no strace e as máscaras em /proc/pid/status.
+    - Reproduz um EINTR e explica como SA_RESTART muda o comportamento.
+  evidencePrompts:
+    - Código do worker e o conteúdo do arquivo após cada tipo de sinal.
+    - Trecho do strace mostrando o sinal e a syscall interrompida.
+  firstAction: Rode `sleep 100`, aperte Ctrl+C e depois rode `echo $?`. Por que o valor é 130?
 
 - id: filesystems
   stage: s07-operating-systems
   title: Sistemas de arquivos
-  status: planned
+  status: authored
   objective: Explicar inodes, diretórios, links e durabilidade (fsync).
-  whyItMatters: Bancos de dados e logs dependem de garantias de escrita em disco.
+  whyItMatters: Bancos de dados e logs dependem de garantias de escrita em disco. Perder dados após queda de energia, arquivos corrompidos pela metade e "disco cheio" com espaço livre (inodes esgotados) se explicam por este modelo.
   prerequisites: [file-descriptors, filesystem-permissions]
+  related: [transactions-basics, virtual-memory]
+  explanation: |
+    Um sistema de arquivos estilo Unix separa **nome** de **arquivo**. O arquivo em si é um **inode**: uma estrutura com tipo, permissões, dono, tamanho, timestamps, contagem de links e ponteiros para os blocos de dados. O inode não guarda o nome.
+
+    Um **diretório** é um arquivo especial cujo conteúdo é uma lista de pares (nome → número de inode). Abrir `/home/ana/tarefas.txt` significa ler o diretório raiz, achar `home`, ler esse diretório, e assim por diante até o inode final. Consequências:
+
+    - **Hard link** (`ln a b`) é só mais uma entrada apontando para o mesmo inode; a contagem de links sobe.
+    - `rm` chama `unlink`: remove a entrada e decrementa a contagem. Os blocos só são liberados quando a contagem chega a zero **e** nenhum processo tem o arquivo aberto.
+    - **Symlink** é um arquivo pequeno que contém um caminho; pode apontar para algo que não existe.
+    - `rename` dentro do mesmo sistema de arquivos é **atômico**: quem olha vê o nome antigo ou o novo, nunca um meio-termo.
+
+    **Durabilidade**: `write` normalmente só copia os dados para o *page cache* na RAM e retorna. O kernel grava no disco depois. Se a energia cair antes, os dados somem. `fsync(fd)` força dados e metadados daquele arquivo até o dispositivo; para que um arquivo novo ou renomeado sobreviva, também é preciso `fsync` no diretório. Journaling (ext4) garante que a estrutura do sistema de arquivos fique consistente após uma queda, mas não que seus dados mais recentes estejam lá.
+
+    O padrão seguro para salvar um arquivo: escrever num temporário, `fsync` nele, `rename` sobre o original, `fsync` no diretório.
+  misconceptions:
+    - claim: Quando write retorna, os dados estão no disco.
+      correction: Estão no page cache. Só fsync (ou fdatasync/O_SYNC) garante que chegaram ao dispositivo.
+    - claim: O nome do arquivo fica guardado no próprio arquivo.
+      correction: O nome é uma entrada no diretório; o inode não conhece seus nomes, e pode ter vários.
+    - claim: Apagar um arquivo grande libera o espaço imediatamente.
+      correction: Se algum processo ainda tem o arquivo aberto, os blocos só são liberados quando o último descritor for fechado.
   resources:
     start: ostep-files-directories
-    deeper: [akita-filesystems]
+    deeper: [ostep-file-system-implementation, ostep-crash-consistency, man-inode, man-fsync, man-rename, akita-filesystems]
+    videos: [cs162-lecture-20-filesystems-2, mit-6s081-2020-lecture-14-file-systems, mit-6s081-2020-lecture-15-crash-recovery, akitando-102-sistemas-de-arquivos-fat-video, akitando-103-sistemas-de-arquivos-video]
+  exercise:
+    id: ex-inodes-links-atomic-save
+    title: Inodes, links e salvamento atômico de tarefas
+    prediction: Depois de `ln tarefas.txt copia.txt` e `rm tarefas.txt`, o conteúdo ainda existe? E com `ln -s`?
+    steps:
+      - Numa pasta de laboratório, crie `tarefas.txt`, um hard link e um symlink; compare com `ls -li` e `stat` (número de inode e contagem de links).
+      - Remova o original e verifique o que acontece com cada link.
+      - "Escreva `save.c` que salva uma lista de tarefas com o padrão temporário → `fsync` → `rename` → `fsync` do diretório, tratando o erro de cada chamada."
+      - Escreva também uma versão ingênua que abre o original com `O_TRUNC` e escreve direto.
+    checks:
+      - A saída de ls -li mostra o mesmo inode para o hard link e um inode diferente para o symlink.
+      - Você explica, em termos de rename atômico, por que save.c nunca deixa o arquivo pela metade.
+  experiment:
+    title: Interromper escritas e observar o page cache
+    steps:
+      - Rode a versão ingênua num laço gravando um arquivo grande e mate o processo com `kill -9` no meio; inspecione o arquivo. Repita com save.c.
+      - Rode `strace -e trace=openat,write,fsync,rename ./save` e confira a ordem das syscalls.
+      - "Grave 1 GB com `dd if=/dev/zero of=big bs=1M count=1024` com e sem `conv=fsync` e compare os tempos; observe `Dirty` em `/proc/meminfo` durante a escrita."
+      - Abra um arquivo grande num processo, apague-o com rm e veja com `df` e `ls -l /proc/<pid>/fd` que o espaço continua ocupado até o processo fechar.
+    observe:
+      - O arquivo truncado ou parcial na versão ingênua e o arquivo íntegro (antigo ou novo) com save.c.
+      - A diferença de tempo do dd com fsync e o valor de Dirty subindo e caindo.
+  reflectionQuestions:
+    - Por que bancos de dados chamam fsync no write-ahead log antes de confirmar uma transação?
+    - O que o journaling do sistema de arquivos garante, e o que ele não garante sobre seus dados?
+    - Como um arquivo de log apagado mas ainda aberto pode encher o disco de um servidor?
+  completionCriteria:
+    - Mostra com ls -li e stat a diferença entre hard link e symlink, antes e depois de remover o original.
+    - Demonstra o arquivo corrompido pela versão ingênua e o arquivo íntegro com o salvamento atômico após kill -9.
+    - Apresenta o strace do save.c com fsync e rename na ordem correta, explicando cada passo.
+  evidencePrompts:
+    - Saídas de ls -li e stat comentadas.
+    - Código do save.c, trecho do strace e o resultado do teste com kill -9 nas duas versões.
+  firstAction: Rode `ls -li /etc/hostname` e `stat /etc/hostname` e encontre o número do inode e a contagem de links.
 
 - id: virtual-memory
   stage: s07-operating-systems
   title: Memória virtual
-  status: planned
+  status: authored
   objective: Explicar espaços de endereçamento, paginação, TLB e page faults.
-  whyItMatters: Explica isolamento entre processos, uso real de memória e o custo de acessos aleatórios.
+  whyItMatters: Explica isolamento entre processos, uso real de memória e o custo de acessos aleatórios. Também explica o OOM killer, por que RSS e VSZ diferem e por que um fork de um processo enorme é rápido.
   prerequisites: [stack-heap-lifetime, cpu-memory-caches]
+  related: [processes-syscalls, threads-basics, memory-allocators]
+  mathThreads: [combinatorics]
+  explanation: |
+    Cada processo vê um **espaço de endereçamento virtual** próprio: os endereços que você imprime com `%p` não são endereços da RAM. A cada acesso, a MMU (hardware) traduz o endereço virtual para um físico usando a **tabela de páginas** do processo, mantida pelo kernel. Dois processos podem usar o mesmo endereço virtual apontando para lugares físicos diferentes — isso é isolamento.
+
+    A tradução é feita em **páginas** (tipicamente 4 KiB). Um endereço virtual se divide em número da página virtual (VPN) e deslocamento dentro da página. A tabela mapeia VPN → número do frame físico, mais bits de permissão (leitura, escrita, execução, usuário) e um bit de "presente". Em x86-64 a tabela tem vários níveis, para não ocupar memória com regiões vazias.
+
+    Consultar a tabela na memória a cada acesso seria caríssimo, então a CPU guarda traduções recentes na **TLB**. Acessos com boa localidade quase sempre acertam na TLB; acessos aleatórios em áreas grandes geram TLB misses e cada um custa caminhar pela tabela.
+
+    Um **page fault** acontece quando a tradução não é válida. O kernel decide o que fazer:
+
+    - **Minor fault**: a página pode ser mapeada sem ler disco (primeira escrita numa página de `malloc`, copy-on-write após fork).
+    - **Major fault**: é preciso ler do disco (arquivo mapeado, swap).
+    - **Acesso inválido**: endereço não mapeado ou permissão violada → `SIGSEGV`.
+
+    Por isso `malloc` de 1 GB retorna rápido e quase não aumenta o **RSS** (memória física em uso): as páginas só ganham frames quando são tocadas. `/proc/<pid>/maps` mostra as regiões virtuais; `/proc/<pid>/status` mostra VmSize e VmRSS.
+  misconceptions:
+    - claim: Os endereços impressos com %p são posições na RAM.
+      correction: São endereços virtuais; a MMU os traduz para endereços físicos que o processo não vê.
+    - claim: malloc(1 GB) consome 1 GB de RAM imediatamente.
+      correction: Reserva espaço virtual; os frames físicos só são alocados quando cada página é tocada (page fault).
+    - claim: Page fault é sempre um erro.
+      correction: A maioria é normal e resolvida pelo kernel (alocação preguiçosa, copy-on-write, leitura de arquivo). Só acessos inválidos viram SIGSEGV.
   resources:
     start: ostep-address-spaces
+    deeper: [ostep-paging, ostep-tlbs, ostep-swapping-mechanisms, man-mmap, man-proc-pid-maps, csapp, akita-memory-1]
+    videos: [cs162-lecture-13-address-translation, cs162-lecture-14-virtual-memory-tlbs, mit-6s081-2020-lecture-8-page-faults, mit-6s081-lecture-4-page-tables, akitando-45-memoria-parte-1-video, sorber-virtual-memory]
+  exercise:
+    id: ex-translate-and-touch
+    title: Traduzir endereços à mão e tocar páginas
+    prediction: "Com páginas de 4 KiB, qual é a VPN e o deslocamento do endereço `0x7ffe1234`? Quanto o RSS sobe ao fazer `malloc(100 MB)` sem tocar a memória? E depois de escrever um byte a cada 4096?"
+    steps:
+      - Calcule à mão VPN e offset de três endereços impressos por um programa seu (use hexadecimal e divisão por 4096).
+      - "Escreva `touch.c`: faz `malloc(100 << 20)`, pausa, escreve 1 byte a cada 4096, pausa de novo, e então escreve tudo com memset."
+      - Em cada pausa, leia `VmSize` e `VmRSS` em `/proc/<pid>/status` e anote.
+      - Compare o resultado com a previsão e explique a diferença entre memória virtual reservada e física usada.
+    checks:
+      - As contas de VPN e offset estão corretas e conferidas com um script ou calculadora.
+      - A tabela de VmSize e VmRSS mostra o RSS subindo só depois de tocar as páginas.
+  experiment:
+    title: Contar page faults e sentir a TLB
+    steps:
+      - "Rode `/usr/bin/time -v ./touch` (ou `perf stat -e page-faults,minor-faults,major-faults ./touch`) e relacione o número de minor faults com 100 MB / 4 KiB."
+      - "Escreva `walk.c` que percorre um array de 1 GB em ordem sequencial e depois com saltos de 4096 bytes em ordem aleatória; meça com `perf stat -e dTLB-load-misses` (se disponível) e com o tempo total."
+      - Faça um fork depois de tocar 100 MB e meça os faults do filho ao escrever na memória (copy-on-write).
+      - Acesse um ponteiro para uma região com `mmap(PROT_READ)` tentando escrever e observe o SIGSEGV no gdb.
+    observe:
+      - Número de minor faults próximo de 25600 para 100 MB.
+      - A diferença de tempo e de TLB misses entre acesso sequencial e aleatório.
+  reflectionQuestions:
+    - Por que fork de um processo de 2 GB é rápido, e quando o custo aparece?
+    - O que o kernel precisa fazer quando a soma da memória tocada pelos processos passa da RAM física?
+    - Como a memória virtual impede que um processo leia a memória de outro?
+  completionCriteria:
+    - Calcula VPN e offset de endereços reais e confere o resultado.
+    - Mostra VmRSS subindo apenas após tocar as páginas, com números de /proc/pid/status.
+    - Apresenta medição de page faults e a comparação de tempo entre acesso sequencial e aleatório.
+  evidencePrompts:
+    - Tabela com VmSize/VmRSS em cada pausa do touch.c e a explicação.
+    - Saída de perf stat ou time -v com faults e tempos anotados.
+  firstAction: Rode `cat /proc/self/maps` e identifique as linhas de heap, stack e da libc.
