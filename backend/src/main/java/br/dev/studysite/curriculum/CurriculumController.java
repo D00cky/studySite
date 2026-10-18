@@ -34,7 +34,8 @@ class CurriculumController {
     }
 
     record TopicPage(Topic topic, Stage stage, Resource startResource, List<Resource> deeperResources, List<Resource> videos,
-            List<Resource> deepDiveResources, List<Resource> books,
+            List<Resource> deepDiveResources, List<Resource> books, List<Resource> moreVideos,
+            List<Resource> moreResources,
             List<TopicSummary> prerequisites, List<TopicSummary> unlocks, List<TopicSummary> related,
             List<ProjectSummary> projects) {
     }
@@ -90,7 +91,24 @@ class CurriculumController {
                 .filter(r -> r.section() != null || !chapterUrls.contains(r.url()))
                 .sorted(java.util.Comparator.comparing((Resource r) -> !"core".equals(r.priority())))
                 .toList();
+        // "Mais para aprofundar": o resto da biblioteca ligado ao tópico que a lição não cita.
+        java.util.Set<String> inLesson = new java.util.HashSet<>();
+        if (start != null) inLesson.add(start.id());
+        deeper.forEach(r -> inLesson.add(r.id()));
+        videos.forEach(r -> inLesson.add(r.id()));
+        deepDive.forEach(r -> inLesson.add(r.id()));
+        books.forEach(r -> inLesson.add(r.id()));
+        java.util.Comparator<Resource> order = java.util.Comparator
+                .comparing((Resource r) -> !"core".equals(r.priority()))
+                .thenComparing(r -> !"pt-BR".equals(r.language()))
+                .thenComparing(Resource::title);
+        List<Resource> more = curriculum.resources().stream()
+                .filter(r -> r.topics().contains(id) && !inLesson.contains(r.id()) && !"book".equals(r.format()))
+                .sorted(order).toList();
+        List<Resource> moreVideos = more.stream().filter(r -> "video".equals(r.format())).toList();
+        List<Resource> moreResources = more.stream().filter(r -> !"video".equals(r.format())).toList();
         return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos, deepDive, books,
+                moreVideos, moreResources,
                 summaries(t.prerequisites()),
                 curriculum.topics().stream().filter(o -> o.prerequisites().contains(id)).map(TopicSummary::of).toList(),
                 summaries(t.related()),

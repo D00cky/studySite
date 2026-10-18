@@ -28,6 +28,8 @@ export function TopicPage() {
     videos,
     deepDiveResources,
     books,
+    moreVideos,
+    moreResources,
     prerequisites,
     unlocks,
     related,
@@ -283,6 +285,36 @@ export function TopicPage() {
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {moreVideos.length + moreResources.length > 0 && (
+            <section aria-labelledby="more-title">
+              <h2 id="more-title">Mais para aprofundar</h2>
+              <p className="muted small">
+                Outros vídeos e materiais da biblioteca sobre este tópico — de cursos universitários, livros e canais de
+                referência. Use quando o essencial estiver firme.
+              </p>
+              {moreVideos.length > 0 && (
+                <details>
+                  <summary>Mais vídeos ({moreVideos.length})</summary>
+                  <div className="details-body">
+                    <VideoList videos={moreVideos} />
+                  </div>
+                </details>
+              )}
+              {moreResources.length > 0 && (
+                <details>
+                  <summary>Leituras e materiais ({moreResources.length})</summary>
+                  <ul className="list-plain details-body">
+                    {moreResources.map((r) => (
+                      <li key={r.id}>
+                        <ResourceDetails resource={r} onOpen={openResource(r)} />
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
             </section>
           )}
 

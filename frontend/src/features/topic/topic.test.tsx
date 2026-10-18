@@ -106,6 +106,28 @@ describe('página de tópico — drill-down 80/20', () => {
   })
 })
 
+describe('página de tópico — mais para aprofundar', () => {
+  it('reúne, recolhidos, vídeos e materiais extras da biblioteca', async () => {
+    const extraVideo = { ...topicPage.startResource!, id: 'ben-eater-x', title: 'Ben Eater — Assembly', author: 'Ben Eater', format: 'video' as const, url: 'https://www.youtube.com/watch?v=abc123XYZ_0' }
+    const extraDoc = { ...topicPage.startResource!, id: 'univesp-x', title: 'UNIVESP — Compiladores', author: 'UNIVESP', language: 'pt-BR' as const }
+    setup({}, { ...topicPage, moreVideos: [extraVideo], moreResources: [extraDoc] })
+    renderApp('/topicos/compilation-pipeline')
+    const region = await screen.findByRole('region', { name: 'Mais para aprofundar' })
+    const videos = within(region).getByText(/Mais vídeos \(1\)/, { selector: 'summary' }).closest('details')!
+    expect(videos).not.toHaveAttribute('open')
+    expect(within(videos).getByText('Ben Eater — Assembly')).toBeInTheDocument()
+    const docs = within(region).getByText(/Leituras e materiais \(1\)/, { selector: 'summary' }).closest('details')!
+    expect(within(docs).getByText('UNIVESP — Compiladores')).toBeInTheDocument()
+  })
+
+  it('não mostra a seção quando a biblioteca não tem nada além da lição', async () => {
+    setup()
+    renderApp('/topicos/compilation-pipeline')
+    await screen.findByRole('heading', { level: 1 })
+    expect(screen.queryByRole('region', { name: 'Mais para aprofundar' })).not.toBeInTheDocument()
+  })
+})
+
 describe('página de tópico — livros de referência', () => {
   const book = {
     ...topicPage.startResource!, id: 'csapp-cap7-linking', title: 'Computer Systems: A Programmer\'s Perspective — Chapter 7: Linking',

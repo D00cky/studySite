@@ -176,6 +176,8 @@ export interface TopicPage {
   videos: Resource[]
   deepDiveResources: Resource[]
   books: Resource[]
+  moreVideos: Resource[]
+  moreResources: Resource[]
   prerequisites: TopicSummary[]
   unlocks: TopicSummary[]
   related: TopicSummary[]

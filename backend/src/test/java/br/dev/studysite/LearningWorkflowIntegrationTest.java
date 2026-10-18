@@ -118,6 +118,27 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void topicPageListsMoreLibraryContentNotAlreadyInTheLesson() {
+        ApiClient someone = register("Curiosa");
+        JsonNode page = someone.get("/api/curriculum/topics/pointers").expect(200).json();
+        java.util.Set<String> inLesson = new java.util.HashSet<>();
+        JsonNode res = page.get("topic").get("resources");
+        if (res.hasNonNull("start")) inLesson.add(res.get("start").asString());
+        res.get("deeper").forEach(n -> inLesson.add(n.asString()));
+        res.get("videos").forEach(n -> inLesson.add(n.asString()));
+        page.get("books").forEach(n -> inLesson.add(n.get("id").asString()));
+        page.get("topic").get("deepDive").forEach(d -> { if (d.hasNonNull("resource")) inLesson.add(d.get("resource").asString()); });
+
+        java.util.List<String> moreVideos = page.get("moreVideos").findValuesAsString("id");
+        java.util.List<String> moreResources = page.get("moreResources").findValuesAsString("id");
+        assertThat(moreVideos.size() + moreResources.size()).as("biblioteca traz algo além da lição").isPositive();
+        assertThat(moreVideos).doesNotContainAnyElementsOf(inLesson);
+        assertThat(moreResources).doesNotContainAnyElementsOf(inLesson);
+        page.get("moreVideos").forEach(v -> assertThat(v.get("format").asString()).isEqualTo("video"));
+        page.get("moreResources").forEach(r -> assertThat(r.get("format").asString()).isNotIn("video", "book"));
+    }
+
+    @Test
     void bookChaptersReplaceTheWholeBookOnATopicPage() {
         ApiClient someone = register("Leitor");
         JsonNode compilation = someone.get("/api/curriculum/topics/compilation-pipeline").expect(200).json().get("books");
