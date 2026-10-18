@@ -43,6 +43,14 @@ class CurriculumContentTest {
     }
 
     @Test
+    void everyTopicHasTheTwoDrillDownLayers() {
+        assertThat(curriculum.topics()).allSatisfy(t -> {
+            assertThat(t.essentials()).as("essencial de %s", t.id()).hasSizeBetween(3, 6);
+            assertThat(t.deepDive()).as("aprofundamento de %s", t.id()).hasSizeGreaterThanOrEqualTo(2);
+        });
+    }
+
+    @Test
     void everyTopicHasAtLeastOneVideo() {
         assertThat(curriculum.topics()).allSatisfy(t ->
                 assertThat(t.resources().videos()).as("vídeos de %s", t.id()).isNotEmpty());

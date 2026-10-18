@@ -271,19 +271,6 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: man-pthreads
-  title: "pthreads(7) — Linux manual page"
-  author: "Michael Kerrisk (man-pages project)"
-  url: https://man7.org/linux/man-pages/man7/pthreads.7.html
-  language: en
-  format: documentation
-  difficulty: intermediate
-  topics: [threads-basics]
-  why: "O que threads POSIX compartilham e o que é por thread, e a implementação NPTL no Linux."
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: man-pthread-create
   title: "pthread_create(3) — Linux manual page"
   author: "Michael Kerrisk (man-pages project)"

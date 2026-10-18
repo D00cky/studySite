@@ -29,7 +29,7 @@
       correction: Acima do número de núcleos (para trabalho de CPU) há troca de contexto e disputa por locks e cache; o throughput pode cair.
   resources:
     start: ostep-concurrency-intro
-    deeper: [ostep-thread-api, man-pthreads, man-pthread-create, gdb-threads, akita-memory-2]
+    deeper: [ostep-thread-api, man-pthreads-7, man-pthread-create, gdb-threads, akita-memory-2]
     videos: [cs162-lecture-3-threads-processes, cs162-lecture-6-synchronization-1, akitando-43-concorrencia-1-video, akitando-46-memoria-2-video]
   exercise:
     id: ex-what-threads-share
