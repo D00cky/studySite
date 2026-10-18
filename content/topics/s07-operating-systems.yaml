@@ -66,12 +66,19 @@
     - Código do run.c e saídas para sucesso, falha, comando inexistente e sinal.
     - Trecho do strace -f anotado e saída do ps mostrando o zumbi.
   firstAction: Rode `strace -f -e trace=process sh -c 'ls'` e encontre a linha do `execve` do ls.
-  essentials:
-    - "fork retorna duas vezes: 0 no filho e o pid do filho no pai; -1 é erro e deve ser tratado."
-    - "Ajuste o filho (dup2, chdir, sinais) entre fork e exec; se execvp retornar, falhou: imprima em stderr e saia com 127."
-    - "Todo filho precisa ser colhido com waitpid; leia o status com WIFEXITED/WEXITSTATUS e WIFSIGNALED/WTERMSIG."
-    - "Zumbi (estado Z no ps) não se resolve com kill: corrija o pai que não chama wait."
-    - "Para ver o que um programa pede ao kernel, comece por `strace -f` e `/proc/<pid>/` antes de abrir o código."
+  kit:
+    - term: "fork()"
+      use: "Duplicar o processo atual; retorna 0 no filho, o pid do filho no pai e -1 em erro."
+    - term: "execvp(argv[0], argv)"
+      use: "Trocar o programa do filho pelo comando; se retornar, falhou: imprima em stderr e saia com 127."
+    - term: "waitpid(pid, &st, 0)"
+      use: "Colher o filho e evitar zumbis; leia st com WIFEXITED/WEXITSTATUS e WIFSIGNALED/WTERMSIG."
+    - term: "strace -f -e trace=process ./prog"
+      use: "Ver clone, execve, wait4 e exit_group que o programa pede ao kernel."
+    - term: "ps -o pid,ppid,stat,cmd"
+      use: "Ver pai, filho e estado de cada processo (Z = zumbi esperando o wait do pai)."
+    - term: "/proc/<pid>/status e /proc/<pid>/fd"
+      use: "Inspecionar um processo vivo: estado, pai, memória e descritores abertos."
   deepDive:
     - title: clone, flags de compartilhamento e namespaces
       why: Quando for entender como threads e containers nascem da mesma syscall que fork.
@@ -153,12 +160,19 @@
     - Diagrama das tabelas de descritores antes e depois dos dup2, ao lado da saída do strace.
     - Saída de ls -l /proc/pid/fd na versão travada com a ponta culpada destacada.
   firstAction: Rode `ls -l /proc/self/fd` e depois `ls -l /proc/self/fd > /tmp/fd.txt; cat /tmp/fd.txt` e compare para onde o fd 1 aponta.
-  essentials:
-    - "fd é índice numa tabela por processo; 0, 1 e 2 são stdin, stdout e stderr, e open devolve sempre o menor livre."
-    - "Redirecionar é `dup2(fd, 1)` no filho, entre fork e exec; depois feche o fd original."
-    - "Em pipelines, feche toda ponta de pipe que o processo não usa; senão o leitor nunca recebe EOF."
-    - "Abra com `O_CLOEXEC` o que não deve vazar para programas executados, e feche descritores em todo caminho de erro."
-    - "Diagnostique com `ls -l /proc/<pid>/fd`, `lsof -p` e `ulimit -n` quando aparecer EMFILE (too many open files)."
+  kit:
+    - term: "open(path, O_WRONLY|O_CREAT|O_TRUNC, 0644)"
+      use: "Abrir ou criar um arquivo para escrita; devolve o menor fd livre ou -1 com errno."
+    - term: "dup2(fd, 1); close(fd);"
+      use: "Redirecionar stdout para fd no filho, entre fork e exec, e fechar o original."
+    - term: "pipe(fds)"
+      use: "Criar um pipe: fds[0] lê e fds[1] escreve; ligue cada ponta a stdin/stdout com dup2."
+    - term: "close(fds[0]); close(fds[1]);"
+      use: "Fechar toda ponta que o processo não usa; senão o leitor nunca recebe EOF e o pipeline trava."
+    - term: "ls -l /proc/<pid>/fd"
+      use: "Ver para onde cada fd aponta (arquivo, pipe:[inode], socket) e achar quem segura uma ponta."
+    - term: "ulimit -n / lsof -p <pid>"
+      use: "Conferir o limite e listar os fds abertos quando aparecer EMFILE (too many open files)."
   deepDive:
     - title: I/O multiplexado com poll e epoll
       why: Quando for construir ou depurar servidores que atendem milhares de conexões numa thread.
@@ -171,6 +185,9 @@
     - title: eventfd, signalfd e "tudo é descritor"
       why: Quando quiser acordar um laço de eventos a partir de outra thread ou de um sinal.
       resource: man-eventfd
+    - title: "O_CLOEXEC e herança de descritores no exec"
+      why: "Ao executar outros programas sem vazar arquivos e sockets abertos para eles."
+      resource: man-open
 
 - id: signals
   stage: s07-operating-systems
@@ -237,12 +254,19 @@
     - Código do worker e o conteúdo do arquivo após cada tipo de sinal.
     - Trecho do strace mostrando o sinal e a syscall interrompida.
   firstAction: Rode `sleep 100`, aperte Ctrl+C e depois rode `echo $?`. Por que o valor é 130?
-  essentials:
-    - "Use `sigaction`, não `signal`; no handler, apenas sete uma flag `volatile sig_atomic_t` e trate no laço principal."
-    - "SIGTERM é o pedido educado de parada: trate-o para terminar a tarefa atual e salvar estado; SIGKILL não dá chance de limpeza."
-    - "Syscalls bloqueadas podem falhar com EINTR: use SA_RESTART ou repita a chamada quando errno for EINTR."
-    - "Sinais iguais não se acumulam: colha filhos em laço com `waitpid(-1, &st, WNOHANG)` no tratamento de SIGCHLD."
-    - "Exit code 128+N significa morte pelo sinal N (130 = SIGINT, 137 = SIGKILL, 143 = SIGTERM)."
+  kit:
+    - term: "sigaction(SIGTERM, &sa, NULL)"
+      use: "Instalar um handler de forma portátil, escolhendo flags como SA_RESTART; prefira a signal()."
+    - term: "volatile sig_atomic_t stop; ... stop = 1;"
+      use: "Fazer só isto no handler e tratar a parada (terminar tarefa, salvar estado) no laço principal."
+    - term: "kill -TERM <pid> / kill -KILL <pid>"
+      use: "Pedir parada educada, que pode ser tratada, ou matar sem nenhuma chance de limpeza."
+    - term: "echo $?  (128+N = morto pelo sinal N)"
+      use: "Interpretar exit codes: 130 = SIGINT (Ctrl+C), 137 = SIGKILL, 143 = SIGTERM."
+    - term: "if (errno == EINTR) repetir"
+      use: "Refazer a syscall bloqueada que um sinal interrompeu, ou instalar o handler com SA_RESTART."
+    - term: "strace -e trace=signal ./prog"
+      use: "Ver a entrega do sinal e qual syscall ele interrompeu."
   deepDive:
     - title: Lista de funções async-signal-safe
       why: Quando precisar fazer algo além de setar uma flag dentro de um handler.
@@ -258,6 +282,9 @@
     - title: Sinais de tempo real e sigqueue
       why: Em sistemas que precisam enfileirar sinais com dados em vez de perdê-los.
       resource: man-signal
+    - title: "SIGCHLD e colheita em laço com waitpid(-1, &st, WNOHANG)"
+      why: "Em programas que criam filhos e não podem acumular zumbis, já que sinais iguais não se acumulam."
+      resource: man-wait
 
 - id: filesystems
   stage: s07-operating-systems
@@ -325,12 +352,17 @@
     - Saídas de ls -li e stat comentadas.
     - Código do save.c, trecho do strace e o resultado do teste com kill -9 nas duas versões.
   firstAction: Rode `ls -li /etc/hostname` e `stat /etc/hostname` e encontre o número do inode e a contagem de links.
-  essentials:
-    - "Nome é entrada de diretório e arquivo é inode: `ls -li` e `stat` mostram número do inode e contagem de links."
-    - "write só chega ao page cache; para durabilidade chame fsync no arquivo e, para criação ou rename, também no diretório."
-    - "Salve com segurança: temporário no mesmo FS → fsync → rename sobre o original → fsync do diretório."
-    - "Disco cheio com espaço livre? Rode `df -i` (inodes) e procure arquivos apagados mas abertos em /proc/*/fd."
-    - "Hard link não cruza sistemas de arquivos e rename só é atômico dentro do mesmo FS."
+  kit:
+    - term: "ls -li arquivo / stat arquivo"
+      use: "Ver número do inode, contagem de links, tamanho e timestamps de um arquivo."
+    - term: "ln alvo nome / ln -s alvo nome"
+      use: "Criar hard link (outra entrada para o mesmo inode) ou symlink (arquivo que guarda um caminho)."
+    - term: "fsync(fd)"
+      use: "Garantir que dados e metadados chegaram ao disco; write sozinho só chega ao page cache."
+    - term: "tmp → fsync → rename(tmp, final) → fsync(dir)"
+      use: "Salvar um arquivo sem nunca deixá-lo pela metade; o temporário fica no mesmo sistema de arquivos."
+    - term: "df -h / df -i"
+      use: "Ver espaço e inodes livres quando aparecer \"No space left on device\"."
   deepDive:
     - title: Journaling e modos do ext4 (ordered, writeback, journal)
       why: Quando precisar saber o que sobrevive a uma queda de energia em cada configuração.
@@ -346,6 +378,8 @@
     - title: fdatasync, O_SYNC e O_DIRECT
       why: Em bancos de dados e sistemas que controlam o próprio cache e precisam medir latência de disco.
       resource: man-fsync
+    - title: "Arquivos apagados mas ainda abertos (lsof +L1, /proc/*/fd)"
+      why: "Quando df mostra disco cheio mas du não encontra os arquivos responsáveis."
 
 - id: virtual-memory
   stage: s07-operating-systems
@@ -415,12 +449,17 @@
     - Tabela com VmSize/VmRSS em cada pausa do touch.c e a explicação.
     - Saída de perf stat ou time -v com faults e tempos anotados.
   firstAction: Rode `cat /proc/self/maps` e identifique as linhas de heap, stack e da libc.
-  essentials:
-    - "Endereços que seu programa vê são virtuais; com páginas de 4 KiB, offset = endereço % 4096 e VPN = endereço / 4096."
-    - "malloc reserva espaço virtual; RSS só sobe quando a página é tocada. Compare VmSize e VmRSS em /proc/<pid>/status."
-    - "Page faults minor são normais (alocação preguiçosa, copy-on-write); só acesso inválido vira SIGSEGV."
-    - "Acesso sequencial é amigo da TLB e do cache; saltos aleatórios em áreas grandes custam caro."
-    - "Leia `/proc/<pid>/maps` para saber o que está mapeado e meça faults com `perf stat` ou `/usr/bin/time -v`."
+  kit:
+    - term: "VPN = addr / 4096, offset = addr % 4096"
+      use: "Traduzir um endereço virtual à mão com páginas de 4 KiB (em hex, offset = os 3 últimos dígitos)."
+    - term: "cat /proc/<pid>/maps"
+      use: "Ver as regiões mapeadas (heap, stack, libc, mmap) e suas permissões."
+    - term: "grep -E 'VmSize|VmRSS' /proc/<pid>/status"
+      use: "Comparar memória virtual reservada com a memória física realmente tocada."
+    - term: "/usr/bin/time -v ./prog"
+      use: "Contar minor e major page faults e ver o pico de RSS de um programa."
+    - term: "perf stat -e page-faults,dTLB-load-misses ./prog"
+      use: "Medir faults e TLB misses para comparar acesso sequencial e aleatório."
   deepDive:
     - title: Substituição de páginas, swap e thrashing
       why: Quando um servidor fica lento por falta de RAM antes de o OOM killer agir.

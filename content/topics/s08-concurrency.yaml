@@ -65,12 +65,19 @@
     - Código e saída de share.c, antes e depois da correção do argumento.
     - Saída de ps -L, strace com clone e thread apply all bt anotados.
   firstAction: Rode `ps -eLf | head` e descubra o que a coluna LWP significa.
-  essentials:
-    - "Threads compartilham globais, heap e descritores; cada uma tem stack, registradores e errno próprios."
-    - "Faça `pthread_join` (ou detach) em toda thread criada e confira o retorno de pthread_create."
-    - "Nunca passe o endereço da variável do laço para pthread_create: dê a cada thread seu próprio argumento."
-    - "Compile com `-pthread` e depure com `ps -L`, `/proc/<pid>/task` e `info threads` / `thread apply all bt` no gdb."
-    - "Não assuma ordem de execução entre threads; dado compartilhado com escrita exige sincronização."
+  kit:
+    - term: "pthread_create(&t, NULL, f, &args[i])"
+      use: "Iniciar f numa nova thread com um argumento próprio por thread (nunca &i do laço)."
+    - term: "pthread_join(t, &ret)"
+      use: "Esperar a thread terminar e pegar o resultado que ela retornou."
+    - term: "gcc -pthread -g -o prog prog.c"
+      use: "Compilar e linkar com pthreads, com símbolos de depuração."
+    - term: "globais, heap, fds = compartilhados; stack = por thread"
+      use: "Prever o que precisa de sincronização: tudo que é compartilhado e escrito por alguém."
+    - term: "ps -L -p <pid> / ls /proc/<pid>/task"
+      use: "Ver as threads (LWPs) de um processo vivo."
+    - term: "gdb -p <pid> + thread apply all bt"
+      use: "Anexar ao processo e ver a pilha de cada thread."
   deepDive:
     - title: Pools de threads e Executors em Java
       why: Quando for processar tarefas em backend Java sem criar uma thread por requisição.
@@ -153,12 +160,17 @@
     - Valores das execuções sem lock, desenho da intercalação e código corrigido.
     - Relatório do TSan anotado e tabela de tempos.
   firstAction: Compile `int c=0; void *f(void*a){for(int i=0;i<1000000;i++)c++;return 0;}` com duas threads e imprima `c`.
-  essentials:
-    - "`x++` são três passos (ler, somar, escrever); todo acesso compartilhado com pelo menos uma escrita precisa do mesmo lock."
-    - "Mantenha a seção crítica mínima e escreva o invariante que o lock protege (ex.: `0 <= count <= cap`)."
-    - "Espere condições com `while (!cond) pthread_cond_wait(&cv, &m)`, nunca `if`, e sinalize com o mutex em mãos."
-    - "Rode os testes com `-fsanitize=thread` (ThreadSanitizer) ou Helgrind: teste que passa não prova ausência de race."
-    - "Prefira estruturas prontas e testadas (filas bloqueantes, atômicos da linguagem) a sincronização feita à mão."
+  kit:
+    - term: "pthread_mutex_lock(&m); ... pthread_mutex_unlock(&m);"
+      use: "Proteger toda leitura e escrita do dado compartilhado com o mesmo mutex, na menor seção possível."
+    - term: "while (!cond) pthread_cond_wait(&cv, &m);"
+      use: "Esperar uma condição sem gastar CPU; sempre em while, nunca em if."
+    - term: "pthread_cond_signal / pthread_cond_broadcast"
+      use: "Acordar uma ou todas as threads que esperam, depois de mudar o estado com o mutex em mãos."
+    - term: "gcc -fsanitize=thread -g / valgrind --tool=helgrind"
+      use: "Detectar data races que os testes não pegam, com as duas pilhas em conflito."
+    - term: "atomic_fetch_add(&c, 1)"
+      use: "Incrementar um contador compartilhado sem lock (stdatomic.h)."
   deepDive:
     - title: Atômicos e programação lock-free
       why: Quando um contador ou estrutura muito disputada vira gargalo com mutex.
@@ -245,12 +257,17 @@
     - Saída de thread apply all bt anotada e o grafo de espera desenhado.
     - Código antes e depois da ordenação e o relatório da ferramenta.
   firstAction: Escreva no papel duas threads e dois locks e desenhe a sequência de lock que leva ao travamento.
-  essentials:
-    - "Deadlock exige as quatro condições de Coffman ao mesmo tempo; quebre a espera circular com uma ordem global de locks."
-    - "Regra de bolso: trave sempre pelo id menor primeiro e documente essa ordem junto ao código."
-    - "Processo parado com ~0% de CPU? `gdb -p <pid>` e `thread apply all bt` mostram quem espera qual lock."
-    - "Não chame código desconhecido (callbacks, I/O lento) segurando um lock; isso cria ordens de aquisição escondidas."
-    - "Helgrind e TSan acusam ordem de lock inconsistente mesmo quando o deadlock não aconteceu naquela execução."
+  kit:
+    - term: "ordem global de locks (menor id primeiro)"
+      use: "Travar sempre na mesma ordem para impedir a espera circular."
+    - term: "grafo de espera: ciclo = deadlock"
+      use: "Desenhar quem espera o lock de quem e achar o ciclo que precisa ser quebrado."
+    - term: "top -H -p <pid>"
+      use: "Confirmar CPU perto de zero e nenhum progresso, o sintoma típico de deadlock."
+    - term: "gdb -p <pid> + thread apply all bt"
+      use: "Ver cada thread parada em pthread_mutex_lock e descobrir qual lock ela espera."
+    - term: "valgrind --tool=helgrind ./prog"
+      use: "Acusar ordem de lock inconsistente mesmo em execuções que não travaram."
   deepDive:
     - title: Detecção de deadlock em bancos de dados e retry de transações
       why: Quando o PostgreSQL abortar uma transação com "deadlock detected" e a aplicação precisar repetir.
@@ -331,12 +348,19 @@
     - Código da fila, saída dos testes e relatório limpo do TSan.
     - Gráfico ou tabela de throughput com nproc anotado e a explicação da curva.
   firstAction: Desenhe um buffer circular de capacidade 4 e simule à mão três puts e dois gets, anotando head, tail e count.
-  essentials:
-    - "Fila limitada = buffer circular + 1 mutex + 2 variáveis de condição (não cheia, não vazia), cada wait num `while`."
-    - "Processe a tarefa fora do lock; só a manipulação de head, tail e count fica na seção crítica."
-    - "A capacidade é backpressure: o produtor bloqueia em vez de acumular tarefas até estourar a memória."
-    - "Planeje o desligamento desde o início: flag `fechada` + broadcast, ou uma poison pill por worker."
-    - "Mais workers só ajudam até saturar núcleos ou I/O; meça throughput por número de workers antes de escolher."
+  kit:
+    - term: "buffer circular: head, tail, count, cap"
+      use: "Guardar até cap tarefas, avançando os índices com (i + 1) % cap."
+    - term: "1 mutex + cond nao_cheia + cond nao_vazia"
+      use: "Bloquear produtor com fila cheia e consumidor com fila vazia, cada wait num while."
+    - term: "get → unlock → processar"
+      use: "Tirar a tarefa da fila dentro do lock e processá-la fora dele."
+    - term: "q_close: fechada = 1 + pthread_cond_broadcast"
+      use: "Desligar os workers de forma limpa quando a fila esvaziar."
+    - term: "clock_gettime(CLOCK_MONOTONIC, &t)"
+      use: "Medir throughput (tarefas/s) sem sofrer com ajustes do relógio do sistema."
+    - term: "nproc"
+      use: "Saber quantos núcleos há: workers de CPU ≈ nproc; workers de I/O podem ser mais."
   deepDive:
     - title: Filas bloqueantes prontas em Java (ArrayBlockingQueue, ThreadPoolExecutor)
       why: Ao implementar workers no backend Java em vez de escrever a fila à mão.
