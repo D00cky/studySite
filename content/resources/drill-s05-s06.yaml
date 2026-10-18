@@ -1,0 +1,98 @@
+# Recursos do drill-down 80/20 (s05-s06)
+
+- id: algs4-quicksort
+  title: "Algorithms, 4th Edition — 2.3 Quicksort"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/23quicksort/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [searching-sorting]
+  why: Quicksort com análise, embaralhamento contra pior caso e partição de 3 vias para muitas chaves repetidas.
+  access: free
+  priority: optional
+  section: "2.3 Quicksort"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-balanced-search-trees
+  title: "Algorithms, 4th Edition — 3.3 Balanced Search Trees"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/33balanced/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  why: Árvores 2-3 e rubro-negras (left-leaning) com rotações explicadas passo a passo e garantia de altura logarítmica.
+  access: free
+  priority: optional
+  section: "3.3 Balanced Search Trees"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-tries
+  title: "Algorithms, 4th Edition — 5.2 Tries"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/52trie/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [binary-search-trees]
+  why: Tries e ternary search tries para busca por prefixo, a base de autocomplete e de roteamento por prefixo.
+  access: free
+  priority: optional
+  section: "5.2 Tries"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: abseil-swiss-tables
+  title: "Swiss Tables Design Notes"
+  author: Abseil (Google)
+  url: https://abseil.io/about/design/swisstables
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [hash-tables]
+  why: Como uma tabela hash moderna com endereçamento aberto usa metadados e SIMD para sondar vários slots de uma vez.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-union-find
+  title: "Algorithms, 4th Edition — 1.5 Case Study: Union-Find"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/15uf/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Conectividade dinâmica com union-find, de quick-find a weighted quick-union com compressão de caminho, com medições.
+  access: free
+  priority: optional
+  section: "1.5 Case Study: Union-Find"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-minimum-spanning-trees
+  title: "Algorithms, 4th Edition — 4.3 Minimum Spanning Trees"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/43mst/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal]
+  why: Algoritmos de Prim e Kruskal, mostrando como heap e union-find se combinam num problema de grafos com pesos.
+  access: free
+  priority: optional
+  section: "4.3 Minimum Spanning Trees"
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: algs4-shortest-paths
+  title: "Algorithms, 4th Edition — 4.4 Shortest Paths"
+  author: Robert Sedgewick e Kevin Wayne
+  url: https://algs4.cs.princeton.edu/44sp/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [graphs-traversal, dependency-graphs]
+  why: Dijkstra com fila de prioridade indexada, caminhos em DAGs (incluindo o critical path method para escalonamento paralelo) e Bellman-Ford.
+  access: free
+  priority: optional
+  section: "4.4 Shortest Paths"
+  verification: { status: verified, checkedOn: "2026-10-18" }

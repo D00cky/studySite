@@ -68,6 +68,25 @@
     - Tabela n × ops × razão e a prova por indução da soma triangular.
     - Gráfico de tempo por elemento com anotações dos níveis de cache e a saída do perf stat.
   firstAction: Escreva no papel quantas vezes `for (i = 1; i < n; i *= 2)` executa para n = 16 e n = 1000.
+  essentials:
+    - "Ao ler um laço, pergunte quantas vezes o corpo roda em função de `n`: laços aninhados multiplicam, laço que divide por 2 dá `log n`."
+    - "Tenha a escala de bolso: `O(1)` < `O(log n)` < `O(n)` < `O(n log n)` < `O(n²)`; com n = 1e6, n² já são 1e12 operações, inviável."
+    - "Confirme a hipótese medindo: dobre `n`, repita, use a mediana e olhe `T(2n)/T(n)` (≈2 linear, ≈4 quadrático); um ponto só não mostra crescimento."
+    - "Cace o O(n²) escondido: busca linear ou `contains` dentro de laço, uma query por item (N+1) e concatenação de string em loop."
+    - "Em n real, constantes e cache contam: acesso sequencial vence saltos aleatórios mesmo com o mesmo O."
+  deepDive:
+    - title: Recorrências e Master Theorem
+      why: Quando precisar estimar algoritmos de divisão e conquista (merge sort, busca binária, árvores) sem depender só de medição.
+      resource: mit-6042j-spring-2015
+    - title: Análise amortizada formal (método do potencial)
+      why: Quando provar o custo de estruturas com operações caras ocasionais, como resize de tabelas e union-find.
+      resource: mit-6006
+    - title: Modelo de memória externa e algoritmos cache-aware
+      why: Quando os dados não cabem no cache ou na RAM e o custo real passa a ser contar linhas de cache ou páginas lidas.
+      resource: drepper-memory
+    - title: Limites inferiores e NP-completude
+      why: Quando suspeitar que um problema (escalonamento, roteamento) não tem solução exata eficiente e for hora de aceitar heurísticas.
+      resource: mit-6006
 
 - id: searching-sorting
   stage: s05-algorithms-basics
@@ -138,6 +157,26 @@
     - Código da busca com o invariante e a saída do teste aleatório pegando o bug introduzido.
     - Tabela/gráfico da corrida de ordenações com uma frase explicando cada anomalia.
   firstAction: Escreva num comentário o invariante "se x existe, está em a[lo..hi)" e desenhe lo e hi num array de 5 elementos.
+  essentials:
+    - "No dia a dia, use a ordenação e a busca da biblioteca (`qsort`/`bsearch`, `Arrays.sort`, `Collections.binarySearch`); escreva a sua para aprender ou para variantes como `lower_bound`."
+    - "Ao escrever busca binária, fixe o intervalo semiaberto `[lo, hi)` e o invariante antes do código, e calcule `mid = lo + (hi - lo) / 2`."
+    - "Teste busca e ordenação contra uma versão ingênua (linear, insertion sort) com milhares de entradas aleatórias pequenas e com valores repetidos."
+    - "Ordenando por várias chaves, use ordenação estável (merge sort/Timsort, `List.sort` em Java) ou um comparador composto."
+    - "Busca binária só vale em dados ordenados; para uma busca única, a busca linear sai mais barata que ordenar antes."
+  deepDive:
+    - title: Partição de 3 vias, pivô aleatório e introsort
+      why: Quando os dados têm muitas chaves repetidas ou você precisa de garantia de pior caso numa ordenação própria.
+      resource: algs4-quicksort
+    - title: Counting sort e radix sort
+      why: Quando ordenar milhões de chaves inteiras de faixa limitada (ids, IPs, datas) e o limite n log n da comparação pesar.
+      resource: ods-sorting-algorithms
+    - title: Timsort e ordenação adaptativa
+      why: Quando quiser entender por que dados quase ordenados ordenam tão rápido em Java e Python, e o que isso implica para benchmarks.
+    - title: Ordenação externa (external merge sort)
+      why: Quando os dados não cabem na memória, como num `ORDER BY` grande no banco ou ao ordenar arquivos de log gigantes.
+      resource: cmu-15445-fall2024
+    - title: Busca binária sobre a resposta
+      why: Quando otimizar um parâmetro monotônico (capacidade mínima, primeiro commit ruim com `git bisect`) em vez de um array.
 
 - id: dynamic-arrays
   stage: s05-algorithms-basics
@@ -208,6 +247,24 @@
     - Prova escrita do método do banqueiro e saída do contador de cópias.
     - Gráfico de latência por push e o relatório do ASan anotado.
   firstAction: Some à mão 1 + 2 + 4 + ... + 512 e compare com 1024; escreva o que isso diz sobre o total de cópias.
+  essentials:
+    - "Cresça multiplicando (×2 ou ×1,5), nunca somando uma constante; só o crescimento geométrico dá `push` O(1) amortizado."
+    - "Em C, faça `tmp = realloc(p, n)` e, se `tmp == NULL`, o bloco antigo ainda é seu; não guarde ponteiros para elementos através de um push que pode realocar."
+    - "Sabe o tamanho final? Pré-aloque (`new ArrayList<>(n)`, `ensureCapacity`) e evite cópias e picos de latência."
+    - "Amortizado não vale por operação: o push que dispara resize custa O(n); em caminhos com requisito de p99, pré-aloque."
+    - "Inserir ou remover no meio desloca elementos (O(n)); para remover sem manter ordem, troque com o último e faça pop."
+  deepDive:
+    - title: Método do potencial
+      why: Quando precisar provar custos amortizados de estruturas mais complexas que o vetor (tabelas que crescem e encolhem, filas com duas pilhas).
+      resource: mit-6006
+    - title: Interação com o alocador (fator 1,5 vs 2, reuso de blocos)
+      why: Quando vetores enormes dominarem o uso de memória e a fragmentação do heap começar a aparecer.
+      resource: ostep-free-space
+    - title: Array of structs vs struct of arrays
+      why: Quando cada linha de cache contar (simulações, engines, processamento em lote) e o layout dos dados decidir o desempenho.
+      resource: mike-acton-data-oriented-design-cppcon-2014
+    - title: Gap buffers e ropes
+      why: Quando construir um editor de texto ou estrutura com muitas inserções perto de um cursor.
 
 - id: linked-lists
   stage: s05-algorithms-basics
@@ -277,6 +334,23 @@
     - Código do verificador de invariantes e saída do teste aleatório.
     - Tabela/gráfico da comparação com o trecho do perf stat.
   firstAction: Desenhe três caixas ligadas por setas e escreva a ordem exata das atribuições para inserir uma quarta no meio sem perder nenhuma.
+  essentials:
+    - "Por padrão, use array dinâmico; escolha lista só quando já tem o ponteiro do nó e precisa inserir ou remover no meio em O(1) (LRU, listas intrusivas)."
+    - "Ao liberar, guarde `next` antes do `free(p)`; ao religar, ligue o nó novo antes de soltar os ponteiros antigos."
+    - "Use nó sentinela ou `node **pp` para eliminar os casos especiais de lista vazia e de inserção na cabeça."
+    - "Escreva um `check_invariants` (chega ao fim em `len` passos, `n->next->prev == n`) e rode os testes com ASan ou Valgrind."
+    - "Em Java, prefira `ArrayList` ou `ArrayDeque` a `LinkedList`: a lista ligada perde em memória e em cache em quase todo uso."
+  deepDive:
+    - title: Listas intrusivas e container_of
+      why: Quando ler código do kernel Linux ou escrever alocadores e escalonadores que evitam uma alocação por elemento.
+    - title: Cache LRU com hash e lista duplamente ligada
+      why: Quando implementar um cache com despejo do item menos usado recentemente em O(1).
+    - title: Skip lists
+      why: Quando precisar de uma estrutura ordenada simples de implementar e de tornar concorrente (como os sorted sets do Redis).
+      resource: open-data-structures
+    - title: Listas lock-free e o problema ABA
+      why: Quando chegar a estruturas concorrentes sem locks e precisar entender por que reusar nós quebra o compare-and-swap.
+      resource: preshing-lock-free-intro
 
 - id: stacks-queues
   stage: s05-algorithms-basics
@@ -346,3 +420,24 @@
     - Tabela de head/tail prevista no papel ao lado da saída do programa.
     - Trecho do strace do pipe e a tabela da simulação de fila de jobs.
   firstAction: Desenhe um array de 4 posições em círculo e marque head e tail após três enqueues e um dequeue.
+  essentials:
+    - "Em Java, use `ArrayDeque` como pilha e como fila (não `Stack` nem `LinkedList`); em C, pilha sobre vetor e fila em buffer circular."
+    - "No buffer circular, distinga cheio de vazio com `count` (ou uma posição livre) e avance índices com `% cap`, ou `& (cap - 1)` se cap for potência de 2."
+    - "Toda fila entre produtor e consumidor precisa de limite e de política explícita quando enche: bloquear, descartar ou devolver erro (backpressure)."
+    - "Recursão com profundidade que depende da entrada (árvore degenerada, DFS) pode estourar a call stack; use pilha explícita."
+    - "Ao crescer um buffer circular, copie na ordem lógica a partir de `head`, nunca o bloco cru."
+  deepDive:
+    - title: Filas entre threads (mutex + condition variable)
+      why: Na etapa de concorrência, quando produtor e consumidor rodarem em threads diferentes e a fila precisar bloquear com segurança.
+      resource: ostep-condition-variables
+    - title: Ring buffers do kernel e filas lock-free SPSC
+      why: Quando precisar passar dados entre um produtor e um consumidor com latência mínima (drivers, áudio, pipelines de rede).
+      resource: linux-kernel-circular-buffers
+    - title: Filas de mensagens duráveis
+      why: Quando jobs do backend precisarem sobreviver a quedas e você tiver de escolher entre entrega at-most-once e at-least-once.
+      resource: rabbitmq-reliability-guide
+    - title: Sobrecarga, filas e descarte de carga
+      why: Quando dimensionar filas de um serviço sob pico e decidir quanto enfileirar antes de rejeitar requisições.
+      resource: sre-book-handling-overload
+    - title: Pilha e fila monotônicas
+      why: Quando resolver problemas de janela deslizante, como máximo em janela ou próximo elemento maior, em O(n).
