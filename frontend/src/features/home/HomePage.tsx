@@ -6,6 +6,7 @@ import { formatDate, formatDateTime } from '../../lib/format'
 import { useTopicTitles } from '../../lib/useTopicTitles'
 import { Built, Journey, Pattern, StudyTime } from '../progress/sections'
 import { useProgressData } from '../progress/useProgressData'
+import { StudyCalendar } from '../progress/StudyCalendar'
 import { StageProgress } from './StageProgress'
 import { StudySessionPanel } from './StudySessionPanel'
 
@@ -91,6 +92,7 @@ export function HomePage() {
             />
 
             {metrics && <StudyTime metrics={metrics} />}
+            <StudyCalendar />
 
             {roadmap && <StageProgress roadmap={roadmap} progress={progress} />}
             <p className="small" style={{ margin: 0 }}>

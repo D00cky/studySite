@@ -5,6 +5,7 @@ import type {
   ContinueView,
   Evidence,
   FocusBlock,
+  FocusCalendar,
   GroupDetail,
   GroupProjectDetail,
   HelpSignal,
@@ -52,6 +53,7 @@ export const keys = {
   myReviews: ['mine', 'reviews'] as const,
   focus: ['mine', 'focus'] as const,
   metrics: ['mine', 'metrics'] as const,
+  calendar: (year: number | null) => ['mine', 'calendar', year] as const,
   group: (id: string) => ['group', id] as const,
   groupPart: (id: string, part: string) => ['group', id, part] as const,
   review: (id: string) => ['review', id] as const,
@@ -481,5 +483,15 @@ export function useMetrics() {
   return useQuery({
     queryKey: keys.metrics,
     queryFn: () => api.get<Metrics>(`/api/me/metrics?${new URLSearchParams({ tz: localTimeZone(), weeks: '8' })}`),
+  })
+}
+
+export function useFocusCalendar(year: number | null) {
+  return useQuery({
+    queryKey: keys.calendar(year),
+    queryFn: () =>
+      api.get<FocusCalendar>(
+        `/api/me/focus-calendar?${new URLSearchParams({ tz: localTimeZone(), ...(year ? { year: String(year) } : {}) })}`,
+      ),
   })
 }

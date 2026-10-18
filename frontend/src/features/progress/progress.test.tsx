@@ -133,3 +133,44 @@ describe('progresso na página inicial', () => {
     expect(screen.queryByRole('region', { name: 'Seu padrão' })).not.toBeInTheDocument()
   })
 })
+
+describe('calendário de estudo (heatmap)', () => {
+  const recent = {
+    year: null, from: '2025-10-20', to: '2026-10-18', years: [2025, 2026],
+    days: [{ date: '2026-10-12', minutes: 85 }, { date: '2026-10-14', minutes: 20 }],
+  }
+
+  it('pinta cada dia pelo tempo estudado e resume sem falar em sequência', async () => {
+    setup()
+    server.use(http.get('/api/me/focus-calendar', () => HttpResponse.json(recent)))
+    renderApp('/')
+    const section = await screen.findByRole('region', { name: 'Calendário de estudo' })
+    expect(await within(section).findByRole('img', { name: /2 dias com estudo/ })).toBeInTheDocument()
+    expect(within(section).getByTitle('1h25 em 12/10/2026')).toHaveAttribute('data-level', '3')
+    expect(within(section).getByTitle('20 min em 14/10/2026')).toHaveAttribute('data-level', '1')
+    expect(within(section).getByTitle('Sem estudo em 13/10/2026')).toHaveAttribute('data-level', '0')
+    expect(within(section).queryByText(/seguid|sequência|streak/i)).not.toBeInTheDocument()
+  })
+
+  it('troca para um ano específico', async () => {
+    const years: (string | null)[] = []
+    setup()
+    server.use(
+      http.get('/api/me/focus-calendar', ({ request }) => {
+        const year = new URL(request.url).searchParams.get('year')
+        years.push(year)
+        return HttpResponse.json(
+          year === '2025'
+            ? { year: 2025, from: '2025-01-01', to: '2025-12-31', years: [2025, 2026], days: [{ date: '2025-03-10', minutes: 120 }] }
+            : recent,
+        )
+      }),
+    )
+    const { user } = renderApp('/progresso')
+    const section = await screen.findByRole('region', { name: 'Calendário de estudo' })
+    await user.click(await within(section).findByRole('button', { name: '2025' }))
+    expect(within(section).getByRole('button', { name: '2025' })).toHaveAttribute('aria-pressed', 'true')
+    expect(await within(section).findByTitle('2h em 10/03/2025')).toHaveAttribute('data-level', '4')
+    expect(years).toContain('2025')
+  })
+})

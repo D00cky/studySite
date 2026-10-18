@@ -2,6 +2,7 @@ package br.dev.studysite.focus;
 
 import br.dev.studysite.common.ApiException;
 import br.dev.studysite.curriculum.Curriculum;
+import br.dev.studysite.focus.FocusRepository.DayMinutes;
 import br.dev.studysite.focus.FocusRepository.FocusBlock;
 import br.dev.studysite.focus.FocusRepository.TopicMinutes;
 import br.dev.studysite.focus.FocusRepository.WeekMinutes;
@@ -11,9 +12,13 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.UUID;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -48,6 +53,9 @@ class FocusController {
             int thisWeekMinutes, List<WeekMinutes> weeks, int[] byHour, int[] byWeekday, List<TopicMinutes> topics) {
     }
 
+    record Calendar(Integer year, LocalDate from, LocalDate to, List<DayMinutes> days, List<Integer> years) {
+    }
+
     private final FocusRepository focus;
     private final Curriculum curriculum;
 
@@ -79,13 +87,38 @@ class FocusController {
                 .orElseThrow(() -> ApiException.notFound("Bloco não encontrado."));
     }
 
-    @GetMapping("/metrics")
-    Metrics metrics(@AuthenticationPrincipal AppUser user, @RequestParam(defaultValue = "UTC") String tz,
-            @RequestParam(defaultValue = "8") int weeks) {
-        // Só nomes IANA: offsets como "+03:00" têm o sinal invertido no PostgreSQL.
+    /** Só nomes IANA: offsets como "+03:00" têm o sinal invertido no PostgreSQL. */
+    private static void checkZone(String tz) {
         if (!"UTC".equals(tz) && !ZoneId.getAvailableZoneIds().contains(tz)) {
             throw ApiException.badRequest("Fuso horário desconhecido: " + tz);
         }
+    }
+
+    /**
+     * Calendário de estudo no estilo do GitHub: minutos por dia de um ano, ou das últimas
+     * 53 semanas (começando numa segunda) quando nenhum ano é pedido.
+     */
+    @GetMapping("/focus-calendar")
+    Calendar calendar(@AuthenticationPrincipal AppUser user, @RequestParam(defaultValue = "UTC") String tz,
+            @RequestParam(required = false) Integer year) {
+        checkZone(tz);
+        if (year != null && (year < 2000 || year > 2100)) {
+            throw ApiException.badRequest("Ano fora do intervalo: " + year);
+        }
+        focus.closeStale(user.id());
+        LocalDate today = LocalDate.now(ZoneId.of(tz));
+        LocalDate from = year != null ? LocalDate.of(year, 1, 1)
+                : today.minusWeeks(52).with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate to = year != null ? LocalDate.of(year, 12, 31) : today;
+        TreeSet<Integer> years = new TreeSet<>(focus.years(user.id(), tz));
+        years.add(today.getYear());
+        return new Calendar(year, from, to, focus.days(user.id(), tz, from, to), List.copyOf(years));
+    }
+
+    @GetMapping("/metrics")
+    Metrics metrics(@AuthenticationPrincipal AppUser user, @RequestParam(defaultValue = "UTC") String tz,
+            @RequestParam(defaultValue = "8") int weeks) {
+        checkZone(tz);
         int window = Math.clamp(weeks, 1, 52);
         focus.closeStale(user.id());
         var totals = focus.totals(user.id());

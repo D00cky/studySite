@@ -510,3 +510,13 @@ export interface Metrics {
   byWeekday: number[]
   topics: { topicId: string; minutes: number }[]
 }
+
+export interface FocusCalendar {
+  /** Ano pedido; null = últimas 53 semanas até hoje. */
+  year: number | null
+  from: string
+  to: string
+  /** Só os dias com estudo (minutos de foco no fuso de quem pede). */
+  days: { date: string; minutes: number }[]
+  years: number[]
+}

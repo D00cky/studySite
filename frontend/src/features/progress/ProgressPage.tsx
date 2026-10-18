@@ -1,5 +1,6 @@
 import { ErrorMessage, Loading } from '../../components/Status'
 import { Built, Journey, Pattern, StudyTime, TopicTime } from './sections'
+import { StudyCalendar } from './StudyCalendar'
 import { useProgressData } from './useProgressData'
 
 /** Página "Meu progresso": a versão detalhada do que a home resume. Sem sequências. */
@@ -26,6 +27,7 @@ export function ProgressPage() {
           topicTitle={topicTitle}
         />
         <StudyTime metrics={m} />
+        <StudyCalendar />
         {m.focusBlocks > 0 && <Pattern metrics={m} />}
         <TopicTime metrics={m} topicTitle={topicTitle} />
         <Built evidence={evidence} demonstrated={demonstrated} topicTitle={topicTitle} />

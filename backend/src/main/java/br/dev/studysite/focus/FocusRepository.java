@@ -22,6 +22,9 @@ public class FocusRepository {
     public record TopicMinutes(String topicId, int minutes) {
     }
 
+    public record DayMinutes(LocalDate date, int minutes) {
+    }
+
     record Totals(int totalMinutes, int focusBlocks, int medianBlockMinutes, OffsetDateTime firstFocusAt) {
     }
 
@@ -123,5 +126,26 @@ public class FocusRepository {
                 FROM focus_block WHERE user_id = ? AND kind = 'focus' AND ended_at IS NOT NULL AND topic_id IS NOT NULL
                 GROUP BY topic_id ORDER BY minutes DESC, topic_id LIMIT ?
                 """.formatted(COUNTED)).params(userId, limit).query(TopicMinutes.class).list();
+    }
+
+    /** Minutos de foco por dia local (só dias com estudo), entre {@code from} e {@code to} inclusive. */
+    List<DayMinutes> days(UUID userId, String zone, LocalDate from, LocalDate to) {
+        return jdbc.sql("""
+                SELECT (started_at AT TIME ZONE :zone)::date AS date, round(sum(%s))::int AS minutes
+                FROM focus_block
+                WHERE user_id = :user AND kind = 'focus' AND ended_at IS NOT NULL
+                  AND (started_at AT TIME ZONE :zone)::date BETWEEN :from AND :to
+                GROUP BY 1 HAVING round(sum(%s)) >= 1 ORDER BY 1
+                """.formatted(COUNTED, COUNTED))
+                .param("zone", zone).param("user", userId).param("from", from).param("to", to)
+                .query(DayMinutes.class).list();
+    }
+
+    /** Anos (no fuso dado) em que houve algum bloco de foco. */
+    List<Integer> years(UUID userId, String zone) {
+        return jdbc.sql("""
+                SELECT DISTINCT extract(year FROM started_at AT TIME ZONE :zone)::int AS year
+                FROM focus_block WHERE user_id = :user AND kind = 'focus' AND ended_at IS NOT NULL ORDER BY 1
+                """).param("zone", zone).param("user", userId).query(Integer.class).list();
     }
 }

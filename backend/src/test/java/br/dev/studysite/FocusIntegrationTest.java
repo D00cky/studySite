@@ -133,6 +133,42 @@ class FocusIntegrationTest extends IntegrationTest {
         assertThat(topics.get(1).get("topicId").asString()).isEqualTo("c-strings");
     }
 
+    /** Bloco num instante exato (UTC), para testar o agrupamento por dia local. */
+    private void blockAt(UUID user, String startUtc, int minutes) {
+        jdbc.sql("""
+                INSERT INTO focus_block (user_id, kind, planned_minutes, started_at, ended_at)
+                VALUES (?, 'focus', ?, ?::timestamptz, ?::timestamptz + make_interval(mins => ?))
+                """).params(user, minutes, startUtc, startUtc, minutes).update();
+    }
+
+    @Test
+    void calendarSumsMinutesPerLocalDayLikeAContributionGraph() {
+        ApiClient lia = register("Lia");
+        UUID user = idOf(lia);
+        blockAt(user, "2025-03-10T12:00:00Z", 25);
+        blockAt(user, "2025-03-10T15:00:00Z", 40);
+        blockAt(user, "2025-03-11T01:30:00Z", 20); // ainda dia 10 em São Paulo (UTC-3)
+        blockAt(user, "2024-12-31T12:00:00Z", 50);
+        pastBlock(user, "focus", "pointers", "2 days", 25, 25);
+        pastBlock(user, "break", null, "2 days", 5, 5);
+        pastBlock(idOf(register("Caio")), "focus", "pointers", "2 days", 25, 25);
+
+        JsonNode year = lia.get("/api/me/focus-calendar?tz=America/Sao_Paulo&year=2025").expect(200).json();
+        assertThat(year.get("from").asString()).isEqualTo("2025-01-01");
+        assertThat(year.get("to").asString()).isEqualTo("2025-12-31");
+        assertThat(year.get("days").size()).isEqualTo(1);
+        assertThat(year.get("days").get(0).get("date").asString()).isEqualTo("2025-03-10");
+        assertThat(year.get("days").get(0).get("minutes").asInt()).isEqualTo(25 + 40 + 20);
+
+        JsonNode recent = lia.get("/api/me/focus-calendar?tz=America/Sao_Paulo").expect(200).json();
+        assertThat(recent.get("to").asString()).isEqualTo(LocalDate.now(java.time.ZoneId.of("America/Sao_Paulo")).toString());
+        assertThat(recent.get("days").size()).isEqualTo(1);
+        assertThat(recent.get("days").get(0).get("minutes").asInt()).isEqualTo(25);
+
+        assertThat(recent.get("years").toString()).contains("2024", "2025", String.valueOf(LocalDate.now().getYear()));
+        lia.get("/api/me/focus-calendar?tz=America/Sao_Paulo&year=1800").expect(400);
+    }
+
     @Test
     void metricsRejectAnUnknownTimeZone() {
         register("Lia").get("/api/me/metrics?tz=Lua/Base").expect(400);

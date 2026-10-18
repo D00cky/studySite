@@ -16,6 +16,9 @@ export function signedIn(overrides: Partial<typeof f.me> = {}) {
     http.get('/api/me/focus-blocks/current', () => new HttpResponse(null, { status: 204 })),
     http.get('/api/me/metrics', () => HttpResponse.json(f.emptyMetrics)),
     http.get('/api/me/evidence', () => HttpResponse.json([])),
+    http.get('/api/me/focus-calendar', () =>
+      HttpResponse.json({ year: null, from: '2025-10-20', to: '2026-10-18', days: [], years: [2026] }),
+    ),
   ]
 }
 
