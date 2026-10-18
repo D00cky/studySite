@@ -1,0 +1,483 @@
+# Recursos das etapas 15 (observabilidade e desempenho) e 16 (infraestrutura e IA aplicada).
+
+- id: sre-book-monitoring-distributed-systems
+  title: "Site Reliability Engineering — Chapter 6: Monitoring Distributed Systems"
+  author: Google
+  url: https://sre.google/sre-book/monitoring-distributed-systems/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [logs-metrics-traces, latency-percentiles-diagnosis]
+  why: Capítulo sobre o que monitorar (os quatro sinais dourados), sintomas versus causas e por que olhar a cauda da latência.
+  section: Chapter 6 - Monitoring Distributed Systems
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book-service-level-objectives
+  title: "Site Reliability Engineering — Chapter 4: Service Level Objectives"
+  author: Google
+  url: https://sre.google/sre-book/service-level-objectives/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis, health-checks-rollback]
+  why: Define SLI, SLO e SLA e mostra por que objetivos de latência são expressos em percentis, não em médias.
+  section: Chapter 4 - Service Level Objectives
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book-effective-troubleshooting
+  title: "Site Reliability Engineering — Chapter 12: Effective Troubleshooting"
+  author: Google
+  url: https://sre.google/sre-book/effective-troubleshooting/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis]
+  why: Método de diagnóstico como teste de hipóteses — triagem, exame, diagnóstico, teste — com armadilhas comuns.
+  section: Chapter 12 - Effective Troubleshooting
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-book-release-engineering
+  title: "Site Reliability Engineering — Chapter 8: Release Engineering"
+  author: Google
+  url: https://sre.google/sre-book/release-engineering/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [containers-deployment, health-checks-rollback]
+  why: Builds herméticos, artefatos versionados e releases reproduzíveis — a base para conseguir voltar uma versão.
+  section: Chapter 8 - Release Engineering
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-workbook-canarying-releases
+  title: "The Site Reliability Workbook — Canarying Releases"
+  author: Google
+  url: https://sre.google/workbook/canarying-releases/
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: Como expor uma versão nova a uma fração do tráfego, comparar métricas com a versão antiga e decidir o rollback.
+  section: Canarying Releases
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: otel-observability-primer
+  title: Observability primer
+  author: OpenTelemetry
+  url: https://opentelemetry.io/docs/concepts/observability-primer/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [logs-metrics-traces]
+  why: Introdução oficial a logs, spans, traces distribuídos, SLIs e SLOs, com o vocabulário usado pelo resto da documentação.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: otel-signals
+  title: Signals
+  author: OpenTelemetry
+  url: https://opentelemetry.io/docs/concepts/signals/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [logs-metrics-traces]
+  why: Descreve cada sinal (traces, métricas, logs) e como o contexto liga um ao outro.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: otel-java
+  title: OpenTelemetry Java
+  author: OpenTelemetry
+  url: https://opentelemetry.io/docs/languages/java/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [logs-metrics-traces]
+  why: Documentação da API e do SDK Java para criar spans e métricas manualmente.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: otel-java-agent
+  title: Java Agent
+  author: OpenTelemetry
+  url: https://opentelemetry.io/docs/zero-code/java/agent/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [logs-metrics-traces]
+  why: Instrumentação sem alterar código de uma aplicação Java (HTTP, JDBC) — útil para comparar com a instrumentação manual.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-flame-graphs
+  title: Flame Graphs
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/flamegraphs.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
+  why: Página do criador dos flame graphs explicando como ler o gráfico e como gerá-lo a partir de amostras de pilha.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-perf-examples
+  title: Linux perf Examples
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/perf.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [profiling-benchmarks]
+  why: Receitas de uso do perf (record, report, stat, contadores de hardware) com exemplos comentados.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-use-method
+  title: The USE Method
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/usemethod.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis, profiling-benchmarks]
+  why: Checklist de diagnóstico — utilização, saturação e erros para cada recurso — que evita investigar ao acaso.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: openjdk-jmh
+  title: "JMH: Java Microbenchmark Harness"
+  author: OpenJDK
+  url: https://openjdk.org/projects/code-tools/jmh/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [profiling-benchmarks]
+  why: Ferramenta oficial do OpenJDK para benchmarks Java que lida com warmup, JIT e eliminação de código morto.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: openjdk-jmh-samples
+  title: JMH samples
+  author: OpenJDK
+  url: https://github.com/openjdk/jmh/tree/master/jmh-samples/src/main/java/org/openjdk/jmh/samples
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [profiling-benchmarks]
+  why: Exemplos comentados que mostram as armadilhas de microbenchmarks (dead code, constant folding, loops) e como o JMH as evita.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: hdrhistogram
+  title: "HdrHistogram: A High Dynamic Range Histogram"
+  author: Gil Tene
+  url: https://hdrhistogram.github.io/HdrHistogram/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis]
+  why: Biblioteca de histogramas para registrar latências com precisão em toda a faixa e extrair percentis.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-namespaces
+  title: namespaces(7)
+  author: Michael Kerrisk (man-pages)
+  url: https://man7.org/linux/man-pages/man7/namespaces.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [containers-deployment]
+  why: Referência dos namespaces do Linux (pid, net, mnt, uts, user...) — o mecanismo de isolamento por trás de containers.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: man-cgroups
+  title: cgroups(7)
+  author: Michael Kerrisk (man-pages)
+  url: https://man7.org/linux/man-pages/man7/cgroups.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [containers-deployment]
+  why: Referência de control groups, que limitam e contabilizam CPU e memória de grupos de processos.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: docker-build-best-practices
+  title: Building best practices
+  author: Docker
+  url: https://docs.docker.com/build/building/best-practices/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [containers-deployment]
+  why: Multi-stage builds, cache de camadas, imagens pequenas e usuário não-root.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dockerfile-reference
+  title: Dockerfile reference
+  author: Docker
+  url: https://docs.docker.com/reference/dockerfile/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [containers-deployment, health-checks-rollback]
+  why: Referência das instruções do Dockerfile, incluindo HEALTHCHECK, ENTRYPOINT e USER.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: k8s-probes-concepts
+  title: Liveness, Readiness, and Startup Probes
+  author: Kubernetes
+  url: https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: Explica a diferença entre liveness (reiniciar), readiness (tirar do tráfego) e startup probes.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: k8s-configure-probes
+  title: Configure Liveness, Readiness and Startup Probes
+  author: Kubernetes
+  url: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: Tarefa prática com exemplos de probes HTTP, TCP e exec e seus parâmetros (período, timeout, limiar de falhas).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-shipping-code
+  title: "Missing Semester 2026 — Packaging and Shipping Code"
+  author: MIT CSAIL
+  url: https://missing.csail.mit.edu/2026/shipping-code/
+  language: en
+  format: course
+  difficulty: intro
+  topics: [containers-deployment]
+  why: Notas da aula sobre empacotar e entregar código de forma reproduzível.
+  section: Packaging and Shipping Code
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: json-schema-getting-started
+  title: Creating your first schema
+  author: JSON Schema
+  url: https://json-schema.org/learn/getting-started-step-by-step
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [ai-evaluation-structured-outputs]
+  why: Tutorial oficial de JSON Schema — tipos, campos obrigatórios e restrições — usado para validar saídas de modelos.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ollama-structured-outputs
+  title: Structured Outputs
+  author: Ollama
+  url: https://docs.ollama.com/capabilities/structured-outputs
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Como pedir a um modelo local saída restrita por JSON Schema — permite o exercício sem API paga.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: claude-structured-outputs
+  title: Structured outputs
+  author: Anthropic
+  url: https://docs.claude.com/en/docs/build-with-claude/structured-outputs
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Documentação de um provedor comercial sobre saídas estruturadas, para comparar as garantias da API com a validação no cliente.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: hamel-your-ai-product-needs-evals
+  title: Your AI Product Needs Evals
+  author: Hamel Husain
+  url: https://hamel.dev/blog/posts/evals/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Argumento prático para tratar a avaliação de funcionalidades com LLM como testes — asserções, casos reais e revisão humana.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Vídeos ---
+
+- id: missing-semester-2026-lecture-4-debugging-profiling-video
+  title: "Lecture 4: Debugging and Profiling"
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=8VYT9TcUmKs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [profiling-benchmarks, logs-metrics-traces]
+  why: Aula em vídeo (edição 2026) sobre depuração, logs e profiling — ponte entre as ferramentas da etapa 1 e a análise de desempenho.
+  section: "Lecture 4: Debugging and Profiling"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-2026-lecture-6-shipping-code-video
+  title: "Lecture 6: Packaging and Shipping Code"
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=KBMiB-8P4Ns
+  language: en
+  format: video
+  difficulty: intro
+  topics: [containers-deployment]
+  why: Aula em vídeo (edição 2026) sobre empacotar e entregar código.
+  section: "Lecture 6: Packaging and Shipping Code"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: missing-semester-2026-lecture-7-agentic-coding-video
+  title: "Lecture 7: Agentic Coding"
+  author: Missing Semester
+  url: https://www.youtube.com/watch?v=sTdz6PZoAnw
+  language: en
+  format: video
+  difficulty: intro
+  topics: [ai-evaluation-structured-outputs]
+  why: Aula (edição 2026) sobre trabalhar com LLMs; útil pela ênfase em que modelos são probabilísticos e precisam de ciclos de verificação automática. Não trata de structured outputs diretamente.
+  section: "Lecture 7: Agentic Coding"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: usenix-lisa13-flame-graphs
+  title: LISA13 - Blazing Performance with Flame Graphs
+  author: USENIX
+  url: https://www.youtube.com/watch?v=nZfNehCzGdw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [profiling-benchmarks]
+  why: Palestra de Brendan Gregg apresentando flame graphs e como usá-los para achar onde a CPU é gasta.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-linux-performance-tools-part-1
+  title: Linux Performance Tools, Brendan Gregg, part 1 of 2
+  author: Brendan Gregg
+  url: https://www.youtube.com/watch?v=FJW8nGV4jxY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
+  why: Tutorial sobre as ferramentas de observação de desempenho do Linux e metodologias de análise.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: usenix-lisa19-linux-systems-performance
+  title: LISA19 - Linux Systems Performance
+  author: USENIX
+  url: https://www.youtube.com/watch?v=fhBHvsi0Ql0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis, profiling-benchmarks]
+  why: Palestra de Brendan Gregg com visão geral de metodologias e ferramentas de desempenho no Linux.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gil-tene-how-not-to-measure-latency
+  title: "\"How NOT to Measure Latency\" by Gil Tene"
+  author: Strange Loop Conference
+  url: https://www.youtube.com/watch?v=lJ8ydIuPFeU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis]
+  why: Palestra clássica sobre percentis, por que médias enganam e como a coordinated omission distorce medições de latência.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-139-containers
+  title: Entendendo Funcionamento de Containers
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=85k8se4Zo70
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [containers-deployment]
+  why: Episódio do Akitando (#139) que explica como containers funcionam, em português.
+  section: "[Akitando #139] - Entendendo Como Containers Funcionam"
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-48-devops-parte-2
+  title: "Entendendo \"Devops\" para Iniciantes em Programação (Parte 2) | Série \"Começando aos 40\""
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=mcwnQVAn0pw
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics: [containers-deployment, health-checks-rollback]
+  why: Episódio do Akitando (#48) com panorama de deploy e operação para iniciantes.
+  section: "[Akitando] #48 - Entendendo \"Devops\" para Iniciantes em Programação (Parte 2)"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: akitando-149-docker-compose-postgres
+  title: Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=-yGHG3pnHLg
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics: [containers-deployment, latency-percentiles-diagnosis]
+  why: Episódio do Akitando (#149) configurando Docker Compose com PostgreSQL e medindo o sistema sob teste de carga.
+  section: "[Akitando] #149 - Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend"
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

@@ -1,27 +1,99 @@
 - id: task-platform
   title: "Projeto cumulativo: plataforma de processamento de tarefas"
-  status: planned
+  status: authored
   cumulative: true
-  topics: [processes-streams-exit-codes, tcp-udp-sockets, relational-modeling-constraints, requirements-modularity, bounded-queues, idempotency, authorization, logs-metrics-traces, containers-deployment]
+  topics: [processes-streams-exit-codes, tcp-udp-sockets, http-protocol, relational-modeling-constraints, transactions-basics, requirements-modularity, spring-web-backend, jdbc-postgresql, bounded-queues, queues-delivery-semantics, idempotency, partial-failure-retries, authentication-sessions, authorization, logs-metrics-traces, latency-percentiles-diagnosis, containers-deployment, health-checks-rollback]
   question: Como um sistema pequeno evolui de uma CLI para uma aplicação em rede confiável, segura e observável — e o que cada etapa do roadmap acrescenta?
   prerequisites: [c-types-functions]
-  minimalVersion: A CLI de tarefas em C (projeto c-task-cli). Cada marco seguinte reaproveita o domínio e acrescenta um mecanismo.
+  minimalVersion: |
+    Ponto de partida: a CLI de tarefas em C (projeto c-task-cli) com `add`, `list` e `done`.
+    Cada marco seguinte reaproveita o mesmo domínio (tarefas com id, título, estado e dono) e
+    acrescenta **um** mecanismo, demonstrado com uma falha provocada e uma ferramenta de observação.
+    A versão mínima completa é: API HTTP em Java sobre PostgreSQL, com processamento em background,
+    criação idempotente, autorização por dono, logs/métricas/traces e deploy em container com
+    health checks e rollback ensaiado — tudo rodando localmente com Docker Compose.
+  extensions:
+    - "Extração de tarefas a partir de linguagem natural com saída validada por JSON Schema, avaliação por casos e fallback (tópico ai-evaluation-structured-outputs), usando stub ou modelo local."
+    - Frontend web acessível consumindo a API, com testes de interface.
+    - Paginação por cursor e índices guiados por EXPLAIN ANALYZE para listas grandes.
+    - Canary local com duas versões atrás de um proxy e decisão automática de rollback por métricas.
+    - Outbox transacional para publicar eventos de tarefa sem perder mensagens.
+  constraints:
+    - Um marco por mecanismo; cada marco termina com teste automatizado, falha provocada e evidência registrada no README.
+    - Experimentos e falhas provocadas só em ambiente de laboratório local (Compose), nunca em sistemas de produção.
+    - Toda mudança de esquema é uma migração versionada e compatível com a versão anterior do código (expand/contract).
+    - Segredos vêm do ambiente; nada de credenciais no repositório, na imagem ou nos logs.
+    - Histórico Git com commits pequenos e uma tag por marco concluído.
   milestones:
     - id: m1-cli
       title: CLI em C com persistência em arquivo
+      description: "Partir do c-task-cli: escrita atômica (temporário + rename), exit codes documentados e testes em shell. Demonstrar com strace a sequência open/write/fsync/rename e com kill -9 durante a gravação que o arquivo não corrompe. (processes-streams-exit-codes)"
+      minutes: 50
     - id: m2-network
       title: Servidor em rede (TCP/HTTP)
+      description: "Servidor TCP em C que atende `GET /tasks` e `POST /tasks` com HTTP/1.1 mínimo. Demonstrar com curl -v e tcpdump o handshake e a requisição, e o comportamento com cliente lento e conexão cortada no meio. (tcp-udp-sockets, http-protocol)"
+      minutes: 75
     - id: m3-postgres
       title: Persistência em PostgreSQL com constraints e migrações
+      description: "Esquema de tarefas com NOT NULL, CHECK de estado, FK para usuário e migrações versionadas. Demonstrar em psql que a constraint rejeita dado inválido e que duas transações concorrentes não deixam estado inconsistente. (relational-modeling-constraints, transactions-basics)"
+      minutes: 50
     - id: m4-java
       title: Backend Java modular
+      description: "Reescrever a API em Java/Spring com módulos de domínio, persistência (JDBC) e HTTP separados por interfaces, e testes de integração com PostgreSQL real. Demonstrar que o domínio é testável sem banco e que a API devolve 400/404/409 corretos. (requirements-modularity, spring-web-backend, jdbc-postgresql)"
+      minutes: 75
     - id: m5-background
       title: Processamento em background com fila
+      description: "Tarefas com processamento demorado (ex.: gerar relatório) vão para uma fila limitada consumida por workers. Demonstrar backpressure (fila cheia devolve 429 ou bloqueia) e o que acontece com um job quando o worker morre no meio, com jstack mostrando os workers. (bounded-queues, queues-delivery-semantics)"
+      minutes: 75
     - id: m6-idempotency
       title: Idempotência e retries
+      description: "`POST /tasks` aceita `Idempotency-Key` guardada com constraint UNIQUE; o cliente faz retry com backoff e jitter. Demonstrar, derrubando a resposta de propósito, que repetir a mesma requisição não cria tarefa duplicada e que workers processam cada job no máximo uma vez com efeito. (idempotency, partial-failure-retries)"
+      minutes: 50
     - id: m7-authz
       title: Autenticação e autorização
+      description: "Login com sessão ou token, senhas com hash adequado, e cada tarefa visível e editável só pelo dono. Demonstrar com curl que o usuário B recebe 404/403 ao acessar o id da tarefa de A (IDOR bloqueado) e que há teste automatizado para isso. (authentication-sessions, authorization)"
+      minutes: 75
     - id: m8-observability
       title: Logs, métricas e traces
+      description: "Logs JSON com trace_id, contador e histograma de latência por rota, spans de HTTP, banco e fila com OpenTelemetry. Demonstrar um diagnóstico do sintoma (p99 alto) à causa (índice ausente ou fila saturada) usando os três sinais e EXPLAIN ANALYZE. (logs-metrics-traces, latency-percentiles-diagnosis)"
+      minutes: 75
     - id: m9-deploy
       title: Container, health check e rollback
+      description: "Imagem multi-stage não-root tagueada pelo commit, Compose com PostgreSQL, liveness/readiness separados e shutdown gracioso. Demonstrar um deploy quebrado detectado por métricas e revertido por script, com o tempo de recuperação medido. (containers-deployment, health-checks-rollback)"
+      minutes: 75
+  edgeCases:
+    - Título vazio, enorme, com acentos ou com caracteres de controle chegando por HTTP.
+    - Mesma Idempotency-Key com corpo diferente.
+    - Banco indisponível na inicialização e no meio de uma requisição.
+    - Fila cheia e worker que morre com job em andamento.
+    - Usuário tentando ler ou alterar tarefa de outro usuário por id.
+    - SIGTERM durante uma requisição longa e durante o processamento de um job.
+    - Migração aplicada com a versão anterior do código ainda rodando.
+  failureExperiments:
+    - Matar o processo (kill -9) durante a gravação na CLI e durante uma transação no PostgreSQL; verificar o estado depois.
+    - Cortar a conexão TCP no meio de uma resposta e observar o cliente com tcpdump.
+    - Derrubar a resposta de um POST e repetir a requisição com a mesma Idempotency-Key.
+    - Encher a fila de background e matar um worker no meio de um job.
+    - Acessar a tarefa de outro usuário trocando o id na URL.
+    - Remover um índice e diagnosticar o aumento de p99 com métricas, traces e EXPLAIN ANALYZE.
+    - Fazer deploy de uma versão que devolve 500 em parte das requisições e executar o rollback.
+    - Limitar a memória do container e provocar OOM kill.
+  tools: [gcc, make, strace, curl, tcpdump, psql, "EXPLAIN ANALYZE", Maven, JUnit, Testcontainers, jstack, perf, OpenTelemetry, wrk2, Docker, Docker Compose, Git]
+  acceptanceCriteria:
+    - Cada marco tem tag Git, teste automatizado e uma falha provocada documentada com a saída da ferramenta usada.
+    - A API cria, lista e conclui tarefas sobre PostgreSQL, com constraints e migrações versionadas.
+    - Repetir um POST com a mesma Idempotency-Key nunca cria duplicata, comprovado por teste com falha injetada.
+    - Um usuário não consegue ler nem alterar tarefas de outro, comprovado por teste automatizado.
+    - A fila de background é limitada e o comportamento com fila cheia e worker morto é definido e testado.
+    - Logs, métricas e traces da mesma requisição são correlacionados por trace_id, e há um diagnóstico de latência registrado.
+    - O sistema sobe com docker compose up, tem liveness e readiness distintos, e um rollback ensaiado está documentado com tempo medido.
+  evidence:
+    - Link do repositório com README por marco (o que mudou, como rodar, que falha foi provocada, o que se observou).
+    - Saídas de strace, tcpdump, psql/EXPLAIN, jstack e curl anexadas aos marcos correspondentes.
+    - Relatório de diagnóstico de latência com histogramas antes e depois.
+    - Linha do tempo do deploy quebrado e do rollback, com métricas.
+  reviewQuestions:
+    - Qual mecanismo de cada marco você teria de reimplementar se trocasse PostgreSQL por outro banco? E Java por outra linguagem?
+    - Onde no sistema uma mensagem ou requisição pode ser processada duas vezes, e o que impede efeito duplicado em cada ponto?
+    - Que sinal de observabilidade teria encurtado mais o diagnóstico que você fez no marco 8?
+    - Se o rollback falhasse agora, qual seria a causa mais provável e como você teria percebido antes?
