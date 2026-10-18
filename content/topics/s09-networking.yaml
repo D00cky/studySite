@@ -29,7 +29,7 @@
   resources:
     start: cs168-textbook-dns
     deeper: [cs168-textbook-addressing, akita-networks-3, man-ip8, rfc-1035-dns]
-    videos: [akitando-123-redes-parte-3, akitando-121-redes-parte-1, akitando-122-redes-parte-2]
+    videos: [akitando-123-redes-parte-3-dns, akitando-123-redes-parte-3-endereco-ipv4, akitando-123-redes-parte-3-mascara-de-rede, akitando-123-redes-parte-3, akitando-121-redes-parte-1-datagramas, akitando-122-redes-parte-2-checagem-de-erros-em-rede]
   exercise:
     id: ex-trace-a-name
     title: Do nome ao pacote, à mão
@@ -123,9 +123,9 @@
     - claim: TCP garante que a aplicação do outro lado processou a mensagem.
       correction: O ACK do TCP só diz que o kernel remoto recebeu os bytes. Confirmação de processamento precisa ser uma resposta do protocolo de aplicação.
   resources:
-    start: beej-network
-    deeper: [beej-network-ptbr, cs168-textbook-transport-principles, cs168-textbook-tcp-design, man-recv, man-socket7, man-ss, rfc-9293-tcp]
-    videos: [akitando-124-sockets-web-video, akitando-122-redes-parte-2]
+    start: beej-network-system-calls-or-bust
+    deeper: [beej-network-handling-partial-sends, beej-network-ptbr, cs168-textbook-transport-principles, cs168-textbook-tcp-design, man-recv, man-socket7, man-ss, rfc-9293-tcp]
+    videos: [akitando-124-sockets-web-video-bsd-sockets, akitando-124-sockets-web-video-fluxo-de-conexao, akitando-124-sockets-web-video-portas, akitando-122-redes-parte-2-checagem-de-erros-em-rede]
   exercise:
     id: ex-line-echo-server
     title: Servidor de linhas que sobrevive a leituras parciais
@@ -189,7 +189,7 @@
       resource: cs168-textbook-congestion-control
     - title: I/O não bloqueante e multiplexação (poll, epoll)
       why: Quando um servidor precisar atender milhares de conexões sem uma thread por cliente.
-      resource: beej-network
+      resource: beej-network-poll
     - title: QUIC e transporte sobre UDP
       why: Ao lidar com HTTP/3, redes móveis instáveis ou protocolos de tempo real.
       resource: rfc-9000-quic
@@ -231,8 +231,8 @@
       correction: A diferença é semântica (segurança e idempotência) e afeta retries, cache e o botão voltar do navegador.
   resources:
     start: mdn-http-messages
-    deeper: [mdn-http-overview, mdn-http-overview-ptbr, mdn-learn, cs168-textbook-http, curl-manpage, rfc-9110-http-semantics, rfc-9112-http11]
-    videos: [akitando-124-sockets-web-video]
+    deeper: [mdn-http-overview, mdn-http-overview-ptbr, mdn-learn-how-the-web-works, cs168-textbook-http, curl-manpage, rfc-9110-http-semantics, rfc-9112-http11]
+    videos: [akitando-124-sockets-web-video-debugando-com-telnet, akitando-124-sockets-web-video-osi-tcp-http]
   exercise:
     id: ex-http-by-hand
     title: HTTP digitado à mão
@@ -293,7 +293,7 @@
       why: Quando o frontend chamar uma API em outro domínio e o navegador bloquear a requisição.
     - title: Request smuggling e ambiguidades de parsing
       why: Ao colocar proxies na frente do seu servidor ou revisar a segurança de um parser HTTP.
-      resource: rfc-9112-http11
+      resource: rfc-9112-request-smuggling
 
 - id: tls-concepts
   stage: s09-networking
@@ -324,7 +324,7 @@
   resources:
     start: cs168-textbook-tls
     deeper: [akita-crypto-1, openssl-s-client, rfc-8446-tls13]
-    videos: [akitando-67-criptografia-parte-1, akitando-68-criptografia-parte-2, akitando-147-criptografia-na-pratica]
+    videos: [akitando-68-criptografia-parte-2-entendendo-tls, akitando-68-criptografia-parte-2-diffie-hellman, akitando-147-criptografia-na-pratica-certificados-digitais, akitando-147-criptografia-na-pratica-criptografia-assimetrica, akitando-67-criptografia-parte-1-aes, akitando-67-criptografia-parte-1-hashes]
   exercise:
     id: ex-inspect-certificate
     title: Ler um certificado e um handshake

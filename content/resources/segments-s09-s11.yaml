@@ -1,0 +1,1045 @@
+- id: akitando-123-redes-parte-3-dns
+  title: Como sua Internet Funciona | Introdução a Redes Parte 3 — 21:58 DNS
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=gcv5hXyTcIo&t=1318s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  why: 'Trecho sobre DNS: como o nome vira endereço IP (do minuto 21:58 até o próximo capítulo).'
+  section: 21:58 DNS
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-123-redes-parte-3-endereco-ipv4
+  title: Como sua Internet Funciona | Introdução a Redes Parte 3 — 06:22 Endereço ipv4
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=gcv5hXyTcIo&t=382s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  why: Trecho sobre a estrutura de um endereço IPv4 (do minuto 06:22 até o próximo capítulo).
+  section: 06:22 Endereço ipv4
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-123-redes-parte-3-mascara-de-rede
+  title: Como sua Internet Funciona | Introdução a Redes Parte 3 — 07:36 Máscara de Rede
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=gcv5hXyTcIo&t=456s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  why: Trecho sobre máscara de rede e prefixo (do minuto 07:36 até o próximo capítulo).
+  section: 07:36 Máscara de Rede
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-121-redes-parte-1-datagramas
+  title: 'Introdução a Redes: Como Dados viram Ondas? | Parte 1 — 31:23 Datagramas'
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=0TndL-Nh6Ok&t=1883s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  why: Trecho sobre datagramas, a unidade que o IP transporta (do minuto 31:23 até o próximo capítulo).
+  section: 31:23 Datagramas
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-122-redes-parte-2-checagem-de-erros-em-rede
+  title: Detecção e Correção de Erros | Introdução a Redes Parte 2 — 19:37 Checagem de erros em rede
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=3W-8TQJwuWY&t=1177s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  - tcp-udp-sockets
+  why: Trecho sobre checagem de erros nos protocolos de rede (checksums) (do minuto 19:37 até o próximo capítulo).
+  section: 19:37 Checagem de erros em rede
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-124-sockets-web-video-bsd-sockets
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 09:56 BSD Sockets
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=596s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: Trecho sobre a API de BSD sockets (do minuto 09:56 até o próximo capítulo).
+  section: 09:56 BSD Sockets
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-124-sockets-web-video-fluxo-de-conexao
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 12:43 Fluxo de conexão
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=763s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: Trecho sobre o fluxo socket/bind/listen/accept/connect (do minuto 12:43 até o próximo capítulo).
+  section: 12:43 Fluxo de conexão
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-124-sockets-web-video-portas
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 16:54 Portas
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=1014s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: Trecho sobre portas e como identificam conexões (do minuto 16:54 até o próximo capítulo).
+  section: 16:54 Portas
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-124-sockets-web-video-debugando-com-telnet
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 29:00 Debugando com Telnet e Developer Tools
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=1740s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - http-protocol
+  why: Trecho que mostra HTTP digitado à mão via Telnet e inspecionado no DevTools (do minuto 29:00 até o próximo capítulo).
+  section: 29:00 Debugando com Telnet e Developer Tools
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-124-sockets-web-video-osi-tcp-http
+  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 37:24 OSI, TCP, HTTP
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=2244s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - http-protocol
+  why: Trecho sobre onde o HTTP fica em cima do TCP (do minuto 37:24 até o próximo capítulo).
+  section: 37:24 OSI, TCP, HTTP
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-67-criptografia-parte-1-aes
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2 — 19:43 AES
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4&t=1183s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: Trecho sobre AES, a cifra simétrica usada no tráfego TLS (do minuto 19:43 até o próximo capítulo).
+  section: 19:43 AES
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-67-criptografia-parte-1-hashes
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2 — 22:48 Hashes
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4&t=1368s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: Trecho sobre funções de hash (do minuto 22:48 até o próximo capítulo).
+  section: 22:48 Hashes
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-68-criptografia-parte-2-diffie-hellman
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2 — 22:55 Diffie-Hellman
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=HCHqtpipwu4&t=1375s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: Trecho sobre a troca de chaves Diffie-Hellman (do minuto 22:55 até o próximo capítulo).
+  section: 22:55 Diffie-Hellman
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado da lista de capítulos do post oficial do episódio em akitaonrails.com.
+
+- id: akitando-68-criptografia-parte-2-entendendo-tls
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2 — 36:16 Entendendo TLS
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=HCHqtpipwu4&t=2176s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: Trecho que junta as peças e explica o TLS (do minuto 36:16 até o próximo capítulo).
+  section: 36:16 Entendendo TLS
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado da lista de capítulos do post oficial do episódio em akitaonrails.com.
+
+- id: akitando-147-criptografia-na-pratica-criptografia-assimetrica
+  title: Criptografia na Prática - Certificados, BitTorrent, Git, Bitcoin — 00:10:11 CAP 2 - Criptografia Assimétrica - Chaves RSA
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=iAA8NrfQtHo&t=611s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics:
+  - tls-concepts
+  why: Trecho prático sobre chaves RSA com OpenSSL (do minuto 00:10:11 até o próximo capítulo).
+  section: 00:10:11 CAP 2 - Criptografia Assimétrica - Chaves RSA
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-147-criptografia-na-pratica-certificados-digitais
+  title: Criptografia na Prática - Certificados, BitTorrent, Git, Bitcoin — 00:17:06 CAP 3 - Certificados Digitais - Let's Encrypt
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=iAA8NrfQtHo&t=1026s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics:
+  - tls-concepts
+  why: Trecho prático sobre certificados digitais e Let's Encrypt (do minuto 00:17:06 até o próximo capítulo).
+  section: 00:17:06 CAP 3 - Certificados Digitais - Let's Encrypt
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: cmu-15445-f24-lecture-01-relational-model-the-relational-model
+  title: '#01 - Relational Model & Algebra (CMU Intro to Database Systems) — 26:22 The relational model'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=APqWIjtzNGE&t=1582s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - relational-modeling-constraints
+  why: Trecho sobre o modelo relacional (do minuto 26:22 até o próximo capítulo).
+  section: 26:22 The relational model (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-01-relational-model-structure-and-constraints
+  title: '#01 - Relational Model & Algebra (CMU Intro to Database Systems) — 37:00 Structure and constraints'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=APqWIjtzNGE&t=2220s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - relational-modeling-constraints
+  why: Trecho sobre estrutura de relações, chaves e restrições (do minuto 37:00 até o próximo capítulo).
+  section: 37:00 Structure and constraints (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-01-relational-model-joins-and-complex-operations
+  title: '#01 - Relational Model & Algebra (CMU Intro to Database Systems) — 55:32 Joins and complex operations'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=APqWIjtzNGE&t=3332s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - joins-aggregation
+  why: Trecho sobre joins na álgebra relacional (do minuto 55:32 até o próximo capítulo).
+  section: 55:32 Joins and complex operations (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-02-modern-sql-aggregation-functions
+  title: '#02 - Modern SQL (CMU Intro to Database Systems) — 10:34 Aggregation functions'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=MzigBKf84aY&t=634s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - joins-aggregation
+  why: Trecho sobre funções de agregação (do minuto 10:34 até o próximo capítulo).
+  section: 10:34 Aggregation functions (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-02-modern-sql-group-by-and-errors
+  title: '#02 - Modern SQL (CMU Intro to Database Systems) — 13:36 Group by and errors'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=MzigBKf84aY&t=816s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - joins-aggregation
+  why: Trecho sobre GROUP BY e os erros comuns ao usá-lo (do minuto 13:36 até o próximo capítulo).
+  section: 13:36 Group by and errors (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-16-concurrency-control-theory-introduction-to-acid
+  title: '#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems) — 10:55 Introduction to ACID'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=4y656idl8ZU&t=655s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - transactions-basics
+  why: Trecho que introduz ACID (do minuto 10:55 até o próximo capítulo).
+  section: 10:55 Introduction to ACID (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-16-concurrency-control-theory-atomicity-mechanisms
+  title: '#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems) — 18:29 Atomicity Mechanisms'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=4y656idl8ZU&t=1109s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - transactions-basics
+  why: Trecho sobre como o banco garante atomicidade (do minuto 18:29 até o próximo capítulo).
+  section: 18:29 Atomicity Mechanisms (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-16-concurrency-control-theory-interleaved-execution-anomalies
+  title: '#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems) — 32:26 Interleaved Execution Anomalies'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=4y656idl8ZU&t=1946s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Trecho sobre anomalias de execução intercalada (do minuto 32:26 até o próximo capítulo).
+  section: 32:26 Interleaved Execution Anomalies (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: akitando-118-servidor-sql-video-o-que-e-um-indice
+  title: Fiz um servidor de "SQL"?? | Entendendo Banco de Dados — 00:39:41 O que é um Índice?
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=_7nISfpofec&t=2381s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - indexes
+  why: Trecho sobre o que é um índice (do minuto 00:39:41 até o próximo capítulo).
+  section: 00:39:41 O que é um Índice?
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: akitando-118-servidor-sql-video-b-trees
+  title: Fiz um servidor de "SQL"?? | Entendendo Banco de Dados — 01:05:57 B-Trees
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=_7nISfpofec&t=3957s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - indexes
+  why: Trecho sobre B-Trees (do minuto 01:05:57 até o próximo capítulo).
+  section: 01:05:57 B-Trees
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: cmu-15445-f24-lecture-08-btree-btree-structure-and-properties
+  title: '#08 - Tree Indexes: B+Trees (CMU Intro to Database Systems) — 11:43 B+Tree structure and properties'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=scUtG_6M_lU&t=703s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - indexes
+  - pagination
+  why: Trecho sobre a estrutura da B+Tree e folhas encadeadas (do minuto 11:43 até o próximo capítulo).
+  section: 11:43 B+Tree structure and properties (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-08-btree-btree-insertion-and-deletion
+  title: '#08 - Tree Indexes: B+Trees (CMU Intro to Database Systems) — 14:31 B+Tree insertion and deletion'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=scUtG_6M_lU&t=871s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - indexes
+  why: Trecho sobre inserção e remoção (splits e merges) na B+Tree (do minuto 14:31 até o próximo capítulo).
+  section: 14:31 B+Tree insertion and deletion (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-08-btree-advanced-btree-design-choices
+  title: '#08 - Tree Indexes: B+Trees (CMU Intro to Database Systems) — 21:43 Advanced B+Tree design choices'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=scUtG_6M_lU&t=1303s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - indexes
+  why: Trecho sobre escolhas de projeto de B+Tree (do minuto 21:43 até o próximo capítulo).
+  section: 21:43 Advanced B+Tree design choices (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-15-query-planning-query-planning-architecture
+  title: '#15 - Query Planning & Optimization (CMU Intro to Database Systems) — 14:12 Query planning architecture'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=X8EHO8VLeG0&t=852s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - query-plans
+  why: Trecho sobre a arquitetura do planner (do minuto 14:12 até o próximo capítulo).
+  section: 14:12 Query planning architecture (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-15-query-planning-cost-based-search-approaches
+  title: '#15 - Query Planning & Optimization (CMU Intro to Database Systems) — 26:35 Cost-based search approaches'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=X8EHO8VLeG0&t=1595s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - query-plans
+  why: Trecho sobre busca de planos baseada em custo (do minuto 26:35 até o próximo capítulo).
+  section: 26:35 Cost-based search approaches (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-15-query-planning-cost-model-estimation
+  title: '#15 - Query Planning & Optimization (CMU Intro to Database Systems) — 1:04:01 Cost model estimation'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=X8EHO8VLeG0&t=3841s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - query-plans
+  why: Trecho sobre estimativa de custo e cardinalidade (do minuto 1:04:01 até o próximo capítulo).
+  section: 1:04:01 Cost model estimation (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-13-query-execution-1-access-methods
+  title: '#13 - Query Execution Part 1 (CMU Intro to Database Systems) — 38:20 Access methods'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=HNtlew7mCc4&t=2300s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - query-plans
+  why: Trecho sobre métodos de acesso (sequential scan, index scan) (do minuto 38:20 até o próximo capítulo).
+  section: 38:20 Access methods (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: akitando-149-docker-compose-postgres-video-explain-analyze
+  title: Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend — 01:07:35 CAP 11 - Estratégia de SQL com EXPLAIN ANALYZE - SQL por baixo dos panos
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=-yGHG3pnHLg&t=4055s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics:
+  - query-plans
+  why: Trecho sobre leitura de EXPLAIN ANALYZE num caso real (do minuto 01:07:35 até o próximo capítulo).
+  section: 01:07:35 CAP 11 - Estratégia de SQL com EXPLAIN ANALYZE - SQL por baixo dos panos
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: kleppmann-transactions-strange-loop-isolation-levels
+  title: '"Transactions: myths, surprises and opportunities" by Martin Kleppmann — 9:44 Isolation levels'
+  author: Martin Kleppmann (Strange Loop Conference)
+  url: https://www.youtube.com/watch?v=5ZjhNTM8XU8&t=584s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Trecho sobre níveis de isolamento (do minuto 9:44 até o próximo capítulo).
+  section: 9:44 Isolation levels (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: kleppmann-transactions-strange-loop-data-consistency-anomalies
+  title: '"Transactions: myths, surprises and opportunities" by Martin Kleppmann — 15:00 Data consistency anomalies'
+  author: Martin Kleppmann (Strange Loop Conference)
+  url: https://www.youtube.com/watch?v=5ZjhNTM8XU8&t=900s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Trecho sobre anomalias de consistência (do minuto 15:00 até o próximo capítulo).
+  section: 15:00 Data consistency anomalies (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-19-mvcc-introduction-to-mvcc
+  title: '#19 - Multi-Version Concurrency Control (CMU Intro to Database Systems) — 0:44 Introduction to MVCC'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=niLwbfE3V9Q&t=44s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: Trecho principal da aula sobre MVCC (do minuto 0:44 até o próximo capítulo).
+  section: 0:44 Introduction to MVCC (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-17-two-phase-locking-two-phase-locking-protocol
+  title: '#17 - Two-Phase Locking Concurrency Control (CMU Intro to Database Systems) — 12:32 Two-phase locking protocol'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=bXpkEt5P_Js&t=752s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: Trecho sobre o protocolo two-phase locking (do minuto 12:32 até o próximo capítulo).
+  section: 12:32 Two-phase locking protocol (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: cmu-15445-f24-lecture-17-two-phase-locking-deadlock-handling
+  title: '#17 - Two-Phase Locking Concurrency Control (CMU Intro to Database Systems) — 28:46 Deadlock handling'
+  author: CMU Database Group (Andy Pavlo)
+  url: https://www.youtube.com/watch?v=bXpkEt5P_Js&t=1726s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: Trecho sobre detecção e tratamento de deadlocks (do minuto 28:46 até o próximo capítulo).
+  section: 28:46 Deadlock handling (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+
+- id: scaling-postgres-325-faster-paging-keyset-pagination-descending
+  title: Faster Paging? | Scaling Postgres 325 — 00:43 Keyset pagination with descending order
+  author: Creston Jamison (Scaling Postgres)
+  url: https://www.youtube.com/watch?v=B0oNW3XRUtk&t=43s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - pagination
+  why: Trecho sobre keyset pagination em ordem decrescente (do minuto 00:43 até o próximo capítulo).
+  section: 00:43 Keyset pagination with descending order
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+
+- id: beej-network-system-calls-or-bust
+  title: Beej's Guide to Network Programming — 5 System Calls or Bust
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgnet/html/split/system-calls-or-bust.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: Capítulo com getaddrinfo, socket, bind, connect, listen, accept, send/recv e close.
+  section: 5 System Calls or Bust
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: beej-network-handling-partial-sends
+  title: Beej's Guide to Network Programming — 7.4 Handling Partial send()s
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgnet/html/split/slightly-advanced-techniques.html#sendall
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: Seção sobre send parcial e a função sendall, base do send_all do exercício.
+  section: 7.4 Handling Partial send()s
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: beej-network-poll
+  title: Beej's Guide to Network Programming — 7.2 poll()—Synchronous I/O Multiplexing
+  author: Brian "Beej Jorgensen" Hall
+  url: https://beej.us/guide/bgnet/html/split/slightly-advanced-techniques.html#poll
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: Seção sobre multiplexação de I/O com poll().
+  section: 7.2 poll()—Synchronous I/O Multiplexing
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: mdn-learn-how-the-web-works
+  title: Como a Web funciona - Aprendendo desenvolvimento web | MDN
+  author: Mozilla (contribuidores do MDN)
+  url: https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works
+  language: pt-BR
+  format: documentation
+  difficulty: intro
+  topics:
+  - http-protocol
+  why: 'Página do curso MDN que mostra o caminho de uma requisição: DNS, TCP, HTTP e resposta.'
+  section: Como a Web funciona
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: rfc-9112-request-smuggling
+  title: 'RFC 9112: HTTP/1.1 — 11.2. Request Smuggling'
+  author: IETF
+  url: https://www.rfc-editor.org/rfc/rfc9112.html#section-11.2
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics:
+  - http-protocol
+  why: Seção da especificação sobre request smuggling e ambiguidades de framing.
+  section: 11.2. Request Smuggling
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: postgres-tutorial-sql-language
+  title: PostgreSQL — Chapter 2. The SQL Language
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-sql.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - relational-modeling-constraints
+  why: 'Capítulo do tutorial que cria tabelas, insere e consulta dados: o ponto de partida para modelar.'
+  section: Chapter 2. The SQL Language (versão 18)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: postgres-tutorial-advanced-features
+  title: PostgreSQL — Chapter 3. Advanced Features
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/tutorial-advanced.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - transactions-basics
+  why: Capítulo do tutorial com foreign keys, transações e window functions.
+  section: Chapter 3. Advanced Features (versão 18)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: postgres-sql-select-locking-clause
+  title: 'PostgreSQL — SELECT: The Locking Clause'
+  author: PostgreSQL Global Development Group
+  url: https://www.postgresql.org/docs/current/sql-select.html#SQL-FOR-UPDATE-SHARE
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Seção de SELECT sobre FOR UPDATE/FOR SHARE, NOWAIT e SKIP LOCKED.
+  section: The Locking Clause (versão 18)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: flyway-concepts-migrations
+  title: Migrations - Redgate Flyway - Product Documentation
+  author: Redgate
+  url: https://documentation.red-gate.com/flyway/flyway-concepts/migrations
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - relational-modeling-constraints
+  why: Página de conceitos do Flyway sobre migrações versionadas.
+  section: Migrations
+  access: mixed
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-01-relational-model
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #01: Relational Model & Algebra (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/01-relationalmodel.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - relational-modeling-constraints
+  why: Notas da aula sobre modelo relacional, chaves e restrições.
+  section: 'Lecture #01: Relational Model & Algebra — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-08-indexes
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #08: Indexes & Filters I (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/08-indexes1.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - indexes
+  why: Notas da aula sobre B+Trees.
+  section: 'Lecture #08: Indexes & Filters I — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-12-joins
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #12: Joins Algorithms (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/12-joins.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - joins-aggregation
+  why: Notas da aula sobre nested loop, sort-merge e hash join.
+  section: 'Lecture #12: Joins Algorithms — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-15-query-planning
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #15: Query Planning & Optimization (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/15-optimization.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - query-plans
+  why: Notas da aula sobre otimização e estimativa de custo.
+  section: 'Lecture #15: Query Planning & Optimization — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-17-two-phase-locking
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #17: Two-Phase Locking Concurrency Control (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/17-twophaselocking.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Notas da aula sobre locks, 2PL e deadlocks.
+  section: 'Lecture #17: Two-Phase Locking Concurrency Control — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: cmu-15445-f24-notes-19-mvcc
+  title: 'CMU 15-445/645 (Fall 2024) — Lecture #19: Multi-Version Concurrency Control (Notes)'
+  author: Andy Pavlo (Carnegie Mellon University)
+  url: https://15445.courses.cs.cmu.edu/fall2024/notes/19-multiversioning.pdf
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: Notas da aula sobre MVCC.
+  section: 'Lecture #19: Multi-Version Concurrency Control — Notes'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: use-the-index-luke-anatomy
+  title: Use The Index, Luke — Anatomy of an SQL Index
+  author: Markus Winand
+  url: https://use-the-index-luke.com/sql/anatomy
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - indexes
+  why: 'Capítulo sobre a estrutura de um índice: folhas encadeadas e B-tree.'
+  section: Anatomy of an SQL Index
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: use-the-index-luke-postgresql-execution-plan
+  title: 'Use The Index, Luke — Execution Plans: Getting an Execution Plan (PostgreSQL)'
+  author: Markus Winand
+  url: https://use-the-index-luke.com/sql/explain-plan/postgresql/getting-an-execution-plan
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - query-plans
+  why: Seção sobre obter e ler planos com EXPLAIN no PostgreSQL.
+  section: Execution Plans › PostgreSQL › Getting an Execution Plan
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+
+- id: use-the-index-luke-partial-results
+  title: Use The Index, Luke — Partial Results
+  author: Markus Winand
+  url: https://use-the-index-luke.com/sql/partial-results
+  language: en
+  format: book
+  difficulty: intermediate
+  topics:
+  - pagination
+  why: Capítulo sobre top-N e paginação eficiente (offset vs. seek).
+  section: Partial Results
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.

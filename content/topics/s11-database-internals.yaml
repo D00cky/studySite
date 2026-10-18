@@ -29,8 +29,8 @@
       correction: O índice é ordenado primeiro por a. Filtrar só por b não aproveita essa ordem; em geral é preciso outro índice ou outra ordem de colunas.
   resources:
     start: postgres-indexes
-    deeper: [use-the-index-luke, postgres-indexes-multicolumn, postgres-index-only-scans, cmu-15445-fall2024]
-    videos: [akitando-118-servidor-sql-video, cmu-15445-f24-lecture-08-btree]
+    deeper: [use-the-index-luke-anatomy, postgres-indexes-multicolumn, postgres-index-only-scans, cmu-15445-f24-notes-08-indexes]
+    videos: [akitando-118-servidor-sql-video-o-que-e-um-indice, akitando-118-servidor-sql-video-b-trees, cmu-15445-f24-lecture-08-btree-btree-structure-and-properties, cmu-15445-f24-lecture-08-btree-btree-insertion-and-deletion]
   exercise:
     id: ex-index-predictions
     title: Prever quando o índice entra em jogo
@@ -89,7 +89,7 @@
       resource: postgres-indexes-types
     - title: Internals de B-tree (splits, fillfactor, bloat)
       why: Ao lidar com índices que crescem demais ou escritas intensas em chaves sequenciais.
-      resource: cmu-15445-f24-lecture-08-btree
+      resource: cmu-15445-f24-lecture-08-btree-advanced-btree-design-choices
     - title: CREATE INDEX CONCURRENTLY em produção
       why: Ao criar índices em tabelas grandes sem bloquear as escritas.
       resource: postgres-indexes
@@ -124,8 +124,8 @@
       correction: Uma consulta de 2 ms chamada um milhão de vezes pesa mais que uma de 2 s chamada uma vez; pg_stat_statements mostra o tempo total por consulta.
   resources:
     start: postgres-explain
-    deeper: [postgres-sql-explain, postgres-planner-stats, postgres-pg-stat-statements, use-the-index-luke, cmu-15445-fall2024]
-    videos: [cmu-15445-f24-lecture-15-query-planning, cmu-15445-f24-lecture-13-query-execution-1, akitando-149-docker-compose-postgres-video]
+    deeper: [postgres-sql-explain, postgres-planner-stats, postgres-pg-stat-statements, use-the-index-luke-postgresql-execution-plan, cmu-15445-f24-notes-15-query-planning]
+    videos: [cmu-15445-f24-lecture-15-query-planning-query-planning-architecture, cmu-15445-f24-lecture-15-query-planning-cost-model-estimation, cmu-15445-f24-lecture-13-query-execution-1-access-methods, akitando-149-docker-compose-postgres-video-explain-analyze]
   exercise:
     id: ex-annotate-plan
     title: Anotar um plano à mão
@@ -188,7 +188,7 @@
       resource: postgres-planner-stats
     - title: Otimização baseada em custo por dentro
       why: Quando quiser entender enumeração de planos e estimativa de cardinalidade em profundidade.
-      resource: cmu-15445-f24-lecture-15-query-planning
+      resource: cmu-15445-f24-lecture-15-query-planning-cost-based-search-approaches
 
 - id: isolation-locks
   stage: s11-database-internals
@@ -220,8 +220,8 @@
       correction: É consequência da ordem em que a aplicação pega locks. O banco apenas detecta o ciclo e escolhe uma vítima.
   resources:
     start: postgres-mvcc
-    deeper: [postgres-explicit-locking, ddia, cmu-15445-fall2024]
-    videos: [kleppmann-transactions-strange-loop, cmu-15445-f24-lecture-16-concurrency-control-theory, cmu-15445-f24-lecture-19-mvcc, cmu-15445-f24-lecture-17-two-phase-locking]
+    deeper: [postgres-explicit-locking, ddia, cmu-15445-f24-notes-19-mvcc, cmu-15445-f24-notes-17-two-phase-locking]
+    videos: [kleppmann-transactions-strange-loop-isolation-levels, kleppmann-transactions-strange-loop-data-consistency-anomalies, cmu-15445-f24-lecture-16-concurrency-control-theory-interleaved-execution-anomalies, cmu-15445-f24-lecture-19-mvcc-introduction-to-mvcc, cmu-15445-f24-lecture-17-two-phase-locking-two-phase-locking-protocol, cmu-15445-f24-lecture-17-two-phase-locking-deadlock-handling]
   exercise:
     id: ex-lost-update-two-psql
     title: Lost update com dois psql
@@ -282,10 +282,10 @@
       resource: postgres-routine-vacuuming
     - title: MVCC, SSI e 2PL por dentro
       why: Para entender como bancos detectam conflitos e por que cada abordagem tem custos diferentes.
-      resource: cmu-15445-f24-lecture-19-mvcc
+      resource: cmu-15445-f24-lecture-19-mvcc-introduction-to-mvcc
     - title: Advisory locks e SKIP LOCKED para filas
       why: Ao implementar filas de trabalho ou exclusão mútua entre processos usando o próprio PostgreSQL.
-      resource: postgres-select-for-update-skip-locked
+      resource: postgres-sql-select-locking-clause
 
 - id: pagination
   stage: s11-database-internals
@@ -322,8 +322,8 @@
       correction: Não permite pular para uma página arbitrária nem dá o total de páginas de graça; é ideal para rolagem contínua e "próxima página".
   resources:
     start: use-the-index-luke-fetch-next-page
-    deeper: [use-the-index-luke-no-offset, citus-five-ways-to-paginate, use-the-index-luke]
-    videos: [winand-pagination-done-the-right-way-video, planetscale-pagination-offset-vs-cursor-video, scaling-postgres-325-faster-paging, cmu-15445-f24-lecture-08-btree]
+    deeper: [use-the-index-luke-no-offset, citus-five-ways-to-paginate, use-the-index-luke-partial-results]
+    videos: [winand-pagination-done-the-right-way-video, planetscale-pagination-offset-vs-cursor-video, scaling-postgres-325-faster-paging-keyset-pagination-descending, cmu-15445-f24-lecture-08-btree-btree-structure-and-properties]
   exercise:
     id: ex-offset-vs-keyset
     title: OFFSET versus keyset medido
