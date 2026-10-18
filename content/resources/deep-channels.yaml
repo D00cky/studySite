@@ -1,0 +1,4989 @@
+- id: mit-6042-f10-lec13-asymptotics
+  title: 'Lec 13 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 45:10 Introduction to asymptotics'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=X9eErxRjQEI&t=2710s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  why: 'Leighton define O, Ω, Θ, o e ~ a partir de somas e da fórmula de Stirling, mostrando de onde vem a notação assintótica.'
+  section: '45:10 Introduction to asymptotics (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec14-merge-sort-recurrence
+  title: 'Lec 14 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 20:09 Merge sort analysis'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=Kqf0uO0oV6s&t=1209s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - searching-sorting
+  - complexity-analysis
+  why: 'Monta e resolve a recorrência do merge sort (T(n) = 2T(n/2) + n) por expansão e por chute-e-prova, justificando o n log n.'
+  section: '20:09 Merge sort analysis (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec11-partial-orders
+  title: 'Lec 11 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 25:04 Partial order definitions'
+  author: 'Marten van Dijk (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=1nScXLQAQ9A&t=1504s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: 'Relações, ordens parciais, diagramas de Hasse e o teorema da ordenação topológica: a base matemática dos grafos de dependência.'
+  section: '25:04 Partial order definitions (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec10-directed-graphs
+  title: 'Lec 10 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 22:50 Directed graphs'
+  author: 'Marten van Dijk (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=DOIp5D7VMS4&t=1370s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - graphs-traversal
+  why: 'Grafos dirigidos, caminhos e conectividade forte com rigor de matemática discreta, complementando a visão algorítmica de BFS/DFS.'
+  section: '22:50 Directed graphs (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec20-birthday-paradox
+  title: 'Lec 20 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 50:00 The birthday paradox'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=l1BCv3qqW4A&t=3000s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Deriva a probabilidade de colisão do paradoxo do aniversário e o "birthday principle" (≈√N), que explica por que colisões em tabelas hash aparecem cedo.'
+  section: '50:00 The birthday paradox (capítulo automático do YouTube)'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec20-mutual-independence
+  title: 'Lec 20 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 27:56 Mutual independence'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=l1BCv3qqW4A&t=1676s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Independência mútua vs. par a par: a hipótese escondida quando se multiplica probabilidades de falha de réplicas ou de tentativas.'
+  section: '27:56 Mutual independence (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec21-binomial-failures
+  title: 'Lec 21 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 63:48 Binomial distribution'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=MOfhhFaQdjw&t=3828s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Distribuição binomial com o exemplo de falha de componentes: quantas de n peças independentes falham, base para raciocinar sobre réplicas e retries.'
+  section: '63:48 Binomial distribution (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec24-markov-chebyshev
+  title: 'Lec 24 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 1:43 Markov''s theorem'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=q4mwO2qS2z4&t=103s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Teoremas de Markov e Chebyshev: limites para a probabilidade de um valor ficar longe da média, a matemática por trás de caudas e percentis.'
+  section: '1:43 Markov''s theorem (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-f10-lec24-load-balancing
+  title: 'Lec 24 | MIT 6.042J Mathematics for Computer Science, Fall 2010 — 71:14 Load balancing application'
+  author: 'Tom Leighton (MIT OpenCourseWare, 6.042J Fall 2010)'
+  url: https://www.youtube.com/watch?v=q4mwO2qS2z4&t=4274s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - hash-tables
+  why: 'Aplica limites de Chernoff a balanceamento de carga aleatório (jogar tarefas em servidores), o mesmo raciocínio de distribuir chaves em buckets.'
+  section: '71:14 Load balancing application (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: mit-6042-s15-asymptotic-notation
+  title: '3.2.1 Asymptotic Notation: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=CWkh5kb4TGc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - complexity-analysis
+  why: 'Aula curta e precisa sobre as definições formais de O, Θ e Ω, com os erros clássicos de uso.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-arithmetic-sums
+  title: '3.1.1 Arithmetic Sums: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=v6axtBS6IF8
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - complexity-analysis
+  - searching-sorting
+  why: 'A soma 1+2+…+n que aparece em todo laço aninhado (insertion sort, selection sort) e dá o custo quadrático.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-geometric-sums
+  title: '3.1.3 Geometric Sums: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=ZDQk45NQbEo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dynamic-arrays
+  - complexity-analysis
+  why: 'Somas geométricas: a ferramenta que prova que dobrar a capacidade de um array dinâmico dá custo amortizado O(1).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-dags
+  title: '2.6.1 DAGs: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=Sdw8_0RDZuw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: 'Define DAGs e mostra por que a ausência de ciclos é exatamente o que permite uma ordem de execução.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-scheduling
+  title: '2.6.3 Scheduling: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=1TpzSCMLg08
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: 'Escalonamento de tarefas com pré-requisitos: ordenação topológica, cadeias e antichains aplicadas a "o que pode rodar antes".'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-time-vs-processors
+  title: '2.6.5 Time versus Processors: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=cUYTlKA8jaw
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - dependency-graphs
+  why: 'Relaciona o caminho mais longo do DAG ao tempo mínimo com processadores ilimitados — o limite de paralelismo de um build ou pipeline.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-partial-orders
+  title: '2.7.1 Partial Orders: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=0w9luYcxHrw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dependency-graphs
+  why: 'Ordens parciais estritas e fracas: a formalização de "A precisa vir antes de B".'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-walks-paths
+  title: '2.5.1 Digraphs: Walks & Paths: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=MX-mBxt6huU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - graphs-traversal
+  why: 'Definições exatas de passeio e caminho em dígrafos, vocabulário que as provas de BFS/DFS usam.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-connectivity
+  title: '2.9.3 Connectivity: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=TIQ3xN38jgM
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - graphs-traversal
+  why: 'Conectividade em grafos em poucos minutos: quando existe caminho entre quaisquer dois vértices.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-state-machine-invariants
+  title: '2.9.2 State Machines Invariants: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=hxp4fbQpico
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - searching-sorting
+  why: 'O método do invariante em máquinas de estado, a mesma técnica de prova usada para invariantes de laço na busca binária.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-pigeonhole
+  title: '3.5.1 The Pigeonhole Principle: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=4Dz4vNUxnZM
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - hash-tables
+  why: 'Princípio da casa dos pombos: por que colisões em tabelas hash são inevitáveis quando há mais chaves possíveis que buckets.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-birthday-matching
+  title: '4.7.5 Birthday Matching: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=TWVntUfXsKs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Calcula a chance de duas pessoas compartilharem aniversário e generaliza para colisões entre n itens em d valores — o cálculo de colisões de hash.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-independence
+  title: '4.3.1 Independence: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=1vQ2x5O_xqk
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - partial-failure-retries
+  why: 'Definição de eventos independentes: quando dá para multiplicar probabilidades de falha (e quando não dá).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-mutual-independence
+  title: '4.3.3 Mutual Independence: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=wJzBU7Do1ls
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Independência mútua de vários eventos, necessária para calcular a chance de todas as tentativas ou réplicas falharem juntas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-mean-time-to-failure
+  title: '4.5.7 Mean Time to Failure: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=Dqx56lZ_icg
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Tempo médio até a falha via distribuição geométrica: com probabilidade p de sucesso por tentativa, a média é 1/p tentativas.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-linearity-of-expectation
+  title: '4.5.9 Linearity of Expectation: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=KFcodn4qfrQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Linearidade da esperança, a técnica usada para calcular o número esperado de colisões numa tabela hash sem supor independência.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-deviation-from-mean
+  title: '4.6.1 Deviation From The Mean: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=ALn1McUXg-c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Motiva por que a média não basta: quanto uma variável aleatória se desvia dela, ponto de partida para pensar em caudas de latência.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-markov-bounds
+  title: '4.6.3 Markov Bounds: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=m07lrb7m0D0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Limite de Markov: o máximo de probabilidade que pode ficar na cauda sabendo só a média.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-chebyshev-bounds
+  title: '4.6.5 Chebyshev Bounds: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=uaa4P-kkLrA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Limite de Chebyshev: com média e variância, quanto da distribuição pode estar além de k desvios — raciocínio útil para p99.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-variance
+  title: '4.6.7 Variance: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=o57CTwt1-ck
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Variância e desvio padrão definidos e calculados, as medidas de espalhamento que a média esconde.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-sampling-confidence
+  title: '4.7.7 Sampling & Confidence: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=Q-6Cw8tYVeY
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - ai-evaluation-structured-outputs
+  - profiling-benchmarks
+  why: 'Amostragem e intervalos de confiança: quantas execuções ou exemplos são necessários para confiar numa taxa medida.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-recursive-data
+  title: '1.10.1 Recursive Data: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=TXNXT3oBROw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tokenizing-parsing
+  - tree-walk-evaluation
+  why: 'Definições recursivas de dados (como expressões aritméticas), exatamente a estrutura que um parser produz e um avaliador percorre.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: mit-6042-s15-structural-induction
+  title: '1.10.4 Structural Induction: Video'
+  author: 'Albert R. Meyer (MIT OpenCourseWare, 6.042J Spring 2015)'
+  url: https://www.youtube.com/watch?v=VWIDwHCGJDQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tree-walk-evaluation
+  why: 'Indução estrutural: como provar propriedades de funções recursivas sobre árvores, como um avaliador de expressões.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: MIT OpenCourseWare).'
+
+- id: 3b1b-clt-mean-variance
+  title: 'But what is the Central Limit Theorem? — 11:41 - Mean, variance, and standard deviation'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=zeJD6dqJ5lo&t=701s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Visualiza média, variância e desvio padrão e por que somas tendem à normal — e quando não tendem, como em caudas longas de latência.'
+  section: '11:41 - Mean, variance, and standard deviation'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: 3b1b-clt-sample-means
+  title: 'But what is the Central Limit Theorem? — 27:10 - Sample means'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=zeJD6dqJ5lo&t=1630s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - profiling-benchmarks
+  why: 'Médias amostrais e suas hipóteses (independência, variância finita): a base para repetir benchmarks e desconfiar de uma execução só.'
+  section: '27:10 - Sample means'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: 3b1b-binomial-distributions
+  title: 'Binomial distributions | Probabilities of probabilities, part 1'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=8idr1WZ1A7Q
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - ai-evaluation-structured-outputs
+  why: 'Como estimar uma taxa de sucesso a partir de poucas amostras (10/10 vs. 48/50), o mesmo problema de avaliar a taxa de acerto de um modelo.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown).'
+
+- id: 3b1b-medical-test-paradox
+  title: 'The medical test paradox, and redesigning Bayes'' rule'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=lG4VkPoG3ko
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - ai-evaluation-structured-outputs
+  why: 'Taxa-base, falsos positivos e fator de Bayes: por que um classificador "99% preciso" pode errar a maioria dos alertas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown).'
+
+- id: 3b1b-256-bit-security
+  title: 'How secure is 256 bit security?'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=S9JGmA5_unY
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - secrets-threat-modeling
+  - tls-concepts
+  why: 'Dá escala intuitiva a 2^256 tentativas, mostrando por que força bruta contra chaves e hashes modernos é inviável.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown).'
+
+- id: 3b1b-bitcoin-digital-signatures
+  title: 'But how does bitcoin actually work? — 2:25 - Ledgers and digital signatures'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=bBC-nXj3Ng4&t=145s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Explica assinaturas digitais com chave pública/privada de forma visual, o mecanismo que certificados TLS usam.'
+  section: '2:25 - Ledgers and digital signatures'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: 3b1b-bitcoin-hash-functions
+  title: 'But how does bitcoin actually work? — 12:26 - Cryptographic hash functions'
+  author: '3Blue1Brown'
+  url: https://www.youtube.com/watch?v=bBC-nXj3Ng4&t=746s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  - authentication-sessions
+  why: 'Propriedades de funções hash criptográficas (SHA-256), base de integridade em TLS e de armazenamento de senhas.'
+  section: '12:26 - Cryptographic hash functions'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: 3Blue1Brown). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-tcp-vs-udp-crash-course-tcp
+  title: 'TCP vs UDP Crash Course — 04:12 TCP pros cons'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=qqRYkcta6IE&t=252s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: 'Prós e contras do TCP (handshake, ordenação, controle de fluxo e congestionamento) explicados por um engenheiro de backend.'
+  section: '04:12 TCP pros cons'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-tcp-vs-udp-crash-course-udp
+  title: 'TCP vs UDP Crash Course — 24:25 UDP pros cons'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=qqRYkcta6IE&t=1465s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: 'Prós e contras do UDP e quando abrir mão das garantias do TCP.'
+  section: '24:25 UDP pros cons'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-tcp-3-way-handshake
+  title: 'What is the TCP 3-Way Handshake and Why Backend Engineers should understand it'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=bW_BILl7n0Y
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: 'Por que o TCP precisa do handshake de 3 vias e quanto ele custa em latência para cada nova conexão.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-socket-management-syn-accept-queue
+  title: 'Socket management and Kernel Data structures — 7:50 SYN and Accept Queue'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=rn8r1RdhEUQ&t=470s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tcp-udp-sockets
+  why: 'Filas SYN e accept no kernel: o que acontece com conexões antes do accept() e por que o backlog importa.'
+  section: '7:50 SYN and Accept Queue'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-before-backend-gets-request-accept
+  title: 'What happens before the Backend gets the Request — 10:14 Step 1 - Accept'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=gSQoA4SYhJY&t=614s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tcp-udp-sockets
+  - http-protocol
+  why: 'Os passos accept, read, decrypt e parse antes do seu handler ver a requisição.'
+  section: '10:14 Step 1 - Accept'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-max-connections-backend
+  title: 'Is there a Limit to Number of Connections a Backend can handle?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=o-EkdZW4zbA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: 'Desfaz o mito do "limite de 64K conexões": a tupla de 4 elementos que identifica uma conexão TCP.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-keepalive-tcp
+  title: 'KeepAlive | The Backend Engineering Show — 8:30 TCP KeepAlive'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=TWlJlZKokAs&t=510s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tcp-udp-sockets
+  why: 'TCP keepalive e middleboxes que derrubam conexões ociosas.'
+  section: '8:30 TCP KeepAlive'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-keepalive-timeout
+  title: 'KeepAlive | The Backend Engineering Show — 30:00 What''s a good keepalive timeout?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=TWlJlZKokAs&t=1800s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - timeouts-caching
+  why: 'Como escolher um timeout de keepalive coerente entre cliente, proxy e servidor.'
+  section: '30:00 What''s a good keepalive timeout?'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-http-crash-course-request
+  title: 'Hyper Text Transfer Protocol Crash Course - HTTP 1.0, 1.1, HTTP/2, HTTP/3 — 6:30 HTTP Request'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=0OrmKCB0UrQ&t=390s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - http-protocol
+  why: 'Anatomia de requisição e resposta HTTP, seguida de um servidor web construído na hora.'
+  section: '6:30 HTTP Request'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-http-crash-course-http11
+  title: 'Hyper Text Transfer Protocol Crash Course - HTTP 1.0, 1.1, HTTP/2, HTTP/3 — 31:15 HTTP 1.1'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=0OrmKCB0UrQ&t=1875s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - http-protocol
+  why: 'Evolução HTTP/1.1 → HTTP/2 → HTTP/3: conexões persistentes, multiplexação e QUIC.'
+  section: '31:15 HTTP 1.1'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-how-http2-works
+  title: 'How HTTP/2 Works, Performance, Pros & Cons and More'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=fVKPrDrEwTI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - http-protocol
+  why: 'Multiplexação de streams no HTTP/2, prós e contras e demonstração.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-http2-limitation-http3-quic
+  title: 'HTTP/2 Critical Limitation that led to HTTP/3 & QUIC (Explained by Example)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=GriONb4EfPY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - http-protocol
+  - tcp-udp-sockets
+  why: 'Head-of-line blocking do TCP sob HTTP/2 e por que o HTTP/3 migrou para QUIC sobre UDP.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-proxy-vs-reverse-proxy
+  title: 'Proxy vs Reverse Proxy Server Explained'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=SqqrOspasag
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - http-protocol
+  why: 'Diferença entre proxy e proxy reverso, com usos como cache, balanceamento e terminação TLS.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-layer4-vs-layer7-proxying
+  title: 'Layer 4 vs Layer 7 Proxying In Details Explained with Examples'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=ylkAc9wmKhc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  - http-protocol
+  why: 'Proxy na camada 4 (TCP) vs. camada 7 (HTTP): o que cada um consegue ver e decidir.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-tls-12-13
+  title: 'Transport Layer Security, TLS 1.2 and 1.3 (Explained by Example)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=AlE5X1NlHgg
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tls-concepts
+  why: 'Handshakes do TLS 1.2 e 1.3, troca de chaves Diffie–Hellman e por que o 1.3 economiza uma ida e volta.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-tls-certificates
+  title: 'What are SSL/TLS Certificates? Why do we Need them? and How do they Work?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=r1nJT63BFQ0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Para que servem certificados, como a cadeia de confiança funciona e quais são seus limites.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-wiresharking-tls
+  title: 'Wiresharking TLS - What happens during TLS 1.2 and TLS 1.3 Handshake'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=06Kq50P01sI
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tls-concepts
+  why: 'Observa no Wireshark os handshakes TLS 1.2 e 1.3, mostrando cada mensagem real na rede.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-google-com-dns-lookup
+  title: 'What happens when you type google.com into your browser and press enter? (Detailed Analysis) — 7:40 DNS Lookup'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=dh406O2v_1c&t=460s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dns-ip
+  why: 'O caminho da resolução DNS ao digitar uma URL: cache do navegador, do SO e resolvedor recursivo.'
+  section: '7:40 DNS Lookup'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-google-com-tls-alpn-sni
+  title: 'What happens when you type google.com into your browser and press enter? (Detailed Analysis) — 24:19 TLS, ALPN. SNI'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=dh406O2v_1c&t=1459s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tls-concepts
+  why: 'TLS com ALPN e SNI no carregamento de uma página: como o servidor sabe qual certificado e protocolo usar.'
+  section: '24:19 TLS, ALPN. SNI'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-dns-is-beautiful-how-dns-works
+  title: 'DNS is beautiful — 7:40 How DNS works (Details)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=tgWx81_NGcg&t=460s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dns-ip
+  why: 'Detalhes da hierarquia DNS (raiz, TLD, autoritativo) e por que o DNS usa UDP.'
+  section: '7:40 How DNS works (Details)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-dns-is-beautiful-poisoning
+  title: 'DNS is beautiful — 19:30 DNS Poisoning'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=tgWx81_NGcg&t=1170s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - dns-ip
+  why: 'Envenenamento de cache DNS e outros abusos, mostrando as fragilidades do protocolo.'
+  section: '19:30 DNS Poisoning'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-http-cookies-properties
+  title: 'HTTP Cookies Crash Course — 14:38 Section 2 - Cookie Properties'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=sovAIX4doOE&t=878s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Atributos de cookie (Domain, Path, Expires, HttpOnly, Secure, SameSite) que definem a segurança de uma sessão.'
+  section: '14:38 Section 2 - Cookie Properties'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-http-cookies-security
+  title: 'HTTP Cookies Crash Course — 1:02:00 Section 4 - Cookie Secuirty'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=sovAIX4doOE&t=3720s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Ataques e defesas envolvendo cookies de sessão.'
+  section: '1:02:00 Section 4 - Cookie Secuirty'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-samesite-cookie
+  title: 'SameSite Cookie Attribute Explained by Example (Strict, Lax, None & No SameSite)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=aUF2QCEudPo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'SameSite Strict, Lax e None demonstrados: a principal defesa moderna contra CSRF.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-jwt-session-based-auth
+  title: 'JWT - JSON Web Token Crash Course (NodeJS & Postgres) — 2:25 Session-Based Auth'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=T0k-3Ze4NLo&t=145s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Compara autenticação por sessão no servidor com JWT e explica refresh tokens.'
+  section: '2:25 Session-Based Auth'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-idempotency
+  title: 'Why Idempotency is very critical in Backend Applications'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=4OuaONkZw1I
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - idempotency
+  why: 'Por que uma requisição que dá timeout e é repetida pode duplicar um pedido, e como requisições idempotentes evitam isso.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-message-queue-when
+  title: 'What is a Message Queue and When should you use Messaging Queue Systems Like RabbitMQ and Kafka'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=W4_aGb_MOls
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - queues-delivery-semantics
+  why: 'Quando uma fila de mensagens (RabbitMQ, Kafka) resolve um problema real e quando só adiciona complexidade.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-pubsub-vs-queues
+  title: 'Publish-Subscribe Pattern vs Message Queues vs Request Response (Detailed Discussions with Examples) — 1:24 When to Use Message Queues?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=DXTHb9TqJOs&t=84s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - queues-delivery-semantics
+  why: 'Quando usar fila em vez de requisição-resposta, e diferença para publish-subscribe.'
+  section: '1:24 When to Use Message Queues?'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-acid-transaction
+  title: 'Relational Database ACID Transactions (Explained by Example) — 2:00 What is a Transaction?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=pomxJOFVcQs&t=120s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - transactions-basics
+  why: 'O que é uma transação e como atomicidade funciona, com exemplos concretos.'
+  section: '2:00 What is a Transaction?'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-acid-read-phenomena
+  title: 'Relational Database ACID Transactions (Explained by Example) — 9:30 Isolation - Read phenomena *'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=pomxJOFVcQs&t=570s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: 'Dirty read, non-repeatable read e phantom read, e a tabela de níveis de isolamento que previnem cada um.'
+  section: '9:30 Isolation - Read phenomena *'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-acid-eventual-consistency
+  title: 'Relational Database ACID Transactions (Explained by Example) — 35:00 Eventual Consistency'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=pomxJOFVcQs&t=2100s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - consistency-models
+  why: 'Consistência nos dados vs. nas leituras, e consistência eventual com réplicas.'
+  section: '35:00 Eventual Consistency'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-serializable-vs-repeatable-read
+  title: 'Serializable vs Repeatable Read Isolation Level - When to use one over the other in Database Systems'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=KoULlXKK1H8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: 'Diferença prática entre Serializable e Repeatable Read com demo no PostgreSQL.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-pessimistic-vs-optimistic-cc
+  title: 'Pessimistic concurrency control vs Optimistic concurrency control in Database Systems Explained'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=I8IlO0hCSgY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - isolation-locks
+  why: 'Controle de concorrência pessimista (locks) vs. otimista (versão e retry).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-row-level-locks
+  title: 'Row-Level Database Locks Explained - (Read vs Exclusive)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=nuBi2XbHH18
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - isolation-locks
+  why: 'Locks compartilhados vs. exclusivos em nível de linha.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-postgres-locks-row-level
+  title: 'All Postgres Locks Explained | A Deep Dive — 28:30 Row-Level Locks'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=URwmzTeuHdk&t=1710s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: 'FOR UPDATE, FOR NO KEY UPDATE, FOR SHARE e a matriz de conflito de locks de linha no PostgreSQL.'
+  section: '28:30 Row-Level Locks'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-postgres-locks-deadlocks
+  title: 'All Postgres Locks Explained | A Deep Dive — 42:00 Deadlocks'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=URwmzTeuHdk&t=2520s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  - deadlocks
+  why: 'Como deadlocks surgem entre transações no PostgreSQL e como o banco os detecta.'
+  section: '42:00 Deadlocks'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-redo-undo-wal
+  title: 'Redo, Undo and WAL logs | The Backend Engineering Show — 11:00 WAL'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=uHvR7nOu5m4&t=660s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - transactions-basics
+  why: 'Write-ahead log: como o banco garante durabilidade e atomicidade mesmo se cair no meio de um commit.'
+  section: '11:00 WAL'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-redo-undo-fsync
+  title: 'Redo, Undo and WAL logs | The Backend Engineering Show — 27:00 fsync'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=uHvR7nOu5m4&t=1620s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - filesystems
+  why: 'fsync e por que escrever no arquivo não significa estar no disco.'
+  section: '27:00 fsync'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-when-indexes-are-useless
+  title: 'when indexes are useless | The Backend Engineering Show'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=oebtXK16WuU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - indexes
+  - query-plans
+  why: 'Casos em que índices não ajudam: baixa seletividade, funções na coluna (UPPER) e ordem de índice composto.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-optimizer-might-not-use-index
+  title: 'Watch out before Adding Indexes to Your Table, Your Database Optimizer Might not Use them'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=zu97H24zpXU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - query-plans
+  - indexes
+  why: 'Como o planner escolhe entre vários índices ou índice + filtro, e como estatísticas desatualizadas enganam o otimizador.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-postgres-explain-explained
+  title: 'Postgres Explain Explained - How Databases Prepare Optimal Query Plans to Execute SQL'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=P7EUFtjeAmI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - query-plans
+  why: 'Lê a saída do EXPLAIN do PostgreSQL: custo, linhas, largura, index scan e index-only scan.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-btree-vs-bplus-tree
+  title: 'B-tree vs B+ tree in Database Systems — 8:30 B-tree'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=UzHl2VzyZS4&t=510s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - indexes
+  - binary-search-trees
+  why: 'De árvore binária para B-tree e B+tree: por que bancos usam nós largos ligados a páginas de disco.'
+  section: '8:30 B-tree'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-postgres-internals-whiteboard
+  title: 'you won''t forget how postgres works after this'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=q9jixKv4h2I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - indexes
+  - isolation-locks
+  why: 'Páginas, tuplas, TIDs, estrutura de índice e MVCC no PostgreSQL desenhados na lousa.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-connection-pooling-postgres
+  title: 'Connection Pooling in PostgresSQL with NodeJS (Performance Numbers)'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=GTeCtIoV2Tw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - jdbc-postgresql
+  why: 'Mede o custo de abrir uma conexão por requisição vs. usar um pool, com números de desempenho.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
+
+- id: hussein-pagination-infinite-scroll
+  title: 'How a query optimization gave birth to Infinite scroll — 1:00 Classic Paged results'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=Tzt89dHF79Y&t=60s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - pagination
+  why: 'Limitações da paginação clássica e como a consulta por cursor levou ao scroll infinito.'
+  section: '1:00 Classic Paged results'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: hussein-page-faults
+  title: 'Page Faults | The Backend Engineering Show — 25:30 What is a Page fault?'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=AsFxaZJ1M0k&t=1530s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - virtual-memory
+  why: 'Tipos de page fault (primeiro acesso, expansão de stack, copy-on-write, swap, arquivo) e o que o kernel faz em cada um.'
+  section: '25:30 What is a Page fault? (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: hussein-when-to-use-threads
+  title: 'When do you use threads? — 7:10 IO blocking Tasks'
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=-kUgcdJ84Dg&t=430s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - threads-basics
+  why: 'Quando threads ajudam (I/O bloqueante, CPU intensiva, muitas tarefas pequenas) e quando atrapalham.'
+  section: '7:10 IO blocking Tasks'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: bytebytego-caching-pitfalls
+  title: 'Caching Pitfalls Every Developer Should Know'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=wh98s0XhMmQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - timeouts-caching
+  why: 'Cache stampede, cache penetration e avalanche: as falhas típicas de caches e como mitigá-las.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-session-vs-jwt
+  title: 'Session Vs JWT: The Differences You May Not Know!'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=fyTxwIa-1U0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - authentication-sessions
+  why: 'Sessão no servidor vs. JWT: assinatura, expiração, refresh e quando escolher cada um.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-oauth2
+  title: 'OAuth 2 Explained In Simple Terms'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=ZV5yTm4pT8g
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - authorization
+  - authentication-sessions
+  why: 'Fluxo do OAuth 2 em termos simples: autorização delegada sem compartilhar senha.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-store-passwords
+  title: 'System Design: How to store passwords in the database?'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=zt8Cocdy15c
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - authentication-sessions
+  why: 'Hash com salt para armazenar senhas, em quatro minutos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-deployment-strategies
+  title: 'Top 5 Most-Used Deployment Strategies'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=AWVTKBUnoIg
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - health-checks-rollback
+  - containers-deployment
+  why: 'Rolling, blue-green, canary e feature toggles, com o custo de rollback de cada estratégia.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-bare-metal-vms-containers
+  title: 'Big Misconceptions about Bare Metal, Virtual Machines, and Containers'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=Jz8Gs4UHTO8
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - containers-deployment
+  why: 'Diferenças reais entre bare metal, máquinas virtuais e containers.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-cicd-5-minutes
+  title: 'CI/CD In 5 Minutes | Is It Worth The Hassle: Crash Course System Design #2'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=42UP1fxi2SY
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - architecture-ci
+  why: 'Visão geral de CI vs. CD e do pipeline de entrega.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-kafka-vs-rabbitmq
+  title: 'Kafka vs. RabbitMQ vs. Messaging Middleware vs. Pulsar'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=x4k1XEjNzYQ
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - queues-delivery-semantics
+  why: 'Panorama de middleware de mensageria (IBM MQ, RabbitMQ, Kafka, Pulsar) e o que mudou entre filas e logs.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-cap-theorem
+  title: 'CAP Theorem Simplified'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=BHqjEjzAicA
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - consistency-models
+  why: 'Teorema CAP com um exemplo de partição de rede: escolher entre consistência e disponibilidade.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-sql-execution-order
+  title: 'Secret To Optimizing SQL Queries - Understand The SQL Execution Order'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=BHwzDmr6d7s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - joins-aggregation
+  - query-plans
+  why: 'Ordem lógica de execução (FROM/JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY) e sargabilidade.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-lsm-tree
+  title: 'The Secret Sauce Behind NoSQL: LSM Tree'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=I6jB0nM9SKU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - indexes
+  why: 'LSM tree e compactação: a alternativa à B-tree usada em bancos orientados a escrita.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-api-pagination
+  title: 'API Pagination: Making Billions of Products Scrolling Possible'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=14K_a2kKTxU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - pagination
+  why: 'Paginação por offset, cursor, keyset e tempo em três minutos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-latency-numbers
+  title: 'Latency Numbers Programmer Should Know: Crash Course System Design #1'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=FqR5vESuKe0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - latency-percentiles-diagnosis
+  - cpu-memory-caches
+  why: 'Ordens de grandeza de latência (cache L1, RAM, SSD, rede) para estimar onde o tempo vai.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-consistent-hashing
+  title: 'Consistent Hashing | Algorithms You Should Know #1'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=UF9Iqmg94tk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Hashing consistente: como redistribuir poucas chaves quando o número de "buckets" (servidores) muda.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-rate-limiter
+  title: 'Rate Limiter System Design: Token Bucket, Leaky Bucket, Scaling'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=YXkOdWBwqaA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Janela fixa e token bucket para limitar taxa, proteção contra sobrecarga e tempestades de retry.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: bytebytego-good-vs-bad-apis
+  title: 'Good APIs Vs Bad APIs: 7 Tips for API Design'
+  author: 'ByteByteGo'
+  url: https://www.youtube.com/watch?v=_gQaygjm_hg
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - idempotency
+  - spring-web-backend
+  why: 'Dicas de design de API: nomes, confiabilidade com idempotência, versionamento, paginação e rate limiting.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: ByteByteGo).'
+
+- id: cmu-15445-07-hash-tables-linear-probing
+  title: '#07 - Database Hash Tables ✸ YugabyteDB Database Talk (CMU Intro to Database Systems) — 20:06 Linear Probe Hashing'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=nuNW8IfgPNU&t=1206s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - hash-tables
+  why: 'Linear probing, armazenamento inline e remoção com tombstones numa tabela hash de banco de dados.'
+  section: '20:06 Linear Probe Hashing (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-07-hash-tables-chained
+  title: '#07 - Database Hash Tables ✸ YugabyteDB Database Talk (CMU Intro to Database Systems) — 46:53 Chained Hashing'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=nuNW8IfgPNU&t=2813s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - hash-tables
+  why: 'Chained, extendible e linear hashing: como tabelas hash crescem sem rehash completo.'
+  section: '46:53 Chained Hashing (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-11-top-n-heap-sort
+  title: '#11 - Sorting & Aggregation Algorithms ✸ MotherDuck Database Talk (CMU Intro to Database Systems) — 17:16 Top-N heap sort'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=LzyKTpeIgts&t=1036s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - heaps-priority-queues
+  why: 'ORDER BY … LIMIT N resolvido com heap: aplicação direta de fila de prioridade num executor de consultas.'
+  section: '17:16 Top-N heap sort (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-11-external-merge-sort
+  title: '#11 - Sorting & Aggregation Algorithms ✸ MotherDuck Database Talk (CMU Intro to Database Systems) — 24:17 External merge sort'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=LzyKTpeIgts&t=1457s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - searching-sorting
+  why: 'External merge sort: ordenar dados maiores que a memória em passadas sobre páginas de disco.'
+  section: '24:17 External merge sort (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-11-sorting-hashing-aggregation
+  title: '#11 - Sorting & Aggregation Algorithms ✸ MotherDuck Database Talk (CMU Intro to Database Systems) — 48:50 Sorting aggregation'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=LzyKTpeIgts&t=2930s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - joins-aggregation
+  why: 'GROUP BY por ordenação vs. por hashing, e como o banco escolhe.'
+  section: '48:50 Sorting aggregation (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-12-nested-loop-joins
+  title: '#12 - Join Algorithms: Hash, Sort-Merge, Nested Loop Joins (CMU Intro to Database Systems) — 0:28 Nested loop joins'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=MFazkaZKs1s&t=28s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - joins-aggregation
+  - query-plans
+  why: 'Nested loop join (simples, por bloco e por índice) com análise de custo em I/O.'
+  section: '0:28 Nested loop joins (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-12-hash-join
+  title: '#12 - Join Algorithms: Hash, Sort-Merge, Nested Loop Joins (CMU Intro to Database Systems) — 45:24 Simple hash join'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=MFazkaZKs1s&t=2724s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - joins-aggregation
+  - hash-tables
+  why: 'Hash join simples e particionado: fases build e probe.'
+  section: '45:24 Simple hash join (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-10-locks-vs-latches
+  title: '#10 - Index Concurrency Control (CMU Intro to Database Systems) — 6:16 Locks vs latches'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=lgUNTj0Q54M&t=376s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - race-conditions-synchronization
+  - isolation-locks
+  why: 'Diferença entre locks (transações, conteúdo lógico) e latches (estruturas em memória, threads).'
+  section: '6:16 Locks vs latches (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-10-cas-futex-latches
+  title: '#10 - Index Concurrency Control (CMU Intro to Database Systems) — 21:55 CAS and OS latches'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=lgUNTj0Q54M&t=1315s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  why: 'Implementações de latch: spinlock com CAS, mutex do SO, futex e reader-writer.'
+  section: '21:55 CAS and OS latches (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-10-latch-crabbing
+  title: '#10 - Index Concurrency Control (CMU Intro to Database Systems) — 36:44 Latch crabbing protocol'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=lgUNTj0Q54M&t=2204s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  - binary-search-trees
+  why: 'Latch crabbing em B+trees: travar pai e filho e soltar o pai quando seguro.'
+  section: '36:44 Latch crabbing protocol (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-19-occ
+  title: '#19 - Timestamp Ordering Concurrency Control (CMU Intro to Database Systems) — 10:47 Optimistic concurrency'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=risHwKeWbBM&t=647s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: 'Controle de concorrência otimista: fases de leitura, validação e escrita.'
+  section: '10:47 Optimistic concurrency (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-19-phantoms-isolation-levels
+  title: '#19 - Timestamp Ordering Concurrency Control (CMU Intro to Database Systems) — 48:41 Phantom read problem'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=risHwKeWbBM&t=2921s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  why: 'O problema do phantom e níveis de isolamento definidos pelas anomalias que permitem.'
+  section: '48:41 Phantom read problem (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-20-write-ahead-logging
+  title: '#20 - Database Logging ✸ Confluent Database Talk (CMU Intro to Database Systems) — 32:21 Write-ahead logging'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=mbelzgz-97s&t=1941s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - transactions-basics
+  why: 'Write-ahead logging, políticas steal/force e group commit: como o COMMIT vira durável.'
+  section: '32:21 Write-ahead logging (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-04-lsm-trees
+  title: '#04 - Database Storage: Log-Structured Merge Trees & Tuples (CMU Intro to Database Systems) — 23:51 LogStructured Merge Trees'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=IHtVWGhG0Xg&t=1431s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - indexes
+  why: 'Log-structured merge trees, compactação e RocksDB como alternativa ao armazenamento por páginas.'
+  section: '23:51 LogStructured Merge Trees (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-03-sequential-vs-random-io
+  title: '#03 - Database Storage: Files & Pages ✸ Neon Database Talk (CMU Intro to Database Systems) — 14:19 Sequential vs random IO'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=dSxV5Sob5V8&t=859s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - systems-io-performance
+  - filesystems
+  why: 'Por que I/O sequencial é muito mais barato que aleatório e como isso molda o projeto de um SGBD.'
+  section: '14:19 Sequential vs random IO (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: cmu-15445-23-replication-consistency
+  title: '#23 - Distributed Databases Pt. 1 (CMU Intro to Database Systems) — 65:58 Replication and consistency'
+  author: 'Andy Pavlo (CMU Database Group)'
+  url: https://www.youtube.com/watch?v=IFLQBWY6dlE&t=3958s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: 'Replicação e consistência em bancos distribuídos.'
+  section: '65:58 Replication and consistency (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CMU Database Group). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: sorber-create-join-threads
+  title: 'How to create and join threads in C (pthreads).'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=uA8X5zNOGw8
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - threads-basics
+  why: 'pthread_create e pthread_join em C, passo a passo.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-thread-args-results
+  title: 'How to pass arguments to and get results from threads. (pthread_create, pthread_join)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=It0OFCbbTJE
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - threads-basics
+  why: 'Como passar argumentos e recuperar resultados de threads sem compartilhar ponteiros inválidos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-debugging-threads-gdb
+  title: 'Debugging with Multiple Threads (gdb, pthreads)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=aypNWcRlwYw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - threads-basics
+  why: 'Depurar programas com várias threads no gdb (info threads, thread N).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-threads-safety-speed
+  title: 'Safety and Speed Issues with Threads. (pthreads, mutex, locks)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=9axu8CUvOKY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - race-conditions-synchronization
+  why: 'Mostra uma race condition num contador compartilhado e o custo de corrigi-la com mutex.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-read-write-locks
+  title: 'Using read write locks (example in C)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=3iwTk24dZOU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - race-conditions-synchronization
+  why: 'Read-write locks em C: muitos leitores ou um escritor.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-semaphore
+  title: 'What is a semaphore? How do they work? (Example in C)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=ukM_zzrIeXs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - bounded-queues
+  - race-conditions-synchronization
+  why: 'O que é um semáforo e como ele coordena threads, com exemplo em C.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-thread-pools
+  title: 'Multithreaded Server Part 2: Thread Pools'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=FMNnusHqjpw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - bounded-queues
+  why: 'Servidor com pool de threads alimentado por uma fila de trabalho.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-condition-variables-server
+  title: 'How to write a multithreaded webserver using condition variables (Part 3)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=P6Z5K8zmEmc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - bounded-queues
+  why: 'Troca a espera ativa do pool por variáveis de condição, o padrão produtor-consumidor correto.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-multithreaded-server
+  title: 'How to write a multithreaded server in C (threads, sockets)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=Pg_4Jz8ZIH4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - threads-basics
+  - tcp-udp-sockets
+  why: 'Servidor TCP em C com uma thread por conexão.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-barrier
+  title: 'Coordinate your threads with a barrier (example in C)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=WC-P32XvS1s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - low-level-concurrency
+  why: 'Barreiras para sincronizar fases entre threads.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-atomic-variables
+  title: 'Making variables atomic in C'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=_xX25ThomIo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - low-level-concurrency
+  why: 'Variáveis atômicas em C (stdatomic) como alternativa a mutex para contadores.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-volatile
+  title: 'How to use the volatile keyword in C?'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=6tIWFEzzx9I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - low-level-concurrency
+  why: 'O que volatile garante (e não garante) em C — não é sincronização entre threads.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-fork
+  title: 'Creating new processes with fork()!'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=ss1-REMJ9GA
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'fork() criando processos e o comportamento do retorno no pai e no filho.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-exec
+  title: 'Making forked clones more useful with exec()!'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=kDxjcyHu_Qs
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'exec() substituindo a imagem do processo, completando o par fork/exec.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-zombie-processes
+  title: 'Understanding Zombie Processes!'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=xJ8KenZw2ag
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'Processos zumbis e por que o pai precisa chamar wait().'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-strace-ltrace
+  title: 'Spying on Running Programs (strace, ltrace, system calls vs function calls)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=2AmP7Pse4U0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'strace e ltrace para ver syscalls vs. chamadas de biblioteca de um programa em execução.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-cpu-scheduling
+  title: 'CPU Scheduling Basics'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=Jkmy2YLUbUY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - processes-syscalls
+  why: 'Fundamentos de escalonamento de CPU: estados, preempção e políticas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-fork-open-files
+  title: 'How does fork work with open files?'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=SThwp5ijh6o
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - file-descriptors
+  why: 'O que acontece com descritores abertos após fork(): pai e filho compartilham o mesmo offset.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-file-descriptors-table
+  title: 'File Descriptors: the table of integers behind *nix file I/O'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=QRZUqmf0PR4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - file-descriptors
+  why: 'A tabela de inteiros por trás do I/O no Unix: open, read, write, dup e o que é um fd.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-redirection-bug
+  title: 'An Interesting Redirection Bug. How Redirection Can Change Program Behavior.'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=oxWg0_9DSrI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - file-descriptors
+  why: 'Um bug em que redirecionar a saída muda o comportamento do programa, e por quê.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-sockets-pipes-look-like-files
+  title: 'Sockets and Pipes Look Like Files (Unix/fdopen)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=il4N6KjVQ-s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - file-descriptors
+  why: 'Sockets e pipes também são descritores de arquivo; fdopen unifica a interface.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-opendir-readdir
+  title: 'Directory listings revisited: opendir & readdir under the hood'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=v6p4B3JwZbM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - filesystems
+  why: 'opendir/readdir por baixo dos panos: diretórios como arquivos de entradas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-open-file-deleted
+  title: 'What if my open file gets deleted?'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=MruzHlXqspU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - filesystems
+  why: 'Apagar um arquivo aberto: nomes vs. inodes e contagem de links.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-mmap-brk
+  title: 'How processes get more memory. (mmap, brk)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=XV5sRaSVtXQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - virtual-memory
+  - memory-allocators
+  why: 'Como processos obtêm memória do kernel com brk e mmap.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-mmap-files
+  title: 'How to Map Files into Memory in C (mmap, memory mapped file io)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=m7E9piHcfr4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - virtual-memory
+  - systems-io-performance
+  why: 'Arquivos mapeados em memória com mmap: I/O via page faults.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-async-io
+  title: 'You''ve probably never accessed a file like this before. (Async IO example)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=wJGd7tKF2zY
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - systems-io-performance
+  why: 'Exemplo de I/O assíncrono em C, em contraste com leituras bloqueantes.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-select
+  title: 'How one thread listens to many sockets with select in C.'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=Y6pFtgRdUts
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - systems-io-performance
+  - tcp-udp-sockets
+  why: 'Uma thread atendendo vários sockets com select().'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-web-server-c
+  title: 'Program your own web server in C. (sockets)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=esXw4bdaZkc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  - http-protocol
+  why: 'Servidor web mínimo em C com socket, bind, listen e accept.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-web-client-c
+  title: 'How to build a web client? (sockets)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=bdIiTxtMaKA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  - http-protocol
+  why: 'Cliente HTTP em C com sockets, escrevendo a requisição à mão.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-two-socket-types
+  title: 'The two main types of network socket'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=HpAdCgs9HCI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: 'SOCK_STREAM vs. SOCK_DGRAM: o que muda entre TCP e UDP na API de sockets.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-udp-packets
+  title: 'How to Send and Receive UDP packets (in C)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=5PPfy-nUWIM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: 'Enviar e receber datagramas UDP em C, sem conexão.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-heap-curtain
+  title: 'Pulling Back the Curtain on the Heap'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=GIWeQ2I67rk
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - memory-allocators
+  why: 'Por dentro do heap: metadados do malloc, blocos e o que free faz.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-free-list-allocators
+  title: 'Making allocators and object pools faster using a free list'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=MxgnS9Lwv0k
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - memory-allocators
+  why: 'Free list para acelerar alocadores e object pools.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-object-pool
+  title: 'What is an object pool, and how to create one in C?'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=CpgsQLSc7KY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - memory-allocators
+  why: 'Construindo um object pool em C para evitar malloc/free frequentes.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-modify-allocator
+  title: 'One reason to Modify your Memory Allocator (C/C++)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=RoVD6zlftF0
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - memory-allocators
+  why: 'Um motivo concreto para substituir ou modificar o alocador de memória em C/C++.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-hash-table
+  title: 'Understanding and implementing a Hash Table (in C)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=2Ti5yvumFTU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Implementa uma tabela hash em C do zero.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-hash-function-matters
+  title: 'Does it matter what hash function I use? (hash table example in c)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=MXdF-n-hAQU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Mede o efeito de uma função hash ruim na distribuição dos buckets.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-linked-list
+  title: 'Understanding and implementing a Linked List in C and Java'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=VOpjAHCee7c
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - linked-lists
+  why: 'Implementação de lista ligada em C e Java lado a lado.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-avoid-linked-lists
+  title: 'Should you avoid linked lists? (linked list vs arrays)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=bXsKnUGndEU
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - linked-lists
+  - dynamic-arrays
+  why: 'Benchmark de lista ligada vs. array: localidade de cache costuma vencer a complexidade teórica.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-queue-c
+  title: 'How to Implement a Queue in C'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=FcIubL92gaI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - stacks-queues
+  why: 'Implementando uma fila em C.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-binary-search-tree
+  title: 'Understand and Implement a Binary Search Tree in C'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=hfwwaNNJ-0A
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - binary-search-trees
+  why: 'Árvore binária de busca em C: inserção, busca e impressão recursivas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-time-your-code
+  title: 'How to Time Your Code (time, clock, times, clock_gettime)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=1KQqpiXxvWQ
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - profiling-benchmarks
+  why: 'time, clock, times e clock_gettime: o que cada um mede (tempo de parede vs. CPU).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-instrument-function-calls
+  title: 'How to profile your own function calls in C? (instrument your code!)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=M6RCUiZzl8Y
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - profiling-benchmarks
+  why: 'Instrumentar suas próprias chamadas de função em C para medir onde o tempo vai, um profiler caseiro.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-assertions
+  title: 'Find bugs faster using assertions.'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=1Jh9BUxIw0U
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - interfaces-testing
+  why: 'assert para documentar e checar invariantes, achando bugs mais cedo.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: sorber-automated-testing-make
+  title: 'Project Setup: Automated Testing with Make (using queue example)'
+  author: 'Jacob Sorber'
+  url: https://www.youtube.com/watch?v=JarMkGWTF8Y
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  - architecture-ci
+  why: 'Testes automatizados de um módulo de fila em C integrados ao Makefile.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jacob Sorber).'
+
+- id: computerphile-tcp-a
+  title: 'TCP a : Ensuring Your Data Gets There & in the Right Order! - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=IADOV8UZO34
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: 'Números de sequência e ACKs: como o TCP garante entrega e ordem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-tcp-b-aimd
+  title: 'TCP b : Additive Increase Multiplicative Decrease & ''Slow Start'' - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=nKVML4YaBqs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tcp-udp-sockets
+  why: 'Controle de congestionamento do TCP: AIMD e slow start.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-transport-layer-udp
+  title: 'Network Basics - Transport Layer and User Datagram Protocol Explained - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=ihvbhwGblQg
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tcp-udp-sockets
+  why: 'Camada de transporte, portas e UDP explicados do zero.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-congestion-collapse
+  title: 'Internet Congestion Collapse - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=edUN8OabWCQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  - tcp-udp-sockets
+  why: 'O colapso por congestionamento da internet e os algoritmos de recuo que surgiram dele — o mesmo risco de retries sem backoff.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-tls
+  title: 'Transport Layer Security (TLS) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=0TLDTodL7Lc
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Visão geral do TLS: o que ele protege e em que camada atua.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-tls-handshake
+  title: 'TLS Handshake Explained - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=86cQJ0MMses
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tls-concepts
+  why: 'O handshake TLS passo a passo, de ClientHello às chaves de sessão.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-diffie-hellman
+  title: 'Secret Key Exchange (Diffie-Hellman) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=NmM9HA2MQGI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Troca de chaves Diffie–Hellman com a analogia das tintas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-public-key-crypto
+  title: 'Public Key Cryptography - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=GSIDS_lvRv4
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Criptografia de chave pública em seis minutos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-digital-signatures
+  title: 'What are Digital Signatures? - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=s22eJ1eVLTU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tls-concepts
+  why: 'Assinaturas digitais: como provar autoria e integridade, base dos certificados.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-mitm-needham-schroeder
+  title: 'Man in the Middle & Needham–Schroeder Protocol - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=EtpdLBeIaus
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tls-concepts
+  - secrets-threat-modeling
+  why: 'Ataque man-in-the-middle num protocolo de autenticação clássico e por que autenticar as chaves é essencial.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-how-dns-works
+  title: 'How DNS Works - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=uOfonONtIuk
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - dns-ip
+  why: 'Como funciona o DNS, de forma curta e didática.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-dns-cache-poisoning
+  title: 'DNS Cache Poisoning - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=7MT1F0O3_Yw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - dns-ip
+  why: 'Mike Pound explica formas de envenenar o cache DNS para desviar usuários.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-virtual-memory
+  title: 'What''s Virtual Memory? - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=5lFnKYCZT5o
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - virtual-memory
+  why: 'O que é memória virtual e por que cada processo enxerga seu próprio espaço de endereços.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-memory-mapping
+  title: 'Memory Mapping - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=di5WodGWTiY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - virtual-memory
+  why: 'Tabelas de páginas e mapeamento de memória explicados em detalhe.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-dijkstra
+  title: 'Dijkstra''s Algorithm - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=GazC3A4OQTE
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - graphs-traversal
+  - heaps-priority-queues
+  why: 'Algoritmo de Dijkstra passo a passo, com a fila de prioridade escolhendo o próximo vértice.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-maze-solving
+  title: 'Maze Solving - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=rop0W4QDOUI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - graphs-traversal
+  why: 'Resolver labirintos como grafos com busca em largura, profundidade e Dijkstra.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-hash-collisions-birthday
+  title: 'Hash Collisions & The Birthday Paradox - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=jsraR-el8_o
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - hash-tables
+  why: 'Colisões de hash e o paradoxo do aniversário: por que colisões aparecem bem antes do esperado.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-python-hash-sets
+  title: 'Python Hash Sets Explained & Demonstrated - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=9oKpRTBfNXo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - hash-tables
+  why: 'Como um hash set do Python funciona por dentro, com demonstração.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-hashing-and-security
+  title: 'Hashing Algorithms and Security - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=b4b8ktEV4Bg
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - authentication-sessions
+  why: 'Propriedades de funções hash criptográficas e seu papel em segurança.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-multithreading-code
+  title: 'Multithreading Code - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=7ENFeb-J75k
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - threads-basics
+  - race-conditions-synchronization
+  why: 'Código multithread e a race condition clássica no incremento de um contador.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-weak-memory
+  title: 'Why Multi-Threaded Code Can Sometimes Misbehave (Weak Memory Concurrency) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=E3hvLz717zM
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - low-level-concurrency
+  why: 'Modelos de memória fracos: por que threads podem ver escritas fora de ordem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-multi-programming
+  title: 'Multi Programming - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=MB0yDMQj1lU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'Multiprogramação: como o SO alterna processos na CPU.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-sorting-big-o
+  title: 'Getting Sorted & Big O Notation - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=kgBjXUE_Nwc
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - complexity-analysis
+  - searching-sorting
+  why: 'Ordenação como porta de entrada para a notação Big O.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-quicksort-five-lines
+  title: 'Quicksort Algorithm in Five Lines of Code! - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=OKc2hAmMOY4
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - searching-sorting
+  why: 'Quicksort em cinco linhas e o papel do pivô.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-parsing-explained
+  title: 'Parsing Explained - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=bxpc9Pp5pZM
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - tokenizing-parsing
+  why: 'Gramáticas e árvores de parsing explicadas por um professor.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-parsing-bottom-up
+  title: 'Parsing Bottom Up - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=tH5AOX9929g
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tokenizing-parsing
+  why: 'Parsing bottom-up (shift-reduce) em contraste com descida recursiva.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-functional-parsing
+  title: 'Functional Parsing - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=dDtZLm7HIJs
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - tokenizing-parsing
+  why: 'Parser combinators: construir parsers compondo funções (Graham Hutton).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-own-programming-language
+  title: 'Creating Your Own Programming Language - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=Q2UDHY5as90
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - tokenizing-parsing
+  - tree-walk-evaluation
+  why: 'Laurie Tratt cria uma linguagem nova escrevendo um interpretador em poucas linhas, mostrando o que compõe uma linguagem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-web-server-25-lines
+  title: 'Coding a Web Server in 25 Lines - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=7GBlCinu9yg
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - http-protocol
+  - tcp-udp-sockets
+  why: 'Um servidor web em 25 linhas para ver HTTP cru sobre um socket.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-unix-pipeline-kernighan
+  title: 'Unix Pipeline (Brian Kernighan) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=bKzonnwoR2I
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - file-descriptors
+  why: 'Brian Kernighan demonstra o pipeline Unix.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-cookie-stealing
+  title: 'Cookie Stealing - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=T1QEs3mdJoc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Roubo de cookies de sessão e por que HttpOnly e Secure importam.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-csrf
+  title: 'Cross Site Request Forgery - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=vRBihr41JTo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  - input-validation
+  why: 'Cross-Site Request Forgery: o navegador envia o cookie de sessão em requisições forjadas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-password-cracking
+  title: 'Password Cracking - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=7U-RbOKanYs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Mike Pound demonstra uma máquina quebrando bilhões de hashes de senha por segundo: por que hashes rápidos e senhas fracas não resistem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-passkeys
+  title: 'How Passkeys Work - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=xYfiOnufBSk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - authentication-sessions
+  why: 'Como passkeys (WebAuthn) substituem senhas por pares de chaves.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-2fa
+  title: '2FA: Two Factor Authentication - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=ZXFYT-BG2So
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - authentication-sessions
+  why: 'Autenticação de dois fatores e como funcionam os códigos TOTP.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-buffer-overflow
+  title: 'Running a Buffer Overflow Attack - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=1S0aBV-Waeo
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - input-validation
+  - c-strings
+  why: 'Executa um buffer overflow real: entrada não validada sobrescrevendo o endereço de retorno.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-garbage-collection
+  title: 'Garbage Collection (Mark & Sweep) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=c32zXYAK7CI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - java-fundamentals
+  - memory-allocators
+  why: 'Coleta de lixo mark-and-sweep explicada.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-ebpf
+  title: 'Kernelless Kernel Programming (eBPF) - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=J_EehoXLbIU
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - profiling-benchmarks
+  why: 'eBPF: rodar código seguro no kernel para observar sistemas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: computerphile-virtual-machines-cloud
+  title: 'Virtual Machines Power the Cloud - Computerphile'
+  author: 'Computerphile'
+  url: https://www.youtube.com/watch?v=GIdVRB5yNsk
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - containers-deployment
+  why: 'Máquinas virtuais e hipervisores na nuvem, para contrastar com containers.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Computerphile).'
+
+- id: coredumped-program-not-process
+  title: 'A PROGRAM is not a PROCESS.'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=7ge7u5VUSbE
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - processes-syscalls
+  why: 'Programa vs. processo: o que o SO cria ao executar um binário.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-linux-creates-processes
+  title: 'The Weird Way Linux Creates Processes'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=SwIPOf2YAgI
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - processes-syscalls
+  why: 'fork e exec animados: o modo "estranho" como o Linux cria processos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-kernel-mode-bit
+  title: 'How a Single Bit Inside Your Processor Shields Your Operating System''s Integrity'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=H4SDPLiUnv4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - processes-syscalls
+  why: 'Modo usuário vs. modo kernel e como syscalls atravessam essa fronteira.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-sleep
+  title: 'What Happens When a Program Calls Sleeps?'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=e5g8eYKEhMw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - processes-syscalls
+  why: 'O que acontece no kernel quando um programa chama sleep: o processo sai da CPU e o escalonador assume.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-scheduling-process-states
+  title: 'The Fancy Algorithms That Make Your Computer Feel Smoother — 10:36 - Lifetime of a Process (States)'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=O2tV9q6784k&t=636s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - processes-syscalls
+  why: 'Ciclo de vida de um processo (estados) e o dispatcher.'
+  section: '10:36 - Lifetime of a Process (States)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: coredumped-scheduling-round-robin
+  title: 'The Fancy Algorithms That Make Your Computer Feel Smoother — 27:58 - Round Robin Policy & Time Quantum'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=O2tV9q6784k&t=1678s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - threads-basics
+  why: 'Round robin, quantum, timer de hardware e custo da troca de contexto.'
+  section: '27:58 - Round Robin Policy & Time Quantum'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: coredumped-memory-isolation
+  title: 'Why Can''t Programs Access Each Other''s Memory?'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=Zmtxl7LZwjQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - virtual-memory
+  why: 'Por que um programa não acessa a memória de outro: tradução de endereços e proteção.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-threads-single-core
+  title: 'Why Are Threads Needed On Single Core Processors'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=M9HHWFp84f0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - threads-basics
+  why: 'Por que threads são úteis mesmo em um único núcleo: I/O bloqueante e concorrência.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-threads-multicore
+  title: 'Threads On Multicore Systems'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=5sw9XJokAqw
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - threads-basics
+  why: 'Threads em múltiplos núcleos: paralelismo real e seus custos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-race-conditions
+  title: 'The Weirdest Bug in Programming - Race Conditions'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=bhpzTWtee2A
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - race-conditions-synchronization
+  why: 'Race conditions animadas no nível de instruções de máquina.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-peterson-algorithm
+  title: 'The 80’s Algorithm to Avoid Race Conditions (and Why It Failed)'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=QAzuAn3nFGo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - race-conditions-synchronization
+  - low-level-concurrency
+  why: 'Algoritmo de Peterson para exclusão mútua e por que falha em hardware moderno.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-hardware-atomics
+  title: 'How Hardware Makes Threads Less of a Nightmare'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=IMceN4_rieo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - low-level-concurrency
+  why: 'Instruções atômicas de hardware (test-and-set, compare-and-swap) que tornam locks possíveis.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-ipc
+  title: 'IPC: To Share Memory Or To Send Messages'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=Y2mDwW2pMv4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - file-descriptors
+  why: 'IPC: memória compartilhada vs. troca de mensagens (pipes).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: coredumped-heap-slow
+  title: 'WHY IS THE HEAP SO SLOW?'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=ioJkA7Mw2-U
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - memory-allocators
+  why: 'Por que alocar no heap é caro: o trabalho de um alocador de memória.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: talk-hickey-simple-made-easy
+  title: '"Simple Made Easy" - Rich Hickey (2011)'
+  author: 'Rich Hickey (Strange Loop Conference)'
+  url: https://www.youtube.com/watch?v=SxdOUGdseq4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - requirements-modularity
+  - refactoring
+  why: '"Simples" (não entrelaçado) vs. "fácil" (familiar): o vocabulário clássico para discutir modularidade e acoplamento.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Strange Loop Conference).'
+
+- id: talk-armstrong-run-forever-distributed-hard
+  title: '"Systems that run forever self-heal and scale" by Joe Armstrong (2013) — 12:31 Distributed Programming is hard'
+  author: 'Joe Armstrong (Strange Loop Conference)'
+  url: https://www.youtube.com/watch?v=cNICGEwmXLU&t=751s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: 'Joe Armstrong sobre por que programação distribuída é difícil e como isolamento e réplicas lidam com falhas.'
+  section: '12:31 Distributed Programming is hard (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Strange Loop Conference). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-armstrong-run-forever-failure-detection
+  title: '"Systems that run forever self-heal and scale" by Joe Armstrong (2013) — 51:06 = Failure detection'
+  author: 'Joe Armstrong (Strange Loop Conference)'
+  url: https://www.youtube.com/watch?v=cNICGEwmXLU&t=3066s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - health-checks-rollback
+  why: 'Detecção e identificação de falhas e atualização de código em execução, as regras do Erlang para sistemas que não param.'
+  section: '51:06 = Failure detection (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Strange Loop Conference). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-kleppmann-conflict-resolution
+  title: 'Conflict Resolution for Eventual Consistency • Martin Kleppmann • GOTO 2016'
+  author: 'Martin Kleppmann (GOTO Conferences)'
+  url: https://www.youtube.com/watch?v=yCcWpzY8dIA
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: 'Resolução de conflitos com consistência eventual e CRDTs, do Google Docs a apps offline.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: GOTO Conferences).'
+
+- id: talk-kleppmann-database-inside-out
+  title: '"Turning the database inside out with Apache Samza" by Martin Kleppmann'
+  author: 'Martin Kleppmann (Strange Loop Conference)'
+  url: https://www.youtube.com/watch?v=fU9hR3kiOK0
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - queues-delivery-semantics
+  why: 'Log de eventos como fonte da verdade e views derivadas: a ideia por trás de Kafka e stream processing.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Strange Loop Conference).'
+
+- id: talk-kingsbury-what-are-transactions
+  title: 'Jepsen 15: What Even Are Transactions? by Kyle Kingsbury'
+  author: 'Kyle Kingsbury (TigerBeetle)'
+  url: https://www.youtube.com/watch?v=ecZp6cWhDjg
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - isolation-locks
+  - transactions-basics
+  why: 'Jepsen testando "transações ACID" reais em RavenDB, MySQL e Datomic, com anomalias encontradas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: TigerBeetle).'
+
+- id: talk-kingsbury-linearizable-boogaloo
+  title: '"Jepsen II: Linearizable Boogaloo" by Kyle Kingsbury'
+  author: 'Kyle Kingsbury (Strange Loop Conference)'
+  url: https://www.youtube.com/watch?v=QdkS6ZjeR7Q
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: 'Jepsen II: testes de linearizabilidade em bancos distribuídos sob partição de rede.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Strange Loop Conference).'
+
+- id: talk-brooker-try-again-retries
+  title: 'AWS re:Invent 2024 - Try again: The tools and techniques behind resilient systems (ARC403) — 2:25 The trouble with retries'
+  author: 'Marc Brooker (AWS Events)'
+  url: https://www.youtube.com/watch?v=rvHd4Y76-fs&t=145s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - partial-failure-retries
+  why: 'Marc Brooker (AWS) sobre os problemas dos retries, sistemas abertos vs. fechados e circuit breakers.'
+  section: '2:25 The trouble with retries (capítulo automático do YouTube)'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: AWS Events). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-brooker-try-again-tail-latency
+  title: 'AWS re:Invent 2024 - Try again: The tools and techniques behind resilient systems (ARC403) — 26:55 Tackling tail latency'
+  author: 'Marc Brooker (AWS Events)'
+  url: https://www.youtube.com/watch?v=rvHd4Y76-fs&t=1615s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Técnicas da AWS para atacar latência de cauda (incluindo erasure coding).'
+  section: '26:55 Tackling tail latency (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: AWS Events). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-brooker-try-again-metastability
+  title: 'AWS re:Invent 2024 - Try again: The tools and techniques behind resilient systems (ARC403) — 40:57 Understanding metastability'
+  author: 'Marc Brooker (AWS Events)'
+  url: https://www.youtube.com/watch?v=rvHd4Y76-fs&t=2457s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - partial-failure-retries
+  why: 'Falhas metaestáveis: quando retries mantêm o sistema derrubado mesmo após a causa sumir.'
+  section: '40:57 Understanding metastability (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: AWS Events). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-dean-taming-latency-variability
+  title: 'Taming Latency Variability and Scaling Deep Learning, by Jeff Dean, Google, 20131016 — 3:29 Variability and latency'
+  author: 'Jeff Dean (San Francisco Bay ACM)'
+  url: https://www.youtube.com/watch?v=S9twUcX1Zp0&t=209s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Jeff Dean sobre variabilidade de latência em clusters compartilhados e técnicas como hedged requests e cancelamento.'
+  section: '3:29 Variability and latency (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: San Francisco Bay ACM). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-gregg-lisa12-latency-analysis
+  title: 'LISA ''12 - Performance Analysis Methodology — 51:48 Latency Analysis Method'
+  author: 'Brendan Gregg (USENIX)'
+  url: https://www.youtube.com/watch?v=abLan0aXJkw&t=3108s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - latency-percentiles-diagnosis
+  why: 'Método de análise de latência de Brendan Gregg: decompor o tempo em camadas até achar a origem.'
+  section: '51:48 Latency Analysis Method (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: USENIX). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-gregg-lisa12-use-method
+  title: 'LISA ''12 - Performance Analysis Methodology — 59:04 USE Method'
+  author: 'Brendan Gregg (USENIX)'
+  url: https://www.youtube.com/watch?v=abLan0aXJkw&t=3544s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - profiling-benchmarks
+  - latency-percentiles-diagnosis
+  why: 'Método USE (utilização, saturação, erros) para checar cada recurso sistematicamente.'
+  section: '59:04 USE Method (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: USENIX). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-gregg-flame-graphs-yow
+  title: 'Visualizing Performance - The Developers’ Guide to Flame Graphs • Brendan Gregg • YOW! 2022'
+  author: 'Brendan Gregg (GOTO Conferences)'
+  url: https://www.youtube.com/watch?v=VMpTU15rIZY
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - profiling-benchmarks
+  why: 'Guia de flame graphs pelo criador: como ler e gerar perfis de CPU.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: GOTO Conferences).'
+
+- id: talk-cantrill-debugging-under-fire
+  title: 'Debugging Under Fire: Keep your Head when Systems have Lost their Mind • Bryan Cantrill • GOTO 2017'
+  author: 'Bryan Cantrill (GOTO Conferences)'
+  url: https://www.youtube.com/watch?v=30jNsCVLpAE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - logs-metrics-traces
+  why: 'Depurar sistemas em produção durante incidentes: cultura de debugging, monitoramento e postmortems.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: GOTO Conferences).'
+
+- id: talk-cantrill-hurricanes-butterfly-observing
+  title: 'Bryan Cantrill: The Hurricane''s Butterfly: Debugging Pathologically Performing Systems — 40:02 Observing'
+  author: 'Bryan Cantrill (Jane Street)'
+  url: https://www.youtube.com/watch?v=7AO4wz6gI3Q&t=2402s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - profiling-benchmarks
+  - latency-percentiles-diagnosis
+  why: 'Instrumentação, agregação e visualização (heatmaps, flame graphs) para depurar sistemas com desempenho patológico.'
+  section: '40:02 Observing (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Jane Street). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: talk-bernhardt-boundaries
+  title: 'Ruby Conf 12 - Boundaries by Gary Bernhardt'
+  author: 'Gary Bernhardt (Confreaks)'
+  url: https://www.youtube.com/watch?v=yTkzNHF6rMs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  - requirements-modularity
+  why: 'Functional core, imperative shell: separar valores de efeitos para testar sem mocks.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Confreaks).'
+
+- id: talk-rainsberger-integrated-tests-scam
+  title: '🚀 Integrated Tests Are A Scam (J.B. Rainsberger)'
+  author: 'J.B. Rainsberger (DevTernity Conference)'
+  url: https://www.youtube.com/watch?v=fhFa4tkFUFw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  why: 'Por que testes integrados não escalam e como testes de contrato e colaboração os substituem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: DevTernity Conference).'
+
+- id: talk-metz-all-the-little-things
+  title: 'RailsConf 2014 - All the Little Things by Sandi Metz'
+  author: 'Sandi Metz (Confreaks)'
+  url: https://www.youtube.com/watch?v=8bZh5LMaSmE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - refactoring
+  why: 'Sandi Metz refatora o Gilded Rose ao vivo: pequenos passos, testes verdes e duplicação antes da abstração errada.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Confreaks).'
+
+- id: talk-henney-seven-ineffective-habits
+  title: '🚀  Seven Ineffective Coding Habits of Many Programmers (Kevlin Henney)'
+  author: 'Kevlin Henney (DevTernity Conference)'
+  url: https://www.youtube.com/watch?v=SUIUZ09mnwM
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - refactoring
+  why: 'Hábitos de código que prejudicam legibilidade (nomes, formatação, comentários), com exemplos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: DevTernity Conference).'
+
+- id: talk-cooper-clean-architecture
+  title: '🚀 The Clean Architecture (Ian Cooper)'
+  author: 'Ian Cooper (DevTernity Conference)'
+  url: https://www.youtube.com/watch?v=SxJPQ5qXisw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - architecture-ci
+  why: 'Clean Architecture explicada: dependências apontando para o domínio, portas e adaptadores.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: DevTernity Conference).'
+
+- id: talk-rice-containers-from-scratch
+  title: 'Containers From Scratch • Liz Rice • GOTO 2018'
+  author: 'Liz Rice (GOTO Conferences)'
+  url: https://www.youtube.com/watch?v=8fi7uSYlOdc
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - containers-deployment
+  why: 'Liz Rice constrói um container em Go ao vivo com namespaces, chroot e cgroups.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: GOTO Conferences).'
+
+- id: talk-petazzoni-cgroups-namespaces
+  title: 'Cgroups, namespaces, and beyond: what are containers made from?'
+  author: 'Jérôme Petazzoni (Docker)'
+  url: https://www.youtube.com/watch?v=sK5i-N34im8
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - containers-deployment
+  why: 'Do que containers são feitos: cgroups, namespaces e copy-on-write.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Docker).'
+
+- id: talk-majors-observability-ndc
+  title: 'Observability: it''s not just an ops thing - Charity Majors'
+  author: 'Charity Majors (NDC Conferences)'
+  url: https://www.youtube.com/watch?v=ACHr-qwHS8Y
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - logs-metrics-traces
+  why: 'Charity Majors sobre observabilidade com eventos ricos em vez de só métricas e dashboards.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: NDC Conferences).'
+
+- id: talk-sigelman-three-pillars-zero-answers
+  title: 'Three Pillars, Zero Answers: We Need to Rethink Observability - Ben Sigelman, LightStep'
+  author: 'Ben Sigelman (CNCF)'
+  url: https://www.youtube.com/watch?v=EJV_CgiqlOE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - logs-metrics-traces
+  why: 'Crítica aos "três pilares" (logs, métricas, traces) e como usá-los juntos para responder perguntas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: CNCF [Cloud Native Computing Foundation]).'
+
+- id: talk-monitorama-distributed-tracing
+  title: 'Monitorama PDX 2017 - Distributed Tracing: How We Got Here and Where We''re Going'
+  author: 'Monitorama'
+  url: https://www.youtube.com/watch?v=ttmYuqWrgik
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - logs-metrics-traces
+  why: 'História e conceitos de tracing distribuído (spans, propagação de contexto).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Monitorama).'
+
+- id: kevin-powell-learn-flexbox
+  title: 'Learn flexbox the easy way'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=u044iM9xsWU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - css-layout
+  why: 'Flexbox do zero: o que display:flex muda, flex-grow, direção e alinhamento.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-learn-grid
+  title: 'Learn CSS Grid the easy way'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=rg7Fvvl3taU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - css-layout
+  why: 'CSS Grid sem complicação: colunas, gap, linhas, áreas e o inspetor de grid.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-position-deep-dive
+  title: 'CSS position deep dive'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=fF_NVrd1s14
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - css-layout
+  why: 'static, relative, absolute, fixed e sticky, com o que quebra cada um.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-z-index-stacking-context
+  title: 'Solve your z-index issues | z-index and stacking context explained'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=uS8l4YRXbaw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - css-layout
+  why: 'Stacking contexts: por que z-index "não funciona" e quais propriedades criam contextos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-responsive-guide
+  title: 'A practical guide to responsive web design'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=x4u1yp3Msao
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - css-layout
+  why: 'Responsividade deixando o navegador trabalhar: evitar tamanhos fixos e usar media queries só quando preciso.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-container-queries
+  title: 'Learn how to use Media queries & Container queries — 12:07 - Container query basics'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=2rlWBZ17Wes&t=727s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - css-layout
+  why: 'Container queries vs. media queries: layout que responde ao espaço do componente.'
+  section: '12:07 - Container query basics'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: kevin-powell-box-sizing
+  title: 'box-sizing: border-box explained'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=WlGQdgy-M6w
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - css-layout
+  why: 'box-sizing: border-box e o modelo de caixa.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-intrinsic-sizing
+  title: 'min-content, max-content, fit-content - intrinsic sizing with CSS'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=DM244V9KvNs
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - css-layout
+  why: 'min-content, max-content e fit-content: tamanhos intrínsecos.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-a11y-quick-wins-keyboard
+  title: 'Quick accessibility wins that are easy to implement — 16:34 - Keyboard navigation, focus and tab order'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=pJ0GPI7BMIs&t=994s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'Navegação por teclado, foco e ordem de tabulação, além de contraste e alt text.'
+  section: '16:34 - Keyboard navigation, focus and tab order'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: kevin-powell-a11y-ashlee-boyer-aria
+  title: 'Getting started with web accessibility with Ashlee Boyer — 20:37 - ARIA roles'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=qr0ujkLLgmE&t=1237s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'Quando usar roles ARIA e por que HTML semântico vem primeiro.'
+  section: '20:37 - ARIA roles'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell). Minuto tirado dos capítulos oficiais do vídeo (descrição).'
+
+- id: kevin-powell-semantic-html
+  title: 'HTML & CSS for Absolute Beginners: Semantic HTML'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=YOsMJQfwqow
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'HTML semântico para iniciantes: header, nav, main, article, section.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: kevin-powell-section-elements-lie
+  title: 'HTML section elements are a lie (sort of)'
+  author: 'Kevin Powell'
+  url: https://www.youtube.com/watch?v=ULdkpU51hTQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - semantic-html-accessibility
+  why: 'O que section e article realmente significam para a semântica e para tecnologias assistivas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Kevin Powell).'
+
+- id: a11ycasts-08-why-semantics
+  title: 'Why do semantics matter? -- #A11ycasts 08'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=g2tzEil5TL0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'Por que semântica importa: role, name, state e a árvore de acessibilidade.'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-05-just-use-button
+  title: 'Just use button -- A11ycasts #05'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=CZGqnp06DnI
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'Tudo que um <button> nativo dá de graça (foco, teclado, papel) e um <div> não.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-18-headings-landmarks
+  title: 'Why headings and landmarks are so important -- A11ycasts #18'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=vAAzdi1xuUY
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'Headings e landmarks como mapa de navegação para leitores de tela.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-03-what-is-focus
+  title: 'What is Focus? -- A11ycasts #03'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=EFv9ubbZLKw
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'O que é foco e quais elementos o recebem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-04-tabindex
+  title: 'Controlling focus with tabindex -- A11ycasts #04'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=Pe0Ce1WtnUM
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - semantic-html-accessibility
+  why: 'tabindex 0, -1 e positivo: controlar foco sem quebrar a ordem.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-13-intro-aria
+  title: 'Intro to ARIA -- A11ycasts #13'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=g9Qff0b-lHk
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - semantic-html-accessibility
+  why: 'Introdução ao ARIA: o que ele muda (só a semântica) e o que não muda (comportamento).'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-12-labeling
+  title: 'The art of labeling -- A11ycasts #12'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=8dCUzOiMRy4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - semantic-html-accessibility
+  why: 'label, aria-label e aria-labelledby: dar nomes acessíveis a controles.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-19-modal-dialogs
+  title: 'Accessible Modal Dialogs -- A11ycasts #19'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=JS68faEUduk
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - semantic-html-accessibility
+  - javascript-browser
+  why: 'Modal acessível: prender e devolver o foco com JavaScript.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-09-nvda-basics
+  title: 'Screen Reader Basics: NVDA -- A11ycasts #09'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=Jao3s_CwdRU
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - frontend-testing
+  why: 'Básico do leitor de tela NVDA para testar acessibilidade manualmente.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: a11ycasts-11-accessibility-check
+  title: 'How I do an accessibility check -- A11ycasts #11'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=cOmehxAU_4s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - frontend-testing
+  - semantic-html-accessibility
+  why: 'Roteiro de verificação de acessibilidade: teclado, foco, leitor de tela e ferramentas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-optimizing-inp-deep-dive
+  title: 'Optimizing INP: A deep dive'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=cmtfM4emG5k
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - rendering-performance
+  - javascript-browser
+  why: 'Fluxo completo para diagnosticar e corrigir INP: tarefas longas, input de teclado e trabalho no DOM.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-inp-responsiveness
+  title: 'How to optimize web responsiveness with Interaction to Next Paint'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=KZ1kxzsJZ5g
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: 'O que é Interaction to Next Paint e como otimizar a responsividade de interações da página.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-performance-debugging-devtools
+  title: 'Performance debugging in DevTools'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=BHqxD9qr6Gw
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: 'Gravar e ler um trace no painel Performance do DevTools.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-http203-content-visibility
+  title: 'Slashing layout cost with content-visibility - HTTP 203'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=FFA-v-CIxJQ
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - rendering-performance
+  why: 'content-visibility para pular layout e paint de conteúdo fora da tela.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-smooth-moves-cds2018
+  title: 'Smooth Moves: Rendering at the Speed of Right ® (Chrome Dev Summit 2018)'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=AB9qSUhlxh8
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: 'Refatorar uma microinteração para 60fps: estilo, layout, paint e animações compostas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-renderingng
+  title: 'RenderingNG: The next-generation rendering architecture for Chrome'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=sUbJPHYKZkU
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - rendering-performance
+  why: 'Arquitetura de renderização do Chrome (RenderingNG) e suas etapas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-anatomy-browser-101
+  title: 'Anatomy of the browser 101 (Chrome University 2019)'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=PzzNuCk-e0Y
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  - javascript-browser
+  why: 'Anatomia do navegador (Chrome University): processos, threads, navegação e pipeline de renderização.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: chrome-debugging-javascript-devtools-101
+  title: 'Debugging JavaScript - Chrome DevTools 101'
+  author: 'Chrome for Developers'
+  url: https://www.youtube.com/watch?v=H0XScE08hy8
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  why: 'Breakpoints, step e watch no DevTools para depurar JavaScript.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Chrome for Developers).'
+
+- id: grigorik-critical-rendering-path
+  title: 'Critical rendering path - Crash course on web performance (Fluent 2013) — 16:20 Critical rendering path'
+  author: 'Ilya Grigorik'
+  url: https://www.youtube.com/watch?v=PkOBnYxqj3k&t=980s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: 'Critical rendering path: DOM, CSSOM, scripts bloqueantes e como o navegador chega ao primeiro pixel.'
+  section: '16:20 Critical rendering path (capítulo automático do YouTube)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Ilya Grigorik). Minuto tirado dos capítulos automáticos do YouTube.'
+
+- id: archibald-rendering-without-lumpy-bits
+  title: 'Jake Archibald | Rendering without lumpy bits | Mobilism 2013'
+  author: 'Jake Archibald (Web Conferences Amsterdam)'
+  url: https://www.youtube.com/watch?v=3bc71-xzoWA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - rendering-performance
+  why: 'Jake Archibald sobre jank: layout, paint e camadas compostas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Web Conferences Amsterdam).'
+
+- id: wesbos-event-capture-bubbling
+  title: 'JavaScript Event Capture, Propagation and Bubbling - #JavaScript30 25/30'
+  author: 'Wes Bos'
+  url: https://www.youtube.com/watch?v=F1anRyL37lE
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  why: 'Captura, propagação e bubbling de eventos do DOM, com once e stopPropagation.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Wes Bos).'
+
+- id: wesbos-localstorage-event-delegation
+  title: 'How LocalStorage and Event Delegation work. #JavaScript30 15/30'
+  author: 'Wes Bos'
+  url: https://www.youtube.com/watch?v=YL1F4dCUlLc
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  why: 'Delegação de eventos: um listener no pai para elementos criados dinamicamente.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Wes Bos).'
+
+- id: wesbos-async-await-error-handling
+  title: '5 Async + Await Error Handling Strategies'
+  author: 'Wes Bos'
+  url: https://www.youtube.com/watch?v=wsoQ-fgaoyQ
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - javascript-browser
+  why: 'Cinco estratégias para tratar erros com async/await.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Wes Bos).'
+
+- id: wesbos-ajax-type-ahead-fetch
+  title: 'Ajax Type Ahead with fetch() - #JavaScript30 6/30'
+  author: 'Wes Bos'
+  url: https://www.youtube.com/watch?v=y4gZMJKAeWs
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  why: 'fetch() e promises num typeahead real.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Wes Bos).'
+
+- id: lydia-hallie-event-loop
+  title: 'JavaScript Visualized - Event Loop, Web APIs, (Micro)task Queue'
+  author: 'Lydia Hallie'
+  url: https://www.youtube.com/watch?v=eiC58R16hb8
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  why: 'Event loop, Web APIs e fila de (micro)tarefas visualizados.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Lydia Hallie).'
+
+- id: lydia-hallie-closures
+  title: 'JavaScript Visualized - Closures'
+  author: 'Lydia Hallie'
+  url: https://www.youtube.com/watch?v=6Ixyltr8_R0
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - javascript-browser
+  - scope-environments
+  why: 'Closures visualizadas: como funções retêm o ambiente onde foram criadas.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Lydia Hallie).'
+
+- id: lydia-hallie-execution-contexts
+  title: 'JavaScript Visualized - Execution Contexts'
+  author: 'Lydia Hallie'
+  url: https://www.youtube.com/watch?v=zdGfo6I1yrA
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - javascript-browser
+  - scope-environments
+  why: 'Contextos de execução e ambientes léxicos do JavaScript visualizados.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Lydia Hallie).'
+
+- id: hinkelmann-js-engines
+  title: 'Franziska Hinkelmann: JavaScript engines - how do they even? | JSConf EU'
+  author: 'Franziska Hinkelmann (JSConf)'
+  url: https://www.youtube.com/watch?v=p-iiEDtpy6I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - javascript-browser
+  - tree-walk-evaluation
+  why: 'Como engines JavaScript funcionam: parser, AST, interpretador de bytecode e JIT.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: JSConf).'
+
+- id: playwright-get-started-vscode
+  title: 'Get Started with Playwright and VS Code (2025 edition)'
+  author: 'Playwright'
+  url: https://www.youtube.com/watch?v=WvsLGZnHmzw
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - frontend-testing
+  why: 'Primeiros testes end-to-end com Playwright no VS Code, pelo canal oficial.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Playwright).'
+
+- id: kcd-how-to-know-what-to-test
+  title: 'Kent C. Dodds - How to know what to test?'
+  author: 'Kent C. Dodds (VilniusJS)'
+  url: https://www.youtube.com/watch?v=ahrvE062Kv4
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - frontend-testing
+  why: 'Kent C. Dodds sobre como decidir o que testar pensando em casos de uso, não em detalhes de implementação.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: VilniusJS).'
+
+- id: coredumped-signals
+  title: 'Signals: Make Ctrl+C Do Anything You Want'
+  author: 'Core Dumped'
+  url: https://www.youtube.com/watch?v=m6WXrC9Mxzo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - signals
+  why: 'Sinais animados: comportamento padrão, handlers customizados, Ctrl+C no terminal, kill e por que handlers precisam ser async-signal-safe.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Core Dumped).'
+
+- id: hussein-primary-vs-secondary-key
+  title: 'Primary Key vs Secondary Key - What you probably didn''t know '
+  author: 'Hussein Nasser'
+  url: https://www.youtube.com/watch?v=PQcIfqE85Co
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - indexes
+  why: 'Chave primária com clustering vs. índices secundários apontando para o heap, e o impacto no desempenho.'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: 'Título e canal conferidos via oEmbed (canal: Hussein Nasser).'
