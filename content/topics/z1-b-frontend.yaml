@@ -69,6 +69,25 @@
     - Capturas da accessibility tree antes e depois da correção, com o diff do HTML.
     - Transcrição do que o leitor de tela anunciou na versão quebrada e na corrigida.
   firstAction: Abra qualquer página que você usa todo dia, aperte Tab cinco vezes e anote se dá para ver onde o foco está.
+  essentials:
+    - "Use o elemento nativo antes de qualquer ARIA: `<button>` para ações, `<a href>` para navegação, `<label for>` em todo campo."
+    - "Teste toda página só com Tab, Shift+Tab, Enter e Espaço: tudo precisa funcionar e o foco precisa estar sempre visível."
+    - "Confira role e computed name de cada controle no painel Accessibility do DevTools; botão sem nome é bug."
+    - "Estruture com headings em ordem (`h1`→`h2`→`h3`) e landmarks (`header`, `nav`, `main`) para permitir pular direto ao conteúdo."
+    - Lighthouse/axe pegam contraste e atributos faltando; fluxo, ordem de foco e textos confusos só aparecem no teste manual.
+  deepDive:
+    - title: Padrões ARIA para widgets compostos (tabs, combobox, menu, dialog)
+      why: Quando precisar de um componente que não existe em HTML nativo e tiver de implementar foco e teclado à mão.
+      resource: wai-aria-apg
+    - title: Critérios WCAG 2.2 completos e auditoria formal
+      why: Quando o produto tiver exigência legal ou contratual de conformidade (níveis A/AA).
+      resource: wcag-22
+    - title: Gerência de foco em SPAs e conteúdo dinâmico (live regions)
+      why: Ao trocar de "página" sem recarregar ou anunciar mensagens assíncronas a leitores de tela.
+      resource: mdn-html-accessibility
+    - title: Snapshots da accessibility tree em testes
+      why: Para detectar automaticamente regressões de role e nome acessível no CI.
+      resource: playwright-aria-snapshots
 
 - id: css-layout
   stage: b-frontend
@@ -96,7 +115,7 @@
   resources:
     start: mdn-css-layout
     deeper: [mdn-css-handling-conflicts, web-dev-learn-css-cascade, mdn-css-flexbox, mdn-css-grid, web-dev-learn-css, web-dev-learn]
-    videos: [blinkon-life-of-a-pixel]
+    videos: [kevin-powell-css-specificity-video, kevin-powell-flexbox-or-grid-video, layout-land-css-grid-big-picture-video]
   exercise:
     id: ex-cascade-detective
     title: Detetive da cascata e o quadro de tarefas
@@ -131,6 +150,25 @@
     - Capturas dos overlays de grid e flexbox com as medidas anotadas.
     - Link do código do quadro e um GIF ou capturas em três larguras.
   firstAction: No DevTools de qualquer página, selecione um elemento e abra a aba Computed. Clique numa propriedade para ver de onde veio o valor.
+  essentials:
+    - "Conflito de estilo: abra a aba Computed e veja qual declaração venceu; a cascata decide por origem/importância, layers, especificidade e só então ordem."
+    - "Mantenha a especificidade baixa (classes simples) e não use `!important` para ganhar briga."
+    - "Comece todo projeto com `*, *::before, *::after { box-sizing: border-box; }`."
+    - "Flexbox para alinhar itens numa linha/coluna (componentes); grid para a estrutura em linhas e colunas da página."
+    - "Responsivo sem números mágicos: `rem`, `%`, `fr`, `minmax()`, `clamp()`; e `min-width: 0` ou `overflow-wrap` quando conteúdo longo estoura."
+  deepDive:
+    - title: Cascade layers (@layer)
+      why: Quando o projeto misturar reset, biblioteca de componentes e estilos próprios e as guerras de especificidade começarem.
+      resource: kevin-powell-cascade-layers-video
+    - title: Container queries
+      why: Ao criar componentes reutilizáveis que precisam se adaptar ao espaço onde são colocados, não à largura da janela.
+      resource: mdn-css-container-queries
+    - title: Ordem visual versus ordem do DOM
+      why: Ao reordenar itens com grid ou `order` e precisar manter a navegação por teclado e leitores de tela coerente.
+      resource: css-day-2024-rachel-andrew-layout-reading-order-video
+    - title: Como o navegador transforma estilos em pixels
+      why: Quando layout começar a pesar no desempenho e você quiser entender style, layout, paint e composição.
+      resource: blinkon-life-of-a-pixel
 
 - id: javascript-browser
   stage: b-frontend
@@ -197,6 +235,25 @@
     - Trecho de código, previsão escrita e saída real do console lado a lado.
     - Captura do flame chart com a long task antes e depois.
   firstAction: "Cole no console `setTimeout(() => console.log('timeout'), 0); Promise.resolve().then(() => console.log('promise')); console.log('sync');` e explique a ordem."
+  essentials:
+    - "Uma task roda até o fim; depois todas as microtasks (promises, `await`); só então o navegador pode renderizar."
+    - "Loop síncrono longo congela a página: divida o trabalho em tasks menores ou mova para um Web Worker."
+    - "Com `fetch`, sempre verifique `response.ok`; a promise só rejeita em falha de rede ou cancelamento (`AbortController`)."
+    - "Use event delegation: um listener no container trata cliques de todos os itens, inclusive os criados depois."
+    - "Texto vindo de fora vai em `textContent`, nunca em `innerHTML` — é a regra básica contra XSS."
+  deepDive:
+    - title: Web Workers e paralelismo no navegador
+      why: Quando houver processamento pesado (parse de arquivo grande, compressão, cálculo) que não pode travar a interface.
+      resource: mdn-web-workers
+    - title: Ordem fina de tasks, microtasks e rendering
+      why: Ao depurar bugs de ordem em código assíncrono complexo ou animações que pulam frames.
+      resource: jake-archibald-tasks-microtasks
+    - title: Web Components e Shadow DOM
+      why: Ao criar componentes reutilizáveis sem framework ou entender como bibliotecas encapsulam estilo.
+      resource: mdn-web-components
+    - title: Content Security Policy e defesa em profundidade contra XSS
+      why: Quando a aplicação precisar de uma barreira extra além de escapar saída corretamente.
+      resource: owasp-cheatsheets
 
 - id: rendering-performance
   stage: b-frontend
@@ -259,6 +316,25 @@
     - Tabela de medições (5 execuções por versão) e capturas do Performance.
     - Relatório curto da auditoria com a mudança feita e o efeito medido.
   firstAction: Abra o painel Performance numa página qualquer, ative CPU throttling 4x, grave 5 segundos rolando a página e encontre um bloco roxo de Layout.
+  essentials:
+    - "Meça antes de otimizar: grave no painel Performance com CPU throttling 4x e rede lenta, ache a fatia mais cara, mude uma coisa e meça de novo."
+    - "Anime com `transform` e `opacity`; animar `width`, `top` ou `left` dispara layout a cada frame."
+    - "Agrupe leituras de geometria (`offsetHeight`) antes das escritas de estilo para evitar layout thrashing."
+    - "Use `defer` nos scripts e mantenha pequeno o CSS crítico: ambos bloqueiam a primeira renderização."
+    - "Acompanhe LCP, INP e CLS; dado de laboratório (Lighthouse) não substitui dado de usuários reais."
+  deepDive:
+    - title: Otimização de LCP por fases
+      why: Quando o LCP de uma página real estiver ruim e você precisar saber se o problema é servidor, descoberta do recurso ou render.
+      resource: web-dev-optimize-lcp
+    - title: Otimizar INP e quebrar long tasks
+      why: Quando interações (cliques, digitação) parecerem lentas em celulares modestos.
+      resource: web-dev-inp
+    - title: Monitoramento de campo (RUM) e regressões no CI
+      why: Quando o time quiser impedir que deploys piorem o desempenho sem que ninguém perceba.
+      resource: web-dev-learn-performance
+    - title: Camadas, raster e composição na GPU
+      why: Ao investigar jank em animações complexas ou uso excessivo de memória de camadas.
+      resource: blinkon-life-of-a-pixel
 
 - id: frontend-testing
   stage: b-frontend
@@ -325,3 +401,21 @@
     - Saída do runner com as falhas provocadas e as mensagens de erro.
     - Link do repositório com os testes e o comando para rodá-los.
   firstAction: Abra a documentação "About Queries" da Testing Library e anote a ordem de prioridade das queries.
+  essentials:
+    - "Encontre elementos como o usuário: `getByRole` com nome, depois `getByLabelText`; `data-testid` só em último caso."
+    - "Espere por estado observável (`findByRole`, auto-wait do Playwright), nunca por `sleep` fixo."
+    - "Controle a rede no teste (mock de fetch ou interceptação de rotas) para cobrir erro 500 e lentidão."
+    - "Muitos testes de componente, poucos E2E só para os fluxos críticos."
+    - "Rode axe no CI, mas mantenha um teste de teclado: o automático não pega tudo."
+  deepDive:
+    - title: Regressão visual por screenshot
+      why: Quando mudanças de CSS quebrarem layouts sem que nenhum teste de comportamento perceba.
+      resource: playwright-visual-comparisons
+    - title: Snapshots da accessibility tree
+      why: Para travar a estrutura acessível de páginas importantes e revisar mudanças de role e nome em PRs.
+      resource: playwright-aria-snapshots
+    - title: Estratégia de testes e onde investir
+      why: Ao decidir com o time quanto teste unitário, de integração e E2E cada parte do app merece.
+      resource: kent-c-dodds-write-tests-video
+    - title: Testes de contrato com o backend
+      why: Quando frontend e API evoluírem em times ou repositórios separados e mocks começarem a divergir da API real.

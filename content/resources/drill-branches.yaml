@@ -1,0 +1,488 @@
+# Recursos do drill-down 80/20 dos ramos opcionais (frontend, backend Java, interpretadores, sistemas).
+# Vídeos verificados via oEmbed do YouTube; páginas verificadas com HTTP 200 e título em 2026-10-18.
+
+# ---------- Vídeos: spring-web-backend ----------
+- id: dan-vega-spring-boot-3-crash-course-video
+  title: "Spring Boot Tutorial for Beginners - Crash Course using Spring Boot 3"
+  author: "Dan Vega"
+  url: https://www.youtube.com/watch?v=UgX5lgv4uVM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [spring-web-backend]
+  why: "Curso longo de um developer advocate do Spring construindo uma API REST com Spring Boot 3: controllers, injeção de dependência, validação e acesso a dados."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-io-2025-demystifying-spring-boot-magic-video
+  title: "Demystifying Spring Boot Magic by Patrick Baumgartner @ Spring I/O 2025"
+  author: "Patrick Baumgartner (canal Spring I/O)"
+  url: https://www.youtube.com/watch?v=yOdfWyIHmRg
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [spring-web-backend]
+  why: "Palestra do Spring I/O que abre a auto-configuração e o container: exatamente o que o experimento com --debug e o relatório de condições investiga."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Vídeos: jdbc-postgresql ----------
+- id: vlad-mihalcea-high-performance-jdbc-video
+  title: "High-Performance JDBC by Vlad Mihalcea"
+  author: "Vlad Mihalcea (canal Voxxed Days Romania)"
+  url: https://www.youtube.com/watch?v=u25Xc88d_iE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Palestra do autor de High-Performance Java Persistence sobre JDBC na prática: pool de conexões, statements, batching e transações."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dan-vega-jdbc-client-vs-spring-data-jdbc-video
+  title: "What is the difference between JDBC Client and Spring Data JDBC?"
+  author: "Dan Vega"
+  url: https://www.youtube.com/watch?v=qLDrfebeXS0
+  language: en
+  format: video
+  difficulty: intro
+  topics: [jdbc-postgresql]
+  why: "Mostra o JdbcClient do Spring (SQL explícito com API fluente) lado a lado com Spring Data JDBC, ajudando a escolher o nível de abstração."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Vídeos: backend-testing-java ----------
+- id: spring-io-selajev-testcontainers-spring-boot-video
+  title: "Testcontainers and Spring Boot from integration tests to local development! by Oleg Šelajev"
+  author: "Oleg Šelajev (canal Spring I/O)"
+  url: https://www.youtube.com/watch?v=7rTs3e79sDo
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Palestra de um mantenedor do Testcontainers no Spring I/O: containers reais em testes de integração com Spring Boot e seu ciclo de vida."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dan-vega-spring-boot-testcontainers-video
+  title: "Spring Boot Testcontainers - Integration Testing made easy!"
+  author: "Dan Vega"
+  url: https://www.youtube.com/watch?v=erp-7MCK5BU
+  language: en
+  format: video
+  difficulty: intro
+  topics: [backend-testing-java]
+  why: "Passo a passo de testes de integração com Testcontainers e PostgreSQL num projeto Spring Boot."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-io-2026-riecks-testing-spring-boot-demystified-video
+  title: "Testing Spring Boot Applications Demystified by Philip Riecks @ Spring I/O 2026"
+  author: "Philip Riecks (canal Spring I/O)"
+  url: https://www.youtube.com/watch?v=DPi2Borv96I
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Panorama das ferramentas de teste do Spring Boot (JUnit, slices, MockMvc, contexto de teste) e de como manter a suíte rápida."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Vídeos: css-layout ----------
+- id: kevin-powell-css-specificity-video
+  title: "CSS Specificity explained"
+  author: "Kevin Powell"
+  url: https://www.youtube.com/watch?v=c0kfcP_nD9E
+  language: en
+  format: video
+  difficulty: intro
+  topics: [css-layout]
+  why: "Como a especificidade é comparada por categoria (ids, classes, elementos) — base do exercício do detetive da cascata."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kevin-powell-flexbox-or-grid-video
+  title: "Flexbox or grid - How to decide?"
+  author: "Kevin Powell"
+  url: https://www.youtube.com/watch?v=3elGSZSWTbM
+  language: en
+  format: video
+  difficulty: intro
+  topics: [css-layout]
+  why: "Critérios práticos para escolher flexbox ou grid, pensando em quem define o tamanho: o conteúdo ou o container."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: layout-land-css-grid-big-picture-video
+  title: "Basics of CSS Grid: The Big Picture"
+  author: "Jen Simmons (canal Layout Land)"
+  url: https://www.youtube.com/watch?v=FEnRpy9Xfes
+  language: en
+  format: video
+  difficulty: intro
+  topics: [css-layout]
+  why: "Visão geral do grid por uma das pessoas que ajudaram a levá-lo aos navegadores: trilhas, linhas e posicionamento."
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: css-day-2024-rachel-andrew-layout-reading-order-video
+  title: "Layout and Reading Order | Rachel Andrew | CSS Day 2024"
+  author: "Rachel Andrew (canal Web Conferences Amsterdam)"
+  url: https://www.youtube.com/watch?v=X6azWrtHS-k
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [css-layout, semantic-html-accessibility]
+  why: "O descompasso entre ordem visual (order, grid) e ordem do DOM, e o que o CSS está fazendo para resolvê-lo."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: kevin-powell-cascade-layers-video
+  title: "No more specificity issues?! (or all new ones 🤔) - A look at CSS Cascade Layers"
+  author: "Kevin Powell"
+  url: https://www.youtube.com/watch?v=NDNRGW-_1EE
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [css-layout]
+  why: "Cascade layers (@layer) na prática: como elas entram na cascata antes da especificidade."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# ---------- Documentação e artigos para aprofundamento ----------
+- id: mdn-css-layer
+  title: "@layer"
+  author: "MDN Web Docs"
+  url: https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [css-layout]
+  why: "Referência de cascade layers para organizar CSS de terceiros, base e componentes sem guerra de especificidade."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-css-container-queries
+  title: "CSS container queries"
+  author: "MDN Web Docs"
+  url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [css-layout]
+  why: "Componentes que se adaptam ao tamanho do container, não da janela."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-web-workers
+  title: "Using Web Workers"
+  author: "MDN Web Docs"
+  url: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Como tirar trabalho pesado do main thread e o que um worker não pode acessar (DOM)."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mdn-web-components
+  title: "Web Components"
+  author: "MDN Web Docs"
+  url: https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [javascript-browser]
+  why: "Custom elements e Shadow DOM: componentes nativos do navegador, sem framework."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: web-dev-optimize-lcp
+  title: "Optimize Largest Contentful Paint"
+  author: "web.dev (Google)"
+  url: https://web.dev/articles/optimize-lcp
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [rendering-performance]
+  why: "Decompõe o LCP em fases (TTFB, atraso de carga, download, render) e mostra como atacar cada uma."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: playwright-visual-comparisons
+  title: "Visual comparisons"
+  author: "Playwright"
+  url: https://playwright.dev/docs/test-snapshots
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [frontend-testing]
+  why: "Testes de regressão visual por screenshot e os cuidados com fontes, sistema operacional e tolerância."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: playwright-aria-snapshots
+  title: "Snapshot testing (ARIA snapshots)"
+  author: "Playwright"
+  url: https://playwright.dev/docs/aria-snapshots
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [frontend-testing, semantic-html-accessibility]
+  why: "Snapshots da accessibility tree: detectam mudanças de role e nome acessível entre versões."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: openjdk-jep-444-virtual-threads
+  title: "JEP 444: Virtual Threads"
+  author: "OpenJDK"
+  url: https://openjdk.org/jeps/444
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [java-fundamentals, spring-web-backend]
+  why: "Especificação das virtual threads do Java 21: por que muda o modelo de uma thread por requisição."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dev-java-jvm
+  title: "Getting to know the JVM"
+  author: "dev.java (Oracle)"
+  url: https://dev.java/learn/jvm/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [java-fundamentals]
+  why: "Ponto de entrada oficial sobre a JVM: class loading, JIT, garbage collectors e ferramentas de diagnóstico."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-boot-actuator
+  title: "Production-ready Features (Actuator)"
+  author: "Spring"
+  url: https://docs.spring.io/spring-boot/reference/actuator/index.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [spring-web-backend]
+  why: "Health checks, métricas e endpoints de diagnóstico para operar a API em produção."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: spring-security-servlet-architecture
+  title: "Spring Security Architecture (Servlet)"
+  author: "Spring"
+  url: https://docs.spring.io/spring-security/reference/servlet/architecture.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [spring-web-backend, backend-testing-java]
+  why: "A cadeia de filtros que roda antes do DispatcherServlet: autenticação, autorização e tratamento de erros de segurança."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: marcobehler-spring-transactional
+  title: "Spring Transaction Management: @Transactional In-Depth"
+  author: "Marco Behler"
+  url: https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Do setAutoCommit(false) do JDBC ao proxy do @Transactional, com propagação e isolamento."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: hikaricp-about-pool-sizing
+  title: "About Pool Sizing"
+  author: "HikariCP (Brett Wooldridge)"
+  url: https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Por que pools pequenos costumam ter mais vazão e como estimar o tamanho a partir de núcleos e discos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: postgres-sql-copy
+  title: "COPY"
+  author: "PostgreSQL Global Development Group"
+  url: https://www.postgresql.org/docs/current/sql-copy.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [jdbc-postgresql]
+  why: "Carga e exportação em massa muito mais rápidas que INSERTs linha a linha."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: pitest-mutation-testing
+  title: "PIT Mutation Testing"
+  author: "PIT"
+  url: https://pitest.org/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Mede se os testes detectam mudanças no código (mutantes), algo que cobertura de linhas não mostra."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: jqwik-property-based-testing
+  title: "jqwik"
+  author: "jqwik"
+  url: https://jqwik.net/
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [backend-testing-java]
+  why: "Testes baseados em propriedades na plataforma JUnit 5: gera entradas e encolhe contraexemplos."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: matklad-pratt-parsing
+  title: "Simple but Powerful Pratt Parsing"
+  author: "Alex Kladov (matklad)"
+  url: https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [tokenizing-parsing]
+  why: "Pratt parsing trata precedência com uma tabela de binding power, deixando o parser de expressões curto e extensível."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-classes
+  title: "Classes"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/classes.html
+  language: en
+  format: book
+  difficulty: intermediate
+  topics: [scope-environments, tree-walk-evaluation]
+  why: "Instâncias, métodos e `this` como mais um ambiente capturado: continuação natural de escopo e closures."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-bytecode-vm
+  title: "A Bytecode Virtual Machine"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/a-bytecode-virtual-machine.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [tree-walk-evaluation]
+  why: "Parte III do livro: trocar a travessia da árvore por bytecode e uma VM em C, muito mais rápida."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: crafting-interpreters-garbage-collection
+  title: "Garbage Collection"
+  author: "Robert Nystrom"
+  url: https://craftinginterpreters.com/garbage-collection.html
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [scope-environments, memory-allocators]
+  why: "Mark-sweep implementado do zero: como ambientes e closures na heap são recuperados."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: lord-of-the-io-uring
+  title: "Lord of the io_uring"
+  author: "Shuveb Hussain (unixism.net)"
+  url: https://unixism.net/loti/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [systems-io-performance]
+  why: "Guia de io_uring: I/O assíncrono em lote com filas compartilhadas entre processo e kernel, reduzindo syscalls."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-ebpf
+  title: "Linux eBPF Tracing Tools"
+  author: "Brendan Gregg"
+  url: https://www.brendangregg.com/ebpf.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [systems-io-performance]
+  why: "Ferramentas eBPF (biolatency, opensnoop, ext4slower...) para observar I/O em produção com baixo overhead, ao contrário do strace."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: mimalloc
+  title: "mimalloc"
+  author: "Microsoft Research"
+  url: https://github.com/microsoft/mimalloc
+  language: en
+  format: tool
+  difficulty: advanced
+  topics: [memory-allocators]
+  why: "Alocador de produção compacto e bem documentado: free lists por página e por thread, bom para estudar depois do seu."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: linux-kernel-memory-barriers
+  title: "Linux kernel memory barriers"
+  author: "The Linux Kernel documentation"
+  url: https://www.kernel.org/doc/html/latest/core-api/wrappers/memory-barriers.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [low-level-concurrency]
+  why: "Texto de referência sobre barreiras de memória e o que diferentes CPUs podem reordenar."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: preshing-memory-barriers-source-control
+  title: "Memory Barriers Are Like Source Control Operations"
+  author: "Jeff Preshing"
+  url: https://preshing.com/20120710/memory-barriers-are-like-source-control-operations/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [low-level-concurrency]
+  why: "Analogia com controle de versão para entender os tipos de barreira e acquire/release."
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
