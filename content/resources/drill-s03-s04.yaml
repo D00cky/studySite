@@ -1,0 +1,145 @@
+# Recursos do drill-down (deepDive) das etapas s03 (C e compilação) e s04 (memória e runtime).
+# Todas as URLs abaixo foram abertas em 2026-10-18.
+
+- id: regehr-guide-undefined-behavior-1
+  title: "A Guide to Undefined Behavior in C and C++, Part 1"
+  author: John Regehr
+  url: https://blog.regehr.org/archives/213
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [c-types-functions, memory-debugging]
+  why: Explica o que é comportamento indefinido, por que o compilador pode assumir que ele nunca acontece e como isso muda o código otimizado.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gcc-warning-options
+  title: "Warning Options (Using the GNU Compiler Collection (GCC))"
+  author: GNU Project
+  url: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [c-types-functions, compilation-pipeline]
+  why: Referência de cada aviso do GCC (`-Wall`, `-Wextra`, `-Wconversion`, `-Werror`...) para montar um conjunto de flags estrito.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: gcc-optimize-options
+  title: "Optimize Options (Using the GNU Compiler Collection (GCC))"
+  author: GNU Project
+  url: https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [compilation-pipeline]
+  why: Lista o que cada nível `-O` liga (inlining, LTO, eliminação de código morto) para entender por que o assembly muda.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppreference-c-objects-alignment
+  title: "Objects and alignment - cppreference.com"
+  author: cppreference.com
+  url: https://en.cppreference.com/w/c/language/object
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [c-arrays-structs, pointers]
+  why: Define objeto, alinhamento, tipo efetivo e strict aliasing em C, a base para entender padding e type punning.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: cppreference-c-generic-selection
+  title: "Generic selection (since C11) - cppreference.com"
+  author: cppreference.com
+  url: https://en.cppreference.com/w/c/language/generic
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [c-preprocessor]
+  why: Mostra `_Generic`, a forma do C11 de escolher uma expressão pelo tipo, usada para macros "genéricas" mais seguras.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: ian-lance-taylor-linkers-part-1
+  title: "Linkers part 1"
+  author: Ian Lance Taylor
+  url: https://www.airs.com/blog/archives/38
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [linking-object-files, compilation-pipeline]
+  why: Abre a série clássica do autor do linker gold sobre como linkers funcionam por dentro (símbolos, relocações, shared libraries).
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: drepper-how-to-write-shared-libraries
+  title: How To Write Shared Libraries
+  author: Ulrich Drepper
+  url: https://www.akkadia.org/drepper/dsohowto.pdf
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [linking-object-files]
+  why: Aprofunda ELF, dynamic loader, relocações, PIC e visibilidade de símbolos em bibliotecas compartilhadas.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: valgrind-massif-manual
+  title: "Massif: a heap profiler"
+  author: Valgrind Developers
+  url: https://valgrind.org/docs/manual/ms-manual.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [dynamic-allocation-ownership, memory-debugging]
+  why: Mostra como medir quanto de heap um programa usa ao longo do tempo e quais alocações dominam o consumo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: clang-undefined-behavior-sanitizer
+  title: "UndefinedBehaviorSanitizer - Clang"
+  author: LLVM Project
+  url: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [memory-debugging, c-types-functions]
+  why: Lista as verificações do UBSan (`-fsanitize=undefined` e subgrupos), como suprimir falsos positivos e como abortar no primeiro erro.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: rr-project
+  title: "rr: lightweight recording & deterministic debugging"
+  author: rr project (Mozilla)
+  url: https://rr-project.org/
+  language: en
+  format: tool
+  difficulty: advanced
+  topics: [memory-debugging]
+  why: Grava uma execução e permite depurar de trás para frente no gdb (`reverse-continue`), ótimo para bugs intermitentes.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: llvm-libfuzzer
+  title: "libFuzzer – a library for coverage-guided fuzz testing. - LLVM"
+  author: LLVM Project
+  url: https://llvm.org/docs/LibFuzzer.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [c-strings, memory-debugging]
+  why: Ensina a escrever um fuzz target que, combinado com ASan, encontra estouros de buffer em parsers de texto automaticamente.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
