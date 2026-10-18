@@ -1,0 +1,141 @@
+- id: build-your-own-git
+  title: Construa seu próprio Git
+  status: authored
+  cumulative: false
+  topics: [git-fundamentals, hash-tables, filesystems, dependency-graphs, text-encoding, binary-hexadecimal, file-descriptors, input-validation]
+  question: Como o Git guarda a história inteira de um projeto usando só arquivos comprimidos endereçados pelo hash do próprio conteúdo, e por que isso torna os commits imutáveis?
+  prerequisites: [git-fundamentals, hash-tables, filesystems]
+  minimalVersion: |
+    `mygit` (em Python, como a referência, ou em C com zlib e uma implementação de SHA-1) com os
+    comandos `init`, `hash-object [-w]`, `cat-file -p|-t|-s`, `write-tree`, `commit-tree -m [-p]`,
+    `log` (seguindo os pais a partir de HEAD) e `checkout <commit>` simples (escreve a árvore
+    num diretório vazio). Objetos blob, tree e commit são gravados no formato do Git real:
+    `"<tipo> <tamanho>\0<conteúdo>"`, SHA-1 desse cabeçalho+conteúdo, comprimido com zlib em
+    `.git/objects/ab/cdef...`; HEAD aponta para `refs/heads/main` e o commit atualiza a ref.
+    **Compatibilidade é o critério**: o `git` oficial roda `git log`, `git cat-file -p` e
+    `git fsck` no repositório criado pelo `mygit` sem erros, e os hashes batem com `git hash-object`.
+    Domínio comum: o repositório de teste é a pasta da CLI de tarefas (`tasks.txt`, `src/`,
+    `Makefile`), versionada a cada `tasks add`/`tasks done`.
+  extensions:
+    - Index/staging area com `add` e `status`, lendo e escrevendo `.git/index` no formato binário documentado (gitformat-index), conferido com `git ls-files --stage`.
+    - "`diff` entre duas árvores ou entre working tree e index, com um algoritmo de LCS/Myers simples para linhas."
+    - Leitura de packfiles (`.pack` + `.idx`, objetos OFS_DELTA/REF_DELTA) para conseguir ler um repositório depois de `git gc`.
+    - Refs simbólicas, branches (`branch`, `checkout <branch>`) e tags leves e anotadas.
+    - Escrever um `fsck` próprio que recalcula o hash de cada objeto e acusa corrupção.
+  constraints:
+    - Formato em disco idêntico ao do Git real; nenhum metadado extra em `.git/`.
+    - Proibido chamar o binário `git` ou bibliotecas como libgit2/GitPython/dulwich dentro do `mygit`; o `git` oficial só é usado nos testes como oráculo.
+    - Escritas atômicas de objetos e refs (arquivo temporário + rename), como o Git faz com `.lock`.
+    - Trabalhar apenas em repositórios de laboratório descartáveis, nunca num repositório real com trabalho não salvo.
+    - Testes automatizados comparando a saída do `mygit` com a do `git` para os mesmos arquivos.
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão, num diretório novo, as seções de repositório e objetos do \"Write yourself a Git!\" (classes GitRepository e GitObject, `object_read`, `object_write`, `cmd_hash_object`, `cmd_cat_file`) e reproduzir no terminal os comandos de encanamento do Pro Git cap. 10 (\"Git Objects\"). Evidência: commits incrementais, anotações explicando cabeçalho, `\\0`, SHA-1 e zlib, e um erro provocado registrado (ex.: calcular o hash sem o cabeçalho e ver que não bate com `git hash-object`)."
+      minutes: 75
+    - id: m1-blob
+      title: Blobs e hash-object
+      description: "`init` cria a estrutura mínima de `.git/`; `hash-object -w` grava um blob; comparar o hash com `git hash-object` e descomprimir o arquivo com Python/zlib para ver os bytes crus em hexdump."
+      minutes: 50
+    - id: m2-cat-file
+      title: Ler objetos com cat-file
+      description: "`cat-file -t/-s/-p` lê qualquer objeto, valida o tamanho do cabeçalho e falha com mensagem clara para hash inexistente, prefixo ambíguo ou objeto corrompido."
+      minutes: 50
+    - id: m3-tree
+      title: Trees e write-tree
+      description: "Gerar trees recursivamente a partir do diretório (modo, nome, `\\0`, 20 bytes binários do SHA-1, entradas ordenadas como o Git ordena); conferir com `git ls-tree` e `git cat-file -p`."
+      minutes: 75
+    - id: m4-commit
+      title: Commits, refs e HEAD
+      description: "`commit-tree` com autor, data com timezone, pai opcional e mensagem; atualizar `refs/heads/main` via HEAD de forma atômica; `git log` oficial mostra o commit."
+      minutes: 50
+    - id: m5-log-checkout
+      title: Log e checkout simples
+      description: "`log` percorre o DAG de pais a partir de HEAD; `checkout <commit>` materializa a tree num diretório vazio. Versionar 5 estados da pasta da CLI de tarefas e reconstruir o terceiro."
+      minutes: 75
+    - id: m6-compat
+      title: Bateria de compatibilidade e falhas
+      description: Script que cria repositórios com o mygit e roda `git fsck --full`, `git log` e `git diff` sobre eles; executar os experimentos de falha (corromper objeto, ref truncada) e registrar o comportamento dos dois.
+      minutes: 50
+    - id: m7-memoria
+      title: Reescrever de memória
+      description: Dias depois, reescrever sem olhar `hash-object`, `cat-file` e `write-tree` e comparar com a referência e com a sua versão anterior; anotar o que esqueceu.
+      minutes: 50
+  edgeCases:
+    - Arquivo vazio (o hash do blob vazio é conhecido — confira com `git hash-object /dev/null`).
+    - Arquivos binários e arquivos com bytes NUL, sem nenhuma conversão de fim de linha ou encoding.
+    - Nomes de arquivo com espaços, acentos (UTF-8) e ordenação de entradas de tree com diretórios vs arquivos de prefixo igual (`a` e `a.txt`).
+    - Arquivo executável (modo 100755), symlink (120000) e diretório vazio (o Git não guarda).
+    - Prefixo de hash curto ambíguo ou inexistente em `cat-file`.
+    - Mensagem de commit com várias linhas e autor com caracteres não ASCII.
+    - Primeiro commit (sem pai) e commit de merge com dois pais no `log`.
+  failureExperiments:
+    - Corromper um byte de um objeto em `.git/objects` (com `printf` + `dd conv=notrunc`) e mostrar o erro de zlib ou de hash no `mygit cat-file` e no `git fsck`.
+    - Gravar um objeto sem o cabeçalho `"blob <n>\0"` e mostrar que o hash diverge do `git hash-object` e que o `git` rejeita o objeto.
+    - Ordenar as entradas da tree alfabeticamente "ingênuo" e mostrar o `git fsck` acusando `treeNotSorted`.
+    - Matar o processo (`kill -9`) entre gravar o commit e atualizar a ref, sem rename atômico, e observar ref truncada ou objeto órfão com `git fsck --lost-found`.
+    - Truncar `refs/heads/main` para um hash de 39 caracteres e comparar as mensagens de erro do `mygit log` e do `git log`.
+    - Alterar o conteúdo de um blob antigo e mostrar com `cat-file` que todos os hashes acima dele (tree, commit) teriam de mudar — por isso a história é imutável.
+  tools: [python3, "python3 -c 'import zlib'", sha1sum, "xxd / hexdump -C", "git cat-file / git ls-tree / git fsck (como oráculo)", strace, dd, diff]
+  acceptanceCriteria:
+    - "`mygit hash-object` produz o mesmo hash que `git hash-object` para texto, binário e arquivo vazio."
+    - "`git log`, `git cat-file -p` e `git fsck --full` rodam sem erros num repositório criado só pelo mygit."
+    - "`mygit cat-file -p` lê objetos criados pelo `git` oficial (repositório sem packfiles)."
+    - "`mygit checkout` reconstrói um estado antigo da pasta da CLI de tarefas idêntico ao original (`diff -r` vazio)."
+    - Objetos corrompidos e refs inválidas geram mensagem clara e código de saída diferente de zero.
+  evidence:
+    - Link do repositório com README explicando o formato dos objetos com um hexdump anotado de um blob, uma tree e um commit.
+    - Saída do script de compatibilidade (mygit vs git) com hashes lado a lado.
+    - "Saída do `git fsck --full` e do `git log --graph` sobre o repositório criado pelo mygit."
+    - Registro dos experimentos de falha com a mensagem de cada ferramenta.
+    - Diff comentado entre a reescrita de memória e a referência.
+  reviewQuestions:
+    - Por que o hash inclui o cabeçalho com tipo e tamanho, e não só o conteúdo?
+    - Por que mudar um único byte de um arquivo antigo mudaria o hash de todos os commits seguintes?
+    - O que exatamente um branch é no disco, e o que acontece com HEAD num checkout de commit (detached)?
+    - Por que a tree guarda o SHA-1 em 20 bytes binários enquanto refs guardam 40 caracteres hexadecimais?
+    - Que problema os packfiles resolvem que objetos soltos comprimidos com zlib não resolvem?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar) o "Write yourself a Git!" de Thibault Polge até
+      `cat-file` e `hash-object`, num diretório novo e com commits a cada função que rodar. Em paralelo,
+      reproduza no terminal os comandos de encanamento do Pro Git cap. 10 (`git hash-object -w`,
+      `git cat-file -p`, `git update-index`, `git write-tree`, `git commit-tree`) e abra os objetos com
+      zlib para ver os bytes. Anote cada etapa (cabeçalho, `\0`, SHA-1, zlib, caminho `ab/cdef...`) e
+      quebre 2–3 pontos de propósito (sem cabeçalho, sem compressão, tree desordenada), observando com
+      `git fsck`. Modifique a referência para aceitar prefixos curtos de hash; depois construa o seu
+      `mygit` (pode ser em C) e, dias depois, reescreva `write-tree` de memória. "Building Git" (pago,
+      Ruby) é aprofundamento opcional; use a documentação oficial de formatos para index e packfiles.
+    references:
+      - title: "Write yourself a Git!"
+        author: "Thibault Polge"
+        url: https://wyag.thb.lt/
+        language: Python
+        license: "Texto CC BY-NC-SA 4.0; código GPL-3.0 ou posterior"
+      - title: "Pro Git, cap. 10 — Git Internals: Git Objects"
+        author: "Scott Chacon e Ben Straub"
+        url: https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+        language: Shell
+        license: "CC BY-NC-SA 3.0"
+      - title: "Pro Git, cap. 10 — Git Internals: Packfiles"
+        author: "Scott Chacon e Ben Straub"
+        url: https://git-scm.com/book/en/v2/Git-Internals-Packfiles
+        language: Shell
+        license: "CC BY-NC-SA 3.0"
+      - title: "gitformat-loose Documentation"
+        author: "Projeto Git"
+        url: https://git-scm.com/docs/gitformat-loose
+        language: Documentação (en)
+      - title: "gitformat-index Documentation"
+        author: "Projeto Git"
+        url: https://git-scm.com/docs/gitformat-index
+        language: Documentação (en)
+      - title: "gitformat-pack Documentation"
+        author: "Projeto Git"
+        url: https://git-scm.com/docs/gitformat-pack
+        language: Documentação (en)
+      - title: "Building Git"
+        author: "James Coglan"
+        url: https://shop.jcoglan.com/building-git/
+        language: Ruby
+        license: "Livro pago (PDF, £48); não redigitar sem comprar"

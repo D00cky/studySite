@@ -1,0 +1,143 @@
+- id: build-a-memory-allocator
+  title: Construa um alocador de memória (malloc)
+  status: authored
+  cumulative: false
+  topics: [dynamic-allocation-ownership, stack-heap-lifetime, virtual-memory, memory-allocators, memory-debugging, profiling-benchmarks, pointers, linked-lists, processes-syscalls]
+  question: O que acontece entre `malloc(24)` e o kernel — de onde vem a memória, onde fica o tamanho do bloco que `free` recebe sem saber, e por que a memória fragmenta?
+  prerequisites: [pointers, dynamic-allocation-ownership, stack-heap-lifetime, virtual-memory]
+  minimalVersion: |
+    Uma biblioteca `libmymalloc.so` em C com `malloc`, `free`, `calloc` e `realloc` que obtém memória
+    com `sbrk` (e `mmap` para pedidos grandes, acima de um limiar como 128 KiB). Cada bloco tem um
+    cabeçalho com tamanho e bit de livre/ocupado; os blocos livres ficam numa free list explícita com
+    política first fit (e best fit selecionável), splitting de blocos grandes e coalescing de vizinhos
+    livres (boundary tags). Todo ponteiro devolvido é alinhado a 16 bytes. `free` detecta double free
+    e ponteiro que não veio do alocador (número mágico no cabeçalho) e aborta com mensagem.
+    Domínio comum: a CLI de tarefas e `ls`/`grep` rodam com `LD_PRELOAD=./libmymalloc.so`, e um
+    benchmark que cria/edita/apaga 1 milhão de tarefas compara tempo e pico de memória contra o malloc da glibc.
+  extensions:
+    - Segregated free lists por classes de tamanho (16, 32, 64, ... bytes) com busca O(1) para pedidos pequenos.
+    - Arenas por thread (thread-local) com um lock por arena, medindo contenção com várias threads contra uma versão com lock global.
+    - Devolver memória ao sistema (`munmap` de blocos grandes, encolher o heap com `sbrk` negativo ou `madvise(MADV_DONTNEED)`).
+    - Modo debug com canários antes/depois do bloco e preenchimento com padrão (0xDEADBEEF) após `free` para detectar use-after-free.
+    - Relatório de estatísticas no `atexit` (bytes pedidos, bytes reservados, pico, fragmentação), no estilo de `MIMALLOC_SHOW_STATS`.
+  constraints:
+    - C17 com `-Wall -Wextra -g`; nenhum uso do malloc da libc dentro do alocador (cuidado com `printf`, que pode alocar — use `write(2)` para mensagens).
+    - Todo ponteiro devolvido alinhado a 16 bytes (`alignof(max_align_t)`), verificado por assert nos testes.
+    - Testes rodando a mesma bateria contra o seu alocador e contra a glibc, incluindo programas reais via `LD_PRELOAD`.
+    - Medições de desempenho com várias repetições, mesma máquina e mesmos parâmetros, reportando mediana e dispersão.
+    - Experimentos de corrupção apenas em programas de laboratório, nunca com `LD_PRELOAD` global no sistema.
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão o `malloc.c` do \"Malloc tutorial\" de Dan Luu (~145 linhas: `block_meta`, `find_free_block`, `request_space`, `malloc`, `free`, `realloc`, `calloc`) e ler/anotar o `mm.c` do CS:APP (lista implícita com boundary tags). Evidência: commits incrementais, anotações sobre cabeçalho e aritmética de ponteiros, e um erro provocado registrado (ex.: devolver o ponteiro do cabeçalho em vez de `block + 1` e observar a corrupção no gdb)."
+      minutes: 75
+    - id: m1-bump
+      title: Alocador bump com sbrk
+      description: "`malloc` que só avança o program break; observar o heap crescer com `strace -e brk` e em `/proc/<pid>/maps`; `free` vazio por enquanto."
+      minutes: 25
+    - id: m2-header-freelist
+      title: Cabeçalho e free list
+      description: Cabeçalho com tamanho e flag, free list e reuso por first fit; `free` recupera o cabeçalho a partir do ponteiro do usuário. Testes de alinhamento a 16 bytes.
+      minutes: 75
+    - id: m3-split-coalesce
+      title: Splitting e coalescing
+      description: Dividir blocos grandes no malloc e juntar vizinhos livres no free com boundary tags; teste que alterna tamanhos e mostra o heap parando de crescer.
+      minutes: 75
+    - id: m4-realloc-mmap
+      title: realloc, calloc e mmap
+      description: "`realloc` que cresce no lugar quando o vizinho está livre, `calloc` com checagem de overflow em `n * size`, e pedidos grandes via `mmap`/`munmap` observados com strace."
+      minutes: 50
+    - id: m5-preload
+      title: Rodar programas reais com LD_PRELOAD
+      description: Compilar como biblioteca compartilhada, rodar `ls`, `grep` e a CLI de tarefas com LD_PRELOAD e depurar o primeiro crash com gdb (`bt`, `x/4gx` no cabeçalho).
+      minutes: 50
+    - id: m6-safety
+      title: Detectar double free e ponteiros inválidos
+      description: Número mágico e estado no cabeçalho; abortar com mensagem via `write(2)` em double free, free de ponteiro do meio do bloco e free de ponteiro da pilha.
+      minutes: 50
+    - id: m7-bench
+      title: Medir fragmentação e desempenho
+      description: Benchmark de traços (tarefas criadas/editadas/apagadas, tamanhos aleatórios) comparando first fit, best fit e glibc em tempo (`perf stat`, hyperfine) e pico de memória (`/usr/bin/time -v`); calcular fragmentação como 1 - (bytes pedidos vivos / bytes do heap).
+      minutes: 75
+    - id: m8-memoria
+      title: Reescrever de memória
+      description: Dias depois, reescrever sem olhar `malloc`/`free` com free list, splitting e coalescing e comparar com a referência; anotar o que esqueceu.
+      minutes: 50
+  edgeCases:
+    - "`malloc(0)` (devolver NULL ou um ponteiro único que pode ir para `free`) e `free(NULL)` (não faz nada)."
+    - "`calloc(n, size)` com `n * size` que estoura `size_t` deve devolver NULL, não um bloco pequeno."
+    - "`realloc(NULL, n)` equivale a `malloc`; `realloc(p, 0)`; realloc encolhendo e crescendo com conteúdo preservado."
+    - Pedido maior que o limiar de mmap e pedido gigantesco que faz `sbrk`/`mmap` falhar (errno ENOMEM, retorno NULL).
+    - Tamanhos ímpares (1, 7, 17 bytes) e o alinhamento resultante de cada ponteiro.
+    - Liberar blocos em ordem inversa, alternada e aleatória para exercitar o coalescing dos dois lados.
+    - Uso por várias threads ao mesmo tempo sem lock (deve ser proibido ou protegido).
+  failureExperiments:
+    - Escrever 8 bytes além do fim de um bloco e mostrar o cabeçalho do vizinho corrompido no gdb (`x/4gx`) e o crash no `free` seguinte.
+    - Chamar `free` duas vezes no mesmo ponteiro com a detecção desligada e mostrar o mesmo bloco devolvido por dois `malloc` seguidos (aliasing); depois ligar a detecção e ver o abort.
+    - Desligar o coalescing e mostrar o heap crescendo sem parar num traço que aloca e libera em padrão alternado (`/proc/<pid>/status`, VmData).
+    - Remover o alinhamento a 16 bytes e mostrar um programa com SSE (`movaps`) ou `long double` quebrando com SIGSEGV.
+    - Usar `printf` dentro do `malloc` sob LD_PRELOAD e mostrar a recursão infinita / stack overflow no `bt` do gdb.
+    - Rodar duas threads alocando sem lock e mostrar free list corrompida; repetir com ThreadSanitizer (`-fsanitize=thread`) para ver o relatório de data race.
+  tools: [gcc, make, gdb, strace, ltrace, valgrind, "perf stat", hyperfine, "/usr/bin/time -v", "cat /proc/<pid>/maps", LD_PRELOAD]
+  acceptanceCriteria:
+    - "`ls`, `grep -r` e a CLI de tarefas funcionam com `LD_PRELOAD=./libmymalloc.so` sem crash."
+    - Bateria de testes passa (alinhamento, realloc preservando conteúdo, calloc zerado e com overflow, casos-limite listados).
+    - Double free e free de ponteiro inválido são detectados com mensagem e abort, demonstrados em teste.
+    - Relatório compara first fit, best fit e glibc com tempo mediano, pico de memória e fragmentação medidos no mesmo traço.
+    - "`strace` mostra `brk` para pedidos pequenos e `mmap`/`munmap` para pedidos acima do limiar."
+  evidence:
+    - Link do repositório com README e um diagrama do layout de um bloco (cabeçalho, payload, footer) com offsets.
+    - Saída do `strace -e brk,mmap,munmap` de um programa de teste anotada.
+    - Tabela/CSV do benchmark contra a glibc com a metodologia descrita.
+    - Sessão do gdb mostrando um cabeçalho corrompido por overflow e o double free detectado.
+    - Diff comentado entre a reescrita de memória e a referência.
+  reviewQuestions:
+    - Como `free(p)` descobre o tamanho do bloco se só recebe o ponteiro?
+    - Por que coalescing com boundary tags é O(1) e o que custa ter o footer em cada bloco?
+    - Quando first fit fragmenta menos que best fit, e como você mediu isso no seu traço?
+    - Por que alocadores usam mmap para blocos grandes em vez de sbrk?
+    - Que problema as arenas por thread resolvem, e que tipo de desperdício de memória elas criam?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar) o `malloc.c` do "Malloc tutorial" de Dan Luu, num
+      diretório novo, acompanhando o texto (que por sua vez se baseia num tutorial de Marwan Burelle).
+      Anote cada aritmética de ponteiro (`block + 1`, `(struct block_meta*)ptr - 1`) e quebre 2–3 pontos
+      de propósito (cabeçalho sem alinhamento, `free` sem marcar o bloco, `realloc` sem copiar),
+      observando com gdb e `strace -e brk`. Depois leia e anote o `mm.c` do CS:APP (seção 9.9, lista
+      implícita com boundary tags) e o capítulo "Free-Space Management" do OSTEP — redigite só
+      `coalesce` e `place`. Use o artigo de Dmitry Soshnikov (C++) para comparar first fit, next fit,
+      best fit e segregated lists, e o enunciado do malloc lab da CMU como guia de testes e métricas.
+      Modifique o tutorial para usar best fit e, dias depois, reescreva `malloc`/`free` de memória.
+      mimalloc e jemalloc são leitura de aprofundamento para segregated lists e arenas.
+    references:
+      - title: "Malloc tutorial"
+        author: "Dan Luu (baseado no tutorial de Marwan Burelle)"
+        url: https://danluu.com/malloc-tutorial/
+        language: C
+        license: "Sem licença declarada (repositório danluu/malloc-tutorial); redigitar apenas para estudo pessoal"
+      - title: "CS:APP3e mm.c — alocador com lista implícita e boundary tags (seção 9.9)"
+        author: "Randal E. Bryant e David R. O'Hallaron"
+        url: https://csapp.cs.cmu.edu/3e/ics3/code/vm/malloc/mm.c
+        language: C
+      - title: "OSTEP cap. 17 — Free-Space Management"
+        author: "Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau"
+        url: https://pages.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf
+        language: C
+      - title: "Writing a Memory Allocator"
+        author: "Dmitry Soshnikov"
+        url: https://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/
+        language: C++
+      - title: "Malloc Lab: Writing a Dynamic Storage Allocator (enunciado)"
+        author: "CMU 15-213 / Bryant e O'Hallaron"
+        url: https://csapp.cs.cmu.edu/3e/malloclab.pdf
+        language: C
+      - title: "mimalloc"
+        author: "Microsoft (Daan Leijen et al.)"
+        url: https://github.com/microsoft/mimalloc
+        language: C
+        license: "MIT"
+      - title: "jemalloc"
+        author: "Jason Evans et al."
+        url: https://github.com/jemalloc/jemalloc
+        language: C
+        license: "BSD-2-Clause (arquivo COPYING)"
