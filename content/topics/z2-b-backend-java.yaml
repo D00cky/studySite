@@ -114,7 +114,7 @@
   resources:
     start: spring-boot-servlet-web-applications
     deeper: [spring-dispatcher-servlet, spring-boot-auto-configuration, spring-ioc-container, roadmap-backend, owasp-input-validation-cheatsheet]
-    videos: [dan-vega-spring-boot-3-crash-course-spring-core-concepts, dan-vega-spring-boot-3-crash-course-rest-api-spring-mvc, spring-io-2025-demystifying-spring-boot-magic-auto-configuration-mechanics, akitando-124-sockets-web-bsd-sockets]
+    videos: [dan-vega-spring-boot-3-crash-course-spring-core-concepts, dan-vega-spring-boot-3-crash-course-rest-api-spring-mvc, spring-io-2025-demystifying-spring-boot-magic-auto-configuration-mechanics, akitando-124-sockets-web-video-bsd-sockets]
   exercise:
     id: ex-tasks-api-no-magic
     title: API de tarefas com e sem mágica

@@ -128,24 +128,6 @@
     checkedOn: '2026-10-18'
     note: Minuto tirado dos capítulos automáticos do YouTube.
 
-- id: mike-acton-data-oriented-design-cppcon-2014-memory-access-and-performance
-  title: 'CppCon 2014: Mike Acton "Data-Oriented Design and C++" — 25:18 Memory access and performance'
-  author: Mike Acton (CppCon)
-  url: https://www.youtube.com/watch?v=rX0ItVEVjHc&t=1518s
-  language: en
-  format: video
-  difficulty: advanced
-  topics:
-  - linked-lists
-  why: Trecho sobre o custo do acesso à memória frente ao custo das instruções (de 25:18 até 32:00).
-  section: 25:18 Memory access and performance (capítulo automático do YouTube)
-  access: free
-  priority: core
-  verification:
-    status: verified
-    checkedOn: '2026-10-18'
-    note: Minuto tirado dos capítulos automáticos do YouTube.
-
 - id: mike-acton-data-oriented-design-cppcon-2014-cache-optimization-examples
   title: 'CppCon 2014: Mike Acton "Data-Oriented Design and C++" — 35:30 Cache optimization examples'
   author: Mike Acton (CppCon)

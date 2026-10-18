@@ -196,21 +196,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos automáticos do YouTube." }
 
-- id: akitando-124-sockets-web-bsd-sockets
-  title: Como Funciona Sockets, Cliente, Servidor e a Web? | Introdução a Redes Parte 4 — 09:56 BSD Sockets
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=lc6U93P4Sxw&t=596s
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics:
-  - spring-web-backend
-  why: Trecho sobre a API de sockets e o fluxo de conexão por trás de um servidor web (de 09:56 até 16:54, Portas).
-  section: 09:56 BSD Sockets
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Minuto tirado dos capítulos oficiais da descrição do vídeo." }
-
 - id: akitando-118-servidor-sql-transaction-log
   title: Fiz um servidor de "SQL"?? | Entendendo Banco de Dados — 00:49:51 Transaction Log!
   author: Fabio Akita

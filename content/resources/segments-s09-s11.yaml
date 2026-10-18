@@ -197,24 +197,6 @@
     checkedOn: '2026-10-18'
     note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
 
-- id: akitando-67-criptografia-parte-1-hashes
-  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2 — 22:48 Hashes
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4&t=1368s
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics:
-  - tls-concepts
-  why: Trecho sobre funções de hash (do minuto 22:48 até o próximo capítulo).
-  section: 22:48 Hashes
-  access: free
-  priority: core
-  verification:
-    status: verified
-    checkedOn: '2026-10-18'
-    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
-
 - id: akitando-68-criptografia-parte-2-diffie-hellman
   title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2 — 22:55 Diffie-Hellman
   author: Fabio Akita
