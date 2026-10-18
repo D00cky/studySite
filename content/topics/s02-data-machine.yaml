@@ -25,6 +25,7 @@
   resources:
     start: akita-binary-text
     deeper: [cs50-memory, man-ascii, akita-intro-computing, csapp, nand2tetris]
+    videos: [akitando-91-binario-texto-video, cs61c-fa20-lecture-02-1-bits-video, cs61c-fa20-lecture-02-2-conversions-video]
   exercise:
     id: ex-bases-by-hand
     title: Conversões à mão, conferidas pela máquina
@@ -84,6 +85,7 @@
   resources:
     start: beej-c-types-ii
     deeper: [beej-c-fixed-width, akita-640kb, cert-c, csapp]
+    videos: [cs61c-fa20-lecture-02-4-twos-complement-video, mit-6004-signed-integers-twos-complement-video, akitando-97-640kb-video]
   exercise:
     id: ex-overflow-table
     title: Prever o odômetro
@@ -144,6 +146,7 @@
   resources:
     start: joel-unicode
     deeper: [akita-binary-text, utf8-everywhere, man-utf8, man-ascii, beej-c-unicode]
+    videos: [computerphile-unicode-video, akitando-91-binario-texto-video]
   exercise:
     id: ex-utf8-bytes
     title: Contar bytes, code points e caracteres
@@ -205,6 +208,7 @@
   resources:
     start: floating-point-gui
     deeper: [beej-c-types-ii, goldberg-fp, csapp]
+    videos: [computerphile-floating-point-video, cs61c-fa20-lecture-06-1-fixed-point-video, cs61c-fa20-lecture-06-2-floating-point-video]
   exercise:
     id: ex-float-sum
     title: Somar 0.1 dez vezes
@@ -264,6 +268,7 @@
   resources:
     start: drepper-memory
     deeper: [akita-von-neumann, akita-640kb, csapp, nand2tetris]
+    videos: [computerphile-cpu-memory-caches-video, mit-6004-locality-principle-video, akitando-86-turing-von-neumann-video]
   exercise:
     id: ex-row-vs-column
     title: Linhas contra colunas
