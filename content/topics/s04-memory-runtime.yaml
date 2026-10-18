@@ -61,6 +61,22 @@
     - Código e desenho da memória do swap.
     - Sessão do gdb com print, x e bt anotados.
   firstAction: Declare `int x = 5; int *p = &x;` e imprima `p`, `*p` e `&p`.
+  essentials:
+    - "Leia `&x` como \"endereço de x\" e `*p` como \"o valor no endereço guardado em p\"; desenhe caixas e setas quando travar."
+    - "Inicialize todo ponteiro (com um endereço válido ou `NULL`) e cheque `NULL` antes de desreferenciar."
+    - "Para uma função alterar dados de quem chamou, passe o endereço: `void f(int *out)`."
+    - "Use `const` para deixar claro o que só é lido: `const char *s` não deixa a função alterar o conteúdo."
+    - "`p + 1` avança `sizeof(*p)` bytes e `v[i]` é `*(v + i)`; no crash, use `gdb` com `bt`, `print p` e `x/4dw p`."
+  deepDive:
+    - title: Ponteiro para ponteiro e arrays de ponteiros (`char **argv`)
+      why: Ao montar listas encadeadas, alterar um ponteiro dentro de uma função ou processar argv e matrizes dinâmicas.
+      resource: beej-c-pointers2
+    - title: Ponteiros para funções e callbacks
+      why: Ao usar `qsort`, implementar tabelas de despacho ou ler APIs de bibliotecas e do kernel.
+      resource: man-qsort
+    - title: Strict aliasing, `restrict` e `void *`
+      why: Ao reinterpretar bytes como outro tipo ou otimizar laços críticos, onde o compilador pode quebrar código "que funcionava".
+      resource: cppreference-c-objects-alignment
 
 - id: stack-heap-lifetime
   stage: s04-memory-runtime
@@ -124,6 +140,25 @@
     - Saída do programa ao lado do trecho relevante de /proc/pid/maps.
     - Relatório do sanitizer sobre o dangling pointer.
   firstAction: Imprima o endereço de uma variável local em main e de outra dentro de uma função chamada por main. Qual é maior?
+  essentials:
+    - "Locais vivem até a função retornar: nunca devolva nem guarde o endereço de uma variável local."
+    - Dado que precisa sobreviver à função vai para a heap (`malloc`) ou é escrito num buffer recebido de quem chamou.
+    - "Globais e `static` vivem o programa todo; use-as com parcimônia porque viram estado compartilhado."
+    - "Evite arrays locais enormes e recursão sem limite; a stack tem poucos MB (`ulimit -s`)."
+    - "Para ver onde algo vive, imprima com `%p` e compare com `/proc/<pid>/maps`."
+  deepDive:
+    - title: Espaço de endereçamento virtual e paginação
+      why: Quando estudar sistemas operacionais e precisar explicar por que dois processos têm os mesmos endereços.
+      resource: ostep-address-spaces
+    - title: ASLR, stack canaries e proteção contra exploits
+      why: Ao estudar segurança de software ou entender por que endereços mudam a cada execução.
+      resource: mit-6858-lecture-1-threat-models
+    - title: "Como malloc obtém memória do kernel (`brk`, `mmap`)"
+      why: Ao investigar consumo de memória de um processo ou implementar um alocador próprio.
+      resource: man-mmap
+    - title: Coleta de lixo e escape analysis em Java
+      why: Quando trabalhar com Java no backend e precisar raciocinar sobre pausas de GC e objetos de vida curta.
+      resource: akitando-46-memoria-2-video
 
 - id: dynamic-allocation-ownership
   stage: s04-memory-runtime
@@ -189,6 +224,24 @@
     - Link do código do vetor e saída limpa do valgrind ou ASan.
     - Relatórios dos três erros provocados, com a linha culpada destacada.
   firstAction: Escreva um programa com um malloc sem free e rode `valgrind ./programa`. Encontre a palavra "definitely".
+  essentials:
+    - "Cheque o retorno de `malloc`/`calloc`/`realloc` contra `NULL` e calcule tamanhos com `n * sizeof *p`."
+    - "Use `realloc` via temporário: `tmp = realloc(p, n); if (!tmp) { ... } p = tmp;` para não perder o bloco original."
+    - "Para cada bloco, um único dono responsável pelo `free`; documente no header se a função devolve ou só empresta memória."
+    - "Escreva o `free` junto com o `malloc` e, após liberar, zere o ponteiro (`p = NULL`) se a variável continuar em uso."
+    - "Rode os testes com `valgrind --leak-check=full` ou `-fsanitize=address` até a saída ficar limpa."
+  deepDive:
+    - title: Como alocadores funcionam (free lists, fragmentação, coalescing)
+      why: Ao implementar um alocador, investigar fragmentação ou entender o custo real de muitas alocações pequenas.
+      resource: ostep-free-space
+    - title: Arenas e pools de memória
+      why: Em servidores, parsers e jogos que alocam muitos objetos com o mesmo lifetime e querem liberar tudo de uma vez.
+    - title: Profiling de heap ao longo do tempo
+      why: Quando um processo de longa duração cresce em memória sem um leak óbvio.
+      resource: valgrind-massif-manual
+    - title: Ownership formalizado (RAII em C++, borrow checker em Rust)
+      why: Ao comparar linguagens ou adotar Rust/C++ e querer entender que regras o compilador passa a verificar por você.
+      resource: akitando-136-python-java-rust-video
 
 - id: c-strings
   stage: s04-memory-runtime
@@ -250,6 +303,25 @@
     - Código e saída dos testes das funções de string.
     - Relatório do ASan antes da correção e execução limpa depois.
   firstAction: Imprima `sizeof("oi")` e `strlen("oi")` e explique a diferença.
+  essentials:
+    - "Reserve sempre `strlen(s) + 1` bytes: o `\\0` também ocupa espaço."
+    - "Não use `strcpy`, `strcat`, `sprintf` nem `gets`; prefira `snprintf(dst, cap, \"%s\", src)` e cheque se truncou."
+    - "`strncpy` pode não terminar com `\\0`; se usar, termine manualmente (`dst[cap - 1] = '\\0'`)."
+    - "Literais são somente leitura: declare como `const char *`; para alterar, copie para `char s[]` ou para a heap."
+    - "`strlen` conta bytes, não caracteres: em UTF-8, `strlen(\"ação\")` é 6."
+  deepDive:
+    - title: Strings com tamanho explícito (ponteiro + comprimento)
+      why: Ao escrever parsers, protocolos de rede ou bibliotecas em que dados podem conter bytes zero.
+      resource: beej-c-strings-ii
+    - title: Unicode em C (code points, `wchar_t`, validação de UTF-8)
+      why: Quando precisar contar caracteres, cortar texto ou validar entrada de usuários em vários idiomas.
+      resource: beej-c-unicode
+    - title: Fuzzing de funções de texto com ASan
+      why: Ao testar parsers que recebem entrada não confiável e quiser achar estouros automaticamente.
+      resource: llvm-libfuzzer
+    - title: Regras do CERT C para strings
+      why: Em revisão de código com foco em segurança ou ao escrever C que processa entrada externa.
+      resource: cert-c
 
 - id: memory-debugging
   stage: s04-memory-runtime
@@ -321,3 +393,25 @@
     - Diário de depuração completo.
     - Saídas das três ferramentas no mesmo bug, com comentários.
   firstAction: Compile um programa seu com `-g -fsanitize=address,undefined` e rode. Anote se algo aparece.
+  essentials:
+    - "Compile o desenvolvimento com `-g -O0 -fsanitize=address,undefined`; o sanitizer aponta o erro na linha em que ele acontece."
+    - "No crash, rode `gdb ./prog`, `run`, `bt`, `frame N` e `print var` antes de mudar qualquer código."
+    - "Use `valgrind --leak-check=full` para leaks e para binários que você não pode recompilar (sem misturar com ASan)."
+    - Reproduza o bug no menor caso possível e mude uma coisa por vez para testar cada hipótese.
+    - "Registre sintoma, hipótese, evidência, causa e correção, e transforme o caso de reprodução num teste."
+  deepDive:
+    - title: Watchpoints, breakpoints condicionais e core dumps no gdb
+      why: Quando uma variável muda "sozinha" ou o crash acontece em produção e só sobra o core.
+      resource: gdb-sample-session
+    - title: Depuração reversa com rr
+      why: Para bugs intermitentes em que você precisa voltar no tempo a partir da falha.
+      resource: rr-project
+    - title: "UBSan em detalhe e as famílias de comportamento indefinido"
+      why: Ao caçar bugs que só aparecem com otimização ou em outro compilador.
+      resource: clang-undefined-behavior-sanitizer
+    - title: Depuração de concorrência (ThreadSanitizer, Helgrind)
+      why: Quando chegar a threads e enfrentar race conditions que nenhum sanitizer de memória mostra.
+      resource: clang-threadsanitizer
+    - title: Profiling com perf e flame graphs
+      why: Quando o problema não é crash, e sim lentidão.
+      resource: brendan-gregg-flame-graphs

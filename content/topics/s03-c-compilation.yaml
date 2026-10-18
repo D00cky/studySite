@@ -62,6 +62,22 @@
     - Link do repositório ou código da calculadora e saídas dos casos de erro com `echo $?`.
     - Lista de avisos que o compilador deu e como você os resolveu.
   firstAction: Escreva um `hello.c` que retorna 3 em `main` e confirme com `echo $?`.
+  essentials:
+    - "Compile sempre com `gcc -Wall -Wextra -std=c17` e trate cada aviso como bug até provar o contrário."
+    - "Quando o tamanho importa, use `<stdint.h>` (`int32_t`, `uint8_t`) e confira com `sizeof`; não assuma que `int` tem 32 bits."
+    - Declare a função (protótipo ou header) antes de chamá-la; a definição pode vir depois ou em outro arquivo.
+    - Argumentos são cópias; para a função alterar o original, passe um ponteiro.
+    - "Converta texto em número com `strtol` checando `errno` e o ponteiro final, e use o retorno de `main` como exit code (0 = sucesso)."
+  deepDive:
+    - title: Comportamento indefinido e otimizações
+      why: Quando um programa funciona em -O0 e quebra em -O2, ou ao revisar código C crítico de segurança.
+      resource: regehr-guide-undefined-behavior-1
+    - title: Regras de promoção inteira e conversões usuais
+      why: Ao misturar signed e unsigned ou tipos de tamanhos diferentes em comparações e contas de bits.
+      resource: beej-c-types-ii
+    - title: Conjunto de avisos estrito (-Wconversion, -Wshadow, -Werror)
+      why: Ao configurar o build de um projeto ou CI em que avisos devem bloquear o merge.
+      resource: gcc-warning-options
 
 - id: c-arrays-structs
   stage: s03-c-compilation
@@ -121,6 +137,22 @@
     - Saída de sizeof/offsetof com explicação do padding.
     - Relatório do AddressSanitizer com a linha do erro destacada.
   firstAction: Imprima `sizeof(int[10])` e explique o número.
+  essentials:
+    - Toda função que recebe array recebe também o tamanho (`size_t n`); dentro dela o array já é só um ponteiro.
+    - "Calcule o número de elementos com `sizeof v / sizeof v[0]` apenas onde o array foi declarado, nunca no parâmetro."
+    - Índices válidos vão de 0 a n-1; C não verifica limites, então rode testes com `-fsanitize=address -g`.
+    - "Structs podem ter padding: meça com `sizeof`/`offsetof` e ordene campos do maior para o menor quando o tamanho importar."
+    - Passar struct por valor copia tudo; para structs grandes ou para alterar o original, passe `const struct x *` ou `struct x *`.
+  deepDive:
+    - title: Alinhamento, strict aliasing e type punning
+      why: Ao serializar structs para disco/rede ou reinterpretar bytes como outro tipo.
+      resource: cppreference-c-objects-alignment
+    - title: Layout de dados e cache (array of structs vs struct of arrays)
+      why: Quando percorrer milhões de registros ficar lento e a localidade de memória começar a importar.
+      resource: mike-acton-data-oriented-design-cppcon-2014
+    - title: VLAs, flexible array members e arrays multidimensionais
+      why: Ao ler código de kernel/bibliotecas que usa `struct { size_t n; int dados[]; }` ou matrizes passadas para funções.
+      resource: beej-c-arrays
 
 - id: c-preprocessor
   stage: s03-c-compilation
@@ -183,6 +215,22 @@
     - Trecho da saída de gcc -E com a declaração de printf.
     - Expansões da macro QUADRADO antes e depois da correção.
   firstAction: Rode `gcc -E hello.c | tail -n 20` e procure o seu próprio código no fim da saída.
+  essentials:
+    - "Headers contêm declarações, tipos e macros; definições de funções ficam nos `.c`."
+    - "Todo header ganha include guard (`#ifndef X_H` / `#define X_H` / `#endif`)."
+    - "Use `\"x.h\"` para headers do projeto e `<x.h>` para os do sistema."
+    - "Na dúvida sobre uma macro ou um include, rode `gcc -E` e leia o que o compilador realmente vê."
+    - "Macro com parâmetro: parênteses em cada argumento e no todo, e nunca passe `i++`; prefira `static inline` ou `enum`/`const`."
+  deepDive:
+    - title: "Macros avançadas: `#`, `##`, variádicas e `do { } while (0)`"
+      why: Ao ler ou escrever macros de logging/asserts em bibliotecas e no kernel.
+      resource: beej-c-preprocessor
+    - title: "`_Generic` e macros sensíveis ao tipo"
+      why: Quando quiser uma interface única para vários tipos sem perder verificação do compilador.
+      resource: cppreference-c-generic-selection
+    - title: Feature flags de build e configuração por plataforma
+      why: Ao portar código entre Linux/macOS ou manter builds de debug e release com `-D` diferentes.
+      resource: gcc-overall-options
 
 - id: compilation-pipeline
   stage: s03-c-compilation
@@ -248,6 +296,25 @@
     - Comandos de cada etapa com a saída de `file` e `nm`.
     - A mensagem de erro de linking do arquivo sem main e sua explicação.
   firstAction: Rode `gcc -c hello.c` e `file hello.o`. Anote o que o file diz.
+  essentials:
+    - "Lembre as quatro etapas e suas flags: `-E` (`.i`), `-S` (`.s`), `-c` (`.o`) e linking (executável)."
+    - "Leia a mensagem para saber a etapa: erro com `arquivo.c:linha` é compilação; `undefined reference` vem do linker (`ld`)."
+    - "Use `file`, `nm` e `objdump -d` para descobrir o que um arquivo gerado contém antes de adivinhar."
+    - Compilar só gera arquivos; quem executa é o sistema operacional ao rodar o binário.
+    - "Depure com `-O0 -g`; meça desempenho com `-O2`. Use o Compiler Explorer para ver o efeito de uma linha no assembly."
+  deepDive:
+    - title: O que cada nível de otimização faz (inlining, LTO, dead code)
+      why: Ao investigar diferenças de desempenho ou bugs que só aparecem em release.
+      resource: gcc-optimize-options
+    - title: Ler assembly x86-64 e convenção de chamada
+      why: Ao depurar crashes sem código-fonte, analisar desempenho fino ou estudar segurança (exploits).
+      resource: csapp
+    - title: Formato ELF, seções e ponto de entrada (`_start` antes de `main`)
+      why: Ao estudar loaders, containers mínimos ou ferramentas como strace e gdb por dentro.
+      resource: cs61c-fa20-lecture-13-5-loader-video
+    - title: Compiladores por dentro (análise léxica, parsing, IR)
+      why: Quando chegar à etapa de interpretadores ou quiser entender mensagens de erro e ferramentas de lint.
+      resource: crafting-interpreters-map-of-territory
 
 - id: linking-object-files
   stage: s03-c-compilation
@@ -311,3 +378,21 @@
     - Link do repositório com o Makefile e a saída do nm de cada object file.
     - Mensagens dos erros provocados com uma explicação de cada uma.
   firstAction: Rode `nm` num object file que você já tem e encontre um símbolo U.
+  essentials:
+    - "`undefined reference` = falta a definição no linking (um `.o` ou `-lbiblioteca` esquecido), não erro de sintaxe."
+    - "`multiple definition` = o símbolo foi definido duas vezes; no header só declarações e `extern`, nunca corpo de função."
+    - "Marque como `static` toda função ou global usada só no próprio `.c`."
+    - "Use `nm` (`T` definido, `U` indefinido) e `ldd` para conferir quem define o quê e quais `.so` o binário exige."
+    - "Automatize com Makefile: cada `.o` depende do seu `.c` e dos headers que inclui; `make` refaz só o que mudou."
+  deepDive:
+    - title: Relocações e como o linker funciona por dentro
+      why: Ao enfrentar erros de linking estranhos, escrever linker scripts ou estudar segurança de binários.
+      resource: ian-lance-taylor-linkers-part-1
+    - title: Shared libraries, PIC, soname e visibilidade de símbolos
+      why: Ao publicar uma biblioteca `.so`, versionar ABI ou resolver falhas de deploy por biblioteca ausente.
+      resource: drepper-how-to-write-shared-libraries
+    - title: Ordem de bibliotecas, `-L`/`-l`, `rpath` e `LD_LIBRARY_PATH`
+      why: Quando um programa linka na sua máquina e não encontra a `.so` em outra.
+      resource: beej-c-multifile
+    - title: Sistemas de build modernos (CMake, Meson) e dependências automáticas de headers
+      why: Quando o projeto crescer além de um Makefile escrito à mão ou precisar compilar em várias plataformas.
