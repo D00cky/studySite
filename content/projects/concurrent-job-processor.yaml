@@ -1,17 +1,75 @@
 - id: concurrent-job-processor
   title: Processador concorrente de jobs
-  status: planned
+  status: authored
   cumulative: false
   topics: [threads-basics, race-conditions-synchronization, deadlocks, bounded-queues]
   question: Como vários workers processam tarefas de uma fila compartilhada sem perder, duplicar ou travar trabalho?
   prerequisites: [threads-basics]
-  minimalVersion: Uma fila limitada com produtores e consumidores processando tarefas, com contagem final correta.
+  minimalVersion: |
+    Um programa em C com pthreads: P produtores geram N tarefas (id, tipo, custo) e as colocam
+    numa fila limitada; W workers retiram e "processam" cada tarefa. No final, imprime quantas
+    tarefas foram concluídas, verifica que cada id foi processado exatamente uma vez e encerra
+    todos os workers de forma limpa. P, W, N e a capacidade da fila vêm de argumentos.
+  extensions:
+    - Prioridades (fila de prioridade com heap protegida por mutex) e medição de starvation das tarefas de baixa prioridade.
+    - Retry de tarefas que falham, com limite de tentativas e fila de mortas (dead letter).
+    - Métricas por worker (tarefas, tempo ocupado, tempo esperando a fila) impressas ao final.
+    - Comparar a fila com mutex + variáveis de condição contra uma versão com semáforos.
+    - Ler tarefas do arquivo da CLI de tarefas e gravar os resultados com salvamento atômico.
+  constraints:
+    - C17 com pthreads e stdatomic.h; nada de bibliotecas de filas prontas.
+    - Toda a suíte roda limpa sob `-fsanitize=thread` e sob `valgrind --tool=helgrind`.
+    - Processamento da tarefa sempre fora do lock da fila.
+    - Ordem global de locks documentada no código sempre que mais de um lock for adquirido.
+    - Benchmarks com várias execuções, mediana e descrição da máquina (nproc, CPU).
   milestones:
     - id: m1-race
       title: Reproduzir uma condição de corrida
+      description: Versão ingênua com contador global de concluídas e fila sem lock; mostrar contagens erradas e o relatório do ThreadSanitizer.
+      minutes: 50
     - id: m2-mutex
       title: Corrigir com sincronização
+      description: Fila limitada com mutex e duas variáveis de condição, desligamento com close/broadcast e teste de exatamente-uma-vez.
+      minutes: 75
     - id: m3-deadlock
       title: Investigar um deadlock
+      description: Adicionar a operação de mover tarefas entre duas filas com dois locks, provocar o deadlock, diagnosticar com gdb e Helgrind e corrigir com ordem global.
+      minutes: 50
     - id: m4-throughput
       title: Medir throughput por número de workers
+      description: Medir tarefas por segundo com 1 a 32 workers para tarefas de CPU e de espera, e com capacidades de fila diferentes; explicar as curvas.
+      minutes: 75
+    - id: m5-report
+      title: Relatório e revisão
+      description: README com o desenho da fila, invariantes, ordem de locks, gráficos e respostas às perguntas de revisão.
+      minutes: 25
+  edgeCases:
+    - Zero tarefas, zero produtores ou mais workers que tarefas.
+    - Fila de capacidade 1.
+    - Close chamado com tarefas ainda na fila e com workers bloqueados em get.
+    - Produtor bloqueado em put quando a fila é fechada.
+    - Tarefa que falha ou demora muito mais que as outras.
+    - Falha de malloc ao criar a fila ou de pthread_create ao criar workers.
+  failureExperiments:
+    - Remover o lock da fila e mostrar tarefas perdidas ou duplicadas pelo teste de exatamente-uma-vez e pelo TSan.
+    - Trocar while por if em volta de pthread_cond_wait e provocar um get numa fila vazia com vários consumidores.
+    - Usar uma única variável de condição com signal e reproduzir o travamento de produtores e consumidores.
+    - Inverter a ordem de locks em mover() e capturar o deadlock com `thread apply all bt` no gdb.
+    - Esquecer o broadcast no close e mostrar workers que nunca terminam (join bloqueado).
+  tools: [gcc, make, gdb, "valgrind --tool=helgrind", "-fsanitize=thread", "perf stat", "top -H", "/proc/<pid>/task"]
+  acceptanceCriteria:
+    - O teste de exatamente-uma-vez passa em pelo menos 20 execuções seguidas com várias combinações de P, W e capacidade.
+    - TSan e Helgrind não reportam avisos na versão final.
+    - O deadlock é reproduzido, diagnosticado com backtraces e eliminado pela ordem global de locks.
+    - O desligamento termina todos os workers sem perder tarefas já enfileiradas.
+    - A medição de throughput mostra várias execuções e uma explicação baseada em núcleos, contenção e espera.
+  evidence:
+    - Link do repositório com README, Makefile e instruções de teste e benchmark.
+    - Relatório do TSan da versão ingênua e saída limpa da versão final.
+    - Saída de thread apply all bt do deadlock anotada e o grafo de espera.
+    - Tabela ou gráfico de throughput por número de workers com nproc anotado.
+  reviewQuestions:
+    - Que invariantes a fila mantém e em que pontos do código elas ficam temporariamente quebradas?
+    - Por que o limite da fila é uma forma de backpressure, e o que acontece sem ele quando os produtores são mais rápidos?
+    - Qual das quatro condições de deadlock sua correção quebra?
+    - Por que o throughput para tarefas de CPU para de crescer, enquanto o de tarefas de espera continua?

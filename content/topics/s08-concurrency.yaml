@@ -3,37 +3,271 @@
 - id: threads-basics
   stage: s08-concurrency
   title: Threads
-  status: planned
+  status: authored
   objective: Criar threads e explicar o que elas compartilham e o que não compartilham.
-  whyItMatters: Servidores web, pools de conexão e processadores de jobs usam threads.
+  whyItMatters: Servidores web, pools de conexão e processadores de jobs usam threads. Saber o que é compartilhado explica tanto o ganho de desempenho quanto a origem dos bugs de concorrência — em C, em Java ou em qualquer runtime.
   prerequisites: [processes-syscalls, virtual-memory]
+  related: [race-conditions-synchronization, bounded-queues, low-level-concurrency]
+  explanation: |
+    Uma **thread** é um fluxo de execução dentro de um processo. Todas as threads de um processo compartilham o **mesmo espaço de endereçamento**: código, variáveis globais, heap e descritores de arquivo. Cada thread tem só o que é necessário para executar de forma independente:
+
+    - sua própria **stack** (variáveis locais e chamadas de função);
+    - seus registradores, incluindo o contador de programa;
+    - um id de thread, máscara de sinais e `errno` próprio.
+
+    No Linux, threads e processos são criados pela mesma syscall, `clone`; a diferença está nas flags que dizem o que compartilhar. Cada thread é agendada pelo kernel de forma independente e pode rodar em núcleos diferentes ao mesmo tempo (**paralelismo**) ou ser intercalada num único núcleo (**concorrência**). Você não controla a ordem.
+
+    Com pthreads: `pthread_create(&t, NULL, funcao, arg)` inicia `funcao(arg)` numa nova thread; `pthread_join(t, &ret)` espera ela terminar. Cuidado com o argumento: passar o endereço de uma variável local do laço que cria as threads faz todas lerem o mesmo endereço, que muda enquanto elas começam.
+
+    Comparação útil: criar processos dá isolamento (um crash não derruba os outros) ao custo de comunicação explícita; threads comunicam-se por memória compartilhada, o que é rápido mas exige sincronização. Em Java, `new Thread(...)` e os pools de `ExecutorService` usam threads do sistema por baixo.
+  misconceptions:
+    - claim: Cada thread tem sua própria cópia das variáveis globais e da heap.
+      correction: Globais e heap são compartilhadas; só a stack (locais) e os registradores são por thread.
+    - claim: Threads executam na ordem em que foram criadas.
+      correction: O escalonador decide; a ordem varia de execução para execução e entre máquinas.
+    - claim: Mais threads sempre deixam o programa mais rápido.
+      correction: Acima do número de núcleos (para trabalho de CPU) há troca de contexto e disputa por locks e cache; o throughput pode cair.
   resources:
     start: ostep-concurrency-intro
+    deeper: [ostep-thread-api, man-pthreads, man-pthread-create, gdb-threads, akita-memory-2]
+    videos: [cs162-lecture-3-threads-processes, cs162-lecture-6-synchronization-1, akitando-43-concorrencia-paralelismo-1-video, akitando-46-memoria-parte-2-video]
+  exercise:
+    id: ex-what-threads-share
+    title: O que as threads compartilham
+    prediction: "Quatro threads imprimem o endereço de uma variável global, de uma local e de um bloco de malloc criado por cada uma. Quais endereços serão iguais entre as threads?"
+    steps:
+      - "Escreva `share.c` com 4 threads; cada uma recebe seu índice (de um array, não de `&i` do laço) e imprime `&global`, `&local`, o ponteiro do malloc e `pthread_self()`."
+      - Compile com `-pthread -g` e confira a previsão.
+      - Introduza o bug de passar `&i` do laço e mostre índices repetidos ou errados.
+      - Faça cada thread retornar um resultado via `pthread_join` e some no main.
+    checks:
+      - Os endereços das locais diferem entre threads e o da global é igual, como previsto.
+      - Você explica o bug do `&i` como uma leitura de memória compartilhada que muda.
+  experiment:
+    title: Ver threads pelo kernel e pelo gdb
+    steps:
+      - Faça as threads dormirem 30 s; rode `ls /proc/<pid>/task` e `ps -L -p <pid>` e compare os ids.
+      - Leia `/proc/<pid>/maps` e encontre as stacks das threads (regiões anônimas de ~8 MiB).
+      - "Rode `strace -f -e trace=clone,clone3 ./share` e veja as flags (CLONE_VM, CLONE_FILES, CLONE_THREAD)."
+      - "Anexe o gdb (`gdb -p <pid>`) e use `info threads` e `thread apply all bt`."
+    observe:
+      - Um diretório em /proc/pid/task por thread e o mesmo pid com LWPs diferentes no ps.
+      - As flags de clone que indicam o que é compartilhado.
+  reflectionQuestions:
+    - Por que um crash (SIGSEGV) numa thread derruba o processo inteiro?
+    - Quando você escolheria processos em vez de threads para isolar trabalho?
+    - O que a stack separada de cada thread implica para o limite de threads de um servidor?
+  completionCriteria:
+    - Mostra a saída de share.c com endereços de global, local e heap e explica cada um.
+    - Reproduz e corrige o bug de passar o endereço da variável do laço.
+    - Mostra as threads em /proc/pid/task, ps -L e info threads do gdb.
+  evidencePrompts:
+    - Código e saída de share.c, antes e depois da correção do argumento.
+    - Saída de ps -L, strace com clone e thread apply all bt anotados.
+  firstAction: Rode `ps -eLf | head` e descubra o que a coluna LWP significa.
 
 - id: race-conditions-synchronization
   stage: s08-concurrency
   title: Condições de corrida e sincronização
-  status: planned
+  status: authored
   objective: Reproduzir uma condição de corrida e corrigi-la com mutex e variáveis de condição.
-  whyItMatters: Saldos errados, contadores perdidos e bugs que "só acontecem às vezes" vêm daqui.
+  whyItMatters: Saldos errados, contadores perdidos e bugs que "só acontecem às vezes" vêm daqui. O mesmo raciocínio vale para `synchronized` em Java, para requisições simultâneas num backend e para transações no banco.
   prerequisites: [threads-basics]
+  related: [deadlocks, bounded-queues, isolation-locks]
   mathThreads: [logic, proofs]
+  explanation: |
+    `contador++` parece uma operação, mas a CPU faz três: **ler** o valor para um registrador, **somar** 1 e **escrever** de volta. Se duas threads leem o mesmo valor antes de qualquer uma escrever, um incremento se perde. Isso é uma **race condition**: o resultado depende da intercalação. Em C, um acesso concorrente sem sincronização em que pelo menos um é escrita é uma **data race** — comportamento indefinido, e o compilador pode até reordenar ou eliminar acessos.
+
+    O trecho que acessa o dado compartilhado é a **seção crítica**. Um **mutex** garante exclusão mútua: só uma thread por vez entre `pthread_mutex_lock` e `pthread_mutex_unlock`. O lock também funciona como barreira de memória: o que uma thread escreveu antes do unlock é visto por quem fizer lock depois.
+
+    Às vezes a thread precisa **esperar uma condição** (ex.: "a fila tem um item"). Ficar em laço consultando desperdiça CPU. Uma **variável de condição** resolve:
+
+    - `pthread_cond_wait(&cv, &m)` libera o mutex e dorme **atomicamente**; ao acordar, readquire o mutex.
+    - Quem muda o estado chama `pthread_cond_signal` (acorda uma) ou `broadcast` (acorda todas), com o mutex em mãos.
+    - Sempre reavalie a condição em **`while`**, não `if`: pode haver *wakeups* espúrios ou outra thread pode ter consumido o item antes.
+
+    Raciocinar sobre correção é raciocinar sobre **invariantes**: uma propriedade (ex.: `0 <= count <= cap`) que vale sempre que ninguém está segurando o lock. Cada seção crítica pode quebrá-la temporariamente, mas deve restaurá-la antes do unlock. Ferramentas como ThreadSanitizer e Helgrind detectam data races que os testes raramente pegam.
+  misconceptions:
+    - claim: Se o teste passou 100 vezes, não há race condition.
+      correction: Races dependem da intercalação; podem aparecer só sob carga, em outra máquina ou com outra otimização. Use ferramentas como TSan e raciocine sobre invariantes.
+    - claim: Marcar a variável como volatile resolve a race.
+      correction: volatile não torna leitura-modificação-escrita atômica nem cria ordenação entre threads. Use mutex ou atômicos.
+    - claim: Pode-se usar if em volta de pthread_cond_wait.
+      correction: Wakeups espúrios e outras threads podem invalidar a condição; reavalie sempre em while.
   resources:
     start: ostep-locks
+    deeper: [ostep-thread-api, ostep-condition-variables, ostep-semaphores, ostep-locked-data-structures, man-pthread-mutex-lock, man-pthread-cond-wait, clang-threadsanitizer, valgrind-helgrind]
+    videos: [cs162-lecture-6-synchronization-1, cs162-lecture-7-synchronization-2, cs162-lecture-9-synchronization-4, mit-6s081-2020-lecture-10-locks, mit-6s081-2020-lecture-13-sleep-wakeup, akitando-44-concorrencia-paralelismo-2-video]
+  exercise:
+    id: ex-lost-updates
+    title: Contador de tarefas concluídas com updates perdidos
+    prediction: "4 threads incrementam um contador global 1.000.000 de vezes cada, sem lock. Qual valor final você espera? Ele muda entre execuções? E com `-O2`?"
+    steps:
+      - Escreva `counter.c` sem sincronização e rode 5 vezes com `-O0` e 5 vezes com `-O2`, anotando os valores.
+      - "Escreva no papel uma intercalação de duas threads que perde um incremento (passos ler/somar/escrever)."
+      - Corrija com um mutex em volta do incremento e confirme o resultado 4.000.000 em todas as execuções.
+      - "Implemente uma variante em que uma thread \"inspetora\" espera, com variável de condição, até o contador chegar a um múltiplo de 1.000.000 e imprime; use `while` no wait."
+    checks:
+      - Os valores sem lock variam e ficam abaixo de 4.000.000, e você explica a intercalação desenhada.
+      - A versão com mutex sempre dá 4.000.000 e a inspetora não perde notificações.
+  experiment:
+    title: Pegar a race com ferramentas e medir o custo do lock
+    steps:
+      - "Compile a versão sem lock com `-fsanitize=thread -g` e leia o relatório do ThreadSanitizer (as duas pilhas em conflito)."
+      - Rode a mesma versão com `valgrind --tool=helgrind` e compare o relatório.
+      - Meça com `time` as versões sem lock, com mutex por incremento, com contador local por thread somado no final e com `atomic_fetch_add` (stdatomic.h).
+      - Troque o while por if na inspetora e tente provocar o erro com broadcast e duas inspetoras.
+    observe:
+      - "A linha `WARNING: ThreadSanitizer: data race` com as duas linhas de código envolvidas."
+      - A diferença de tempo entre lock por incremento, atômico e contadores locais.
+  reflectionQuestions:
+    - Qual invariante o mutex protege no seu contador e onde ela fica temporariamente quebrada?
+    - Por que contadores locais somados no final são mais rápidos e continuam corretos?
+    - Onde, num backend Java com várias requisições simultâneas, a mesma race pode acontecer?
+  completionCriteria:
+    - Reproduz updates perdidos com valores variando entre execuções e desenha a intercalação responsável.
+    - Mostra o relatório do ThreadSanitizer ou Helgrind antes e uma execução limpa depois da correção.
+    - Apresenta a tabela de tempos das quatro estratégias com uma explicação do custo.
+  evidencePrompts:
+    - Valores das execuções sem lock, desenho da intercalação e código corrigido.
+    - Relatório do TSan anotado e tabela de tempos.
+  firstAction: Compile `int c=0; void *f(void*a){for(int i=0;i<1000000;i++)c++;return 0;}` com duas threads e imprima `c`.
 
 - id: deadlocks
   stage: s08-concurrency
   title: Deadlocks
-  status: planned
+  status: authored
   objective: Provocar e diagnosticar um deadlock e aplicar ordenação de locks para evitá-lo.
-  whyItMatters: Deadlocks aparecem em código concorrente e em transações de banco de dados.
+  whyItMatters: Deadlocks aparecem em código concorrente e em transações de banco de dados. Um serviço travado sem uso de CPU e sem logs é frequentemente um deadlock — e saber tirar um dump das threads é o que resolve o incidente.
   prerequisites: [race-conditions-synchronization]
+  related: [isolation-locks, bounded-queues, transactions-basics]
   mathThreads: [graphs]
+  explanation: |
+    Um **deadlock** acontece quando um grupo de threads espera, para sempre, por recursos que outras threads do grupo seguram. O exemplo mínimo: a thread A trava `m1` e quer `m2`; a thread B trava `m2` e quer `m1`. Nenhuma avança.
+
+    São necessárias **quatro condições ao mesmo tempo** (Coffman):
+
+    - **Exclusão mútua**: o recurso só pode ser usado por um de cada vez.
+    - **Segurar e esperar**: quem já tem um recurso espera por outro sem soltá-lo.
+    - **Sem preempção**: ninguém tira o recurso à força.
+    - **Espera circular**: existe um ciclo de threads, cada uma esperando a próxima.
+
+    Modele como um **grafo de espera**: um vértice por thread e uma aresta T1 → T2 quando T1 espera um lock que T2 segura. Há deadlock exatamente quando o grafo tem um **ciclo**. Prevenir é quebrar uma das condições; a técnica mais prática é quebrar a espera circular com uma **ordem global de locks** (ex.: sempre travar a tarefa de menor id primeiro). Se todos adquirem em ordem crescente, uma aresta só vai de quem segura um lock menor para quem segura um maior, e nenhum ciclo pode se formar.
+
+    Outras saídas: `pthread_mutex_trylock` com recuo (quebra "segurar e esperar", mas pode gerar *livelock*), timeouts, ou reduzir o código executado com lock. Bancos de dados detectam o ciclo e abortam uma das transações — por isso aplicações devem estar prontas para repetir uma transação.
+
+    Diagnóstico: o processo fica parado com ~0% de CPU. `gdb -p <pid>` com `thread apply all bt` mostra cada thread presa em `pthread_mutex_lock` (ou `__lll_lock_wait`); Helgrind avisa sobre ordens de lock inconsistentes **mesmo quando o deadlock não aconteceu** naquela execução.
+  misconceptions:
+    - claim: Deadlock sempre aparece nos testes se existir.
+      correction: Depende de uma intercalação específica; pode ocorrer uma vez em milhões de execuções. Ferramentas de ordem de lock acham o risco sem precisar travar.
+    - claim: Um processo em deadlock usa 100% de CPU.
+      correction: Threads bloqueadas em mutex dormem; o sintoma típico é CPU perto de zero e nenhum progresso. 100% sugere livelock ou spin.
+    - claim: Usar trylock em todo lugar elimina deadlocks sem custo.
+      correction: Pode trocar deadlock por livelock e complica o código; uma ordem global de locks costuma ser mais simples e verificável.
+  resources:
+    start: ostep-concurrency-bugs
+    deeper: [man-pthread-mutex-lock, valgrind-helgrind, gdb-threads]
+    videos: [cs162-lecture-12-deadlock, mit-6s081-2020-lecture-10-locks]
+  exercise:
+    id: ex-transfer-deadlock
+    title: Mover tarefas entre listas e travar
+    prediction: "Duas threads movem tarefas repetidamente entre a lista A e a lista B, cada lista com seu mutex; uma move A→B e a outra B→A, travando origem e depois destino. Em quantas iterações você acha que trava?"
+    steps:
+      - "Escreva `move.c`: duas listas (ou contadores de tarefas) com um mutex cada, e uma função `mover(origem, destino)` que trava origem, depois destino."
+      - "Rode duas threads em direções opostas em laço até travar; adicione um `usleep` curto entre os dois locks para tornar o deadlock quase certo."
+      - Desenhe o grafo de espera no momento do travamento e identifique o ciclo.
+      - Corrija impondo uma ordem global (por exemplo, sempre travar primeiro a lista de menor id) e rode 10 milhões de iterações sem travar.
+    checks:
+      - O grafo de espera desenhado tem um ciclo e corresponde aos backtraces.
+      - Você justifica, com o argumento da ordem crescente, por que a correção torna o ciclo impossível.
+  experiment:
+    title: Diagnosticar um processo travado
+    steps:
+      - Com o move.c travado, confira com `top -H -p <pid>` que a CPU está perto de zero.
+      - "Anexe `gdb -p <pid>` e rode `thread apply all bt`; identifique qual mutex cada thread segura e qual espera (use `print` no mutex para ver o `__owner`)."
+      - Rode a versão sem usleep com `valgrind --tool=helgrind` e encontre o aviso de lock order violation mesmo em execuções que não travaram.
+      - "Compare: compile com `-fsanitize=thread` e veja se o TSan também reporta a inversão (lock-order-inversion)."
+    observe:
+      - Duas pilhas paradas em pthread_mutex_lock esperando o mutex que a outra segura.
+      - O relatório do Helgrind ou TSan apontando as duas ordens de aquisição conflitantes.
+  reflectionQuestions:
+    - Qual das quatro condições a ordenação de locks quebra, e por que é a mais prática de quebrar?
+    - Como um banco de dados resolve um deadlock entre transações, e o que a aplicação precisa fazer?
+    - Por que o Helgrind consegue avisar sobre um deadlock que não aconteceu?
+  completionCriteria:
+    - Reproduz o deadlock e mostra os backtraces das duas threads presas obtidos com gdb.
+    - Apresenta o grafo de espera com o ciclo e a correção por ordenação rodando milhões de iterações.
+    - Mostra o aviso de ordem de lock do Helgrind ou TSan e explica o que ele detectou.
+  evidencePrompts:
+    - Saída de thread apply all bt anotada e o grafo de espera desenhado.
+    - Código antes e depois da ordenação e o relatório da ferramenta.
+  firstAction: Escreva no papel duas threads e dois locks e desenhe a sequência de lock que leva ao travamento.
 
 - id: bounded-queues
   stage: s08-concurrency
   title: Filas limitadas e produtor-consumidor
-  status: planned
+  status: authored
   objective: Implementar uma fila limitada thread-safe e medir throughput com diferentes números de workers.
-  whyItMatters: Backpressure e filas de trabalho são a base de sistemas que não desabam sob carga.
+  whyItMatters: Backpressure e filas de trabalho são a base de sistemas que não desabam sob carga. Pools de threads em Java, filas de jobs em backends e brokers de mensagens usam o mesmo mecanismo.
   prerequisites: [race-conditions-synchronization, stacks-queues]
+  related: [deadlocks, queues-delivery-semantics, profiling-benchmarks]
+  mathThreads: [probability]
+  explanation: |
+    No padrão **produtor-consumidor**, threads produtoras colocam tarefas numa fila e threads consumidoras (workers) as retiram e processam. A fila desacopla a velocidade de quem produz da de quem consome.
+
+    Uma **fila limitada** (bounded) tem capacidade fixa — tipicamente um buffer circular com `head`, `tail` e `count`. O limite é o mecanismo de **backpressure**: quando a fila enche, o produtor **bloqueia** em vez de acumular trabalho até esgotar a memória. Uma fila ilimitada sob carga contínua só adia o problema.
+
+    A implementação clássica usa um mutex e duas variáveis de condição:
+
+    - `put`: trava; `while (count == cap) wait(&nao_cheia)`; insere; `signal(&nao_vazia)`; destrava.
+    - `get`: trava; `while (count == 0) wait(&nao_vazia)`; remove; `signal(&nao_cheia)`; destrava.
+
+    Duas variáveis separadas evitam acordar a thread errada (um produtor acordando outro produtor). O processamento da tarefa acontece **fora** do lock; só a manipulação da fila fica na seção crítica.
+
+    **Desligamento**: os workers precisam saber quando parar. Duas abordagens comuns: enviar uma *poison pill* por worker, ou um flag `fechada` verificado no `while` com `broadcast` ao fechar. **Throughput** (tarefas por segundo) cresce com mais workers enquanto houver núcleos livres ou espera de I/O para sobrepor; depois, a disputa pelo lock e a troca de contexto fazem a curva achatar ou cair. A Lei de Little (itens na fila = taxa de chegada × tempo de espera) ajuda a raciocinar sobre o tamanho da fila.
+  misconceptions:
+    - claim: Uma fila sem limite é mais segura porque nunca bloqueia o produtor.
+      correction: Sob carga maior que a capacidade de consumo, ela cresce até esgotar a memória; o limite transforma sobrecarga em backpressure visível.
+    - claim: Uma única variável de condição com signal é suficiente para produtores e consumidores.
+      correction: signal pode acordar uma thread do tipo errado e todos voltam a dormir — o sistema trava. Use duas variáveis ou broadcast.
+    - claim: Dobrar o número de workers dobra o throughput.
+      correction: Só enquanto há recursos ociosos; depois, contenção no lock, troca de contexto e limites de CPU ou I/O achatam a curva.
+  resources:
+    start: ostep-condition-variables
+    deeper: [ostep-semaphores, ostep-locked-data-structures, man-pthread-cond-wait, clang-threadsanitizer]
+    videos: [cs162-lecture-9-synchronization-4, cs162-lecture-7-synchronization-2, mit-6s081-2020-lecture-13-sleep-wakeup]
+  exercise:
+    id: ex-bounded-buffer
+    title: Buffer circular limitado com duas variáveis de condição
+    prediction: "Com capacidade 4, 1 produtor rápido e 1 consumidor que leva 10 ms por tarefa, quantas tarefas o produtor consegue colocar antes de bloquear? O que acontece com uma única variável de condição e signal com 2 produtores e 2 consumidores?"
+    steps:
+      - "Implemente `queue.h/queue.c` com `q_init(cap)`, `q_put`, `q_get`, `q_close` e `q_free`, usando buffer circular, um mutex e as condições `nao_cheia` e `nao_vazia`."
+      - Escreva testes com 2 produtores e 4 consumidores processando 100.000 tarefas com ids; verifique que cada id foi processado exatamente uma vez (sem perda nem duplicação).
+      - Implemente o desligamento com `q_close` (broadcast + flag) e confirme que todos os workers terminam e o join retorna.
+      - Troque para uma única variável de condição com `signal` e tente reproduzir o travamento previsto.
+    checks:
+      - O teste de exatamente-uma-vez passa em 20 execuções seguidas e sob ThreadSanitizer sem avisos.
+      - Você explica o travamento da variante com uma variável de condição em termos de quem foi acordado.
+  experiment:
+    title: Medir throughput por número de workers
+    project: concurrent-job-processor
+    steps:
+      - "Crie tarefas sintéticas de dois tipos: CPU (laço de cálculo de ~1 ms) e espera (usleep de 1 ms simulando I/O)."
+      - "Meça tarefas/segundo com 1, 2, 4, 8, 16 e 32 workers, 5 execuções cada, usando `clock_gettime(CLOCK_MONOTONIC)`; registre mediana e variação."
+      - Compare com o número de núcleos (`nproc`) e rode `perf stat -e context-switches` nas configurações extremas.
+      - Varie a capacidade da fila (1, 16, 1024) e observe o efeito no throughput e no tempo que produtores ficam bloqueados.
+    observe:
+      - A curva de throughput para tarefas de CPU achatando perto de nproc e a de espera continuando a crescer.
+      - O número de trocas de contexto subindo com muitos workers.
+  reflectionQuestions:
+    - O que o limite da fila comunica ao produtor, e como isso se traduz em um backend HTTP sob carga?
+    - Por que o processamento da tarefa deve ficar fora do lock da fila?
+    - Como você escolheria o número de workers para tarefas de CPU e para tarefas de I/O?
+  completionCriteria:
+    - Mostra a fila passando no teste de exatamente-uma-vez com várias threads e sob ThreadSanitizer.
+    - Demonstra o desligamento limpo de todos os workers e o travamento da variante com uma única condição.
+    - Apresenta tabela ou gráfico de throughput por número de workers para tarefas de CPU e de espera, com explicação.
+  evidencePrompts:
+    - Código da fila, saída dos testes e relatório limpo do TSan.
+    - Gráfico ou tabela de throughput com nproc anotado e a explicação da curva.
+  firstAction: Desenhe um buffer circular de capacidade 4 e simule à mão três puts e dois gets, anotando head, tail e count.
