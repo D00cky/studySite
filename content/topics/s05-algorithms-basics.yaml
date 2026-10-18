@@ -1,0 +1,50 @@
+# s05-algorithms-basics
+
+- id: complexity-analysis
+  stage: s05-algorithms-basics
+  title: Análise de complexidade
+  status: planned
+  objective: Estimar como tempo e memória crescem com a entrada usando notação O, e confirmar a estimativa com medições.
+  whyItMatters: Permite prever se uma solução aguenta 10x mais dados antes de descobrir em produção.
+  prerequisites: [dynamic-allocation-ownership, cpu-memory-caches]
+  mathThreads: [proofs, combinatorics]
+  resources:
+    start: mit-6006
+    deeper: [teach-yourself-cs]
+
+- id: searching-sorting
+  stage: s05-algorithms-basics
+  title: Busca e ordenação
+  status: planned
+  objective: Implementar busca linear e binária e algoritmos de ordenação, comparando invariantes, estabilidade e desempenho medido.
+  whyItMatters: Ordenar e buscar estão por trás de índices, paginação e quase toda manipulação de dados.
+  prerequisites: [complexity-analysis]
+  mathThreads: [proofs]
+  resources:
+    start: mit-6006
+
+- id: dynamic-arrays
+  stage: s05-algorithms-basics
+  title: Arrays dinâmicos
+  status: planned
+  objective: Analisar o custo amortizado do redimensionamento e comparar estratégias de crescimento.
+  whyItMatters: ArrayList em Java, arrays em JavaScript e vetores em geral funcionam assim.
+  prerequisites: [complexity-analysis, dynamic-allocation-ownership]
+  resources:
+    start: open-data-structures
+
+- id: linked-lists
+  stage: s05-algorithms-basics
+  title: Listas ligadas
+  status: planned
+  objective: Implementar listas simples e duplamente ligadas e comparar seu desempenho real com arrays.
+  whyItMatters: Mostra na prática o custo de ponteiros e de má localidade de cache.
+  prerequisites: [pointers, complexity-analysis]
+
+- id: stacks-queues
+  stage: s05-algorithms-basics
+  title: Pilhas e filas
+  status: planned
+  objective: Implementar pilhas e filas (inclusive buffer circular) e reconhecê-las em sistemas reais.
+  whyItMatters: Chamadas de função, desfazer/refazer, filas de jobs e buffers de rede são pilhas e filas.
+  prerequisites: [dynamic-arrays, linked-lists]

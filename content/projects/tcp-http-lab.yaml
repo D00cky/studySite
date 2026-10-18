@@ -1,0 +1,17 @@
+- id: tcp-http-lab
+  title: Laboratório TCP/HTTP
+  status: planned
+  cumulative: false
+  topics: [tcp-udp-sockets, http-protocol, timeouts-caching]
+  question: O que realmente trafega numa requisição HTTP, e como um servidor lida com entradas malformadas, leituras parciais e clientes lentos?
+  prerequisites: [tcp-udp-sockets]
+  minimalVersion: Um servidor TCP que responde HTTP simples para listar tarefas, inspecionado com curl e tcpdump.
+  milestones:
+    - id: m1-echo
+      title: Servidor de eco TCP
+    - id: m2-http
+      title: Parsing de requisição HTTP
+    - id: m3-malformed
+      title: Entradas malformadas e leituras parciais
+    - id: m4-timeouts
+      title: Timeouts e clientes lentos

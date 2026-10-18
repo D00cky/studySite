@@ -1,0 +1,39 @@
+# s08-concurrency
+
+- id: threads-basics
+  stage: s08-concurrency
+  title: Threads
+  status: planned
+  objective: Criar threads e explicar o que elas compartilham e o que não compartilham.
+  whyItMatters: Servidores web, pools de conexão e processadores de jobs usam threads.
+  prerequisites: [processes-syscalls, virtual-memory]
+  resources:
+    start: ostep-concurrency-intro
+
+- id: race-conditions-synchronization
+  stage: s08-concurrency
+  title: Condições de corrida e sincronização
+  status: planned
+  objective: Reproduzir uma condição de corrida e corrigi-la com mutex e variáveis de condição.
+  whyItMatters: Saldos errados, contadores perdidos e bugs que "só acontecem às vezes" vêm daqui.
+  prerequisites: [threads-basics]
+  mathThreads: [logic, proofs]
+  resources:
+    start: ostep-locks
+
+- id: deadlocks
+  stage: s08-concurrency
+  title: Deadlocks
+  status: planned
+  objective: Provocar e diagnosticar um deadlock e aplicar ordenação de locks para evitá-lo.
+  whyItMatters: Deadlocks aparecem em código concorrente e em transações de banco de dados.
+  prerequisites: [race-conditions-synchronization]
+  mathThreads: [graphs]
+
+- id: bounded-queues
+  stage: s08-concurrency
+  title: Filas limitadas e produtor-consumidor
+  status: planned
+  objective: Implementar uma fila limitada thread-safe e medir throughput com diferentes números de workers.
+  whyItMatters: Backpressure e filas de trabalho são a base de sistemas que não desabam sob carga.
+  prerequisites: [race-conditions-synchronization, stacks-queues]

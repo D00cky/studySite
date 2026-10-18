@@ -1,0 +1,27 @@
+- id: task-platform
+  title: "Projeto cumulativo: plataforma de processamento de tarefas"
+  status: planned
+  cumulative: true
+  topics: [processes-streams-exit-codes, tcp-udp-sockets, relational-modeling-constraints, requirements-modularity, bounded-queues, idempotency, authorization, logs-metrics-traces, containers-deployment]
+  question: Como um sistema pequeno evolui de uma CLI para uma aplicação em rede confiável, segura e observável — e o que cada etapa do roadmap acrescenta?
+  prerequisites: [c-types-functions]
+  minimalVersion: A CLI de tarefas em C (projeto c-task-cli). Cada marco seguinte reaproveita o domínio e acrescenta um mecanismo.
+  milestones:
+    - id: m1-cli
+      title: CLI em C com persistência em arquivo
+    - id: m2-network
+      title: Servidor em rede (TCP/HTTP)
+    - id: m3-postgres
+      title: Persistência em PostgreSQL com constraints e migrações
+    - id: m4-java
+      title: Backend Java modular
+    - id: m5-background
+      title: Processamento em background com fila
+    - id: m6-idempotency
+      title: Idempotência e retries
+    - id: m7-authz
+      title: Autenticação e autorização
+    - id: m8-observability
+      title: Logs, métricas e traces
+    - id: m9-deploy
+      title: Container, health check e rollback

@@ -1,0 +1,42 @@
+# s13-distributed-systems
+
+- id: partial-failure-retries
+  stage: s13-distributed-systems
+  title: Falha parcial e retries
+  status: planned
+  objective: Explicar por que uma chamada remota pode falhar de formas ambíguas e aplicar retries com backoff e jitter.
+  whyItMatters: Retries ingênuos transformam uma lentidão pequena numa queda geral.
+  prerequisites: [timeouts-caching, bounded-queues]
+  mathThreads: [probability]
+  resources:
+    start: sre-book
+
+- id: idempotency
+  stage: s13-distributed-systems
+  title: Idempotência
+  status: planned
+  objective: Projetar operações que podem ser repetidas com segurança usando chaves de idempotência e constraints.
+  whyItMatters: Evita cobranças e pedidos duplicados quando a rede falha no meio.
+  prerequisites: [partial-failure-retries, transactions-basics]
+
+- id: queues-delivery-semantics
+  stage: s13-distributed-systems
+  title: Filas e semântica de entrega
+  status: planned
+  objective: Comparar entrega at-most-once, at-least-once e o que significa "exatamente uma vez" na prática.
+  whyItMatters: Processamento em background depende de entender o que pode ser duplicado ou perdido.
+  prerequisites: [idempotency, bounded-queues]
+  resources:
+    start: ddia
+
+- id: consistency-models
+  stage: s13-distributed-systems
+  title: Modelos de consistência
+  status: planned
+  objective: Distinguir consistência forte, eventual e causal com exemplos observáveis.
+  whyItMatters: Explica por que um usuário às vezes "não vê" o que acabou de salvar.
+  prerequisites: [queues-delivery-semantics, isolation-locks]
+  mathThreads: [logic]
+  resources:
+    start: jepsen-consistency
+    deeper: [ddia]

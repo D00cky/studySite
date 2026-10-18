@@ -1,0 +1,17 @@
+- id: small-interpreter
+  title: Pequeno interpretador
+  status: planned
+  cumulative: false
+  topics: [tokenizing-parsing, tree-walk-evaluation, scope-environments]
+  question: Como um texto vira uma árvore e a árvore vira um resultado — e de onde vêm as mensagens de erro?
+  prerequisites: [binary-search-trees]
+  minimalVersion: Tokenizar, fazer parsing e avaliar expressões aritméticas com precedência e mensagens de erro com posição.
+  milestones:
+    - id: m1-tokens
+      title: Tokenizador
+    - id: m2-parser
+      title: Parser recursivo descendente
+    - id: m3-eval
+      title: Avaliação
+    - id: m4-scope
+      title: Variáveis e escopo

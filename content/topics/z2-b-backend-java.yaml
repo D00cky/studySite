@@ -1,0 +1,40 @@
+# b-backend-java
+
+- id: java-fundamentals
+  stage: b-backend-java
+  title: Fundamentos de Java moderno
+  status: planned
+  objective: Escrever Java moderno (records, coleções, exceções, streams) relacionando com o que vimos em C.
+  whyItMatters: Java é a linguagem principal do nosso backend.
+  prerequisites: [dynamic-allocation-ownership, complexity-analysis]
+  resources:
+    start: dev-java
+
+- id: spring-web-backend
+  stage: b-backend-java
+  title: APIs HTTP com Spring Boot
+  status: planned
+  objective: Construir uma API HTTP com Spring Boot, entendendo o que o framework faz por você e o que não faz.
+  whyItMatters: Framework é ferramenta; entender o mecanismo HTTP por baixo evita depender de mágica.
+  prerequisites: [java-fundamentals, http-protocol]
+  resources:
+    start: spring-boot-docs
+    deeper: [roadmap-backend]
+
+- id: jdbc-postgresql
+  stage: b-backend-java
+  title: Acesso a dados com JDBC e PostgreSQL
+  status: planned
+  objective: Acessar o PostgreSQL com SQL explícito, transações e migrações versionadas.
+  whyItMatters: Conecta modelagem e internals de banco ao código de aplicação.
+  prerequisites: [spring-web-backend, transactions-basics]
+  resources:
+    start: postgres-docs
+
+- id: backend-testing-java
+  stage: b-backend-java
+  title: Testes de backend em Java
+  status: planned
+  objective: Escrever testes de integração contra um PostgreSQL real e testar limites de autorização.
+  whyItMatters: Bugs de backend mais caros estão na integração com banco e nas regras de acesso.
+  prerequisites: [jdbc-postgresql, interfaces-testing]

@@ -70,9 +70,11 @@ public final class Model {
     public record Misconception(String claim, String correction) {
     }
 
-    public record TopicResources(String start, List<String> deeper) {
+    /** videos: recursos de formato "video" (aulas, Akitando, palestras) para contextualizar a lição. */
+    public record TopicResources(String start, List<String> deeper, List<String> videos) {
         public TopicResources {
             deeper = list(deeper);
+            videos = list(videos);
         }
     }
 
@@ -119,7 +121,7 @@ public final class Model {
             String id,
             String title,
             String status,
-            boolean cumulative,
+            Boolean cumulative,
             List<String> topics,
             String question,
             List<String> prerequisites,
@@ -134,6 +136,7 @@ public final class Model {
             List<String> evidence,
             List<String> reviewQuestions) {
         public Project {
+            cumulative = Boolean.TRUE.equals(cumulative);
             topics = list(topics);
             prerequisites = list(prerequisites);
             extensions = list(extensions);

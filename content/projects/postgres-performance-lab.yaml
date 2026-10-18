@@ -1,0 +1,17 @@
+- id: postgres-performance-lab
+  title: Laboratório de desempenho no PostgreSQL
+  status: planned
+  cumulative: false
+  topics: [indexes, query-plans, isolation-locks, pagination]
+  question: Por que uma consulta fica lenta, e que evidência mostra que um índice ou uma mudança de consulta resolveu?
+  prerequisites: [joins-aggregation, transactions-basics]
+  minimalVersion: Gerar milhões de tarefas sintéticas, medir uma consulta lenta e explicar o plano com EXPLAIN ANALYZE.
+  milestones:
+    - id: m1-data
+      title: Dados sintéticos
+    - id: m2-plans
+      title: Ler query plans
+    - id: m3-indexes
+      title: Comparar índices
+    - id: m4-transactions
+      title: Explicar comportamento de transações concorrentes

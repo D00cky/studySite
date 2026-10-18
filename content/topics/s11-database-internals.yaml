@@ -1,0 +1,40 @@
+# s11-database-internals
+
+- id: indexes
+  stage: s11-database-internals
+  title: Índices
+  status: planned
+  objective: Criar índices B-tree e compostos e explicar quando eles ajudam e quando atrapalham.
+  whyItMatters: A diferença entre uma consulta de milissegundos e uma de minutos costuma ser um índice.
+  prerequisites: [joins-aggregation, binary-search-trees]
+  resources:
+    start: postgres-indexes
+    deeper: [use-the-index-luke]
+
+- id: query-plans
+  stage: s11-database-internals
+  title: Query plans
+  status: planned
+  objective: Ler a saída de EXPLAIN ANALYZE e relacionar escolhas do planner com estatísticas e índices.
+  whyItMatters: É a ferramenta principal para diagnosticar consultas lentas.
+  prerequisites: [indexes]
+  resources:
+    start: postgres-explain
+
+- id: isolation-locks
+  stage: s11-database-internals
+  title: Isolamento e locks
+  status: planned
+  objective: Reproduzir anomalias de concorrência em transações e explicar os níveis de isolamento do PostgreSQL.
+  whyItMatters: Evita vender o mesmo assento duas vezes ou perder atualizações.
+  prerequisites: [transactions-basics, deadlocks]
+  resources:
+    start: postgres-mvcc
+
+- id: pagination
+  stage: s11-database-internals
+  title: Paginação
+  status: planned
+  objective: Comparar paginação por OFFSET e por keyset, medindo o custo em tabelas grandes.
+  whyItMatters: Listagens infinitas e APIs públicas sofrem com OFFSET em tabelas grandes.
+  prerequisites: [indexes, query-plans]

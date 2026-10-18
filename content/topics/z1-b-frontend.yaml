@@ -1,0 +1,50 @@
+# b-frontend
+
+- id: semantic-html-accessibility
+  stage: b-frontend
+  title: HTML semântico e acessibilidade
+  status: planned
+  objective: Estruturar páginas com HTML semântico e verificar navegação por teclado e leitor de tela.
+  whyItMatters: Acessibilidade é requisito, não acabamento; HTML semântico também melhora manutenção.
+  prerequisites: [terminal-shell]
+  resources:
+    start: mdn-learn
+    deeper: [roadmap-frontend]
+
+- id: css-layout
+  stage: b-frontend
+  title: CSS e layout
+  status: planned
+  objective: Construir layouts responsivos com fluxo normal, flexbox e grid, explicando a cascata e a especificidade.
+  whyItMatters: Entender a cascata evita o ciclo de "!important" e layouts frágeis.
+  prerequisites: [semantic-html-accessibility]
+  resources:
+    start: web-dev-learn
+
+- id: javascript-browser
+  stage: b-frontend
+  title: JavaScript e o navegador
+  status: planned
+  objective: Manipular o DOM, tratar eventos e explicar o event loop e requisições assíncronas.
+  whyItMatters: Frameworks mudam; o modelo do navegador permanece.
+  prerequisites: [semantic-html-accessibility, http-protocol]
+  resources:
+    start: mdn-learn
+
+- id: rendering-performance
+  stage: b-frontend
+  title: Renderização e desempenho no navegador
+  status: planned
+  objective: Explicar o pipeline de renderização e medir desempenho com as ferramentas do navegador.
+  whyItMatters: Páginas lentas perdem usuários; medir evita otimizações às cegas.
+  prerequisites: [javascript-browser, css-layout]
+  resources:
+    start: web-dev-learn
+
+- id: frontend-testing
+  stage: b-frontend
+  title: Testes de frontend
+  status: planned
+  objective: Testar componentes e fluxos pelo comportamento visível ao usuário, incluindo acessibilidade.
+  whyItMatters: Interfaces quebram silenciosamente sem testes de comportamento.
+  prerequisites: [javascript-browser, interfaces-testing]

@@ -1,0 +1,17 @@
+- id: concurrent-job-processor
+  title: Processador concorrente de jobs
+  status: planned
+  cumulative: false
+  topics: [threads-basics, race-conditions-synchronization, deadlocks, bounded-queues]
+  question: Como vários workers processam tarefas de uma fila compartilhada sem perder, duplicar ou travar trabalho?
+  prerequisites: [threads-basics]
+  minimalVersion: Uma fila limitada com produtores e consumidores processando tarefas, com contagem final correta.
+  milestones:
+    - id: m1-race
+      title: Reproduzir uma condição de corrida
+    - id: m2-mutex
+      title: Corrigir com sincronização
+    - id: m3-deadlock
+      title: Investigar um deadlock
+    - id: m4-throughput
+      title: Medir throughput por número de workers

@@ -1,0 +1,28 @@
+# s16-infra-applied-ai
+
+- id: containers-deployment
+  stage: s16-infra-applied-ai
+  title: Containers e deploy
+  status: planned
+  objective: Empacotar uma aplicação em container e explicar o que é isolado (processos, filesystem, rede).
+  whyItMatters: É a forma padrão de entregar e rodar serviços hoje.
+  prerequisites: [processes-syscalls, filesystems, architecture-ci]
+  resources:
+    start: docker-get-started
+
+- id: health-checks-rollback
+  stage: s16-infra-applied-ai
+  title: Health checks e rollback
+  status: planned
+  objective: Definir health checks significativos e um procedimento de rollback testado.
+  whyItMatters: Deploys falham; o que importa é detectar rápido e voltar com segurança.
+  prerequisites: [containers-deployment, logs-metrics-traces]
+
+- id: ai-evaluation-structured-outputs
+  stage: s16-infra-applied-ai
+  title: Avaliação, structured outputs e fallbacks em IA aplicada
+  status: planned
+  objective: Integrar um modelo de linguagem com saídas estruturadas validadas, avaliação com casos de teste e fallback quando a resposta falha.
+  whyItMatters: Funcionalidades com IA precisam dos mesmos cuidados de engenharia — validação, testes e degradação controlada.
+  prerequisites: [interfaces-testing, partial-failure-retries]
+  mathThreads: [probability]

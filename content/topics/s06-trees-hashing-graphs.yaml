@@ -1,0 +1,54 @@
+# s06-trees-hashing-graphs
+
+- id: binary-search-trees
+  stage: s06-trees-hashing-graphs
+  title: Árvores de busca
+  status: planned
+  objective: Implementar uma árvore binária de busca e explicar por que o balanceamento importa.
+  whyItMatters: Base para entender os índices B-tree dos bancos de dados.
+  prerequisites: [searching-sorting, linked-lists]
+  resources:
+    start: open-data-structures
+    deeper: [akita-trees]
+  mathThreads: [graphs, proofs]
+
+- id: hash-tables
+  stage: s06-trees-hashing-graphs
+  title: Tabelas hash
+  status: planned
+  objective: Implementar uma tabela hash com tratamento de colisões e redimensionamento, medindo o fator de carga.
+  whyItMatters: HashMap, objetos JavaScript, caches e índices hash dependem disso.
+  prerequisites: [dynamic-arrays, linked-lists]
+  resources:
+    start: open-data-structures
+  mathThreads: [probability]
+
+- id: heaps-priority-queues
+  stage: s06-trees-hashing-graphs
+  title: Heaps e filas de prioridade
+  status: planned
+  objective: Implementar um heap binário e usá-lo como fila de prioridade.
+  whyItMatters: Escalonadores, timers e algoritmos de caminho mínimo usam filas de prioridade.
+  prerequisites: [binary-search-trees, dynamic-arrays]
+
+- id: graphs-traversal
+  stage: s06-trees-hashing-graphs
+  title: Grafos e travessias
+  status: planned
+  objective: Representar grafos e implementar BFS e DFS, explicando quando usar cada uma.
+  whyItMatters: Redes, dependências, rotas e permissões são grafos.
+  prerequisites: [stacks-queues, hash-tables]
+  resources:
+    start: akita-graphs
+    deeper: [open-data-structures]
+  mathThreads: [graphs]
+
+- id: dependency-graphs
+  stage: s06-trees-hashing-graphs
+  title: Grafos de dependência e ordenação topológica
+  status: planned
+  objective: Modelar dependências como grafo dirigido, detectar ciclos e produzir uma ordem válida de execução.
+  whyItMatters: Make, gerenciadores de pacotes, migrations e este próprio roadmap usam essa ideia.
+  prerequisites: [graphs-traversal]
+  related: [linking-object-files]
+  mathThreads: [graphs, proofs]

@@ -1,0 +1,35 @@
+# s12-software-engineering
+
+- id: requirements-modularity
+  stage: s12-software-engineering
+  title: Requisitos e modularidade
+  status: planned
+  objective: Transformar uma necessidade em requisitos verificáveis e dividir o sistema em módulos com responsabilidades claras.
+  whyItMatters: A maior parte do custo de software está em mudar código mal dividido.
+  prerequisites: [linking-object-files, complexity-analysis]
+
+- id: interfaces-testing
+  stage: s12-software-engineering
+  title: Interfaces e testes
+  status: planned
+  objective: Projetar interfaces testáveis e escrever testes unitários e de integração que verificam comportamento.
+  whyItMatters: Testes permitem mudar código com confiança e documentam o comportamento esperado.
+  prerequisites: [requirements-modularity]
+  resources:
+    start: akita-why-test
+
+- id: refactoring
+  stage: s12-software-engineering
+  title: Refatoração
+  status: planned
+  objective: Melhorar a estrutura do código em passos pequenos, sem mudar o comportamento, protegido por testes.
+  whyItMatters: Mantém o código mutável à medida que os requisitos mudam.
+  prerequisites: [interfaces-testing, git-fundamentals]
+
+- id: architecture-ci
+  stage: s12-software-engineering
+  title: Arquitetura e integração contínua
+  status: planned
+  objective: Documentar decisões de arquitetura e configurar um pipeline de CI que compila, testa e falha cedo.
+  whyItMatters: Decisões registradas e CI confiável reduzem regressões e discussões repetidas.
+  prerequisites: [interfaces-testing, processes-streams-exit-codes]

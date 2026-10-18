@@ -1,0 +1,32 @@
+# b-interpreters
+
+- id: tokenizing-parsing
+  stage: b-interpreters
+  title: Tokenização e parsing
+  status: planned
+  objective: Transformar texto em tokens e tokens em uma árvore sintática com um parser recursivo descendente.
+  whyItMatters: Compiladores, linters, formatadores e consultas SQL passam por essas etapas.
+  prerequisites: [binary-search-trees, c-strings]
+  resources:
+    start: crafting-interpreters
+    deeper: [akita-compiled-interpreted]
+
+- id: tree-walk-evaluation
+  stage: b-interpreters
+  title: Avaliação de expressões
+  status: planned
+  objective: Avaliar uma árvore sintática e produzir mensagens de erro úteis.
+  whyItMatters: Mostra como linguagens executam código e por que erros aparecem onde aparecem.
+  prerequisites: [tokenizing-parsing]
+  resources:
+    start: crafting-interpreters
+
+- id: scope-environments
+  stage: b-interpreters
+  title: Escopo e ambientes
+  status: planned
+  objective: Implementar variáveis, blocos e escopo léxico, relacionando com closures em JavaScript.
+  whyItMatters: Escopo explica bugs de variáveis "fantasma" e o funcionamento de closures.
+  prerequisites: [tree-walk-evaluation, stack-heap-lifetime]
+  resources:
+    start: crafting-interpreters

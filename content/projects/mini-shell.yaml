@@ -1,0 +1,17 @@
+- id: mini-shell
+  title: Mini shell
+  status: planned
+  cumulative: false
+  topics: [processes-syscalls, file-descriptors, signals, processes-streams-exit-codes]
+  question: O que um shell faz, em syscalls, para executar comandos, redirecionar saídas e montar pipelines?
+  prerequisites: [processes-syscalls, c-strings]
+  minimalVersion: Ler uma linha, separar em argumentos, executar com fork/exec/wait e reportar o exit code.
+  milestones:
+    - id: m1-exec
+      title: Executar um comando
+    - id: m2-redirect
+      title: Redirecionamento com dup2
+    - id: m3-pipes
+      title: Pipelines com pipe
+    - id: m4-signals
+      title: Ctrl+C sem matar o shell

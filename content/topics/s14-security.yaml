@@ -1,0 +1,39 @@
+# s14-security
+
+- id: authentication-sessions
+  stage: s14-security
+  title: Autenticação e sessões
+  status: planned
+  objective: Implementar login com hash de senha adequado e sessões seguras (cookies HttpOnly, Secure, SameSite).
+  whyItMatters: É a porta de entrada de qualquer sistema; erros aqui expõem todas as contas.
+  prerequisites: [http-protocol, relational-modeling-constraints]
+  resources:
+    start: owasp-cheatsheets
+
+- id: authorization
+  stage: s14-security
+  title: Autorização
+  status: planned
+  objective: Aplicar verificações de autorização no servidor para cada recurso e testar os limites de acesso.
+  whyItMatters: Acesso indevido a dados de outros usuários está entre as falhas mais comuns em aplicações web.
+  prerequisites: [authentication-sessions]
+  resources:
+    start: owasp-cheatsheets
+
+- id: input-validation
+  stage: s14-security
+  title: Validação de entrada e injeção
+  status: planned
+  objective: Validar entradas na fronteira e prevenir injeção de SQL e XSS com consultas parametrizadas e escaping.
+  whyItMatters: Injeção continua sendo uma das formas mais simples de comprometer um sistema.
+  prerequisites: [authentication-sessions, c-strings]
+  resources:
+    start: owasp-cheatsheets
+
+- id: secrets-threat-modeling
+  stage: s14-security
+  title: Segredos e threat modeling
+  status: planned
+  objective: Guardar segredos fora do código e conduzir um threat modeling simples de um sistema do time.
+  whyItMatters: Segredos vazados em repositórios e ameaças não pensadas viram incidentes.
+  prerequisites: [authorization, filesystem-permissions]

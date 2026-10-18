@@ -39,7 +39,7 @@ final class CurriculumValidator {
         CurriculumValidator v = new CurriculumValidator();
         Set<String> stageIds = v.ids("etapa", stages, Stage::id);
         Set<String> topicIds = v.ids("tópico", topics, Topic::id);
-        Set<String> resourceIds = v.ids("recurso", resources, Resource::id);
+        v.ids("recurso", resources, Resource::id);
         Set<String> projectIds = v.ids("projeto", projects, Project::id);
 
         for (Stage s : stages) {
@@ -52,8 +52,10 @@ final class CurriculumValidator {
         }
         v.acyclic("etapas", stages, Stage::id, Stage::dependsOn);
 
+        Map<String, Resource> resourcesById = new HashMap<>();
+        resources.forEach(r -> resourcesById.putIfAbsent(r.id(), r));
         for (Topic t : topics) {
-            v.topic(t, stageIds, topicIds, resourceIds, projectIds);
+            v.topic(t, stageIds, topicIds, resourcesById, projectIds);
         }
         v.acyclic("pré-requisitos de tópicos", topics, Topic::id, Topic::prerequisites);
         for (Stage s : stages) {
@@ -72,8 +74,9 @@ final class CurriculumValidator {
         return v.errors;
     }
 
-    private void topic(Topic t, Set<String> stageIds, Set<String> topicIds, Set<String> resourceIds,
+    private void topic(Topic t, Set<String> stageIds, Set<String> topicIds, Map<String, Resource> resources,
             Set<String> projectIds) {
+        Set<String> resourceIds = resources.keySet();
         String where = "tópico " + t.id();
         required(where, "title", t.title());
         required(where, "objective", t.objective());
@@ -92,6 +95,14 @@ final class CurriculumValidator {
                 error(where + ": recurso inicial inexistente '" + t.resources().start() + "'");
             }
             refs(where, "resources.deeper", t.resources().deeper(), resourceIds);
+            for (String v : t.resources().videos()) {
+                Resource r = resources.get(v);
+                if (r == null) {
+                    error(where + ": resources.videos aponta para id inexistente '" + v + "'");
+                } else if (!"video".equals(r.format())) {
+                    error(where + ": resources.videos '" + v + "' precisa ter format video");
+                }
+            }
         }
         if (t.experiment() != null && t.experiment().project() != null
                 && !projectIds.contains(t.experiment().project())) {

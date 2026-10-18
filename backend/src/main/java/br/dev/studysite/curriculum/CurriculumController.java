@@ -33,7 +33,7 @@ class CurriculumController {
     record Roadmap(Collection<Stage> stages, List<TopicSummary> topics) {
     }
 
-    record TopicPage(Topic topic, Stage stage, Resource startResource, List<Resource> deeperResources,
+    record TopicPage(Topic topic, Stage stage, Resource startResource, List<Resource> deeperResources, List<Resource> videos,
             List<TopicSummary> prerequisites, List<TopicSummary> unlocks, List<TopicSummary> related,
             List<ProjectSummary> projects) {
     }
@@ -73,7 +73,9 @@ class CurriculumController {
                 : curriculum.resource(t.resources().start()).orElseThrow();
         List<Resource> deeper = t.resources() == null ? List.of()
                 : t.resources().deeper().stream().map(r -> curriculum.resource(r).orElseThrow()).toList();
-        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper,
+        List<Resource> videos = t.resources() == null ? List.of()
+                : t.resources().videos().stream().map(r -> curriculum.resource(r).orElseThrow()).toList();
+        return new TopicPage(t, curriculum.stage(t.stage()).orElseThrow(), start, deeper, videos,
                 summaries(t.prerequisites()),
                 curriculum.topics().stream().filter(o -> o.prerequisites().contains(id)).map(TopicSummary::of).toList(),
                 summaries(t.related()),

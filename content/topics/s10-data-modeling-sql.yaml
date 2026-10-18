@@ -1,0 +1,34 @@
+# s10-data-modeling-sql
+
+- id: relational-modeling-constraints
+  stage: s10-data-modeling-sql
+  title: Modelagem relacional e constraints
+  status: planned
+  objective: Modelar entidades e relacionamentos em tabelas e proteger invariantes com constraints (NOT NULL, UNIQUE, CHECK, FOREIGN KEY).
+  whyItMatters: Constraints impedem dados inválidos mesmo quando o código da aplicação tem bugs.
+  prerequisites: [terminal-shell, complexity-analysis]
+  mathThreads: [sets, logic]
+  resources:
+    start: postgres-tutorial
+    deeper: [postgres-constraints]
+
+- id: joins-aggregation
+  stage: s10-data-modeling-sql
+  title: Joins e agregação
+  status: planned
+  objective: Escrever consultas com joins, GROUP BY e funções de agregação, prevendo o número de linhas do resultado.
+  whyItMatters: Relatórios, dashboards e APIs dependem de consultas corretas e eficientes.
+  prerequisites: [relational-modeling-constraints]
+  mathThreads: [sets]
+  resources:
+    start: postgres-queries
+
+- id: transactions-basics
+  stage: s10-data-modeling-sql
+  title: Transações
+  status: planned
+  objective: Usar transações para manter invariantes em operações de várias etapas e explicar atomicidade.
+  whyItMatters: Transferências, reservas e pedidos precisam ser tudo-ou-nada.
+  prerequisites: [joins-aggregation]
+  resources:
+    start: postgres-tutorial

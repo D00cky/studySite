@@ -1,0 +1,52 @@
+# s09-networking
+
+- id: dns-ip
+  stage: s09-networking
+  title: DNS e IP
+  status: planned
+  objective: Rastrear como um nome vira um endereço IP e como pacotes chegam ao destino, usando dig, ip e traceroute.
+  whyItMatters: Boa parte dos incidentes de "o site caiu" começa em DNS ou roteamento.
+  prerequisites: [processes-streams-exit-codes, binary-hexadecimal]
+  resources:
+    start: akita-networks-1
+    deeper: [akita-networks-3]
+
+- id: tcp-udp-sockets
+  stage: s09-networking
+  title: TCP, UDP e sockets
+  status: planned
+  objective: Escrever um cliente e um servidor TCP com sockets, tratando leituras parciais e conexões encerradas.
+  whyItMatters: Todo protocolo de aplicação — HTTP, PostgreSQL, Redis — roda sobre isso.
+  prerequisites: [dns-ip, file-descriptors]
+  resources:
+    start: beej-network
+    deeper: [beej-network-ptbr]
+
+- id: http-protocol
+  stage: s09-networking
+  title: HTTP
+  status: planned
+  objective: Ler e escrever requisições e respostas HTTP à mão, incluindo métodos, status, cabeçalhos e corpo.
+  whyItMatters: É a interface de praticamente todo backend e frontend que vamos construir.
+  prerequisites: [tcp-udp-sockets, text-encoding]
+  resources:
+    start: mdn-learn
+
+- id: tls-concepts
+  stage: s09-networking
+  title: Conceitos de TLS
+  status: planned
+  objective: Explicar o que TLS garante (confidencialidade, integridade, autenticidade do servidor) e inspecionar um certificado.
+  whyItMatters: Configurar HTTPS e diagnosticar erros de certificado é rotina em deploy.
+  prerequisites: [http-protocol]
+  resources:
+    start: akita-crypto-1
+
+- id: timeouts-caching
+  stage: s09-networking
+  title: Timeouts e caching
+  status: planned
+  objective: Configurar timeouts de conexão e leitura e usar cabeçalhos de cache HTTP corretamente.
+  whyItMatters: Sem timeouts, uma dependência lenta trava o sistema inteiro; cache errado serve dados velhos.
+  prerequisites: [http-protocol]
+  mathThreads: [probability]

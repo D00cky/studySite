@@ -1,0 +1,53 @@
+# s07-operating-systems
+
+- id: processes-syscalls
+  stage: s07-operating-systems
+  title: Processos e syscalls
+  status: planned
+  objective: Criar e esperar processos com fork, exec e wait, observando as syscalls com strace.
+  whyItMatters: Shells, servidores e containers são construídos sobre essas chamadas.
+  prerequisites: [processes-streams-exit-codes, stack-heap-lifetime]
+  resources:
+    start: ostep-process-api
+    deeper: [ostep-processes, man-fork, man-strace, akita-linux-boot]
+
+- id: file-descriptors
+  stage: s07-operating-systems
+  title: Descritores de arquivo, redirecionamento e pipes
+  status: planned
+  objective: Manipular descritores com open, dup2 e pipe para implementar redirecionamento e pipelines.
+  whyItMatters: Explica como o shell, sockets e logs funcionam por baixo.
+  prerequisites: [processes-syscalls]
+  resources:
+    start: man-pipe
+
+- id: signals
+  stage: s07-operating-systems
+  title: Sinais
+  status: planned
+  objective: Enviar, tratar e ignorar sinais, explicando o que Ctrl+C e kill fazem com um processo.
+  whyItMatters: Desligamento gracioso de servidores e containers depende de tratar SIGTERM corretamente.
+  prerequisites: [processes-syscalls]
+  resources:
+    start: man-signal
+
+- id: filesystems
+  stage: s07-operating-systems
+  title: Sistemas de arquivos
+  status: planned
+  objective: Explicar inodes, diretórios, links e durabilidade (fsync).
+  whyItMatters: Bancos de dados e logs dependem de garantias de escrita em disco.
+  prerequisites: [file-descriptors, filesystem-permissions]
+  resources:
+    start: ostep-files-directories
+    deeper: [akita-filesystems]
+
+- id: virtual-memory
+  stage: s07-operating-systems
+  title: Memória virtual
+  status: planned
+  objective: Explicar espaços de endereçamento, paginação, TLB e page faults.
+  whyItMatters: Explica isolamento entre processos, uso real de memória e o custo de acessos aleatórios.
+  prerequisites: [stack-heap-lifetime, cpu-memory-caches]
+  resources:
+    start: ostep-address-spaces

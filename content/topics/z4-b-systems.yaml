@@ -1,0 +1,25 @@
+# b-systems
+
+- id: systems-io-performance
+  stage: b-systems
+  title: I/O de baixo nível e desempenho
+  status: planned
+  objective: Comparar I/O com e sem buffer, mmap e chamadas em lote, medindo syscalls e tempo.
+  whyItMatters: Explica por que bancos de dados e servidores organizam I/O do jeito que organizam.
+  prerequisites: [file-descriptors, profiling-benchmarks]
+
+- id: memory-allocators
+  stage: b-systems
+  title: Alocadores de memória
+  status: planned
+  objective: Implementar um alocador simples (free list) e medir fragmentação.
+  whyItMatters: Revela o que malloc faz e por que padrões de alocação afetam desempenho.
+  prerequisites: [dynamic-allocation-ownership, virtual-memory]
+
+- id: low-level-concurrency
+  stage: b-systems
+  title: Concorrência de baixo nível
+  status: planned
+  objective: Explicar operações atômicas e modelos de memória, implementando um spinlock e medindo contenção.
+  whyItMatters: Base das estruturas concorrentes usadas por runtimes e bancos de dados.
+  prerequisites: [race-conditions-synchronization, cpu-memory-caches]

@@ -30,6 +30,7 @@ class LearningWorkflowIntegrationTest extends IntegrationTest {
         JsonNode page = learner.get("/api/curriculum/topics/compilation-pipeline").expect(200).json();
         String startResource = page.get("startResource").get("id").asString();
         assertThat(page.get("topic").get("exercise").get("id").asString()).isEqualTo("ex-pipeline-stages");
+        assertThat(page.get("videos").isArray()).as("vídeos resolvidos na página do tópico").isTrue();
         JsonNode workspace = learner.get("/api/me/topics/compilation-pipeline").expect(200).json();
         assertThat(workspace.get("progress").get("status").asString()).isEqualTo("not_started");
         assertThat(workspace.get("missingPrerequisites")).as("orienta, não bloqueia").isNotEmpty();
