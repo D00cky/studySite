@@ -1,0 +1,665 @@
+- id: akitando-144-modelagem-de-software-cap-2-o-problema-dos-tutoriais
+  title: Modelagem de Software é Difícil? | "Ver" vs "Enxergar" — 04:14 CAP 2 - O Problema dos Tutoriais - Modelando Objetos Reais?
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=SmYQcaP1Jgw&t=254s
+  language: pt-BR
+  format: video
+  difficulty: intermediate
+  topics:
+  - requirements-modularity
+  why: Trecho sobre por que modelar "objetos reais" de tutorial não leva a bons módulos (de 04:14 até o CAP 3, em 13:07).
+  section: 04:14 CAP 2 - O Problema dos Tutoriais - Modelando Objetos Reais?
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: akitando-106-design-emergente-domain-driven-design
+  title: Recomendação de Livros - Introdução a Design Emergente — 33:36 Domain Driven Design
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=uDqgcsK8Kbc&t=2016s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - requirements-modularity
+  why: Trecho sobre Domain Driven Design e modelagem do domínio (de 33:36 até The Lean Startup, em 35:10).
+  section: 33:36 Domain Driven Design
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: akitando-106-design-emergente-refactoring
+  title: Recomendação de Livros - Introdução a Design Emergente — 19:05 Refactoring
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=uDqgcsK8Kbc&t=1145s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - refactoring
+  why: Trecho curto sobre o livro Refactoring (de 19:05 até Agile, em 19:33); o bloco seguinte sobre Agile e XP complementa.
+  section: 19:05 Refactoring
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: akitando-130-projetos-testes-estimativa-cap-03-programacao-orientada-a-testes
+  title: 'Rant: Projetos, TESTES e Estimativa??? | Rated-R — 13:01 CAP 03 - Programação Orientada a Testes - Comecem a Fazer!'
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=H_-7o_pLn1s&t=781s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - interfaces-testing
+  why: Trecho sobre escrever testes como parte do trabalho, com demonstrações de suítes de projetos reais (de 13:01 até 27:25).
+  section: 13:01 CAP 03 - Programação Orientada a Testes - Comecem a Fazer!
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: ian-cooper-tdd-where-did-it-go-wrong-testing-behavior-not-details
+  title: TDD, Where Did It All Go Wrong (Ian Cooper) — 26:02 Testing behavior not details
+  author: Ian Cooper (DevTernity Conference)
+  url: https://www.youtube.com/watch?v=EZ05e7EMOLM&t=1562s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  why: Trecho sobre testar comportamento pela interface pública em vez de detalhes de implementação (de 26:02 até 31:02).
+  section: 26:02 Testing behavior not details (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+- id: ian-cooper-tdd-where-did-it-go-wrong-red-green-refactor-explained
+  title: TDD, Where Did It All Go Wrong (Ian Cooper) — 39:56 Red green refactor explained
+  author: Ian Cooper (DevTernity Conference)
+  url: https://www.youtube.com/watch?v=EZ05e7EMOLM&t=2396s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  - refactoring
+  why: Trecho sobre o ciclo red-green-refactor e onde entra a refatoração (de 39:56 até 46:14).
+  section: 39:56 Red green refactor explained (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+- id: techworld-nana-github-actions-demo-create-ci-workflow
+  title: GitHub Actions Tutorial - Basic Concepts and CI/CD Pipeline with Docker — 09:50 DEMO - Create CI Workflow or Pipeline
+  author: TechWorld with Nana
+  url: https://www.youtube.com/watch?v=R8_veQiYBjI&t=590s
+  language: en
+  format: video
+  difficulty: intro
+  topics:
+  - architecture-ci
+  why: Trecho prático que cria um workflow de CI e explica a sintaxe do arquivo (de 09:50 até 20:40).
+  section: 09:50 DEMO - Create CI Workflow or Pipeline
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: mit-6824-2020-lecture-17-cops-defining-causal-consistency
+  title: 'Lecture 17: COPS, Causal Consistency — 1:00:52 Defining causal consistency'
+  author: 'MIT 6.824: Distributed Systems'
+  url: https://www.youtube.com/watch?v=fR_NB714EAI&t=3652s
+  language: en
+  format: video
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: Trecho que define causal consistency (de 1:00:52 até 1:11:27).
+  section: 1:00:52 Defining causal consistency (capítulo automático do YouTube)
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+- id: akitando-68-criptografia-parte-2-bcrypt-scrypt-argon2
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2 — 11:44 Bcrypt, Scrypt, Argon2
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=HCHqtpipwu4&t=704s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - authentication-sessions
+  why: Trecho sobre funções lentas de hash de senha (de 11:44 até 16:52); o bloco anterior, PBKDF2 em 06:03, complementa.
+  section: 11:44 Bcrypt, Scrypt, Argon2
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: akitando-67-criptografia-parte-1-guardar-senha-no-banco
+  title: Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2 — 07:41 guardar senha no banco
+  author: Fabio Akita
+  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4&t=461s
+  language: pt-BR
+  format: video
+  difficulty: intro
+  topics:
+  - secrets-threat-modeling
+  why: Trecho sobre o que pode vazar quando segredos e senhas são guardados no banco (de 07:41 até 09:32).
+  section: 07:41 guardar senha no banco
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos oficiais do vídeo (descrição).
+- id: mit-6858-lecture-1-threat-models-threat-model-errors
+  title: 1. Introduction, Threat Models — 22:20 Threat model errors
+  author: MIT OpenCourseWare
+  url: https://www.youtube.com/watch?v=GqmQg-cszw4&t=1340s
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - secrets-threat-modeling
+  why: Trecho com exemplos de erros de threat model, isto é, suposições erradas sobre o atacante (de 22:20 até 29:22).
+  section: 22:20 Threat model errors (capítulo automático do YouTube)
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Minuto tirado dos capítulos automáticos do YouTube.
+- id: kleppmann-ds-4-1-logical-time
+  title: 'Distributed Systems 4.1: Logical time'
+  author: Martin Kleppmann
+  url: https://www.youtube.com/watch?v=x-D8iFU1d-o
+  language: en
+  format: video
+  difficulty: intermediate
+  topics:
+  - consistency-models
+  why: Aula da série que trata de relógios de Lamport e vector clocks.
+  section: 'Distributed Systems 4.1: Logical time'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Aula específica da playlist oficial; título conferido via oEmbed.
+- id: dev-java-packages
+  title: Packages - Dev.java
+  author: Oracle
+  url: https://dev.java/learn/language/oop/packages/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - requirements-modularity
+  why: Como pacotes Java organizam e escondem classes, base para os módulos do sistema de tarefas.
+  section: Packages
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: junit-user-guide-parameterized-tests
+  title: JUnit User Guide — Parameterized Classes and Tests
+  author: The JUnit Team
+  url: https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - interfaces-testing
+  why: Seção sobre @ParameterizedTest, usada para cobrir as partições de entrada.
+  section: Writing Tests › Parameterized Classes and Tests
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: pro-git-ptbr-2-2-gravando-alteracoes
+  title: Pro Git — 2.2 Fundamentos do Git - Gravando Alterações no Repositório
+  author: Scott Chacon e Ben Straub
+  url: https://git-scm.com/book/pt-br/v2/Fundamentos-do-Git-Gravando-Altera%c3%a7%c3%b5es-no-Reposit%c3%b3rio
+  language: pt-BR
+  format: book
+  difficulty: intro
+  topics:
+  - refactoring
+  why: Seção sobre preparar e gravar commits, base para fazer um commit por refatoração.
+  section: 2.2 Fundamentos do Git - Gravando Alterações no Repositório
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: refactoring-catalog-extract-function
+  title: Catalog of Refactorings — Extract Function
+  author: Martin Fowler
+  url: https://refactoring.com/catalog/extractFunction.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - refactoring
+  why: Receita da refatoração usada para quebrar o método longo do importador.
+  section: Extract Function
+  access: mixed
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: refactoring-catalog-introduce-parameter-object
+  title: Catalog of Refactorings — Introduce Parameter Object
+  author: Martin Fowler
+  url: https://refactoring.com/catalog/introduceParameterObject.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - refactoring
+  why: Receita para agrupar parâmetros que andam juntos.
+  section: Introduce Parameter Object
+  access: mixed
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: refactoring-catalog-replace-loop-with-pipeline
+  title: Catalog of Refactorings — Replace Loop with Pipeline
+  author: Martin Fowler
+  url: https://refactoring.com/catalog/replaceLoopWithPipeline.html
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - refactoring
+  why: Receita para trocar loops por pipelines de coleção.
+  section: Replace Loop with Pipeline
+  access: mixed
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: github-actions-understanding
+  title: Understanding GitHub Actions - GitHub Docs
+  author: GitHub
+  url: https://docs.github.com/en/actions/get-started/understand-github-actions
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - architecture-ci
+  why: Página que explica workflows, eventos, jobs, steps e runners.
+  section: Get started › Understanding GitHub Actions
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: kleppmann-notes-1-3-rpc
+  title: 'Distributed Systems (University of Cambridge, lecture notes 2021/22) — 1.3 Example: Remote Procedure Calls (RPC)'
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=8
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: Seção sobre RPC e o que acontece quando a requisição ou a resposta se perde.
+  section: '1.3 Example: Remote Procedure Calls (RPC)'
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (8) conferidas no sumário do PDF.
+- id: kleppmann-notes-2-3-system-models
+  title: Distributed Systems (University of Cambridge, lecture notes 2021/22) — 2.3 Describing nodes and network behaviour
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=17
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - partial-failure-retries
+  why: Seção sobre modelos de rede e de falhas de nós (perda, atraso, crash).
+  section: 2.3 Describing nodes and network behaviour
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (17) conferidas no sumário do PDF.
+- id: kleppmann-notes-4-2-broadcast-delivery-order
+  title: Distributed Systems (University of Cambridge, lecture notes 2021/22) — 4.2 Delivery order in broadcast protocols
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=40
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - queues-delivery-semantics
+  why: Seção sobre garantias de ordem de entrega (FIFO, causal, total).
+  section: 4.2 Delivery order in broadcast protocols
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (40) conferidas no sumário do PDF.
+- id: kleppmann-notes-5-1-manipulating-remote-state
+  title: Distributed Systems (University of Cambridge, lecture notes 2021/22) — 5.1 Manipulating remote state
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=47
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - idempotency
+  - queues-delivery-semantics
+  why: Seção sobre retries, idempotência e at-most-once, at-least-once e exactly-once.
+  section: 5.1 Manipulating remote state
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (47) conferidas no sumário do PDF.
+- id: kleppmann-notes-7-2-linearizability
+  title: Distributed Systems (University of Cambridge, lecture notes 2021/22) — 7.2 Linearizability
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=69
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - consistency-models
+  why: Seção que define linearizability com diagramas de operações concorrentes.
+  section: 7.2 Linearizability
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (69) conferidas no sumário do PDF.
+- id: kleppmann-notes-7-3-eventual-consistency
+  title: Distributed Systems (University of Cambridge, lecture notes 2021/22) — 7.3 Eventual consistency
+  author: Martin Kleppmann
+  url: https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf#page=75
+  language: en
+  format: course
+  difficulty: intermediate
+  topics:
+  - consistency-models
+  why: Seção sobre eventual consistency e convergência de réplicas.
+  section: 7.3 Eventual consistency
+  access: free
+  priority: core
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção e página (75) conferidas no sumário do PDF.
+- id: mit-65840-notes-lec2-rpc
+  title: '6.5840 2026 — Lecture 2: Threads and RPC (notes)'
+  author: MIT PDOS
+  url: https://pdos.csail.mit.edu/6.824/notes/l-rpc.txt
+  language: en
+  format: course
+  difficulty: advanced
+  topics:
+  - partial-failure-retries
+  why: 'Notas da aula com a parte "RPC problem: what to do about failures?" e at-most-once.'
+  section: 'LEC 2: RPC and Threads'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Notas da aula conferidas no cronograma oficial.
+- id: mit-65840-notes-lec8-linearizability
+  title: '6.5840 2026 — Lecture 8: Consistency, Linearizability (notes)'
+  author: MIT PDOS
+  url: https://pdos.csail.mit.edu/6.824/notes/l-linearizability.txt
+  language: en
+  format: course
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: Notas da aula sobre modelos de consistência e linearizability.
+  section: 'LEC 8: Consistency and Linearizability'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Notas da aula conferidas no cronograma oficial.
+- id: ddia-ch11-stream-processing
+  title: Designing Data-Intensive Applications — Chapter 11. Stream Processing
+  author: Martin Kleppmann
+  url: https://dataintensive.net/
+  language: en
+  format: book
+  difficulty: advanced
+  topics:
+  - queues-delivery-semantics
+  why: Capítulo sobre message brokers, logs particionados e semântica de entrega.
+  section: Chapter 11. Stream Processing (1ª edição)
+  access: paid
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título do capítulo conferido no pôster oficial de mapas dos capítulos (github.com/ept/ddia-references).
+- id: ddia-ch9-consistency-and-consensus
+  title: Designing Data-Intensive Applications — Chapter 9. Consistency and Consensus
+  author: Martin Kleppmann
+  url: https://dataintensive.net/
+  language: en
+  format: book
+  difficulty: advanced
+  topics:
+  - consistency-models
+  why: Capítulo sobre linearizability, ordenação, causalidade e consenso.
+  section: Chapter 9. Consistency and Consensus (1ª edição)
+  access: paid
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Título do capítulo conferido no pôster oficial de mapas dos capítulos (github.com/ept/ddia-references).
+- id: owasp-top-10-2025-a01
+  title: OWASP Top 10:2025 — A01:2025 - Broken Access Control
+  author: OWASP
+  url: https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - authorization
+  why: Categoria do Top 10 sobre falhas de controle de acesso, incluindo IDOR.
+  section: A01:2025 - Broken Access Control
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: owasp-top-10-2025-a02
+  title: OWASP Top 10:2025 — A02:2025 - Security Misconfiguration
+  author: OWASP
+  url: https://top10.owasp.org/2025/A02_2025-Security_Misconfiguration/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - secrets-threat-modeling
+  why: Categoria que inclui não embutir chaves e segredos em código, configuração ou pipelines.
+  section: A02:2025 - Security Misconfiguration
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: owasp-top-10-2025-a05
+  title: OWASP Top 10:2025 — A05:2025 - Injection
+  author: OWASP
+  url: https://top10.owasp.org/2025/A05_2025-Injection/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - input-validation
+  why: Categoria do Top 10 sobre SQL injection, XSS e outras injeções.
+  section: A05:2025 - Injection
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: owasp-top-10-2025-a08
+  title: OWASP Top 10:2025 — A08:2025 - Software or Data Integrity Failures
+  author: OWASP
+  url: https://top10.owasp.org/2025/A08_2025-Software_or_Data_Integrity_Failures/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics:
+  - input-validation
+  why: Categoria que cobre desserialização insegura e dados não confiáveis tratados como íntegros.
+  section: A08:2025 - Software or Data Integrity Failures
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: mit-6858-notes-lec1
+  title: '6.858 Computer Systems Security (Fall 2014) — Lecture 1 notes: Introduction, Threat Models'
+  author: MIT OpenCourseWare
+  url: https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/resources/mit6_858f14_lec1/
+  language: en
+  format: course
+  difficulty: advanced
+  topics:
+  - secrets-threat-modeling
+  why: Notas da aula sobre política, threat model e mecanismo.
+  section: 'Lecture Notes: Introduction, Threat Models (PDF)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Item conferido na página Lecture Notes do curso.
+- id: mit-6858-notes-lec9
+  title: '6.858 Computer Systems Security (Fall 2014) — Lecture 9 notes: Securing Web Applications'
+  author: MIT OpenCourseWare
+  url: https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/resources/mit6_858f14_lec9/
+  language: en
+  format: course
+  difficulty: advanced
+  topics:
+  - input-validation
+  why: Notas da aula sobre injeção e defesas em aplicações web.
+  section: 'Lecture Notes: Securing Web Applications (PDF)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Item conferido na página Lecture Notes do curso.
+- id: mit-6858-notes-lec17
+  title: '6.858 Computer Systems Security (Fall 2014) — Lecture 17 notes: User Authentication'
+  author: MIT OpenCourseWare
+  url: https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/resources/mit6_858f14_lec17/
+  language: en
+  format: course
+  difficulty: advanced
+  topics:
+  - authentication-sessions
+  why: Notas da aula sobre senhas, hashing e autenticação de usuários.
+  section: 'Lecture Notes: User Authentication (PDF)'
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Item conferido na página Lecture Notes do curso.
+- id: archunit-user-guide-layer-checks
+  title: ArchUnit User Guide — 4.6. Layer Checks
+  author: TNG Technology Consulting
+  url: https://www.archunit.org/userguide/html/000_Index.html#_layer_checks
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - requirements-modularity
+  why: Seção que mostra como transformar regras de camadas em testes.
+  section: 4.6. Layer Checks
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: jqwik-user-guide-creating-a-property
+  title: jqwik User Guide — Creating a Property
+  author: Johannes Link
+  url: https://jqwik.net/docs/current/user-guide.html#creating-a-property
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics:
+  - interfaces-testing
+  why: Seção que mostra como escrever a primeira propriedade com @Property.
+  section: Creating a Property
+  access: free
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.
+- id: vault-database-secrets-engine
+  title: Database secrets engine | Vault | HashiCorp Developer
+  author: HashiCorp
+  url: https://developer.hashicorp.com/vault/docs/secrets/databases
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics:
+  - secrets-threat-modeling
+  why: Página sobre credenciais de banco geradas dinamicamente e revogadas pelo Vault.
+  section: Secrets engines › Databases
+  access: mixed
+  priority: optional
+  verification:
+    status: verified
+    checkedOn: '2026-10-18'
+    note: Seção conferida no sumário oficial.

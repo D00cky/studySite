@@ -29,8 +29,8 @@
       correction: HttpOnly só impede que o script leia o cookie. Um script injetado ainda pode fazer requisições autenticadas em nome do usuário a partir da própria página.
   resources:
     start: owasp-password-storage-cheatsheet
-    deeper: [owasp-session-management-cheatsheet, mdn-http-cookies, mdn-set-cookie, owasp-csrf-prevention-cheatsheet, akita-crypto-2, owasp-cheatsheets, mit-6858-ocw-2014]
-    videos: [akitando-68-criptografia-parte-2, mit-6858-lecture-17-user-authentication, computerphile-how-not-to-store-passwords, mit-6858-lecture-8-web-security-model]
+    deeper: [owasp-session-management-cheatsheet, mdn-http-cookies, mdn-set-cookie, owasp-csrf-prevention-cheatsheet, akita-crypto-2, mit-6858-notes-lec17]
+    videos: [akitando-68-criptografia-parte-2-bcrypt-scrypt-argon2, mit-6858-lecture-17-user-authentication, computerphile-how-not-to-store-passwords, mit-6858-lecture-8-web-security-model]
   exercise:
     id: ex-password-hash-cost
     title: Medir o custo de hashes de senha
@@ -127,7 +127,7 @@
       correction: Login estabelece identidade, não permissão. Cada recurso e cada ação precisam da sua própria verificação.
   resources:
     start: owasp-authorization-cheatsheet
-    deeper: [owasp-idor-prevention-cheatsheet, owasp-top-10-2025, owasp-cheatsheets]
+    deeper: [owasp-idor-prevention-cheatsheet, owasp-top-10-2025-a01]
     videos: [mit-6858-lecture-4-privilege-separation, mit-6858-lecture-8-web-security-model]
   exercise:
     id: ex-authz-matrix
@@ -219,7 +219,7 @@
       correction: O mesmo dado pode ser exibido em HTML, atributo, JSON ou CSV, cada um com regras diferentes. O escaping correto depende do contexto de saída.
   resources:
     start: owasp-sql-injection-prevention-cheatsheet
-    deeper: [owasp-xss-prevention-cheatsheet, owasp-input-validation-cheatsheet, owasp-top-10-2025, owasp-cheatsheets, mit-6858-ocw-2014]
+    deeper: [owasp-xss-prevention-cheatsheet, owasp-input-validation-cheatsheet, owasp-top-10-2025-a05, mit-6858-notes-lec9]
     videos: [mit-6858-lecture-9-securing-web-applications, computerphile-sql-injection, computerphile-xss]
   exercise:
     id: ex-injection-by-hand
@@ -284,7 +284,7 @@
       resource: owasp-os-command-injection-cheatsheet
     - title: Desserialização insegura e upload de arquivos
       why: Ao aceitar objetos serializados, XML ou arquivos enviados que serão processados pelo servidor.
-      resource: owasp-top-10-2025
+      resource: owasp-top-10-2025-a08
 
 - id: secrets-threat-modeling
   stage: s14-security
@@ -313,8 +313,8 @@
       correction: Um diagrama no quadro, a lista STRIDE e uma hora com o time já encontram as ameaças mais prováveis do seu sistema.
   resources:
     start: owasp-threat-modeling-cheatsheet
-    deeper: [owasp-secrets-management-cheatsheet, microsoft-threat-modeling-tool-threats, twelve-factor-config, gitleaks, owasp-top-10-2025, mit-6858-ocw-2014]
-    videos: [mit-6858-lecture-1-threat-models, akitando-67-criptografia-parte-1]
+    deeper: [owasp-secrets-management-cheatsheet, microsoft-threat-modeling-tool-threats, twelve-factor-config, gitleaks, owasp-top-10-2025-a02, mit-6858-notes-lec1]
+    videos: [mit-6858-lecture-1-threat-models-threat-model-errors, akitando-67-criptografia-parte-1-guardar-senha-no-banco]
   exercise:
     id: ex-stride-task-platform
     title: STRIDE da plataforma de tarefas
@@ -370,7 +370,7 @@
   deepDive:
     - title: Cofres de segredos e segredos dinâmicos
       why: Quando houver vários serviços e ambientes e a rotação manual de senhas virar risco.
-      resource: hashicorp-vault-docs
+      resource: vault-database-secrets-engine
     - title: Segurança da cadeia de suprimentos de software
       why: Ao depender de muitas bibliotecas de terceiros e publicar artefatos usados por outras pessoas.
       resource: owasp-supply-chain-cheatsheet
