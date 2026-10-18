@@ -363,24 +363,6 @@
     checkedOn: '2026-10-18'
     note: Sumário do PDF (revisão de 2018).
 
-- id: drepper-memory-3-cpu-caches
-  title: What Every Programmer Should Know About Memory — 3 CPU Caches
-  author: Ulrich Drepper
-  url: https://people.freebsd.org/~lstewart/articles/cpumemory.pdf#page=13
-  language: en
-  format: article
-  difficulty: advanced
-  topics:
-  - complexity-analysis
-  why: 'Seção sobre caches da CPU: hierarquia, linhas, associatividade e medições, ou por que dois algoritmos O(n) podem diferir muito.'
-  section: 3 CPU Caches (p. 13)
-  access: free
-  priority: optional
-  verification:
-    status: verified
-    checkedOn: '2026-10-18'
-    note: Título e página conferidos no PDF.
-
 - id: drepper-memory-3-3-2-measurements-of-cache-effects
   title: What Every Programmer Should Know About Memory — 3.3.2 Measurements of Cache Effects
   author: Ulrich Drepper
