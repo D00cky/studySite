@@ -64,12 +64,19 @@
     - Documento de requisitos reescritos com os originais ao lado.
     - Diagrama de módulos, saída do jdeps e o diff da mudança de requisito.
   firstAction: "Escreva em uma linha, no formato Given/When/Then, o requisito \"listar tarefas atrasadas\"."
-  essentials:
-    - "Todo requisito precisa de um exemplo que vire teste: Given (estado), When (ação), Then (resultado observável)."
-    - "Não funcional só conta com número: \"listar 20 tarefas em < 100 ms com 1 milhão de linhas\", nunca \"rápido\"."
-    - Esconda cada decisão que pode mudar (armazenamento, regra de atraso, formato de saída) dentro de um único módulo.
-    - O domínio não importa nada de infraestrutura; persistência e HTTP dependem do domínio, nunca o contrário.
-    - "Confira o grafo real com `jdeps` (ou o linker em C): ciclo de dependência é sinal de divisão errada."
+  kit:
+    - term: "Given / When / Then"
+      use: "Escrever cada requisito como exemplo (estado, ação, resultado observável) que vira teste depois."
+    - term: "p95 < 100 ms com 1 milhão de linhas"
+      use: "Trocar \"rápido\" ou \"seguro\" por um número mensurável em todo requisito não funcional."
+    - term: "Pacotes domain / persistence / http"
+      use: "Esconder cada decisão que pode mudar (armazenamento, formato de saída) dentro de um único módulo."
+    - term: "domain não importa persistence nem http"
+      use: "Manter as dependências apontando para o domínio; infraestrutura depende dele, nunca o contrário."
+    - term: "jdeps -verbose:package target/classes"
+      use: "Ver o grafo real de dependências entre pacotes e achar ciclos ou setas na direção errada."
+    - term: "git diff --stat"
+      use: "Contar quantos arquivos uma mudança de requisito tocou e julgar se a divisão em módulos ajudou."
   deepDive:
     - title: Regras de arquitetura como testes (ArchUnit)
       why: Quando o time crescer e alguém começar a importar persistência no domínio sem perceber.
@@ -149,12 +156,19 @@
     - Saída do ./mvnw test com o teste vermelho pelo bug introduzido e depois verde.
     - Código do teste de integração e explicação da divergência encontrada no fake.
   firstAction: "Escreva um teste JUnit `assertEquals(2, 1 + 1)`, rode `./mvnw test` e depois mude para 3 para vê-lo falhar."
-  essentials:
-    - Veja todo teste falhar pelo menos uma vez; teste que nunca ficou vermelho pode não testar nada.
-    - "Injete dependências pelo construtor (`Clock`, `TaskRepository`); nada de `LocalDate.now()` ou JDBC escondidos no meio da regra."
-    - Particione as entradas e teste as fronteiras (ontem, hoje, amanhã, nulo, concluída) com `@ParameterizedTest`.
-    - Prefira fakes simples e asserções sobre o resultado; mocks que verificam a sequência de chamadas quebram em toda refatoração.
-    - Rode SQL contra PostgreSQL real (Testcontainers) em teste de integração; um fake ou banco em memória esconde constraints.
+  kit:
+    - term: "@Test + assertEquals(esperado, atual)"
+      use: "Escrever um caso JUnit 5 e vê-lo falhar uma vez antes de passar."
+    - term: "@ParameterizedTest + @CsvSource"
+      use: "Cobrir partições e fronteiras (ontem, hoje, amanhã, nulo, concluída) num único teste."
+    - term: "Clock.fixed(...) injetado no construtor"
+      use: "Controlar o \"agora\" da regra de negócio e acabar com testes que dependem da data do dia."
+    - term: "Fake em memória (InMemoryTaskRepository)"
+      use: "Testar a regra sem banco, verificando o resultado em vez da sequência de chamadas."
+    - term: "Testcontainers: new PostgreSQLContainer<>(...)"
+      use: "Rodar testes de integração contra PostgreSQL real e pegar constraints que o fake esconde."
+    - term: "./mvnw test"
+      use: "Rodar a suíte inteira antes de cada commit e depois de cada mudança."
   deepDive:
     - title: Property-based testing
       why: Quando houver regras com muitas combinações de entrada (parsers, datas, ordenação) que exemplos escritos à mão não cobrem.
@@ -232,12 +246,19 @@
     - Saída de git log --oneline e um diff de um passo de refatoração representativo.
     - Saída completa do git bisect run com o commit identificado.
   firstAction: "Escolha um método longo do seu projeto, rode os testes e aplique só um Rename Variable seguido de commit."
-  essentials:
-    - Nunca misture refatoração e mudança de comportamento no mesmo commit.
-    - Passos pequenos e nomeados (Rename, Extract Function, Move Function), com `./mvnw test` verde depois de cada um.
-    - "Ficou vermelho? `git restore` e tente um passo menor, em vez de depurar no meio da refatoração."
-    - Código sem testes ganha testes de caracterização antes de qualquer mudança, registrando o que ele faz hoje.
-    - "Quebrou e não sabe onde: `git bisect run ./mvnw -q test` acha o commit sozinho."
+  kit:
+    - term: "./mvnw test"
+      use: "Confirmar que tudo continua verde depois de cada passo pequeno."
+    - term: "Rename / Extract Function / Move Function"
+      use: "Aplicar (de preferência pela IDE) os três passos que resolvem a maior parte do código confuso."
+    - term: "git commit -m \"refactor: extract parseLine\""
+      use: "Gravar um passo nomeado por commit, sem misturar com mudança de comportamento."
+    - term: "git restore ."
+      use: "Descartar o passo que ficou vermelho e tentar um menor, em vez de depurar no meio da refatoração."
+    - term: "Teste de caracterização"
+      use: "Registrar o que o código sem testes faz hoje antes de mexer nele."
+    - term: "git bisect run ./mvnw -q test"
+      use: "Achar automaticamente o commit que mudou o comportamento."
   deepDive:
     - title: Código legado e pontos de costura (seams)
       why: Quando precisar testar uma classe gigante cheia de dependências estáticas e construtores que fazem I/O.
@@ -314,12 +335,19 @@
     - Link para os ADRs e para o arquivo de workflow no repositório.
     - Capturas ou trechos do log da CI vermelha e verde com o passo que falhou destacado.
   firstAction: "Crie a pasta `docs/adr/` no projeto e escreva só o título e o contexto do ADR 0001."
-  essentials:
-    - "Integre no main pelo menos uma vez por dia com branches curtas; build vermelho se conserta antes de qualquer outra coisa."
-    - "Pipeline = sequência de processos; exit code ≠ 0 para tudo. Em scripts use `set -euo pipefail`."
-    - Ordene os passos do mais barato ao mais caro (compilar, unitários, integração, empacotar) e use cache de dependências.
-    - "Proteja o main (merge só com CI verde) e dê ao workflow `permissions: contents: read`, actions com versão fixa e segredos fora dos logs."
-    - "Decisão cara de mudar vira ADR curto em `docs/adr/` (contexto, decisão, status, consequências); mudou, escreva outro ADR."
+  kit:
+    - term: ".github/workflows/ci.yml (on: push, pull_request)"
+      use: "Rodar build e testes em todo push e pull request."
+    - term: "./mvnw -B verify"
+      use: "Compilar, testar e empacotar no CI com o mesmo comando que roda na sua máquina."
+    - term: "set -euo pipefail"
+      use: "Fazer o script do pipeline parar no primeiro comando com exit code diferente de zero."
+    - term: "Branch protection + required status checks"
+      use: "Bloquear merge no main enquanto o CI não estiver verde."
+    - term: "permissions: contents: read"
+      use: "Dar ao workflow só leitura por padrão, junto com actions em versão fixa e segredos fora dos logs."
+    - term: "docs/adr/0001-titulo.md"
+      use: "Registrar decisão cara de mudar com contexto, decisão, status e consequências."
   deepDive:
     - title: Trunk-based development e feature flags
       why: Quando funcionalidades grandes demorarem dias e a tentação for manter uma branch longa.
