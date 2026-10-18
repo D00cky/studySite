@@ -17,17 +17,19 @@ class CurriculumLoaderTest {
     @Test
     void loadsResourcesAndProjectsFromExtraFiles() throws IOException {
         Path real = Path.of("../content").toAbsolutePath().normalize();
-        for (String f : new String[] {"stages.yaml", "resources.yaml", "projects.yaml", "policies.yaml"}) {
-            Files.copy(real.resolve(f), dir.resolve(f));
-        }
-        Files.createDirectories(dir.resolve("topics"));
-        try (var files = Files.list(real.resolve("topics"))) {
-            for (Path f : files.toList()) {
-                Files.copy(f, dir.resolve("topics").resolve(f.getFileName()));
+        // Copia o conteúdo inteiro (inclusive resources/ e projects/ existentes) e acrescenta arquivos extras.
+        try (var paths = Files.walk(real)) {
+            for (Path src : paths.toList()) {
+                Path target = dir.resolve(real.relativize(src).toString());
+                if (Files.isDirectory(src)) {
+                    Files.createDirectories(target);
+                } else {
+                    Files.copy(src, target);
+                }
             }
         }
         Files.createDirectories(dir.resolve("resources"));
-        Files.writeString(dir.resolve("resources/extra.yaml"), """
+        Files.writeString(dir.resolve("resources/zz-test-extra.yaml"), """
                 - id: extra-resource
                   title: Recurso extra
                   author: Autor
@@ -42,7 +44,7 @@ class CurriculumLoaderTest {
                   verification: { status: pending }
                 """);
         Files.createDirectories(dir.resolve("projects"));
-        Files.writeString(dir.resolve("projects/extra.yaml"), """
+        Files.writeString(dir.resolve("projects/zz-test-extra.yaml"), """
                 - id: extra-project
                   title: Projeto extra
                   status: planned
