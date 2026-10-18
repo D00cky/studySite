@@ -28,7 +28,7 @@
     - claim: Backoff exponencial sozinho resolve a sincronização dos clientes.
       correction: Sem jitter, clientes que falharam ao mesmo tempo continuam tentando ao mesmo tempo, só que em intervalos maiores. O sorteio é o que espalha a carga.
   resources:
-    start: aws-timeouts-retries-backoff-jitter
+    start: aws-builders-timeouts-retries
     deeper: [sre-book-cascading-failures, aws-exponential-backoff-and-jitter, kleppmann-cambridge-dist-sys-notes, sre-book-handling-overload, sre-book, toxiproxy, tc-netem-man, mit-65840-distributed-systems]
     videos: [kleppmann-ds-1-3-rpc, kleppmann-ds-2-3-system-models, mit-6824-2020-lecture-2-rpc-threads]
   exercise:

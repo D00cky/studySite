@@ -169,7 +169,7 @@
   resources:
     start: postgres-mvcc
     deeper: [postgres-explicit-locking, ddia, cmu-15445-fall2024]
-    videos: [kleppmann-transactions-strange-loop, cmu-15445-f24-lecture-16-concurrency-control, cmu-15445-f24-lecture-19-mvcc, cmu-15445-f24-lecture-17-two-phase-locking]
+    videos: [kleppmann-transactions-strange-loop, cmu-15445-f24-lecture-16-concurrency-control-theory, cmu-15445-f24-lecture-19-mvcc, cmu-15445-f24-lecture-17-two-phase-locking]
   exercise:
     id: ex-lost-update-two-psql
     title: Lost update com dois psql

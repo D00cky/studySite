@@ -45,20 +45,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: cmu-15445-f24-lecture-16-concurrency-control
-  title: "#16 - Concurrency Control Theory ✸ Firebolt Database Talk (CMU Intro to Database Systems)"
-  author: CMU Database Group (Andy Pavlo)
-  url: https://www.youtube.com/watch?v=4y656idl8ZU
-  language: en
-  format: video
-  difficulty: advanced
-  topics: [isolation-locks]
-  why: ACID, schedules, conflitos e serializabilidade — a teoria por trás das anomalias que você vai reproduzir.
-  section: "#16 - Concurrency Control Theory"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: cmu-15445-f24-lecture-17-two-phase-locking
   title: "#17 - Two-Phase Locking Concurrency Control (CMU Intro to Database Systems)"
   author: CMU Database Group (Andy Pavlo)
@@ -108,7 +94,7 @@
   language: pt-BR
   format: video
   difficulty: intermediate
-  topics: [query-plans]
+  topics: [query-plans, containers-deployment, latency-percentiles-diagnosis]
   why: Em português, mostra o PostgreSQL como gargalo sob carga e usa EXPLAIN ANALYZE para entender a estratégia de uma consulta.
   section: "[Akitando] #149 · CAP 11 - Estratégia de SQL com EXPLAIN ANALYZE"
   access: free

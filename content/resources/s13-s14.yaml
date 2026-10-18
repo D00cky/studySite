@@ -4,19 +4,6 @@
 
 # --- s13: falha parcial, retries, idempotência, filas, consistência -----------
 
-- id: aws-timeouts-retries-backoff-jitter
-  title: Timeouts, retries, and backoff with jitter
-  author: Marc Brooker (Amazon Builders' Library)
-  url: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
-  language: en
-  format: article
-  difficulty: intermediate
-  topics: [partial-failure-retries]
-  why: Explica, com a experiência da Amazon, como escolher timeouts, quando retries amplificam carga e por que backoff exponencial precisa de jitter.
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: aws-exponential-backoff-and-jitter
   title: Exponential Backoff And Jitter
   author: Marc Brooker (AWS Architecture Blog)
@@ -659,34 +646,6 @@
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: akitando-67-criptografia-video
-  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 1/2"
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=CcU5Kc_FN_4
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [secrets-threat-modeling, authentication-sessions]
-  why: "Akitando #67: hashes, criptografia simétrica e assimétrica em português, base para entender onde e como segredos são protegidos."
-  section: "[Akitando] #67"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo extraído do embed no post akitaonrails.com do episódio #67." }
-
-- id: akitando-68-criptografia-video
-  title: "Entendendo Conceitos Básicos de CRIPTOGRAFIA | Parte 2/2"
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=HCHqtpipwu4
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [authentication-sessions]
-  why: "Akitando #68: por que senhas não se guardam com MD5/SHA256 puro e como salt, PBKDF2, bcrypt e Argon2 resolvem."
-  section: "[Akitando] #68"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18", note: "Vídeo extraído do embed no post akitaonrails.com do episódio #68." }
 
 - id: computerphile-how-not-to-store-passwords
   title: "How NOT to Store Passwords! - Computerphile"

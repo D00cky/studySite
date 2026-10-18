@@ -322,7 +322,7 @@
       correction: no-cache permite guardar, mas exige revalidação antes de usar. Para não guardar, use no-store.
   resources:
     start: mdn-http-caching
-    deeper: [aws-builders-timeouts-retries, mdn-cache-control, csswizardry-cache-control-for-civilians,cs168-textbook-transport-principles, man-socket7, curl-manpage, rfc-9111-http-caching]
+    deeper: [aws-builders-timeouts-retries, mdn-cache-control, csswizardry-cache-control-for-civilians, cs168-textbook-transport-principles, man-socket7, curl-manpage, rfc-9111-http-caching]
   exercise:
     id: ex-slow-server
     title: Servidor lento, cliente com prazo

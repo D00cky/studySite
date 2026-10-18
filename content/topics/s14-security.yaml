@@ -30,7 +30,7 @@
   resources:
     start: owasp-password-storage-cheatsheet
     deeper: [owasp-session-management-cheatsheet, mdn-http-cookies, mdn-set-cookie, owasp-csrf-prevention-cheatsheet, akita-crypto-2, owasp-cheatsheets, mit-6858-ocw-2014]
-    videos: [akitando-68-criptografia-video, mit-6858-lecture-17-user-authentication, computerphile-how-not-to-store-passwords, mit-6858-lecture-8-web-security-model]
+    videos: [akitando-68-criptografia-parte-2, mit-6858-lecture-17-user-authentication, computerphile-how-not-to-store-passwords, mit-6858-lecture-8-web-security-model]
   exercise:
     id: ex-password-hash-cost
     title: Medir o custo de hashes de senha
@@ -238,7 +238,7 @@
   resources:
     start: owasp-threat-modeling-cheatsheet
     deeper: [owasp-secrets-management-cheatsheet, microsoft-threat-modeling-tool-threats, twelve-factor-config, gitleaks, owasp-top-10-2025, mit-6858-ocw-2014]
-    videos: [mit-6858-lecture-1-threat-models, akitando-67-criptografia-video]
+    videos: [mit-6858-lecture-1-threat-models, akitando-67-criptografia-parte-1]
   exercise:
     id: ex-stride-task-platform
     title: STRIDE da plataforma de tarefas

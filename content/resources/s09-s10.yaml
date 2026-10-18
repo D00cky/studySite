@@ -69,7 +69,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [tls-concepts]
+  topics: [tls-concepts, secrets-threat-modeling, authentication-sessions]
   why: Hashes, criptografia simétrica e assimétrica explicadas com intuição; pré-requisito para entender o handshake TLS.
   section: "[Akitando] #67"
   access: free
@@ -83,7 +83,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [tls-concepts]
+  topics: [tls-concepts, authentication-sessions]
   why: Continuação dos conceitos básicos de criptografia, em português; complete a Parte 1 antes de estudar o handshake TLS.
   section: "[Akitando] #68"
   access: free

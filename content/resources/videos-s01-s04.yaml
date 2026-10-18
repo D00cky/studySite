@@ -28,20 +28,6 @@
   priority: core
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: ms-2026-lecture-4-debugging-video
-  title: "Lecture 4: Debugging and Profiling"
-  author: "MIT CSAIL — Missing Semester"
-  url: https://www.youtube.com/watch?v=8VYT9TcUmKs
-  language: en
-  format: video
-  difficulty: intro
-  topics: [memory-debugging]
-  why: "Gravação oficial da aula de depuração e profiling: depuradores, ferramentas de análise e como investigar um programa que falha."
-  section: "Lecture 4: Debugging and Profiling"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
 - id: ms-2026-lecture-5-git-video
   title: "Lecture 5: Version Control and Git"
   author: "MIT CSAIL — Missing Semester"
@@ -178,34 +164,6 @@
   topics: [compilation-pipeline]
   why: "Vídeo do episódio #117 do Akitando: o que realmente diferencia compilação, interpretação e as etapas intermediárias."
   section: "Akitando #117"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: akitando-45-memoria-parte-1-video
-  title: "Gerenciamento de Memória (Parte 1) | Entendendo Back-end para Iniciantes  (Parte 5)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=9AK_1gqEfkQ
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [stack-heap-lifetime]
-  why: "Vídeo do episódio #45 do Akitando: stack, heap e o custo de gerenciar memória, em português."
-  section: "Akitando #45"
-  access: free
-  priority: core
-  verification: { status: verified, checkedOn: "2026-10-18" }
-
-- id: akitando-46-memoria-parte-2-video
-  title: "Gerenciamento de Memória (Parte 2) | Entendendo Back-end para Iniciantes (Parte 6)"
-  author: "Fabio Akita"
-  url: https://www.youtube.com/watch?v=DGU1awKrNiA
-  language: pt-BR
-  format: video
-  difficulty: intro
-  topics: [dynamic-allocation-ownership]
-  why: "Vídeo do episódio #46 do Akitando: continuação sobre alocação, liberação e estratégias de gerenciamento de memória."
-  section: "Akitando #46"
   access: free
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }

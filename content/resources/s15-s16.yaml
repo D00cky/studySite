@@ -353,7 +353,7 @@
   language: en
   format: video
   difficulty: intermediate
-  topics: [profiling-benchmarks, logs-metrics-traces]
+  topics: [profiling-benchmarks, logs-metrics-traces, memory-debugging]
   why: Aula em vídeo (edição 2026) sobre depuração, logs e profiling — ponte entre as ferramentas da etapa 1 e a análise de desempenho.
   section: "Lecture 4: Debugging and Profiling"
   access: free
@@ -468,16 +468,3 @@
   priority: optional
   verification: { status: verified, checkedOn: "2026-10-18" }
 
-- id: akitando-149-docker-compose-postgres
-  title: Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend
-  author: Fabio Akita
-  url: https://www.youtube.com/watch?v=-yGHG3pnHLg
-  language: pt-BR
-  format: video
-  difficulty: intermediate
-  topics: [containers-deployment, latency-percentiles-diagnosis]
-  why: Episódio do Akitando (#149) configurando Docker Compose com PostgreSQL e medindo o sistema sob teste de carga.
-  section: "[Akitando] #149 - Configurando Docker Compose, Postgres, com Testes de Carga - Parte Final da Rinha de Backend"
-  access: free
-  priority: optional
-  verification: { status: verified, checkedOn: "2026-10-18" }

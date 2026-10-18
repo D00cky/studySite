@@ -286,7 +286,7 @@
   resources:
     start: gdb-sample-session
     deeper: [valgrind-quickstart, asan, missing-semester-debugging, akita-fixing-c]
-    videos: [sorber-valgrind-video, ms-2026-lecture-4-debugging-video, sorber-address-sanitizer-video]
+    videos: [sorber-valgrind-video, missing-semester-2026-lecture-4-debugging-profiling-video, sorber-address-sanitizer-video]
   exercise:
     id: ex-debug-journal
     title: Diário de depuração

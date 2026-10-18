@@ -450,7 +450,7 @@
   language: pt-BR
   format: video
   difficulty: intro
-  topics: [virtual-memory]
+  topics: [virtual-memory, dynamic-allocation-ownership]
   why: "Episódio #46: continuação sobre gerenciamento de memória, em português."
   access: free
   priority: optional

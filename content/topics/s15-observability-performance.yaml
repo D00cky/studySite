@@ -166,7 +166,7 @@
   resources:
     start: brendan-gregg-use-method
     deeper: [sre-book-monitoring-distributed-systems, sre-book-service-level-objectives, sre-book-effective-troubleshooting, hdrhistogram, postgres-explain]
-    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres]
+    videos: [gil-tene-how-not-to-measure-latency, usenix-lisa19-linux-systems-performance, akitando-149-docker-compose-postgres-rinha]
   exercise:
     id: ex-percentiles-by-hand
     title: Percentis a partir de dados medidos
