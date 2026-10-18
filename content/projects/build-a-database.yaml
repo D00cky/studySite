@@ -1,0 +1,159 @@
+- id: build-a-database
+  title: Construa um banco de dados
+  status: authored
+  cumulative: false
+  topics: [indexes, query-plans, transactions-basics, isolation-locks, filesystems, file-descriptors, binary-search-trees, hash-tables, dynamic-allocation-ownership, c-arrays-structs, memory-debugging, systems-io-performance]
+  question: Como um banco de dados transforma `insert` e `select` em páginas de bytes num arquivo, encontra uma linha sem ler tudo e sobrevive a um processo morto no meio da escrita?
+  prerequisites: [c-arrays-structs, dynamic-allocation-ownership, file-descriptors, binary-search-trees]
+  minimalVersion: |
+    `taskdb` é um motor de armazenamento em C, de uma única tabela, que guarda tarefas
+    (`id` inteiro, `title` de até 64 bytes, `done` 0/1). Um REPL aceita
+    `insert <id> <title>`, `select` (todas, em ordem de id), `select <id>` e meta-comandos
+    `.exit`, `.btree` e `.constants`. Cada linha é serializada em tamanho fixo e gravada em
+    páginas de 4096 bytes; um pager lê e escreve páginas sob demanda num arquivo
+    (`tasks.db`) e as mantém num cache em memória. As linhas ficam numa B-tree indexada por
+    `id` (folhas e nós internos com split), percorrida por um cursor. Ao sair com `.exit`,
+    as páginas sujas são escritas e o arquivo recebe `fsync`; ao reabrir, todas as tarefas
+    voltam. Ids duplicados são recusados com mensagem clara.
+  extensions:
+    - "WAL (write-ahead log): antes de alterar uma página no arquivo principal, gravar a página nova num log com checksum e `fsync`; na abertura, reaplicar entradas completas e descartar a cauda corrompida (recuperação após crash)."
+    - "Transações simples: `begin`, `commit` e `rollback` agrupando vários inserts, com atomicidade garantida pelo WAL (tudo ou nada após kill -9)."
+    - Delete e update (`delete <id>`, `done <id>`) com merge ou redistribuição de folhas, ou pelo menos uma free list de páginas reaproveitadas.
+    - Índice secundário por `done` (ou por título) numa segunda B-tree e um `explain` que diz se a consulta usou varredura completa ou o índice.
+    - Comparar com o SQLite real (`sqlite3`, `.dbinfo`, `PRAGMA page_size`, `EXPLAIN QUERY PLAN`) e com o PostgreSQL (`EXPLAIN ANALYZE`, `pageinspect` num banco de laboratório), registrando o que o seu motor faz igual e diferente.
+    - Lock de arquivo (`flock`) para impedir que dois processos abram o mesmo `tasks.db` para escrita.
+  constraints:
+    - C17 com libc e syscalls POSIX (`open`, `pread`, `pwrite`, `fsync`, `lseek`); nada de mmap na versão mínima, para ver cada leitura de página.
+    - Compilar com `-Wall -Wextra -std=c17 -g` sem avisos; testes também com `-fsanitize=address,undefined`.
+    - Formato de página documentado no README (offsets de cabeçalho, células, ponteiros filhos) e verificável com `xxd`.
+    - Testes automatizados que alimentam o REPL por stdin e comparam a saída esperada (inclusive após reabrir o arquivo).
+    - Todo retorno de `open`, `pread`, `pwrite` e `fsync` é verificado; erro de I/O nunca vira dado silenciosamente corrompido.
+    - Experimentos de crash e corrupção apenas em cópias numa pasta de laboratório.
+  milestones:
+    - id: m0-redigitar
+      title: Redigitar a referência
+      description: "Redigitar à mão as partes 1 a 6 do \"Let's Build a Simple Database\" de cstack (REPL, compilador/VM mínimos, tabela append-only, testes, pager com persistência e cursor). Evidência: commits incrementais por parte, anotações explicando `serialize_row`, `get_page` e `pager_flush`, e um erro provocado e registrado (ex.: esquecer o flush ao sair e mostrar com `xxd tasks.db` que o arquivo ficou vazio ou truncado)."
+      minutes: 75
+    - id: m1-repl-rows
+      title: REPL e serialização de linhas
+      description: Laço de leitura com `insert`/`select` para tarefas, parser de comandos com erros claros e `serialize_row`/`deserialize_row` com offsets calculados por `offsetof`/`sizeof`; testar título com 64 bytes exatos e com 65.
+      minutes: 50
+    - id: m2-pager
+      title: Páginas, pager e arquivo
+      description: Tabela em páginas de 4096 bytes, pager com cache de páginas e leitura sob demanda via `pread`; flush com `pwrite` ao sair. Observar com `strace -e trace=openat,pread64,pwrite64,fsync` quantas páginas cada comando toca.
+      minutes: 60
+    - id: m3-cursor
+      title: Cursor
+      description: Abstrair a posição na tabela num cursor (`table_start`, `cursor_advance`, `cursor_value`) e reescrever insert e select sobre ele, preparando a troca do layout linear pela B-tree.
+      minutes: 40
+    - id: m4-btree-leaf
+      title: Folha da B-tree e busca binária
+      description: Formato de nó folha (cabeçalho, número de células, pares chave/valor), inserção ordenada e busca binária por id; recusar id duplicado; meta-comando `.btree` imprimindo a árvore.
+      minutes: 60
+    - id: m5-btree-split
+      title: Split de folhas e nós internos
+      description: Dividir folha cheia, criar nova raiz, nó interno com ponteiros filhos e busca recursiva; inserir 1000 tarefas em ordem aleatória e conferir que `select` sai ordenado e `.btree` mostra a altura esperada.
+      minutes: 75
+    - id: m6-durabilidade
+      title: Persistência com fsync e crash
+      description: "Definir o ponto de durabilidade: flush das páginas sujas e `fsync` no commit/saída. Matar o processo com `kill -9` em pontos diferentes (antes e depois do fsync) e documentar o que sobrevive e o que se perde."
+      minutes: 50
+    - id: m7-wal
+      title: WAL e recuperação (extensão)
+      description: Log de páginas com número de sequência e checksum (CRC32), fsync do log antes do arquivo principal, replay na abertura e descarte de registro truncado; testar com kill -9 durante uma transação de 100 inserts.
+      minutes: 75
+    - id: m8-comparar
+      title: Comparar com SQLite e PostgreSQL
+      description: "Criar a mesma tabela de tarefas no `sqlite3` e num PostgreSQL de laboratório; comparar tamanho de página, layout (`xxd` no arquivo do SQLite, cabeçalho de 100 bytes) e planos (`EXPLAIN QUERY PLAN`, `EXPLAIN ANALYZE`) para busca por id e por `done`."
+      minutes: 50
+    - id: m9-de-memoria
+      title: Reescrever de memória
+      description: Dias depois, reescrever sem olhar a busca binária na folha e o split de folha, e comparar com a sua versão e com a referência; registrar o que precisou consultar.
+      minutes: 50
+  edgeCases:
+    - Título vazio, com exatamente 64 bytes, com 65 bytes e com caracteres UTF-8 multibyte cortados no limite.
+    - Id negativo, zero, não numérico e maior que `UINT32_MAX`.
+    - Insert de id duplicado na mesma folha e em folhas diferentes após splits.
+    - Arquivo `tasks.db` inexistente, vazio, com tamanho que não é múltiplo de 4096 e sem permissão de escrita.
+    - Inserções em ordem crescente, decrescente e aleatória (formatos diferentes de árvore).
+    - Tabela cheia (limite de páginas do pager) e disco cheio simulado num tmpfs pequeno.
+    - "EOF (Ctrl+D) no REPL sem `.exit`: as páginas sujas são gravadas ou perdidas? Comportamento definido e documentado."
+  failureExperiments:
+    - "Matar com `kill -9` entre o último `pwrite` e o `fsync` (pausar com gdb num breakpoint em `fsync`) e comparar o arquivo reaberto com o esperado."
+    - Corromper de propósito um byte do cabeçalho de uma página com `printf '\xff' | dd of=tasks.db bs=1 seek=N conv=notrunc` e mostrar que a abertura detecta (checksum ou validação de tipo de nó) em vez de travar ou devolver lixo.
+    - Truncar o arquivo no meio de uma página (`truncate -s`) e observar o que o pager faz; depois tornar o erro explícito.
+    - Retirar a busca binária (varredura linear na folha) e medir com `perf stat` ou cronômetro a diferença para 100 mil inserts.
+    - Esquecer de atualizar o ponteiro do pai após um split e mostrar com `.btree` e com testes as tarefas que "somem" do select.
+    - "Com WAL: truncar o log no meio do último registro e provar que o replay descarta só a cauda incompleta."
+    - Abrir o mesmo arquivo em dois processos escrevendo ao mesmo tempo e mostrar a corrupção (motivação para o lock com `flock`).
+  tools: [gcc, make, gdb, valgrind, "strace -e trace=pread64,pwrite64,fsync", xxd, hexdump, dd, truncate, "perf stat", sqlite3, psql, "EXPLAIN QUERY PLAN"]
+  acceptanceCriteria:
+    - Insere e lista tarefas pelo REPL; ao fechar com `.exit` e reabrir, `select` mostra exatamente as mesmas tarefas em ordem de id.
+    - "`.btree` mostra uma árvore com pelo menos três níveis após inserir milhares de tarefas, e `select <id>` toca no máximo altura+1 páginas (conferido com strace)."
+    - Ids duplicados, entradas malformadas e arquivo inválido produzem mensagens de erro claras, sem crash e sem corromper o arquivo.
+    - O formato de página está documentado e um `xxd` de uma folha bate com a documentação.
+    - Testes passam limpos sob AddressSanitizer e Valgrind (sem vazamentos nem leituras inválidas).
+    - "O ponto de durabilidade está documentado: o que sobrevive a kill -9 antes e depois do fsync (e, com WAL, a transação inteira ou nada)."
+  evidence:
+    - Link do repositório com README (build, uso, formato de página, limitações e decisões de durabilidade).
+    - Saída dos testes automatizados, incluindo o teste de reabertura do arquivo.
+    - Dump `xxd` de uma página folha anotado campo a campo.
+    - Trecho de `strace` de um `select <id>` mostrando quantos `pread64` aconteceram, comparado com uma varredura completa.
+    - Relato dos experimentos de crash (kill -9 antes/depois do fsync, arquivo corrompido, log truncado) com o resultado observado.
+    - Tabela curta comparando o seu motor com SQLite e PostgreSQL (tamanho de página, índice, plano, durabilidade).
+    - "Busca binária e split de folha reescritos de memória, com o diff contra a sua versão anterior comentado."
+  reviewQuestions:
+    - Por que bancos de dados trabalham em páginas de tamanho fixo em vez de ler e escrever linha a linha?
+    - O que garante, e o que não garante, um `write` que retornou com sucesso sem `fsync`?
+    - Por que uma B-tree com muitas chaves por nó é melhor em disco do que uma árvore binária de busca balanceada?
+    - Quantas páginas um `select <id>` precisa ler numa árvore de altura 3, e quantas uma varredura completa?
+    - Como o WAL permite atomicidade de uma transação de vários inserts mesmo se o processo morrer no meio?
+    - Quando um índice secundário deixa de compensar, e como o `EXPLAIN` do SQLite/PostgreSQL mostra essa escolha?
+  practice:
+    guidance: >-
+      Antes do marco 1, redigite à mão (sem colar), num diretório novo, as partes 1 a 6 do tutorial
+      "Let's Build a Simple Database" de cstack, um commit por parte. Adapte a linha de exemplo
+      (id/username/email) para tarefas (id/title/done) já durante a redigitação: isso obriga a entender
+      `ROW_SIZE`, os offsets e `serialize_row`. Quebre de propósito 2–3 pontos (sem flush ao sair, página
+      lida antes de existir no arquivo, offset errado na serialização) e observe com `xxd`, `strace` e
+      AddressSanitizer. Depois redigite as partes 7 a 14 (B-tree) acompanhando com `.btree`. Para a
+      parte de durabilidade, leia "From Files To Databases" e "B-Tree & Crash Recovery" do livro gratuito
+      de James Smith e o "Atomic Commit In SQLite"; use o formato de arquivo do SQLite e os projetos do
+      CMU 15-445 (BusTub, C++) como leitura para comparar decisões. Dias depois, reescreva de memória a
+      busca na folha e o split.
+    references:
+      - title: "Let's Build a Simple Database (db_tutorial)"
+        author: "Connor Stack (cstack)"
+        url: https://cstack.github.io/db_tutorial/
+        language: C
+        license: "MIT (repositório cstack/db_tutorial)"
+      - title: "Build Your Own Database From Scratch in Go (Part I, versão web gratuita)"
+        author: "James Smith (build-your-own.org)"
+        url: https://build-your-own.org/database/
+        language: Go
+        license: "Leitura gratuita da Parte I online; Parte II e edições completas são pagas"
+      - title: "Architecture of SQLite"
+        author: "SQLite"
+        url: https://www.sqlite.org/arch.html
+        language: C
+        license: "Domínio público (SQLite)"
+      - title: "Database File Format"
+        author: "SQLite"
+        url: https://www.sqlite.org/fileformat2.html
+        language: C
+        license: "Domínio público (SQLite)"
+      - title: "Atomic Commit In SQLite"
+        author: "SQLite"
+        url: https://www.sqlite.org/atomiccommit.html
+        language: C
+        license: "Domínio público (SQLite)"
+      - title: "CMU 15-445/645 Project #1 - Buffer Pool Manager (BusTub)"
+        author: "Carnegie Mellon University Database Group"
+        url: https://15445.courses.cs.cmu.edu/fall2026/project1/
+        language: C++
+        license: "BusTub: MIT (repositório cmu-db/bustub)"
+      - title: "Database Internals"
+        author: "Alex Petrov"
+        url: https://www.databass.dev/
+        language: "Livro (teoria, sem código para redigitar)"
+        license: "Livro pago (O'Reilly); leitura complementar"
