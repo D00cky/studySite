@@ -12,7 +12,7 @@ const project: Project = {
   prerequisites: ['terminal-shell'], minimalVersion: '`tasks add`, `tasks list` e `tasks done`.',
   extensions: ['Escrita atômica.'], constraints: ['Sem bibliotecas além da libc.'],
   milestones: [
-    { id: 'm1-args', title: 'Argumentos e exit codes', description: 'Interpretar argv.', minutes: 25 },
+    { id: 'm1-args', title: 'Argumentos e exit codes', description: 'Interpretar `argv`.', minutes: 25 },
     { id: 'm2-add-list', title: 'Adicionar e listar', minutes: 50 },
   ],
   edgeCases: ['Texto vazio.'], failureExperiments: ['Remover permissão de escrita.'], tools: ['gcc', 'strace'],
@@ -57,6 +57,7 @@ describe('projetos', () => {
     const milestones = screen.getByRole('region', { name: 'Marcos' })
     expect(within(milestones).getByText('Argumentos e exit codes')).toBeInTheDocument()
     expect(within(milestones).getByText(/25 min/)).toBeInTheDocument()
+    expect(within(milestones).getByText('argv', { selector: 'code' })).toBeInTheDocument()
     expect(screen.getByText('Experimentos de falha', { selector: 'summary' })).toBeInTheDocument()
   })
 })

@@ -117,7 +117,11 @@ function MilestoneList({ project }: { project: Project }) {
           <li key={m.id}>
             <strong>{m.title}</strong>
             {m.minutes && <span className="muted small"> · ~{m.minutes} min</span>}
-            {m.description && <div className="small">{m.description}</div>}
+            {m.description && (
+              <div className="small">
+                <InlineMarkdown text={m.description} />
+              </div>
+            )}
           </li>
         ))}
       </ol>
