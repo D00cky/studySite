@@ -1,0 +1,296 @@
+# Recursos do drill-down (essentials/deepDive) das etapas 15 e 16.
+
+# --- Vídeos novos para ai-evaluation-structured-outputs ---
+
+- id: peter-yang-hamel-husain-ai-evals-50-min-video
+  title: AI Evaluations Clearly Explained in 50 Minutes (Real Example) | Hamel Husain
+  author: Peter Yang
+  url: https://www.youtube.com/watch?v=uiza7wp1KrE
+  language: en
+  format: video
+  difficulty: intro
+  topics: [ai-evaluation-structured-outputs]
+  why: Hamel Husain monta evals para um agente real do zero — ler traces, fazer análise de erros, transformar falhas recorrentes em testes por código e só então usar LLM como juiz. É o fluxo do exercício de evals do tópico.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: openai-devday-2024-structured-outputs-video
+  title: OpenAI DevDay 2024 | Structured outputs for reliable applications
+  author: OpenAI
+  url: https://www.youtube.com/watch?v=kE4BkATIl9c
+  language: en
+  format: video
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Palestra oficial sobre aderência a JSON Schema — por que o modo JSON não bastava, como a geração restrita garante a forma e o que continua sendo responsabilidade da aplicação.
+  access: free
+  priority: core
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: efficient-nlp-structured-output-grammars-video
+  title: "Structured Output from LLMs: Grammars, Regex, and State Machines"
+  author: Efficient NLP
+  url: https://www.youtube.com/watch?v=xpvFinvqRCA
+  language: en
+  format: video
+  difficulty: advanced
+  topics: [ai-evaluation-structured-outputs]
+  why: Explica o mecanismo da geração restrita (constrained decoding) — máscaras de tokens guiadas por regex, máquinas de estados e gramáticas, como na biblioteca Outlines.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Aprofundamento: observabilidade e desempenho ---
+
+- id: otel-sampling
+  title: Sampling
+  author: OpenTelemetry
+  url: https://opentelemetry.io/docs/concepts/sampling/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [logs-metrics-traces]
+  why: Amostragem head-based versus tail-based e o custo de guardar todos os traces.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: prometheus-histograms-summaries
+  title: Histograms and summaries
+  author: Prometheus
+  url: https://prometheus.io/docs/practices/histograms/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [logs-metrics-traces, latency-percentiles-diagnosis]
+  why: Como escolher buckets, por que summaries não se agregam entre instâncias e como calcular quantis com histogram_quantile.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: w3c-trace-context
+  title: Trace Context
+  author: W3C
+  url: https://www.w3.org/TR/trace-context/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [logs-metrics-traces]
+  why: Especificação do cabeçalho traceparent/tracestate usado para propagar contexto entre serviços.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: sre-workbook-alerting-on-slos
+  title: "The Site Reliability Workbook — Alerting on SLOs"
+  author: Google
+  url: https://sre.google/workbook/alerting-on-slos/
+  language: en
+  format: book
+  difficulty: advanced
+  topics: [logs-metrics-traces, latency-percentiles-diagnosis]
+  why: Transforma SLOs em alertas por taxa de consumo do error budget (burn rate), com janelas múltiplas.
+  section: Alerting on SLOs
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: async-profiler
+  title: async-profiler
+  author: async-profiler project
+  url: https://github.com/async-profiler/async-profiler
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [profiling-benchmarks]
+  why: Profiler por amostragem para a JVM (CPU, alocação, locks) que gera flame graphs sem o viés de safepoint.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-off-cpu-analysis
+  title: Off-CPU Analysis
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/offcpuanalysis.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
+  why: Como medir o tempo que threads passam bloqueadas (I/O, locks, sleep), que um profiler de CPU não enxerga.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: brendan-gregg-ebpf-tools
+  title: Linux eBPF Tracing Tools
+  author: Brendan Gregg
+  url: https://www.brendangregg.com/ebpf.html
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [profiling-benchmarks, latency-percentiles-diagnosis]
+  why: Panorama das ferramentas eBPF (bcc, bpftrace) para medir latência de disco, rede e escalonador em produção com baixo custo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: dean-barroso-tail-at-scale
+  title: The Tail at Scale
+  author: Jeffrey Dean, Luiz André Barroso
+  url: https://research.google/pubs/the-tail-at-scale/
+  language: en
+  format: article
+  difficulty: advanced
+  topics: [latency-percentiles-diagnosis]
+  why: Artigo clássico sobre por que a cauda domina em sistemas com fan-out e técnicas como hedged requests para reduzi-la.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: wrk2
+  title: "wrk2: a constant throughput, correct latency recording variant of wrk"
+  author: Gil Tene
+  url: https://github.com/giltene/wrk2
+  language: en
+  format: tool
+  difficulty: intermediate
+  topics: [latency-percentiles-diagnosis]
+  why: Gerador de carga de taxa constante que corrige coordinated omission e registra latência em HdrHistogram.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Aprofundamento: infraestrutura ---
+
+- id: man-capabilities
+  title: capabilities(7) - Linux manual page
+  author: Michael Kerrisk (man7.org)
+  url: https://man7.org/linux/man-pages/man7/capabilities.7.html
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [containers-deployment]
+  why: Como o poder do root é dividido em capabilities e por que containers devem descartar as que não usam.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: docker-seccomp
+  title: Seccomp security profiles for Docker
+  author: Docker
+  url: https://docs.docker.com/engine/security/seccomp/
+  language: en
+  format: documentation
+  difficulty: advanced
+  topics: [containers-deployment]
+  why: Filtros de syscalls aplicados por padrão aos containers e como restringi-los mais.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: docker-rootless-mode
+  title: Rootless mode
+  author: Docker
+  url: https://docs.docker.com/engine/security/rootless/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [containers-deployment]
+  why: Rodar o daemon e os containers sem root, com user namespaces.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: k8s-overview
+  title: Overview
+  author: Kubernetes
+  url: https://kubernetes.io/docs/concepts/overview/
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [containers-deployment, health-checks-rollback]
+  why: O que um orquestrador acrescenta a containers soltos — agendamento, autorrecuperação, service discovery e rollouts.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: k8s-deployments
+  title: Deployments
+  author: Kubernetes
+  url: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: Rolling update com maxSurge/maxUnavailable, histórico de revisões e kubectl rollout undo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-feature-toggles
+  title: Feature Toggles (aka Feature Flags)
+  author: Pete Hodgson (martinfowler.com)
+  url: https://martinfowler.com/articles/feature-toggles.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: Separar deploy de release com flags — tipos de toggle, custo de manutenção e como desligar uma funcionalidade sem rollback.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: fowler-parallel-change
+  title: Parallel Change
+  author: Danilo Sato (martinfowler.com)
+  url: https://martinfowler.com/bliki/ParallelChange.html
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [health-checks-rollback]
+  why: O padrão expand/migrate/contract para mudar interfaces e esquemas sem quebrar a versão anterior.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+# --- Aprofundamento: IA aplicada ---
+
+- id: hamel-llm-as-judge
+  title: "Using LLM-as-a-Judge For Evaluation: A Complete Guide"
+  author: Hamel Husain
+  url: https://hamel.dev/blog/posts/llm-judge/
+  language: en
+  format: article
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Como criar um juiz LLM alinhado a um especialista humano, com critérios binários e medição de concordância.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: owasp-llm01-prompt-injection
+  title: "LLM01:2025 Prompt Injection"
+  author: OWASP Gen AI Security Project
+  url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+  language: en
+  format: documentation
+  difficulty: intermediate
+  topics: [ai-evaluation-structured-outputs]
+  why: Tipos de prompt injection (direta e indireta), cenários de ataque e mitigações como privilégio mínimo e validação de saída.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }
+
+- id: claude-docs-develop-tests
+  title: Define success criteria and build evaluations
+  author: Anthropic
+  url: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
+  language: en
+  format: documentation
+  difficulty: intro
+  topics: [ai-evaluation-structured-outputs]
+  why: Guia oficial para definir critérios de sucesso mensuráveis e montar conjuntos de avaliação com correção por código, por humano ou por modelo.
+  access: free
+  priority: optional
+  verification: { status: verified, checkedOn: "2026-10-18" }

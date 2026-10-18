@@ -69,6 +69,25 @@
     - Dockerfile, docker-compose.yml e saídas de ps/proc/ns comparadas.
     - Saídas do OOM kill, do cgroup e da recuperação do segredo, com explicação.
   firstAction: "Rode `docker run --rm alpine ps aux` e depois `ls -l /proc/self/ns` no seu terminal. Quantos processos o container vê?"
+  essentials:
+    - "Container é processo do Linux: namespaces limitam o que ele vê, cgroups o que ele usa; exit 137 costuma ser OOM kill."
+    - "Dockerfile multi-stage: copie `pom.xml` e baixe dependências antes do código para aproveitar o cache de camadas."
+    - "Rode como usuário não-root (`USER`) e use `ENTRYPOINT` em forma exec para o `SIGTERM` chegar ao processo."
+    - Segredos e configuração entram pelo ambiente em tempo de execução; nunca no build (camadas guardam tudo).
+    - "Tagueie a imagem pelo commit (`git rev-parse --short HEAD`), não só `latest`, para poder reproduzir e voltar."
+  deepDive:
+    - title: Capabilities e seccomp
+      why: Ao endurecer containers em produção, descartando privilégios e syscalls que a aplicação não usa.
+      resource: man-capabilities
+    - title: Rootless containers e user namespaces
+      why: Quando precisar rodar containers em máquinas compartilhadas sem dar root no host a quem usa o Docker.
+      resource: docker-rootless-mode
+    - title: Orquestração com Kubernetes
+      why: Quando um único host com Compose não bastar e você precisar de várias réplicas, autorrecuperação e rollouts.
+      resource: k8s-overview
+    - title: Filtros de syscalls com seccomp no Docker
+      why: Ao investigar um `Operation not permitted` dentro do container ou restringir a superfície de ataque.
+      resource: docker-seccomp
 
 - id: health-checks-rollback
   stage: s16-infra-applied-ai
@@ -142,6 +161,25 @@
     - Código dos endpoints de saúde, Dockerfile/Compose e saída dos testes de falha.
     - Linha do tempo do deploy quebrado com métricas, decisão e rollback.
   firstAction: "Rode `docker ps` com um container qualquer que tenha HEALTHCHECK (ou adicione `--health-cmd` a um `docker run`) e veja a coluna STATUS mudar para `(healthy)`."
+  essentials:
+    - "Liveness checa só o próprio processo (reinicia); readiness checa dependências essenciais (tira do balanceamento)."
+    - "Todo check com timeout curto, custo baixo e `failureThreshold`; uma falha isolada não deve derrubar nada."
+    - "No shutdown: ao receber `SIGTERM`, falhe o readiness, pare de aceitar conexões e termine as em andamento."
+    - "Migrações em expand/contract para que a versão anterior continue funcionando depois do deploy."
+    - Defina antes o critério de rollback (taxa de erro, p99) e ensaie o script; rollback nunca testado não é plano.
+  deepDive:
+    - title: Rolling update e rollout undo no Kubernetes
+      why: Quando o deploy passar a ser feito por um orquestrador e você precisar controlar quantas réplicas trocam por vez.
+      resource: k8s-deployments
+    - title: Canary com análise automática
+      why: Quando o tráfego for grande o suficiente para comparar versões estatisticamente antes de liberar para todos.
+      resource: sre-workbook-canarying-releases
+    - title: Feature flags (separar deploy de release)
+      why: Quando quiser desligar uma funcionalidade problemática em segundos, sem trocar a imagem.
+      resource: fowler-feature-toggles
+    - title: Parallel change (expand/migrate/contract) em detalhe
+      why: Ao planejar renomear colunas, mudar formatos de API ou dividir tabelas com o sistema no ar.
+      resource: fowler-parallel-change
 
 - id: ai-evaluation-structured-outputs
   stage: s16-infra-applied-ai
@@ -170,7 +208,7 @@
   resources:
     start: json-schema-getting-started
     deeper: [ollama-structured-outputs, hamel-your-ai-product-needs-evals, claude-structured-outputs, owasp-cheatsheets]
-    videos: [missing-semester-2026-lecture-7-agentic-coding-video]
+    videos: [peter-yang-hamel-husain-ai-evals-50-min-video, openai-devday-2024-structured-outputs-video]
   exercise:
     id: ex-task-parser-with-fallback
     title: Frase em linguagem natural para tarefa validada
@@ -209,3 +247,25 @@
     - Schema, interface do extrator, testes e saída do runner de evals.
     - Comparação de duas versões de prompt ou modelo nos mesmos casos, com a decisão justificada.
   firstAction: "Escreva à mão o JSON que você esperaria para a frase \"comprar pão amanhã\" e as três regras que tornariam esse JSON inválido."
+  essentials:
+    - "Trate o modelo como dependência remota não confiável: timeout, retry limitado e fallback, como qualquer chamada de rede."
+    - "Defina um JSON Schema para a resposta e valide sempre no cliente; o schema garante forma, não conteúdo nem regras de negócio."
+    - "Fallback em camadas: nova tentativa com o erro de validação → extrator determinístico → usuário preenche; conte fallbacks por motivo."
+    - "Evals = arquivo versionado de casos com checagens por código; rode cada caso várias vezes e compare taxa de acerto antes de trocar prompt ou modelo."
+    - "Texto do usuário é dado, não instrução: separe-o do prompt e nunca dê ao modelo poder que o usuário não tem."
+  deepDive:
+    - title: Geração restrita por gramática (constrained decoding)
+      why: Quando quiser entender por que um runtime consegue garantir JSON válido e quais schemas ele não suporta.
+      resource: efficient-nlp-structured-output-grammars-video
+    - title: LLM como juiz
+      why: Quando o critério de acerto for subjetivo (tom, resumo, relevância) e não der para checar só com código.
+      resource: hamel-llm-as-judge
+    - title: Critérios de sucesso e conjuntos de avaliação maiores
+      why: Quando a funcionalidade crescer e você precisar de métricas formais, casos gerados e notas por humano ou modelo.
+      resource: claude-docs-develop-tests
+    - title: Prompt injection direta e indireta
+      why: Quando o modelo ler conteúdo de terceiros (e-mails, páginas, documentos) ou puder chamar ferramentas.
+      resource: owasp-llm01-prompt-injection
+    - title: Trabalhar com agentes de código
+      why: Quando usar LLMs no próprio fluxo de desenvolvimento e precisar de ciclos de verificação automática.
+      resource: missing-semester-2026-lecture-7-agentic-coding-video
